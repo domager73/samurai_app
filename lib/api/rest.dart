@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'dart:convert' show jsonDecode;
 
 import 'package:samurai_app/components/storage.dart';
+import 'package:samurai_app/utils/enums.dart';
 
 //const SERVER_IP = 'http://192.168.1.5:820'; //net
 const serverIp = 'https://api.samurai-versus.io'; //work
@@ -14,14 +18,7 @@ class Rest {
   static Dio buildDio() {
     Dio dio = Dio();
     if (kDebugMode) {
-      dio.interceptors.add(PrettyDioLogger(
-          requestHeader: true,
-          requestBody: true,
-          responseBody: true,
-          responseHeader: false,
-          error: true,
-          compact: true,
-          maxWidth: 90));
+      dio.interceptors.add(PrettyDioLogger(requestHeader: true, requestBody: true, responseBody: true, responseHeader: false, error: true, compact: true, maxWidth: 90));
     }
     return dio;
   }
@@ -111,9 +108,7 @@ class Rest {
     try {
       final data = await dio.post(
         '$serverIp/api/auth/sendTFACode',
-        data: {
-          "email": email
-        },
+        data: {"email": email},
         options: Options(
           headers: {
             'Authorization': 'Bearer $jwt',
@@ -226,8 +221,7 @@ class Rest {
   }
 
   //TOKEN_TYPE "FIRE_SAMURAI_MATIC" или "WATER_SAMURAI_MATIC"
-  static Future<void> transferSamuraiToArmy(
-      int amount, String tokenType) async {
+  static Future<void> transferSamuraiToArmy(int amount, String tokenType) async {
     String? jwt = AppStorage().read('jwt');
 
     final data = await dio.post(
@@ -264,11 +258,7 @@ class Rest {
     String? jwt = AppStorage().read('jwt');
     final data = await dio.post(
       '$serverIp/api/users/update/email/verify',
-      data: {
-        'newEmail': email,
-        'authCodeNewEmail': int.parse(newcode),
-        'authCodeOldEmail': int.parse(code)
-      },
+      data: {'newEmail': email, 'authCodeNewEmail': int.parse(newcode), 'authCodeOldEmail': int.parse(code)},
       options: Options(
         headers: {
           'Authorization': 'Bearer $jwt',
@@ -366,10 +356,7 @@ class Rest {
     try {
       final data = await dio.post(
         '$serverIp/api/users/samurai/mint',
-        data: {
-          'samurai_type': type,
-          'amount': amount
-        },
+        data: {'samurai_type': type, 'amount': amount},
         options: Options(
           headers: {
             'Authorization': 'Bearer $jwt',
@@ -392,6 +379,87 @@ class Rest {
       }
     }
     return null;
+  }
+
+  static Future<Map<String, dynamic>> mintUserHero(HeroType heroType, SamuraiType samuraiType) async {
+    // add user hero method
+
+    String URL = "$serverIp/api/users/hero/mint";
+    final String? jwtToken = AppStorage().read('jwt');
+
+    Map<String, dynamic> reqHeader = {
+      'Authorization': 'Bearer $jwtToken',
+      'Content-Type': "application/json",
+    };
+
+    Map<String, dynamic> reqBody = {
+      'hero_type': heroType,
+      'class_type': samuraiType,
+    };
+
+    try {
+      final response = await dio.post(URL, data: reqBody, options: Options(headers: reqHeader));
+      if (response.statusCode == 200) {
+        return response.data as Map<String, dynamic>;
+      }
+      throw (response.statusMessage.toString());
+    } catch (ex) {
+      print(ex);
+      throw (ex);
+    }
+  }
+
+  static Future<Map<String, dynamic>> placeHeroToStake(int heroId) async {
+    // replace hero to a stake state
+
+    String URL = "$serverIp/api/users/hero/transfer/staking";
+    final jwtToken = AppStorage().read('jwt');
+
+    Map<String, dynamic> reqHeader = {
+      'Authorization': 'Bearer $jwtToken',
+      'Content-Type': "application/json",
+    };
+
+    Map<String, dynamic> reqBody = {'heroId': heroId};
+
+    try {
+      final response = await dio.post(URL, data: reqBody, options: Options(headers: reqHeader));
+
+      if (response.statusCode == 200) {
+        return response.data;
+      }
+
+      throw response.statusMessage.toString();
+    } catch (ex) {
+      throw ex;
+    }
+  }
+
+
+  static Future<Map<String, dynamic>> removeHeroFromStake(int heroId) async {
+    // removes hero from a stake state
+
+    String URL = "$serverIp/api/users/hero/transfer/free";
+    final jwtToken = AppStorage().read('jwt');
+
+    Map<String, dynamic> reqHeader = {
+      'Authorization': 'Bearer $jwtToken',
+      'Content-Type': "application/json",
+    };
+
+    Map<String, dynamic> reqBody = {'heroId': heroId};
+
+    try {
+      final response = await dio.post(URL, data: reqBody, options: Options(headers: reqHeader));
+
+      if (response.statusCode == 200) {
+        return response.data;
+      }
+
+      throw response.statusMessage.toString();
+    } catch (ex) {
+      throw ex;
+    }
   }
 }
 

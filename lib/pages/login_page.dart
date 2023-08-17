@@ -22,7 +22,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   late Timer _timer;
   int? timerValue;
-  bool isAgree = false;
+  bool isAgree = true;
   String email = '';
   String code = '';
   bool errorTerms = false;
