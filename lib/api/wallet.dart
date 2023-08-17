@@ -126,7 +126,7 @@ class WalletAPI {
     );
   }*/
 
-  static Future<void> transferERC20Bnb(HDWallet wallet, String tokenAddress,
+  static Future<void> transferERC20Bnb(HDWallet wallet, String tokenAddress, // CLC RIO USDT Transfer
       double amount, String? toAddress, String asset) async {
     PrivateKey privateKey = wallet.getKeyForCoin(
       TWCoinType.TWCoinTypeSmartChain,

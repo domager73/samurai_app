@@ -517,7 +517,7 @@ class WalletPageComponents {
                   alignment: WrapAlignment.center,
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: <Widget>[
-                    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
                       PresButton(
                         onTap: () => Navigator.of(context).pop(),
                         params: {'width': width},
@@ -539,10 +539,6 @@ class WalletPageComponents {
                                 ),
                                 maxLines: 1,
                               )))),
-                      SizedBox(
-                        height: width * 0.12,
-                        width: width * 0.12,
-                      ),
                     ]),
                     Padding(
                         padding: EdgeInsets.only(top: height * 0.02, bottom: height * 0.02),

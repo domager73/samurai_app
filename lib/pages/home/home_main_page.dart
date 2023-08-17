@@ -7,7 +7,6 @@ import 'package:flutter_xlider/flutter_xlider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:samurai_app/components/pop_up_spinner.dart';
 import 'package:samurai_app/components/show_confirm.dart';
-import 'package:wheel_chooser/wheel_chooser.dart';
 
 import '../../api/rest.dart';
 import '../../components/anim_button.dart';
@@ -175,37 +174,21 @@ class _HomeMainPageState extends State<HomeMainPage> {
                         height: width * 0.11,
                         width: width * 0.11,
                       )),
-                      Column(children: [
-                        Container(
-                          alignment: Alignment.topCenter,
-                          width: width - width * 0.30,
-                          child: Text(
-                            "THIS IS YOUR CHANCE TO GET A FREE NFT HERO".toUpperCase(),
-                            style: GoogleFonts.spaceMono(
-                              fontSize: 14 / 844 * height,
-                              fontWeight: FontWeight.w700,
-                              color: const Color(0xFF00FFFF),
-                            ),
-                            softWrap: true,
-                            textAlign: TextAlign.center,
-                          )
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(top: 0.01 * height),
-                          alignment: Alignment.topCenter,
-                          width: width - width * 0.30,
-                          child: Text(
-                            "UNTIL THE END OF THE ALPHA MINT LEFT:".toUpperCase(),
-                            style: GoogleFonts.spaceMono(
-                              fontSize: 14 / 844 * height,
-                              fontWeight: FontWeight.w700,
-                              color: const Color(0xFF00FFFF),
-                            ),
-                            softWrap: true,
-                            textAlign: TextAlign.center,
-                          )
+                      Container(
+                        padding: EdgeInsets.only(top: 0.01 * height),
+                        alignment: Alignment.topCenter,
+                        width: width - width * 0.30,
+                        child: Text(
+                          "UNTIL THE END OF THE ALPHA MINT LEFT:".toUpperCase(),
+                          style: GoogleFonts.spaceMono(
+                            fontSize: 14 / 844 * height,
+                            fontWeight: FontWeight.w700,
+                            color: const Color(0xFF00FFFF),
+                          ),
+                          softWrap: true,
+                          textAlign: TextAlign.center,
                         )
-                      ])
+                      )
                     ])
                 ),
                 SizedBox(height: 5 / 844 * height),

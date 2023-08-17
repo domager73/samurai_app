@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -34,6 +35,7 @@ class _HomePageState extends State<HomePage> {
   int craftSwitch = 0;
   int herosSwitch = 0;
   DateTime _lastUpdate = DateTime.now();
+
 
   String craftSwitchKey = 'craftSwitch';
 
@@ -432,7 +434,12 @@ class _HomePageState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       PresButton(
-                        onTap: () => Navigator.of(context).pop(),
+                        onTap: () {
+                          if (kDebugMode) {
+                            print(AppStorage().read('wallet_adress')!);
+                          }
+                          Navigator.of(context).pop();
+                          },
                         params: {'width': width},
                         child: backBtn,
                       ),

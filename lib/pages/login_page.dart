@@ -39,12 +39,12 @@ class _LoginPageState extends State<LoginPage> {
       showSpinner(context);
       Rest.checkCode(email, code).then((data) {
         final useTfa = AppStorage().read('use-tfa');
-        AppStorage().write('jwt', data['jwt']).then((_) =>
-            AppStorage().updateUserWallet().then((_) {
-              hideSpinner(context);
-              Navigator.of(context).pushReplacementNamed('/home');
-            })
-        );
+        AppStorage()
+            .write('jwt', data['jwt'])
+            .then((_) => AppStorage().updateUserWallet().then((_) {
+                  hideSpinner(context);
+                  Navigator.of(context).pushReplacementNamed('/home');
+                }));
       }).catchError((e) {
         hideSpinner(context);
         debugPrint(e.toString());
@@ -87,13 +87,12 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   Padding(
                     padding: EdgeInsets.only(
-                      top: getTopPadding(
-                        height * 0.35,
-                        MediaQuery.of(context).viewInsets.bottom,
-                      ),
-                      left: width * 0.03,
-                      right: width * 0.03
-                    ),
+                        top: getTopPadding(
+                          height * 0.35,
+                          MediaQuery.of(context).viewInsets.bottom,
+                        ),
+                        left: width * 0.03,
+                        right: width * 0.03),
                     child: Center(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
@@ -115,10 +114,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   Padding(
                     padding: EdgeInsets.only(
-                      top: 28.0,
-                      left: width * 0.03,
-                      right: width * 0.03
-                    ),
+                        top: 28.0, left: width * 0.03, right: width * 0.03),
                     child: SamuraiTextField(
                       screeenHeight: height,
                       screeenWidth: width,
@@ -130,10 +126,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   Padding(
                     padding: EdgeInsets.only(
-                      top: 16.0,
-                      left: width * 0.03,
-                      right: width * 0.03
-                    ),
+                        top: 16.0, left: width * 0.03, right: width * 0.03),
                     child: SamuraiTextField(
                       screeenHeight: height,
                       screeenWidth: width,
@@ -180,10 +173,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   Padding(
                     padding: EdgeInsets.only(
-                      top: 12,
-                      left: width * 0.03,
-                      right: width * 0.03
-                    ),
+                        top: 12, left: width * 0.03, right: width * 0.03),
                     child: Row(
                       children: [
                         Container(
@@ -202,20 +192,20 @@ class _LoginPageState extends State<LoginPage> {
                               errorTerms ? Colors.red : Colors.transparent,
                             ),
                             checkColor: const Color(0xFF00FFFF),
-                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            materialTapTargetSize:
+                                MaterialTapTargetSize.shrinkWrap,
                           ),
                         ),
                         FittedBox(
-                          fit: BoxFit.fitWidth,
-                          child: Text(
-                            "  I agree",
-                            style: GoogleFonts.spaceMono(
-                              fontSize: height * 0.015,
-                              height: 1.5,
-                              color: Colors.white,
-                            ),
-                          )
-                        ),
+                            fit: BoxFit.fitWidth,
+                            child: Text(
+                              "  I agree",
+                              style: GoogleFonts.spaceMono(
+                                fontSize: height * 0.015,
+                                height: 1.5,
+                                color: Colors.white,
+                              ),
+                            )),
                         Expanded(
                           flex: 9,
                           child: InkWell(
@@ -224,31 +214,29 @@ class _LoginPageState extends State<LoginPage> {
                             child: Padding(
                               padding: const EdgeInsets.all(6.0),
                               child: FittedBox(
-                                fit: BoxFit.fitWidth,
-                                child: Text(
-                                  "Terms of Use", //TODO
-                                  style: GoogleFonts.spaceMono(
-                                    fontSize: height * 0.015,
-                                    height: 1.5,
-                                    color: const Color(0xFF00FFFF),
-                                  ),
-                                  textAlign: TextAlign.center,
-                                )
-                              ),
+                                  fit: BoxFit.fitWidth,
+                                  child: Text(
+                                    "Terms of Use", //TODO
+                                    style: GoogleFonts.spaceMono(
+                                      fontSize: height * 0.015,
+                                      height: 1.5,
+                                      color: const Color(0xFF00FFFF),
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  )),
                             ),
                           ),
                         ),
                         FittedBox(
-                          fit: BoxFit.fitWidth,
-                          child: Text(
-                            "&",
-                            style: GoogleFonts.spaceMono(
-                              fontSize: height * 0.015,
-                              height: 1.5,
-                              color: Colors.white,
-                            ),
-                          )
-                        ),
+                            fit: BoxFit.fitWidth,
+                            child: Text(
+                              "&",
+                              style: GoogleFonts.spaceMono(
+                                fontSize: height * 0.015,
+                                height: 1.5,
+                                color: Colors.white,
+                              ),
+                            )),
                         Expanded(
                           flex: 10,
                           child: InkWell(
@@ -257,17 +245,16 @@ class _LoginPageState extends State<LoginPage> {
                             child: Padding(
                               padding: const EdgeInsets.all(6.0),
                               child: FittedBox(
-                                fit: BoxFit.fitWidth,
-                                child: Text(
-                                  "Privacy Policy",
-                                  style: GoogleFonts.spaceMono(
-                                    fontSize: height * 0.015,
-                                    height: 1.5,
-                                    color: const Color(0xFF00FFFF),
-                                  ),
-                                  textAlign: TextAlign.center,
-                                )
-                              ),
+                                  fit: BoxFit.fitWidth,
+                                  child: Text(
+                                    "Privacy Policy",
+                                    style: GoogleFonts.spaceMono(
+                                      fontSize: height * 0.015,
+                                      height: 1.5,
+                                      color: const Color(0xFF00FFFF),
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  )),
                             ),
                           ),
                         ),
@@ -278,7 +265,11 @@ class _LoginPageState extends State<LoginPage> {
                     padding: const EdgeInsets.only(top: 8, bottom: 28),
                     child: PresButton(
                       onTap: login,
-                      params: {'text': 'login/sign up', 'width': width, 'height': height},
+                      params: {
+                        'text': 'login/sign up',
+                        'width': width,
+                        'height': height
+                      },
                       child: loginBtn,
                     ),
                   ),
@@ -291,11 +282,6 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  double getTopPadding(double height, double keyboard) {
-    if (height - keyboard < 28) {
-      return 28;
-    } else {
-      return height - keyboard;
-    }
-  }
+  double getTopPadding(double height, double keyboard) =>
+      height - keyboard < 28 ? 28 : height - keyboard;
 }

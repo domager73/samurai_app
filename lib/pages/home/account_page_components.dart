@@ -96,7 +96,7 @@ class AccountPageComponents {
                   child: SamuraiTextField(
                     screeenHeight: height,
                     screeenWidth: width,
-                    hint: "Email address",
+                    hint: "New Email address",
                     keyboardType: TextInputType.emailAddress,
                     onChanged: (value) => setState(
                       () {
