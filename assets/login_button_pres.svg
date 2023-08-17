@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="370"
+   height="106"
+   viewBox="0 0 370 106"
+   fill="none"
+   version="1.1"
+   id="svg61"
+   sodipodi:docname="login_button_pres.svg"
+   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview63"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="2.2264151"
+     inkscape:cx="185.05085"
+     inkscape:cy="53"
+     inkscape:window-width="1680"
+     inkscape:window-height="987"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg61" />
+  <g
+     filter="url(#filter0_f_898_14902)"
+     id="g4">
+    <path
+       fill-rule="evenodd"
+       clip-rule="evenodd"
+       d="M39.8717 25L15 54.6409V86H115.28L121.992 78.0003L122 78.0067V78H338.672L355 58.5407V19H252.021L247.073 24.8965L247 24.8354V25H39.8717Z"
+       fill="#00FFFF"
+       id="path2" />
+  </g>
+  <g
+     filter="url(#filter1_f_898_14902)"
+     id="g12">
+    <path
+       d="M279.513 88H127L121 95.5H34.5"
+       stroke="white"
+       stroke-width="2"
+       stroke-miterlimit="10"
+       id="path6" />
+    <path
+       d="M186.513 17H37L16.5 41.5"
+       stroke="white"
+       stroke-width="2"
+       stroke-miterlimit="10"
+       id="path8" />
+    <path
+       d="M286 9L290.5 4H351.5L347 9H286Z"
+       fill="white"
+       id="path10" />
+  </g>
+  <g
+     filter="url(#filter2_f_898_14902)"
+     id="g20">
+    <path
+       d="M137 100L141.5 95H202.5L198 100H137Z"
+       fill="#FF0049"
+       stroke="#FF0049"
+       stroke-width="3"
+       id="path14" />
+    <path
+       d="M235 100L239.5 95H250.5L246 100H235Z"
+       fill="#FF0049"
+       stroke="#FF0049"
+       stroke-width="3"
+       id="path16" />
+    <path
+       d="M252 100L256.5 95H267.5L263 100H252Z"
+       fill="#FF0049"
+       stroke="#FF0049"
+       stroke-width="3"
+       id="path18" />
+  </g>
+  <path
+     fill-rule="evenodd"
+     clip-rule="evenodd"
+     d="M39.8717 25L15 54.6409V86H115.28L121.992 78.0003L122 78.0067V78H338.672L355 58.5407V19H252.021L247.073 24.8965L247 24.8354V25H39.8717Z"
+     fill="#00FFFF"
+     id="path22" />
+  <path
+     d="M279.513 88H127L121 95.5H34.5"
+     stroke="white"
+     stroke-width="1.0437"
+     stroke-miterlimit="10"
+     id="path26" />
+  <path
+     d="M186.513 17H37L16.5 41.5"
+     stroke="white"
+     stroke-width="1.0437"
+     stroke-miterlimit="10"
+     id="path28" />
+  <path
+     d="M137 100L141.5 95H202.5L198 100H137Z"
+     fill="#FF0049"
+     id="path30" />
+  <path
+     d="M286 9L290.5 4H351.5L347 9H286Z"
+     fill="white"
+     id="path32" />
+  <path
+     d="M235 100L239.5 95H250.5L246 100H235Z"
+     fill="#FF0049"
+     id="path34" />
+  <path
+     d="M252 100L256.5 95H267.5L263 100H252Z"
+     fill="#FF0049"
+     id="path36" />
+  <defs
+     id="defs59">
+    <filter
+       id="filter0_f_898_14902"
+       x="0"
+       y="4"
+       width="370"
+       height="97"
+       filterUnits="userSpaceOnUse"
+       color-interpolation-filters="sRGB">
+      <feFlood
+         flood-opacity="0"
+         result="BackgroundImageFix"
+         id="feFlood38" />
+      <feBlend
+         mode="normal"
+         in="SourceGraphic"
+         in2="BackgroundImageFix"
+         result="shape"
+         id="feBlend40" />
+      <feGaussianBlur
+         stdDeviation="7.5"
+         result="effect1_foregroundBlur_898_14902"
+         id="feGaussianBlur42" />
+    </filter>
+    <filter
+       id="filter1_f_898_14902"
+       x="11.7332"
+       y="0"
+       width="343.767"
+       height="100.5"
+       filterUnits="userSpaceOnUse"
+       color-interpolation-filters="sRGB">
+      <feFlood
+         flood-opacity="0"
+         result="BackgroundImageFix"
+         id="feFlood45" />
+      <feBlend
+         mode="normal"
+         in="SourceGraphic"
+         in2="BackgroundImageFix"
+         result="shape"
+         id="feBlend47" />
+      <feGaussianBlur
+         stdDeviation="2"
+         result="effect1_foregroundBlur_898_14902"
+         id="feGaussianBlur49" />
+    </filter>
+    <filter
+       id="filter2_f_898_14902"
+       x="129.632"
+       y="89.5"
+       width="145.236"
+       height="16"
+       filterUnits="userSpaceOnUse"
+       color-interpolation-filters="sRGB">
+      <feFlood
+         flood-opacity="0"
+         result="BackgroundImageFix"
+         id="feFlood52" />
+      <feBlend
+         mode="normal"
+         in="SourceGraphic"
+         in2="BackgroundImageFix"
+         result="shape"
+         id="feBlend54" />
+      <feGaussianBlur
+         stdDeviation="2"
+         result="effect1_foregroundBlur_898_14902"
+         id="feGaussianBlur56" />
+    </filter>
+  </defs>
+</svg>
