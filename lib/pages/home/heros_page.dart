@@ -24,10 +24,10 @@ class _HerosPageState extends State<HerosPage>
   late final TabController _tabController;
 
   late Map<String, dynamic> info;
-  double? waterSamuraiDp = 0;
-  double? fireSamuraiDp = 0;
-  int? fireSamuraiUnclaimedDp = 0;
-  int? waterSamuraiUnclaimedDp = 0;
+  double? waterDp = 0;
+  double? fireDp = 0;
+  int? fireUnclaimedDp = 0;
+  int? waterUnclaimedDp = 0;
   double maxDp = 100.0;
 
   String? samuraiDpExpiresDate;
@@ -75,10 +75,10 @@ class _HerosPageState extends State<HerosPage>
     await getHeroInfo()
         .then((value) => setState(() {
               info = value;
-              waterSamuraiDp = info['water_dp_bar'] * 1.0;
-              fireSamuraiDp = info['fire_dp_bar'] * 1.0;
-              fireSamuraiUnclaimedDp = info['fire_dp_balance'] * 1;
-              waterSamuraiUnclaimedDp = info['water_dp_balance'] * 1;
+              waterDp = info[''];
+              fireDp = 100;
+              fireUnclaimedDp = 100;
+              waterUnclaimedDp = 100;
               maxDp = 120;
             }))
         .catchError((e) {
@@ -162,8 +162,6 @@ class _HerosPageState extends State<HerosPage>
   Widget getActiveTab(
       BuildContext context, double width, double height, List<dynamic> heroes) {
     final wgts = heroes.map((e) {
-      print(e['clan']);
-      print('--------------------------------------');
       return e['status'] != 'STAKING' &&
               ((widget.craftSwitch == 0 && e['clan'] == 'water') ||
                   (widget.craftSwitch == 1 && e['clan'] == 'fire'))
@@ -225,7 +223,7 @@ class _HerosPageState extends State<HerosPage>
             arguments: 'samuraiMint${widget.craftSwitch}',
           ),
           disabled:
-              ((widget.craftSwitch == 0 ? waterSamuraiDp : fireSamuraiDp) ??
+              ((widget.craftSwitch == 0 ? waterDp : fireDp) ??
                       0.0) <
                   12,
           params: {'text': 'samuari mint', 'width': width, 'height': height},
@@ -239,15 +237,15 @@ class _HerosPageState extends State<HerosPage>
       Map e, BuildContext context, double width, double height, btnsWaiget) {
     //print(e);
     return Stack(children: [
-      // if (e['in_battle'] == true) //TODO доделать in_battle
-      //   Container(
-      //       padding: EdgeInsets.only(top: width * 0.005),
-      //       width: width - width * 0.68,
-      //       child: SvgPicture.asset(
-      //           'assets/pages/homepage/heroes/in_battle.svg',
-      //           fit: BoxFit.fitWidth)),
+      if (e['status'] == 'FIGHTING')
+        Container(
+            padding: EdgeInsets.only(top: width * 0.005),
+            width: width - width * 0.68,
+            child: SvgPicture.asset(
+                'assets/pages/homepage/heroes/in_battle.svg',
+                fit: BoxFit.fitWidth)),
       SvgPicture.asset(
-        'assets/pages/homepage/heroes/ronin_border.svg',
+        'assets/pages/homepage/heroes/${e['type']}_border.svg',
         fit: BoxFit.fitWidth,
         width: width * 0.88,
       ),
@@ -262,7 +260,7 @@ class _HerosPageState extends State<HerosPage>
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(
-                e['type'].toString(),
+                e['name'].toString(),
                 style: GoogleFonts.spaceMono(
                   fontSize: width * 0.04,
                   fontWeight: FontWeight.w700,
@@ -308,23 +306,32 @@ class _HerosPageState extends State<HerosPage>
     ]);
   }
 
-  Widget btnsActive(Map e, BuildContext context, double width, double height) {
+  Widget btnsActive(Map<String, dynamic> e, BuildContext context, double width, double height, int heroId) {
     return Padding(
         padding: EdgeInsets.only(left: width - width * 0.9),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Padding(
               padding: EdgeInsets.only(top: width * 0.03, bottom: width * 0.03),
               child: AnimButton(
-                  onTap: () => {},
+                  onTap: () {
+                    print(e['state']);
+                  },
                   shadowType: 2,
                   child: SvgPicture.asset(
+                    e['status'] == 'FIGHTING' ?
+                    'assets/pages/homepage/heroes/btn_to_wallet_dis.svg' :
                     'assets/pages/homepage/heroes/btn_to_wallet.svg',
                     fit: BoxFit.fitWidth,
                   ))),
           AnimButton(
-              onTap: () => {},
+              onTap: () async {
+                await Rest.placeHeroToStake(heroId);
+                await loadInfo();
+              },
               shadowType: 2,
               child: SvgPicture.asset(
+                e['status'] == 'FIGHTING' ?
+                'assets/pages/homepage/heroes/btn_stake_dis.svg' :
                 'assets/pages/homepage/heroes/btn_stake.svg',
                 fit: BoxFit.fitWidth,
               ))
@@ -339,7 +346,10 @@ class _HerosPageState extends State<HerosPage>
           Padding(
               padding: EdgeInsets.only(top: width * 0.12),
               child: AnimButton(
-                  onTap: () => {},
+                  onTap: () async {
+                    await Rest.removeHeroFromStake(heroId);
+                    await loadInfo();
+                  },
                   shadowType: 2,
                   child: SvgPicture.asset(
                     'assets/pages/homepage/heroes/btn_unstake.svg',
@@ -379,15 +389,6 @@ class _HerosPageState extends State<HerosPage>
                             color: const Color(0xFFFFFFFF),
                           ),
                         ),
-
-                        // Text(
-                        //   samuraiDpExpiresDate ?? '00:00',
-                        //   style: GoogleFonts.spaceMono(
-                        //     fontSize: width * 0.04,
-                        //     fontWeight: FontWeight.w700,
-                        //     color: const Color(0xFFFFFFFF),
-                        //   ),
-                        // ),
                       ),
                       Row(children: [
                         Text("DP/Day: ",
@@ -420,8 +421,8 @@ class _HerosPageState extends State<HerosPage>
                     shadowType: 1,
                     child: SvgPicture.asset(
                         (((widget.craftSwitch == 0
-                                        ? waterSamuraiUnclaimedDp
-                                        : fireSamuraiUnclaimedDp) ??
+                                        ? waterUnclaimedDp
+                                        : fireUnclaimedDp) ??
                                     0) >
                                 0)
                             ? 'assets/pages/homepage/craft/btn_clame_water.svg'
@@ -433,13 +434,13 @@ class _HerosPageState extends State<HerosPage>
                       padding: EdgeInsets.only(
                           top: width * 0.086, left: width * 0.23),
                       child: Text(
-                          "${(widget.craftSwitch == 0 ? waterSamuraiUnclaimedDp : fireSamuraiUnclaimedDp) ?? 0} DP",
+                          "${(widget.craftSwitch == 0 ? waterUnclaimedDp : fireUnclaimedDp) ?? 0} DP",
                           style: GoogleFonts.spaceMono(
                             fontWeight: FontWeight.w700,
                             fontSize: width * 0.028,
                             color: (((widget.craftSwitch == 0
-                                            ? waterSamuraiUnclaimedDp
-                                            : fireSamuraiUnclaimedDp) ??
+                                            ? waterUnclaimedDp
+                                            : fireUnclaimedDp) ??
                                         0) >
                                     0)
                                 ? const Color(0xFF00FFFF)
@@ -452,7 +453,7 @@ class _HerosPageState extends State<HerosPage>
 
   Widget progressBar(BuildContext context, double maxDp, double width) {
     double xp =
-        (widget.craftSwitch == 0 ? waterSamuraiDp : fireSamuraiDp) ?? 0.0;
+        (widget.craftSwitch == 0 ? waterDp : fireDp) ?? 0.0;
     if (xp > maxDp) {
       xp = maxDp;
     }
@@ -474,17 +475,6 @@ class _HerosPageState extends State<HerosPage>
             borderRadius: BorderRadius.circular(100),
           ),
         ),
-        // Padding(
-        //     padding: EdgeInsets.only(
-        //         top: width * 0.006,
-        //         left: (width - width * 0.09) * (xp + 1) / (maxDp * 1.12) +
-        //             width * 0.01),
-        //     child: Text("DP",
-        //         style: GoogleFonts.spaceMono(
-        //           fontWeight: FontWeight.w700,
-        //           fontSize: width * 0.024,
-        //           color: Colors.white,
-        //         )))
       ]),
       Padding(
           padding: EdgeInsets.only(top: width * 0.02),
@@ -496,7 +486,7 @@ class _HerosPageState extends State<HerosPage>
                   color: const Color(0xFF00FFFF),
                 )),
             Text(
-                '${((widget.craftSwitch == 0 ? waterSamuraiDp : fireSamuraiDp) ?? 0.0).toStringAsFixed(0)}/100',
+                '${((widget.craftSwitch == 0 ? waterDp : fireDp) ?? 0.0).toStringAsFixed(0)}/${maxDp.round()}',
                 style: GoogleFonts.spaceMono(
                   fontSize: width * 0.038,
                   fontWeight: FontWeight.w700,
@@ -507,15 +497,15 @@ class _HerosPageState extends State<HerosPage>
   }
 
   String getDaylyDp() {
-    /*if (widget.craftSwitch == 0) {
-      if (lockedWaterSamuraiBalance != null) {
-        return (lockedWaterSamuraiBalance! ~/ 5).toString();
-      }
-    } else {
-      if (lockedFireSamuraiBalance != null) {
-        return (lockedFireSamuraiBalance! ~/ 5).toString();
-      }
-    }*/
+    // if (widget.craftSwitch == 0) {
+    //   if (lockedWaterSamuraiBalance != null) {
+    //     return (lockedWaterSamuraiBalance! ~/ 5).toString();
+    //   }
+    // } else {
+    //   if (lockedFireSamuraiBalance != null) {
+    //     return (lockedFireSamuraiBalance! ~/ 5).toString();
+    //   }
+    // }
     return "0";
   }
 }

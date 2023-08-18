@@ -462,12 +462,12 @@ class _HomePageState extends State<HomePage> {
                       ),
                       AnimButton(
                         shadowType: 2,
-                        onTap: () => {
+                        onTap: ()  {
                           showError(
                             context,
                             'This is a wallet linked to your game account. You can refill it in any convenient way by copying the address or using the QR code.\nAttention! Send tokens only on BEP20 (BSC) chain, otherwise the tokens will be lost!',
                             type: 2
-                          )
+                          );
                         },
                         child: SvgPicture.asset(
                           'assets/pages/homepage/craft/info.svg',

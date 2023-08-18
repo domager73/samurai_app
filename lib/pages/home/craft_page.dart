@@ -580,7 +580,7 @@ class _CraftPageState extends State<CraftPage> {
           return maxXP.toInt();
         }
       } else {
-        return 1;
+        return 0;
       }
     } else {
       if (fireSamuraiXp != 0) {
@@ -590,7 +590,7 @@ class _CraftPageState extends State<CraftPage> {
           return maxXP.toInt();
         }
       } else {
-        return 1;
+        return 0;
       }
     }
   }

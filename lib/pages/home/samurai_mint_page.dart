@@ -68,7 +68,6 @@ class _SamuraiMintPageState extends State<SamuraiMintPage> with SingleTickerProv
 
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           PresButton(
             onTap: () => Navigator.of(context).pushNamedAndRemoveUntil(
@@ -97,10 +96,6 @@ class _SamuraiMintPageState extends State<SamuraiMintPage> with SingleTickerProv
                 )),
               ),
             ),
-          ),
-          SizedBox(
-            height: width * 0.12,
-            width: width * 0.12,
           ),
         ],
       ),
@@ -253,7 +248,7 @@ class _SamuraiMintPageState extends State<SamuraiMintPage> with SingleTickerProv
                 ),
                 onDragging: (handlerIndex, lowerValue, upperValue) {
                   _currentSliderValue = lowerValue;
-                  //_upperValue = upperValue;
+
                   setState(() {});
                 },
               )

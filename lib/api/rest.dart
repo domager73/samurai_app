@@ -423,7 +423,7 @@ class Rest {
   }
 
 
-  static Future<Map<String, dynamic>> removeHeroFromStake(int heroId) async {
+  static Future<dynamic> removeHeroFromStake(int heroId) async {
     // removes hero from a stake state
 
     String URL = "$serverIp/api/users/hero/transfer/free";
