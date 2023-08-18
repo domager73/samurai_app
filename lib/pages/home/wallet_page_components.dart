@@ -129,7 +129,7 @@ class WalletPageComponents {
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: width * 0.1),
                           child: Text(
-                            'swap ',
+                            'swap',
                             style: TextStyle(
                               fontFamily: 'AmazObitaemOstrovItalic',
                               fontSize: 37 / 844 * height,
@@ -163,50 +163,48 @@ class WalletPageComponents {
                     CustomPaint(
                       painter: CustomSwapPainter(),
                       child: Container(
-                          padding: EdgeInsets.all(30),
+                          padding: const EdgeInsets.all(30),
                           width: width,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Expanded(
-                                child: Container(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Row(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.end, children: [
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.end, children: [
+                                      SizedBox(
+                                        width: width * 0.116,
+                                        child: Text(textAlign: TextAlign.start, "from".toUpperCase(), style: GoogleFonts.spaceMono(fontWeight: FontWeight.w800, fontSize: 13, color: Colors.white)),
+                                      ),
+                                      Text(mode == 'inGame' ? 'WALLET' : 'GAME', style: GoogleFonts.spaceMono(fontWeight: FontWeight.w700, color: Colors.white, fontSize: 20), textAlign: TextAlign.start),
+                                    ]),
+                                    Container(color: Colors.white.withOpacity(0.6), height: 1, margin: const EdgeInsets.only(top: 22, bottom: 16)),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      children: [
                                         SizedBox(
                                           width: width * 0.116,
-                                          child: Text(textAlign: TextAlign.start, "from".toUpperCase(), style: GoogleFonts.spaceMono(fontWeight: FontWeight.w800, fontSize: 13, color: Colors.white)),
-                                        ),
-                                        Text(mode == 'inGame' ? 'WALLET' : 'GAME', style: GoogleFonts.spaceMono(fontWeight: FontWeight.w700, color: Colors.white, fontSize: 20), textAlign: TextAlign.start),
-                                      ]),
-                                      Container(color: Colors.white.withOpacity(0.6), height: 1, margin: EdgeInsets.only(top: 22, bottom: 16)),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                        children: [
-                                          Container(
-                                            width: width * 0.116,
-                                            child: Text(
-                                              "to".toUpperCase(),
-                                              style: GoogleFonts.spaceMono(fontWeight: FontWeight.w800, fontSize: 13, color: Colors.white),
-                                              textAlign: TextAlign.start,
-                                            ),
-                                          ),
-                                          Text(
+                                          child: Text(
+                                            "to".toUpperCase(),
+                                            style: GoogleFonts.spaceMono(fontWeight: FontWeight.w800, fontSize: 13, color: Colors.white),
                                             textAlign: TextAlign.start,
-                                            mode == 'inGame' ? 'GAME' : 'WALLET',
-                                            style: GoogleFonts.spaceMono(fontWeight: FontWeight.w700, color: Colors.white, fontSize: 20),
                                           ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
+                                        ),
+                                        Text(
+                                          textAlign: TextAlign.start,
+                                          mode == 'inGame' ? 'GAME' : 'WALLET',
+                                          style: GoogleFonts.spaceMono(fontWeight: FontWeight.w700, color: Colors.white, fontSize: 20),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
                               ),
-                              Container(
+                              SizedBox(
                                 width: width * 0.25,
                                 child: AnimButton(
                                   shadowType: 2,

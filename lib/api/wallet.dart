@@ -139,6 +139,7 @@ class WalletAPI {
       await rootBundle.loadString(asset),
       'usdt',
     );
+
     final deployedContract = DeployedContract(
       abi,
       EthereumAddress.fromHex(tokenAddress),

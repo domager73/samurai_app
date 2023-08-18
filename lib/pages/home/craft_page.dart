@@ -593,7 +593,7 @@ class _CraftPageState extends State<CraftPage> {
                 ),
               ),
               Text(
-                '${(widget.craftSwitch == 0 ? waterSamuraiXp : fireSamuraiXp).toStringAsFixed(0)}/${maxXP.toStringAsFixed(0)}',
+                '$xpBarPercent/${maxXP.toStringAsFixed(0)}',
                 style: GoogleFonts.spaceMono(
                   fontWeight: FontWeight.w700,
                   color: Colors.white,
