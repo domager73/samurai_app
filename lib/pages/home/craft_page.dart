@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:samurai_app/pages/home/craft_page_components.dart';
+import 'package:samurai_app/widgets/custom_snackbar.dart';
 
 import '../../api/rest.dart';
 import '../../components/anim_button.dart';
@@ -46,6 +47,7 @@ class _CraftPageState extends State<CraftPage> {
   @override
   void initState() {
     super.initState();
+
     scrollController = ScrollController();
     setStorageData();
     loadInfo();
@@ -83,13 +85,9 @@ class _CraftPageState extends State<CraftPage> {
     DateTime end = DateTime(now.year, now.month, now.day, 11, 59, 59);
     final diff = now.subtract(now.timeZoneOffset).difference(end);
     //print("$diff, ${diff.inHours}, ${diff.inMinutes}");
+
     setState(() {
-      samuraiXpExpiresDate = DateFormat.Hm().format(DateTime(
-          now.year,
-          now.month,
-          now.day,
-          -diff.inHours,
-          -diff.inMinutes + diff.inHours * 60));
+      samuraiXpExpiresDate = DateFormat.Hm().format(DateTime(now.year, now.month, now.day, -diff.inHours, -diff.inMinutes + diff.inHours * 60));
     });
   }
 
@@ -116,47 +114,29 @@ class _CraftPageState extends State<CraftPage> {
             child: Column(
               children: [
                 Stack(children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: width * 0.05, right: width * 0.05),
-                    child: getBackgroundBorder(width)
-                  ),
+                  Padding(padding: EdgeInsets.only(left: width * 0.05, right: width * 0.05), child: getBackgroundBorder(width)),
                   ValueListenableBuilder(
-                    valueListenable: AppStorage().box.listenable(),
-                    builder: (context, box, widget) {
-                      final temp = box.get(
-                        'user',
-                        defaultValue: <String, dynamic>{},
-                      );
-                      Map<String, dynamic>? user;
-                      if (temp != <String, dynamic>{}) {
-                        user = Map.from(temp);
-                      }
-                      return Padding(
-                        padding: EdgeInsets.only(
-                            left: width * 0.04, right: width * 0.04),
-                        child: Row(children: [
-                          getCharacter(width),
-                          getStats(width, height, user)
-                        ])
-                      );
-                    }
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                        top: width * 0.78,
-                        left: width * 0.01,
-                        right: width * 0.01
-                    ),
-                    child: clameBlock(context, width)
-                  ),
+                      valueListenable: AppStorage().box.listenable(),
+                      builder: (context, box, widget) {
+                        final temp = box.get(
+                          'user',
+                          defaultValue: <String, dynamic>{},
+                        );
+                        Map<String, dynamic>? user;
+                        if (temp != <String, dynamic>{}) {
+                          user = Map.from(temp);
+                        }
+                        return Padding(padding: EdgeInsets.only(left: width * 0.04, right: width * 0.04), child: Row(children: [getCharacter(width), getStats(width, height, user)]));
+                      }),
+                  Padding(padding: EdgeInsets.only(top: width * 0.78, left: width * 0.01, right: width * 0.01), child: clameBlock(context, width)),
                 ]),
                 Padding(
-                  padding: EdgeInsets.only(
-                    top: width * 0.05,
-                    left: width * 0.05,
-                    right: width * 0.05,
-                  ),
-                  child: getLoader(height, width)),
+                    padding: EdgeInsets.only(
+                      top: width * 0.05,
+                      left: width * 0.05,
+                      right: width * 0.05,
+                    ),
+                    child: getLoader(height, width)),
                 Padding(
                   padding: EdgeInsets.only(top: width * 0.01, left: width * 0.05, right: width * 0.05),
                   child: getCraftButton(width, height),
@@ -167,129 +147,106 @@ class _CraftPageState extends State<CraftPage> {
               ],
             ),
           ),
-        )
-    );
+        ));
   }
 
   Widget clameBlock(BuildContext context, double width) {
     return Stack(children: [
       Padding(
-        padding: EdgeInsets.only(top: width * 0.02, left: width * 0.054, right: width * 0.044),
-        child: SvgPicture.asset(
-          'assets/pages/homepage/craft/clame_border.svg',
-          fit: BoxFit.fitWidth,
-          width: width - width * 0.09,
-        )
-      ),
-      Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Padding(
+          padding: EdgeInsets.only(top: width * 0.02, left: width * 0.054, right: width * 0.044),
+          child: SvgPicture.asset(
+            'assets/pages/homepage/craft/clame_border.svg',
+            fit: BoxFit.fitWidth,
+            width: width * 0.91,
+          )),
+      Row(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+        Padding(
             padding: EdgeInsets.only(top: width * 0.048, left: width * 0.11),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(bottom: width * 0.055, left: width * 0.121),
-                  child: BlinkingTime(
-                    style: GoogleFonts.spaceMono(
-                      fontSize: width * 0.04,
-                      fontWeight: FontWeight.w700,
-                      color: const Color(0xFFFFFFFF),
-                    ),
-                    getTime: getXpTime,
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Padding(
+                padding: EdgeInsets.only(bottom: width * 0.055, left: width * 0.121),
+                child: BlinkingTime(
+                  style: GoogleFonts.spaceMono(
+                    fontSize: width * 0.04,
+                    fontWeight: FontWeight.w700,
+                    color: const Color(0xFFFFFFFF),
                   ),
-                  // Text(
-                  //   getXpTime(),
-                  //   style: GoogleFonts.spaceMono(
-                  //     fontSize: width * 0.04,
-                  //     fontWeight: FontWeight.w700,
-                  //     color: const Color(0xFFFFFFFF),
-                  //   ),
-                  // ),
+                  getTime: getXpTime,
                 ),
-                Row(children: [
-                  Text(
-                    "XP/Day: ",
+              ),
+              Row(children: [
+                Text("XP/Day: ",
                     style: GoogleFonts.spaceMono(
                       fontSize: width * 0.034,
                       fontWeight: FontWeight.w700,
                       color: const Color(0xFF00FFFF),
-                    )
-                  ),
-                  Text(
-                    "+${getDaylyXp()} XP ",
+                    )),
+                Text("+${getDaylyXp()} XP ",
                     style: GoogleFonts.spaceMono(
                       fontSize: width * 0.034,
                       fontWeight: FontWeight.w700,
                       color: const Color(0xFFFFFFFF),
-                    )
-                  )
-                ])
-              ]
-            )
-          ),
-          Padding(
+                    ))
+              ])
+            ])),
+        Padding(
             padding: EdgeInsets.only(top: width * 0.087, right: width - width * 0.9),
             child: Stack(children: [
               AnimButton(
-                onTap: () {
-                  if ((widget.craftSwitch == 0 ? waterSamuraiUnclaimedXp : fireSamuraiUnclaimedXp) <= 0) {
-                    return;
-                  }
-                  Rest.sendClameSamurai(widget.craftSwitch == 0 ? "WATER_SAMURAI_MATIC" : "FIRE_SAMURAI_MATIC").then((value) {
-                    if (value != null) {
-                      if (value['fire_samurai_xp'] != null) {
-                        fireSamuraiXp = value['fire_samurai_xp'] * 1.0;
-                      }
-                      if (value['fire_samurai_unclaimed_xp'] != null) {
-                        fireSamuraiUnclaimedXp = value['fire_samurai_unclaimed_xp'] * 1;
-                      }
-                      if (value['water_samurai_xp'] != null) {
-                        waterSamuraiXp = value['water_samurai_xp'] * 1.0;
-                      }
-                      if (value['water_samurai_unclaimed_xp'] != null) {
-                        waterSamuraiUnclaimedXp = value['water_samurai_unclaimed_xp'] * 1;
-                      }
-                      setState(() {});
+                  onTap: () {
+                    // CLAME_FIX
+                    if ((widget.craftSwitch == 0) && (waterSamuraiXp >= maxXP)) {
+                      ScaffoldMessenger.of(context).clearSnackBars();
+                      ScaffoldMessenger.of(context).showSnackBar(buildCustomSnackbar(context, 'Your water expirience is FULL', false));
+                      return;
+                    } else if ((widget.craftSwitch == 1) && (fireSamuraiXp >= maxXP)) {
+                      ScaffoldMessenger.of(context).clearSnackBars();
+                      ScaffoldMessenger.of(context).showSnackBar(buildCustomSnackbar(context, 'Your fire expirience is FULL', true));
+                      return;
                     }
-                    loadInfo();
-                  }).catchError((e) {
-                    if (kDebugMode) {
-                      print(e);
+                    if ((widget.craftSwitch == 0 ? waterSamuraiUnclaimedXp : fireSamuraiUnclaimedXp) <= 0) {
+                      return;
                     }
-                  });
-                },
-                disabled: isDisabledClame(),
-                shadowType: 1,
-                child: SvgPicture.asset(
-                    !isDisabledClame()
-                      ? 'assets/pages/homepage/craft/btn_clame_${widget.craftSwitch == 0 ? 'water' : 'fire'}.svg'
-                      : 'assets/pages/homepage/craft/btn_clame_dis.svg',
-                  fit: BoxFit.fitWidth,
-                  width: width * 0.36
-                )
-              ),
+                    Rest.sendClameSamurai(widget.craftSwitch == 0 ? "WATER_SAMURAI_MATIC" : "FIRE_SAMURAI_MATIC").then((value) {
+                      if (value != null) {
+                        if (value['fire_samurai_xp'] != null) {
+                          fireSamuraiXp = value['fire_samurai_xp'] * 1.0;
+                        }
+                        if (value['fire_samurai_unclaimed_xp'] != null) {
+                          fireSamuraiUnclaimedXp = value['fire_samurai_unclaimed_xp'] * 1;
+                        }
+                        if (value['water_samurai_xp'] != null) {
+                          waterSamuraiXp = value['water_samurai_xp'] * 1.0;
+                        }
+                        if (value['water_samurai_unclaimed_xp'] != null) {
+                          waterSamuraiUnclaimedXp = value['water_samurai_unclaimed_xp'] * 1;
+                        }
+                        setState(() {});
+                      }
+                      loadInfo();
+                    }).catchError((e) {
+                      if (kDebugMode) {
+                        print(e);
+                      }
+                    });
+                  },
+                  disabled: isDisabledClame(),
+                  shadowType: 1,
+                  child: SvgPicture.asset(!isDisabledClame() ? 'assets/pages/homepage/craft/btn_clame_${widget.craftSwitch == 0 ? 'water' : 'fire'}.svg' : 'assets/pages/homepage/craft/btn_clame_dis.svg', fit: BoxFit.fitWidth, width: width * 0.36)),
               Padding(
-                padding: EdgeInsets.only(top: width * 0.086, left: width * 0.215),
-                child: Text(
-                  "${isDisabledClame() ? 0 : (widget.craftSwitch == 0 ? waterSamuraiUnclaimedXp : fireSamuraiUnclaimedXp)} XP",
-                  style: GoogleFonts.spaceMono(
-                    fontWeight: FontWeight.w700,
-                    fontSize: width * 0.028,
-                    color: isDisabledClame()
-                      ? Colors.grey
-                      : widget.craftSwitch == 0
-                        ? const Color(0xFF00FFFF)
-                        : const Color(0xFFFF0049),
-                  )
-                )
-              ),
-            ])
-          )
-        ]
-      )
+                  padding: EdgeInsets.only(top: width * 0.086, left: width * 0.215),
+                  child: Text("${isDisabledClame() ? 0 : (widget.craftSwitch == 0 ? waterSamuraiUnclaimedXp : fireSamuraiUnclaimedXp)} XP",
+                      style: GoogleFonts.spaceMono(
+                        fontWeight: FontWeight.w700,
+                        fontSize: width * 0.028,
+                        color: isDisabledClame()
+                            ? Colors.grey
+                            : widget.craftSwitch == 0
+                                ? const Color(0xFF00FFFF)
+                                : const Color(0xFFFF0049),
+                      ))),
+            ]))
+      ])
     ]);
   }
 
@@ -377,10 +334,10 @@ class _CraftPageState extends State<CraftPage> {
                                 flex: 55,
                                 child: PresButton(
                                     onTap: () => CraftPageComponents.openHealModalPage(
-                                      context: context,
-                                      width: width,
-                                      height: height,
-                                    ),
+                                          context: context,
+                                          width: width,
+                                          height: height,
+                                        ),
                                     params: const {},
                                     child: widget.craftSwitch == 0 ? waterHeartBtn : fireHeartBtn),
                               ),
@@ -467,21 +424,20 @@ class _CraftPageState extends State<CraftPage> {
                               Expanded(
                                 flex: 75,
                                 child: PresButton(
-                                  onTap: () => CraftPageComponents.openTransferModalPage(
-                                    context: context,
-                                    width: width,
-                                    height: height,
-                                    samuraiTypeIngame: widget.craftSwitch == 0 ? "WATER_SAMURAI_MATIC" : "FIRE_SAMURAI_MATIC",
-                                    balance: widget.craftSwitch == 0 ? waterSamuraiBalance : fireSamuraiBalance,
-                                    lockedBalance: widget.craftSwitch == 0 ? lockedWaterSamuraiBalance : lockedFireSamuraiBalance,
-                                    gas: user?['gasBnb'] ?? 0.0,
-                                    balanceWithdraw: (widget.craftSwitch == 0 ? waterSamuraiBalance : fireSamuraiBalance).toDouble(),//TODO: genesis balance
-                                    samuraiTypeRegular: widget.craftSwitch == 0 ? "WATER_SAMURAI_BSC" : "FIRE_SAMURAI_BSC",
-                                    samuraiTypeGenesis: widget.craftSwitch == 0 ? "WATER_SAMURAI_GENESIS_BSC" : "FIRE_SAMURAI_GENESIS_BSC",
-                                  ).then((_) => loadInfo()),
-                                  params: const {},
-                                  child: widget.craftSwitch == 0 ? waterChangeBtn : fireChangeBtn
-                                ),
+                                    onTap: () => CraftPageComponents.openTransferModalPage(
+                                          context: context,
+                                          width: width,
+                                          height: height,
+                                          samuraiTypeIngame: widget.craftSwitch == 0 ? "WATER_SAMURAI_MATIC" : "FIRE_SAMURAI_MATIC",
+                                          balance: widget.craftSwitch == 0 ? waterSamuraiBalance : fireSamuraiBalance,
+                                          lockedBalance: widget.craftSwitch == 0 ? lockedWaterSamuraiBalance : lockedFireSamuraiBalance,
+                                          gas: user?['gasBnb'] ?? 0.0,
+                                          balanceWithdraw: (widget.craftSwitch == 0 ? waterSamuraiBalance : fireSamuraiBalance).toDouble(), //TODO: genesis balance
+                                          samuraiTypeRegular: widget.craftSwitch == 0 ? "WATER_SAMURAI_BSC" : "FIRE_SAMURAI_BSC",
+                                          samuraiTypeGenesis: widget.craftSwitch == 0 ? "WATER_SAMURAI_GENESIS_BSC" : "FIRE_SAMURAI_GENESIS_BSC",
+                                        ).then((_) => loadInfo()),
+                                    params: const {},
+                                    child: widget.craftSwitch == 0 ? waterChangeBtn : fireChangeBtn),
                               ),
                             ],
                           ),
@@ -545,7 +501,6 @@ class _CraftPageState extends State<CraftPage> {
       mainAxisSize: MainAxisSize.min,
       children: [
         SizedBox(
-          // padding: EdgeInsets.zero,
           width: width,
           height: 15 / 335 * (width - width * 0.14),
           child: Stack(
@@ -570,10 +525,7 @@ class _CraftPageState extends State<CraftPage> {
                         ),
                       ),
                     ),
-                    if (maxXP - xpBarPercent > 0)
-                      Spacer(flex: (maxXP - xpBarPercent).round())
-                    else
-                      const SizedBox.shrink()
+                    if (maxXP - xpBarPercent > 0) Spacer(flex: (maxXP - xpBarPercent).round()) else const SizedBox.shrink()
                   ],
                 ),
               ),
@@ -610,20 +562,16 @@ class _CraftPageState extends State<CraftPage> {
   Widget getCraftButton(double width, double height) {
     return PresButton(
         onTap: () => Navigator.of(context).pushNamedAndRemoveUntil(
-          '/home',
-          (route) => false,
-          arguments: 'heroMint${widget.craftSwitch}',
-        ),
+              '/home',
+              (route) => false,
+              arguments: 'heroMint${widget.craftSwitch}',
+            ),
         disabled: (widget.craftSwitch == 0 ? waterSamuraiXp : fireSamuraiXp) < maxXP,
         params: {'text': 'hero mint', 'width': width, 'height': height},
         child: loginBtn);
   }
 
   int getXp() {
-    // if (kDebugMode) {
-    //   return 50;
-    // }
-
     if (widget.craftSwitch == 0) {
       if (waterSamuraiXp != 0) {
         if (waterSamuraiXp <= maxXP) {
@@ -652,22 +600,6 @@ class _CraftPageState extends State<CraftPage> {
       return samuraiXpExpiresDate!;
     }
     return '00:00';
-
-    /*Duration? diff;
-    if (widget.craftSwitch == 0) {
-      if (waterSamuraiXpExpiresDate != null) {
-        diff = waterSamuraiXpExpiresDate!.difference(DateTime.now());
-      }
-    } else {
-      if (fireSamuraiXpExpiresDate != null) {
-        diff = fireSamuraiXpExpiresDate!.difference(DateTime.now());
-      }
-    }
-    if (diff != null && diff.inMinutes > 0) {
-      return "${(diff.inHours > 23 ? 23 : diff.inHours)}:${diff.inMinutes- diff.inHours * 60}";
-    } else {
-      return '00:00';
-    }*/
   }
 
   String getDaylyXp() {
@@ -683,18 +615,9 @@ class _CraftPageState extends State<CraftPage> {
     return "0";
   }
 
-  bool isDisabledClame() {
+  bool isDisabledClame() {    
     if (waterSamuraiXpExpiresDate != null && fireSamuraiXpExpiresDate != null) {
-      return (
-          (widget.craftSwitch == 0
-              ? waterSamuraiUnclaimedXp
-              : fireSamuraiUnclaimedXp
-          ) <= 0 ||
-          (widget.craftSwitch == 0
-              ? waterSamuraiXpExpiresDate!.compareTo(DateTime.now()) == 1
-              : fireSamuraiXpExpiresDate!.compareTo(DateTime.now()) == 1
-          )
-      );
+      return ((widget.craftSwitch == 0 ? waterSamuraiUnclaimedXp : fireSamuraiUnclaimedXp) <= 0 || (widget.craftSwitch == 0 ? waterSamuraiXpExpiresDate!.compareTo(DateTime.now()) > 0 : fireSamuraiXpExpiresDate!.compareTo(DateTime.now()) > 0));
     }
     return true;
   }
