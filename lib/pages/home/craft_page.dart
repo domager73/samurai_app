@@ -617,7 +617,13 @@ class _CraftPageState extends State<CraftPage> {
 
   bool isDisabledClame() {    
     if (waterSamuraiXpExpiresDate != null && fireSamuraiXpExpiresDate != null) {
-      return ((widget.craftSwitch == 0 ? waterSamuraiUnclaimedXp : fireSamuraiUnclaimedXp) <= 0 || (widget.craftSwitch == 0 ? waterSamuraiXpExpiresDate!.compareTo(DateTime.now()) > 0 : fireSamuraiXpExpiresDate!.compareTo(DateTime.now()) > 0));
+      return (
+        (widget.craftSwitch == 0 ? waterSamuraiUnclaimedXp : fireSamuraiUnclaimedXp) <= 0
+        || 
+        (widget.craftSwitch == 0 ? waterSamuraiXpExpiresDate!.compareTo(DateTime.now()) > 0 : fireSamuraiXpExpiresDate!.compareTo(DateTime.now()) > 0)
+        // ||
+        // (widget.craftSwitch == 0 ? waterSamuraiXp : fireSamuraiXp) >= maxXP
+        );
     }
     return true;
   }
