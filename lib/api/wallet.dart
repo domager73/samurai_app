@@ -7,7 +7,6 @@ import 'package:trust_wallet_core_lib/trust_wallet_core_lib.dart';
 import 'package:web3dart/web3dart.dart';
 
 class WalletAPI {
-
   //static const tokenAdresNft = '0x9e03b7c91b94235d71e031876a90c831cf409df4';
   static const tokenAdresGenesisWaterSamyrai = '0xa3a92aba1cc7de81ef5eb356fef3ef2701e0e9e4';
   static const tokenAdresGenesisFireSamyrai = '0x285c7e1eac419deab8791e600140acf4708c5607';

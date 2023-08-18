@@ -23,57 +23,6 @@ class _HerosPageState extends State<HerosPage>
     with SingleTickerProviderStateMixin {
   late final TabController _tabController;
 
-  final List _heros = [
-    {
-      'name': 'Muzhikotavr',
-      'rare': 'Feudal',
-      'in_battle': true,
-      'in_chronic': false,
-      'in_staking': false,
-      'type': 'water'
-    },
-    {
-      'name': 'Muzhikotavr',
-      'rare': 'Shogun',
-      'in_battle': false,
-      'in_chronic': true,
-      'in_staking': false,
-      'type': 'fire'
-    },
-    {
-      'name': 'Muzhikotavr',
-      'rare': 'Ronin',
-      'in_battle': false,
-      'in_chronic': true,
-      'in_staking': false,
-      'type': 'fire'
-    },
-    {
-      'name': 'Muzhikotavr',
-      'rare': 'Feudal',
-      'in_battle': false,
-      'in_chronic': false,
-      'in_staking': true,
-      'type': 'water'
-    },
-    {
-      'name': 'Muzhikotavr',
-      'rare': 'Shogun',
-      'in_battle': false,
-      'in_chronic': true,
-      'in_staking': true,
-      'type': 'fire'
-    },
-    {
-      'name': 'Muzhikotavr',
-      'rare': 'Ronin',
-      'in_battle': false,
-      'in_chronic': true,
-      'in_staking': true,
-      'type': 'fire'
-    }
-  ];
-
   late Map<String, dynamic> info;
   double? waterSamuraiDp = 0;
   double? fireSamuraiDp = 0;
@@ -88,7 +37,9 @@ class _HerosPageState extends State<HerosPage>
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
+
     loadInfo();
+
     calcSamuraiDpExpiresDate();
     _timer = Timer.periodic(const Duration(minutes: 1), (timer) {
       if (!mounted) {
@@ -121,17 +72,18 @@ class _HerosPageState extends State<HerosPage>
   }
 
   Future<void> loadInfo() async {
-    getHeroInfo()
-      .then((value) => setState(() {
-        info = value;
-        waterSamuraiDp = info['water_heroes_dp'] * 1.0;
-        fireSamuraiDp = info['water_heroes_dp'] * 1.0;
-        fireSamuraiUnclaimedDp = info['fire_heroes_unclaimed_dp'] * 1;
-        waterSamuraiUnclaimedDp = info['water_heroes_unclaimed_dp'] * 1;
-        maxDp = (info['dp_bar'] ?? 0.0) * 1.0;
-      })).catchError((e) {
-        print(e);
-      });
+    await getHeroInfo()
+        .then((value) => setState(() {
+              info = value;
+              waterSamuraiDp = info['water_dp_bar'] * 1.0;
+              fireSamuraiDp = info['fire_dp_bar'] * 1.0;
+              fireSamuraiUnclaimedDp = info['fire_dp_balance'] * 1;
+              waterSamuraiUnclaimedDp = info['water_dp_balance'] * 1;
+              maxDp = 120;
+            }))
+        .catchError((e) {
+      print(e);
+    });
   }
 
   Future<Map<String, dynamic>> getHeroInfo() async {
@@ -144,55 +96,85 @@ class _HerosPageState extends State<HerosPage>
     final height = MediaQuery.of(context).size.height;
     return Column(children: [
       Padding(
-        padding: EdgeInsets.only(
-          top: width * 0.04,
-          bottom: width * 0.07,
-          left: width * 0.12,
-          right: width * 0.12
-        ),
-        child: TabBar(
-          controller: _tabController,
-          tabs: const [
-            Tab(text: 'ACTIVE'),
-            Tab(text: 'STAKING'),
-            Tab(text: 'MINT'),
-          ],
-          labelStyle: GoogleFonts.spaceMono(fontSize: 14 / 880 * height, fontWeight: FontWeight.w700),
-          labelColor: Colors.white,
-          unselectedLabelColor: const Color(0xFF00FFFF),
-          indicatorColor: Colors.white,
-          dividerColor: const Color(0xFF00FFFF),
-          splashBorderRadius: BorderRadius.circular(8),
-        )
-      ),
+          padding: EdgeInsets.only(
+              top: width * 0.04,
+              bottom: width * 0.07,
+              left: width * 0.12,
+              right: width * 0.12),
+          child: TabBar(
+            controller: _tabController,
+            tabs: const [
+              Tab(text: 'ACTIVE'),
+              Tab(text: 'STAKING'),
+              Tab(text: 'MINT'),
+            ],
+            labelStyle: GoogleFonts.spaceMono(
+                fontSize: 14 / 880 * height, fontWeight: FontWeight.w700),
+            labelColor: Colors.white,
+            unselectedLabelColor: const Color(0xFF00FFFF),
+            indicatorColor: Colors.white,
+            dividerColor: const Color(0xFF00FFFF),
+            splashBorderRadius: BorderRadius.circular(8),
+          )),
       SizedBox(
-        width: width - width * 0.04,
-        height: height - height * 0.433,
-        child: TabBarView(controller: _tabController, children: [
-          HerosPageTab(wigetChild: getActiveTab(context, width, height)),
-          HerosPageTab(wigetChild: getStakingTab(context, width, height)),
-          getMintTab(context, width, height),
-        ])
-      )
+          width: width - width * 0.04,
+          height: height - height * 0.433,
+          child: TabBarView(controller: _tabController, children: [
+            FutureBuilder(
+              future: getHeroInfo(),
+              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                if (snapshot.hasData) {
+                  print(snapshot.data);
+                  return HerosPageTab(
+                      wigetChild: getActiveTab(
+                          context, width, height, snapshot.data['heroes']));
+                }
+
+                return Container();
+              },
+            ),
+            FutureBuilder(
+              future: getHeroInfo(),
+              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                if (snapshot.hasData) {
+                  return HerosPageTab(
+                      wigetChild: getStakingTab(
+                          context, width, height, snapshot.data['heroes']));
+                }
+
+                return Container();
+              },
+            ),
+            FutureBuilder(
+              future: getHeroInfo(),
+              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                if (snapshot.hasData) {
+                  return getMintTab(context, width, height);
+                }
+
+                return Container();
+              },
+            ),
+          ]))
     ]);
   }
 
-  Widget getActiveTab(BuildContext context, double width, double height) {
-    final wgts = _heros.map((e) {
-      return
-        e['in_staking'] == false &&
-        ((widget.craftSwitch == 0 && e['type'] == 'water') ||
-         (widget.craftSwitch == 1 && e['type'] == 'fire'))
-        ? Container(
-          padding: EdgeInsets.only(
-            bottom: width * 0.04,
-            left: width * 0.05,
-            right: width * 0.04
-          ),
-          width: width,
-          child: heroBlock(e, context, width, height, btnsActive)
-        )
-        : const SizedBox();
+  Widget getActiveTab(
+      BuildContext context, double width, double height, List<dynamic> heroes) {
+    final wgts = heroes.map((e) {
+      print(e['clan']);
+      print('--------------------------------------');
+      return e['status'] != 'STAKING' &&
+              ((widget.craftSwitch == 0 && e['clan'] == 'water') ||
+                  (widget.craftSwitch == 1 && e['clan'] == 'fire'))
+          ? Container(
+              padding: EdgeInsets.only(
+                  bottom: width * 0.04,
+                  left: width * 0.05,
+                  right: width * 0.04),
+              width: width,
+              child: heroBlock(e, context, width, height, btnsActive))
+          : const SizedBox();
     }).toList();
 
     return Column(children: [
@@ -203,22 +185,20 @@ class _HerosPageState extends State<HerosPage>
     ]);
   }
 
-  Widget getStakingTab(BuildContext context, double width, double height) {
-    final wgts = _heros.map((e) {
-      return
-        e['in_staking'] == true &&
-        ((widget.craftSwitch == 0 && e['type'] == 'water') ||
-         (widget.craftSwitch == 1 && e['type'] == 'fire'))
-        ? Container(
-            padding: EdgeInsets.only(
-              bottom: width * 0.04,
-              left: width * 0.05,
-              right: width * 0.04
-            ),
-            width: width,
-            child: heroBlock(e, context, width, height, btnsStack)
-        )
-        : const SizedBox();
+  Widget getStakingTab(
+      BuildContext context, double width, double height, List<dynamic> heroes) {
+    final wgts = heroes.map((e) {
+      return e['status'] == "STAKING" &&
+              ((widget.craftSwitch == 0 && e['clan'] == 'water') ||
+                  (widget.craftSwitch == 1 && e['clan'] == 'fire'))
+          ? Container(
+              padding: EdgeInsets.only(
+                  bottom: width * 0.04,
+                  left: width * 0.05,
+                  right: width * 0.04),
+              width: width,
+              child: heroBlock(e, context, width, height, btnsStack))
+          : const SizedBox();
     }).toList();
 
     return Column(children: [
@@ -233,9 +213,9 @@ class _HerosPageState extends State<HerosPage>
     return Column(children: [
       clameBlock(context, width),
       Padding(
-        padding: EdgeInsets.only(top: width * 0.04, left: width * 0.05, right: width * 0.04),
-        child: progressBar(context, maxDp, width)
-      ),
+          padding: EdgeInsets.only(
+              top: width * 0.04, left: width * 0.05, right: width * 0.04),
+          child: progressBar(context, maxDp, width)),
       Padding(
         padding: EdgeInsets.only(top: width * 0.06),
         child: PresButton(
@@ -244,7 +224,10 @@ class _HerosPageState extends State<HerosPage>
             (route) => false,
             arguments: 'samuraiMint${widget.craftSwitch}',
           ),
-          disabled: ((widget.craftSwitch == 0 ? waterSamuraiDp : fireSamuraiDp) ?? 0.0) < 12,
+          disabled:
+              ((widget.craftSwitch == 0 ? waterSamuraiDp : fireSamuraiDp) ??
+                      0.0) <
+                  12,
           params: {'text': 'samuari mint', 'width': width, 'height': height},
           child: loginBtn,
         ),
@@ -252,226 +235,224 @@ class _HerosPageState extends State<HerosPage>
     ]);
   }
 
-  Widget heroBlock(Map e, BuildContext context, double width, double height, btnsWaiget) {
+  Widget heroBlock(
+      Map e, BuildContext context, double width, double height, btnsWaiget) {
     //print(e);
     return Stack(children: [
-      if (e['in_battle'] == true)
-        Container(
-          padding: EdgeInsets.only(top: width * 0.005),
-          width: width - width * 0.68,
-          child: SvgPicture.asset(
-            'assets/pages/homepage/heroes/in_battle.svg',
-            fit: BoxFit.fitWidth)
-        ),
+      // if (e['in_battle'] == true) //TODO доделать in_battle
+      //   Container(
+      //       padding: EdgeInsets.only(top: width * 0.005),
+      //       width: width - width * 0.68,
+      //       child: SvgPicture.asset(
+      //           'assets/pages/homepage/heroes/in_battle.svg',
+      //           fit: BoxFit.fitWidth)),
       SvgPicture.asset(
-        'assets/pages/homepage/heroes/${e['rare'].toLowerCase()}_border.svg',
+        'assets/pages/homepage/heroes/ronin_border.svg',
         fit: BoxFit.fitWidth,
-        width: width - width * 0.12,
+        width: width * 0.88,
       ),
       Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Padding(
-          padding: EdgeInsets.only(top: width * 0.075, left: width * 0.015),
-          child: Image.asset(
-            'assets/pages/homepage/heroes/muzhikotavr_hero.png',
-            width: width * 0.26
-          )
-        ),
+            padding: EdgeInsets.only(top: width * 0.075, left: width * 0.015),
+            child: Image.asset(
+                'assets/pages/homepage/heroes/muzhikotavr_hero.png',
+                width: width * 0.26)),
         Padding(
-          padding: EdgeInsets.only(top: width * 0.08, left: width * 0.04),
-          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(
-              e['name'].toString(),
-              style: GoogleFonts.spaceMono(
-                fontSize: width * 0.04,
-                fontWeight: FontWeight.w700,
-                color: Colors.white,
+            padding: EdgeInsets.only(top: width * 0.08, left: width * 0.04),
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text(
+                e['type'].toString(),
+                style: GoogleFonts.spaceMono(
+                  fontSize: width * 0.04,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                ),
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: width * 0.02),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    e['rare'].toString(),
-                    style: GoogleFonts.spaceMono(
-                      fontSize: width * 0.04,
-                      fontWeight: FontWeight.w700,
-                      color: e['rare'] == 'Feudal'
-                        ? const Color(0xFF2589FF)
-                        : e['rare'] == 'Shogun'
-                          ? const Color(0xFFFF0049)
-                          : const Color(0xFF00E417),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: width * 0.02),
-                    child: SvgPicture.asset(
-                      'assets/pages/homepage/samurai/${e['type']}_icon.svg',
-                      width: width * 0.04,
-                    ),
-                  ),
-                ],
-              )
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: width * 0.03),
-              child: SvgPicture.asset(
-                e['in_chronic']
-                  ? 'assets/pages/homepage/heroes/in_chronicles.svg'
-                  : 'assets/pages/homepage/heroes/unknown.svg',
-              )
-            ),
-          ])
-        ),
-        btnsWaiget(e, context, width, height)
+              Padding(
+                  padding: EdgeInsets.only(top: width * 0.02),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        e['type'].toString(),
+                        style: GoogleFonts.spaceMono(
+                          fontSize: width * 0.04,
+                          fontWeight: FontWeight.w700,
+                          color: e['type'] == 'Feudal'
+                              ? const Color(0xFF2589FF)
+                              : e['type'] == 'Shogun'
+                                  ? const Color(0xFFFF0049)
+                                  : const Color(0xFF00E417),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: width * 0.02),
+                        child: SvgPicture.asset(
+                          'assets/pages/homepage/samurai/${e['clan']}_icon.svg',
+                          width: width * 0.04,
+                        ),
+                      ),
+                    ],
+                  )),
+              Padding(
+                  padding: EdgeInsets.only(top: width * 0.03),
+                  child: SvgPicture.asset(
+                    e['chronicle']
+                        ? 'assets/pages/homepage/heroes/in_chronicles.svg'
+                        : 'assets/pages/homepage/heroes/unknown.svg',
+                  )),
+            ])),
+        btnsWaiget(e, context, width, height, e['id'])
       ])
     ]);
   }
 
   Widget btnsActive(Map e, BuildContext context, double width, double height) {
     return Padding(
-      padding: EdgeInsets.only(left: width - width * 0.9),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Padding(
-          padding: EdgeInsets.only(top: width * 0.03, bottom: width * 0.03),
-          child: AnimButton(
-            onTap: () => {},
-            shadowType: 2,
-            child: SvgPicture.asset(
-              'assets/pages/homepage/heroes/btn_to_wallet.svg',
-              fit: BoxFit.fitWidth,
-            )
-          )
-        ),
-        AnimButton(
-          onTap: () => {},
-          shadowType: 2,
-          child: SvgPicture.asset(
-            'assets/pages/homepage/heroes/btn_stake.svg',
-            fit: BoxFit.fitWidth,
-          )
-        )
-      ])
-    );
+        padding: EdgeInsets.only(left: width - width * 0.9),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Padding(
+              padding: EdgeInsets.only(top: width * 0.03, bottom: width * 0.03),
+              child: AnimButton(
+                  onTap: () => {},
+                  shadowType: 2,
+                  child: SvgPicture.asset(
+                    'assets/pages/homepage/heroes/btn_to_wallet.svg',
+                    fit: BoxFit.fitWidth,
+                  ))),
+          AnimButton(
+              onTap: () => {},
+              shadowType: 2,
+              child: SvgPicture.asset(
+                'assets/pages/homepage/heroes/btn_stake.svg',
+                fit: BoxFit.fitWidth,
+              ))
+        ]));
   }
 
-  Widget btnsStack(Map e, BuildContext context, double width, double height) {
+  Widget btnsStack(
+      Map e, BuildContext context, double width, double height, int heroId) {
     return Padding(
-      padding: EdgeInsets.only(left: width - width * 0.9),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Padding(
-          padding: EdgeInsets.only(top: width * 0.12),
-          child: AnimButton(
-            onTap: () => {},
-            shadowType: 2,
-            child: SvgPicture.asset(
-              'assets/pages/homepage/heroes/btn_unstake.svg',
-              fit: BoxFit.fitWidth,
-            )
-          )
-        )
-      ])
-    );
+        padding: EdgeInsets.only(left: width - width * 0.9),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Padding(
+              padding: EdgeInsets.only(top: width * 0.12),
+              child: AnimButton(
+                  onTap: () => {},
+                  shadowType: 2,
+                  child: SvgPicture.asset(
+                    'assets/pages/homepage/heroes/btn_unstake.svg',
+                    fit: BoxFit.fitWidth,
+                  )))
+        ]));
   }
 
   Widget clameBlock(BuildContext context, double width) {
     return Stack(children: [
       Padding(
-        padding: EdgeInsets.only(top: width * 0.02, left: width * 0.054, right: width * 0.044),
-        child: SvgPicture.asset(
-          'assets/pages/homepage/craft/clame_border.svg',
-          fit: BoxFit.fitWidth,
-          width: width - width * 0.09,
-        )
-      ),
+          padding: EdgeInsets.only(
+              top: width * 0.02, left: width * 0.054, right: width * 0.044),
+          child: SvgPicture.asset(
+            'assets/pages/homepage/craft/clame_border.svg',
+            fit: BoxFit.fitWidth,
+            width: width - width * 0.09,
+          )),
       Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(top: width * 0.047, left: width * 0.11),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(bottom: width * 0.055, left: width * 0.13),
-                  child: BlinkingTime(
-                    getTime: () => samuraiDpExpiresDate ?? '00:00',
-                    style: GoogleFonts.spaceMono(
-                      fontSize: width * 0.04,
-                      fontWeight: FontWeight.w700,
-                      color: const Color(0xFFFFFFFF),
-                    ),
-                  ),
-
-                  // Text(
-                  //   samuraiDpExpiresDate ?? '00:00',
-                  //   style: GoogleFonts.spaceMono(
-                  //     fontSize: width * 0.04,
-                  //     fontWeight: FontWeight.w700,
-                  //     color: const Color(0xFFFFFFFF),
-                  //   ),
-                  // ),
-                ),
-                Row(children: [
-                  Text("DP/Day: ",
-                    style: GoogleFonts.spaceMono(
-                      fontSize: width * 0.034,
-                      fontWeight: FontWeight.w700,
-                      color: const Color(0xFF00FFFF),
-                    )
-                  ),
-                  Text("+${getDaylyDp()} DP ",
-                    style: GoogleFonts.spaceMono(
-                      fontSize: width * 0.034,
-                      fontWeight: FontWeight.w700,
-                      color: const Color(0xFFFFFFFF),
-                    )
-                  )
-                ])
-              ]
-            )
-          ),
-        Padding(
-          padding: EdgeInsets.only(top: width * 0.087, right: width - width * 0.9),
-          child: Stack(children: [
-            AnimButton(
-              onTap: () {
-                Rest.sendClameHero(widget.craftSwitch == 0 ? "WATER_HERO_MATIC" : "FIRE_HERO_MATIC").then((value) {
-                  loadInfo();
-                }).catchError((_) {});
-              },
-              shadowType: 1,
-              child: SvgPicture.asset(
-                (((widget.craftSwitch == 0 ? waterSamuraiUnclaimedDp : fireSamuraiUnclaimedDp) ?? 0) > 0)
-                    ? 'assets/pages/homepage/craft/btn_clame_water.svg'
-                    : 'assets/pages/homepage/craft/btn_clame_dis.svg',
-                fit: BoxFit.fitWidth,
-                width: width * 0.36
-              ),
-            ),
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
             Padding(
-              padding: EdgeInsets.only(top: width * 0.086, left: width * 0.23),
-              child: Text(
-                "${(widget.craftSwitch == 0 ? waterSamuraiUnclaimedDp : fireSamuraiUnclaimedDp) ?? 0} DP",
-                style: GoogleFonts.spaceMono(
-                  fontWeight: FontWeight.w700,
-                  fontSize: width * 0.028,
-                  color: (((widget.craftSwitch == 0 ? waterSamuraiUnclaimedDp : fireSamuraiUnclaimedDp) ?? 0) > 0)
-                      ? const Color(0xFF00FFFF)
-                      : Colors.grey,
-                )
-              )
-            ),
+                padding:
+                    EdgeInsets.only(top: width * 0.047, left: width * 0.11),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(
+                            bottom: width * 0.055, left: width * 0.13),
+                        child: BlinkingTime(
+                          getTime: () => samuraiDpExpiresDate ?? '00:00',
+                          style: GoogleFonts.spaceMono(
+                            fontSize: width * 0.04,
+                            fontWeight: FontWeight.w700,
+                            color: const Color(0xFFFFFFFF),
+                          ),
+                        ),
+
+                        // Text(
+                        //   samuraiDpExpiresDate ?? '00:00',
+                        //   style: GoogleFonts.spaceMono(
+                        //     fontSize: width * 0.04,
+                        //     fontWeight: FontWeight.w700,
+                        //     color: const Color(0xFFFFFFFF),
+                        //   ),
+                        // ),
+                      ),
+                      Row(children: [
+                        Text("DP/Day: ",
+                            style: GoogleFonts.spaceMono(
+                              fontSize: width * 0.034,
+                              fontWeight: FontWeight.w700,
+                              color: const Color(0xFF00FFFF),
+                            )),
+                        Text("+${getDaylyDp()} DP ",
+                            style: GoogleFonts.spaceMono(
+                              fontSize: width * 0.034,
+                              fontWeight: FontWeight.w700,
+                              color: const Color(0xFFFFFFFF),
+                            ))
+                      ])
+                    ])),
+            Padding(
+                padding: EdgeInsets.only(
+                    top: width * 0.087, right: width - width * 0.9),
+                child: Stack(children: [
+                  AnimButton(
+                    onTap: () {
+                      Rest.sendClameHero(widget.craftSwitch == 0
+                              ? "WATER_HERO_MATIC"
+                              : "FIRE_HERO_MATIC")
+                          .then((value) {
+                        loadInfo();
+                      }).catchError((_) {});
+                    },
+                    shadowType: 1,
+                    child: SvgPicture.asset(
+                        (((widget.craftSwitch == 0
+                                        ? waterSamuraiUnclaimedDp
+                                        : fireSamuraiUnclaimedDp) ??
+                                    0) >
+                                0)
+                            ? 'assets/pages/homepage/craft/btn_clame_water.svg'
+                            : 'assets/pages/homepage/craft/btn_clame_dis.svg',
+                        fit: BoxFit.fitWidth,
+                        width: width * 0.36),
+                  ),
+                  Padding(
+                      padding: EdgeInsets.only(
+                          top: width * 0.086, left: width * 0.23),
+                      child: Text(
+                          "${(widget.craftSwitch == 0 ? waterSamuraiUnclaimedDp : fireSamuraiUnclaimedDp) ?? 0} DP",
+                          style: GoogleFonts.spaceMono(
+                            fontWeight: FontWeight.w700,
+                            fontSize: width * 0.028,
+                            color: (((widget.craftSwitch == 0
+                                            ? waterSamuraiUnclaimedDp
+                                            : fireSamuraiUnclaimedDp) ??
+                                        0) >
+                                    0)
+                                ? const Color(0xFF00FFFF)
+                                : Colors.grey,
+                          ))),
+                ]))
           ])
-        )
-      ])
     ]);
   }
 
   Widget progressBar(BuildContext context, double maxDp, double width) {
-    double xp = (widget.craftSwitch == 0 ? waterSamuraiDp : fireSamuraiDp) ?? 0.0;
+    double xp =
+        (widget.craftSwitch == 0 ? waterSamuraiDp : fireSamuraiDp) ?? 0.0;
     if (xp > maxDp) {
       xp = maxDp;
     }
@@ -487,7 +468,9 @@ class _HerosPageState extends State<HerosPage>
           width: (width - width * 0.09) * (xp + 1) / (maxDp * 1.12),
           height: width * 0.041,
           decoration: BoxDecoration(
-            color: widget.craftSwitch == 0 ? const Color(0xFF00FFFF) : const Color(0xFFFF0049),
+            color: widget.craftSwitch == 0
+                ? const Color(0xFF00FFFF)
+                : const Color(0xFFFF0049),
             borderRadius: BorderRadius.circular(100),
           ),
         ),
@@ -511,17 +494,15 @@ class _HerosPageState extends State<HerosPage>
                   fontSize: width * 0.038,
                   fontWeight: FontWeight.w700,
                   color: const Color(0xFF00FFFF),
-                )
-            ),
-            Text('${((widget.craftSwitch == 0 ? waterSamuraiDp : fireSamuraiDp) ?? 0.0).toStringAsFixed(0)}/100',
+                )),
+            Text(
+                '${((widget.craftSwitch == 0 ? waterSamuraiDp : fireSamuraiDp) ?? 0.0).toStringAsFixed(0)}/100',
                 style: GoogleFonts.spaceMono(
                   fontSize: width * 0.038,
                   fontWeight: FontWeight.w700,
                   color: Colors.white,
-                )
-            )
-          ])
-      )
+                ))
+          ]))
     ]);
   }
 

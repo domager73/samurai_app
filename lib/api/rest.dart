@@ -23,14 +23,9 @@ class Rest {
   static Future<Map<String, dynamic>> restHandler(String body) async {
     final data = jsonDecode(body) as Map<String, dynamic>;
     if (data['status'] == null || data['status'] == 1) {
-      if (kDebugMode) {
-        print(data);
-      }
+
       return data;
     } else {
-      if (kDebugMode) {
-        print(data);
-      }
       throw Exception(data['message']);
     }
   }
@@ -175,7 +170,6 @@ class Rest {
     );
     if (kDebugMode) {
       print('/api/users/samurai/info');
-      print(data.data);
     }
     return data.data;
   }
@@ -194,7 +188,6 @@ class Rest {
     );
     if (kDebugMode) {
       print('/api/users/hero/info');
-      print(data.data);
     }
     return data.data;
   }
@@ -283,9 +276,6 @@ class Rest {
           },
         ),
       );
-      if (kDebugMode) {
-        print(data.data);
-      }
       return data.data;
     } on DioException catch (e) {
       // The request was made and the server responded with a status code
