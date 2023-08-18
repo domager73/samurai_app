@@ -49,8 +49,8 @@ class _CraftPageState extends State<CraftPage> {
     super.initState();
 
     scrollController = ScrollController();
-    setStorageData();
     loadInfo();
+    setStorageData();
 
     calcSamuraiXpExpiresDate();
     _timer = Timer.periodic(const Duration(minutes: 1), (timer) {

@@ -368,7 +368,7 @@ class Rest {
     return null;
   }
 
-  static Future<Map<String, dynamic>> mintUserHero(HeroType heroType, SamuraiType samuraiType) async {
+  static Future<Map<String, dynamic>> mintUserHero(String heroType, String samuraiType) async {
     // add user hero method
 
     String URL = "$serverIp/api/users/hero/mint";
