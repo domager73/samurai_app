@@ -454,6 +454,20 @@ class Rest {
       throw ex;
     }
   }
+
+  static Future<dynamic> getHeroDetailsById(int index) async {
+    final URL = "$serverIp/api/static/details/hero/$index";
+    final jwtToken = AppStorage().read('jwt');
+
+    Map<String, dynamic> reqHeader = {
+      'Authorization': 'Bearer $jwtToken',
+      'Content-Type': "application/json",
+    };
+
+    final response = await dio.get(URL, options: Options(headers: reqHeader));
+
+    return response.data;
+  }
 }
 
 /**
