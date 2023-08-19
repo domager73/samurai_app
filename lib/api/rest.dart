@@ -9,6 +9,8 @@ import 'package:samurai_app/utils/enums.dart';
 //const SERVER_IP = 'http://192.168.1.5:820'; //net
 const serverIp = 'https://api.samurai-versus.io'; //work
 
+final List<String> heroTokens = ['FIRE_HERO_BSC', 'WATER_HERO_BSC'];
+
 class Rest {
   static final dio = buildDio();
 
@@ -23,7 +25,6 @@ class Rest {
   static Future<Map<String, dynamic>> restHandler(String body) async {
     final data = jsonDecode(body) as Map<String, dynamic>;
     if (data['status'] == null || data['status'] == 1) {
-
       return data;
     } else {
       throw Exception(data['message']);
@@ -138,20 +139,25 @@ class Rest {
     String? jwt = AppStorage().read('jwt');
     String? tfacode = AppStorage().read('tfacode');
 
+    Map<String, dynamic> reqHeader = {
+      'Authorization': 'Bearer $jwt',
+      'tfa-code': tfacode,
+      'Content-Type': "application/json",
+    };
+
+    final Map<String, dynamic> reqBody;
+
+    if (heroTokens.contains(token)) {
+      reqBody = {"chain": chain, "heroId": amount, "token": token, "toAddress": toAddress};
+    } else {
+      reqBody = {"chain": chain, "amount": amount, "token": token, "toAddress": toAddress};
+    }
+
     final data = await dio.post(
       '$serverIp/api/web3/transfer',
-      data: {
-        'chain': chain,
-        'amount': amount,
-        'token': token,
-        'toAddress': toAddress,
-      },
+      data: reqBody,
       options: Options(
-        headers: {
-          'Authorization': 'Bearer $jwt',
-          'tfa-code': tfacode,
-          'Content-Type': "application/json",
-        },
+        headers: reqHeader,
       ),
     );
   }
@@ -193,7 +199,7 @@ class Rest {
     return data.data;
   }
 
-  static Future<String> getPhotoByBgId(int heroId) async{
+  static Future<String> getPhotoByBgId(int heroId) async {
     String? jwt = AppStorage().read('jwt');
 
     final data = await dio.get(
@@ -205,7 +211,6 @@ class Rest {
         },
       ),
     );
-
 
     return data.data;
   }
@@ -439,7 +444,6 @@ class Rest {
       throw ex;
     }
   }
-
 
   static Future<dynamic> removeHeroFromStake(int heroId) async {
     // removes hero from a stake state
