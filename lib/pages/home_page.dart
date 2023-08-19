@@ -13,6 +13,7 @@ import 'package:samurai_app/pages/home/home_main_page.dart';
 import 'package:samurai_app/pages/home/wallet_page.dart';
 import 'package:samurai_app/pages/pin_code_page.dart';
 
+import '../api/rest.dart';
 import '../api/wallet.dart';
 import '../components/anim_button.dart';
 import '../components/bg.dart';
@@ -486,7 +487,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       AnimButton(
                         shadowType: 2,
-                        onTap: () {
+                        onTap: () async {
                           showError(context,
                               'This is a wallet linked to your game account. You can refill it in any convenient way by copying the address or using the QR code.\nAttention! Send tokens only on BEP20 (BSC) chain, otherwise the tokens will be lost!',
                               type: 2);
