@@ -231,7 +231,7 @@ class _WalletPageState extends State<WalletPage>
         controller: _heroesController,
         child: Column(
           children: [
-            /*getHero(
+            getHero(
               height,
               width,
               'assets/pages/homepage/heroes/muzhikotavr_hero.png',
@@ -266,7 +266,7 @@ class _WalletPageState extends State<WalletPage>
               'regular',
               () => {},
               () => {},
-            ),*/
+            ),
             SizedBox(
               height: height * 0.05,
             ),

@@ -7,7 +7,11 @@ import 'package:intl/intl.dart';
 import 'package:samurai_app/components/blinking_time.dart';
 
 import '../../api/rest.dart';
+import '../../api/wallet.dart';
 import '../../components/anim_button.dart';
+import '../../components/pop_up_spinner.dart';
+import '../../components/show_error.dart';
+import '../../components/storage.dart';
 import 'hero_page_components.dart';
 
 class HerosPage extends StatefulWidget {
@@ -222,10 +226,7 @@ class _HerosPageState extends State<HerosPage>
             (route) => false,
             arguments: 'samuraiMint${widget.craftSwitch}',
           ),
-          disabled:
-              ((widget.craftSwitch == 0 ? waterDp : fireDp) ??
-                      0.0) <
-                  12,
+          disabled: ((widget.craftSwitch == 0 ? waterDp : fireDp) ?? 0.0) < 12,
           params: {'text': 'samuari mint', 'width': width, 'height': height},
           child: loginBtn,
         ),
@@ -251,19 +252,25 @@ class _HerosPageState extends State<HerosPage>
       Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Padding(
             padding: EdgeInsets.only(top: width * 0.075, left: width * 0.015),
-            child: Image.asset(
-                'assets/pages/homepage/heroes/muzhikotavr_hero.png',
+            child: Image.network(
+                e['image'],
+                fit:BoxFit.fitHeight,
                 width: width * 0.26)),
         Padding(
             padding: EdgeInsets.only(top: width * 0.08, left: width * 0.04),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(
-                e['name'].toString(),
-                style: GoogleFonts.spaceMono(
-                  fontSize: width * 0.04,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
+              SizedBox(
+                width: width * 0.28,
+                child: Text(
+                  e['name'].toString(),
+                  style: GoogleFonts.spaceMono(
+                    fontSize: width * 0.04,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                  ),
+                  softWrap:true,
+                  maxLines: 2,
                 ),
               ),
               Padding(
@@ -305,21 +312,41 @@ class _HerosPageState extends State<HerosPage>
     ]);
   }
 
-  Widget btnsActive(Map<String, dynamic> e, BuildContext context, double width, double height, int heroId) {
+  Future<void> transferSamurai(int heroId) async {
+    try {
+      showSpinner(context);
+      await Rest.transfer(
+        WalletAPI.chainIdBnb,
+        heroId.toDouble(),
+        widget.craftSwitch == 0 ? 'WATER_HERO_BSC' : 'FIRE_HERO_BSC',
+        AppStorage().read('wallet_adress') as String,
+      );
+      if (context.mounted) {
+        hideSpinner(context);
+      }
+    } catch (e) {
+      hideSpinner(context);
+      await showError(context,
+          'Insufficient funds. Deposit some BNB to your crypto wallet.');
+    }
+  }
+
+  Widget btnsActive(Map<String, dynamic> e, BuildContext context, double width,
+      double height, int heroId) {
     return Padding(
         padding: EdgeInsets.only(left: width - width * 0.9),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Padding(
               padding: EdgeInsets.only(top: width * 0.03, bottom: width * 0.03),
               child: AnimButton(
-                  onTap: () {
-                    print(e['state']);
+                  onTap: () async {
+                    transferSamurai(heroId).then((value) => loadInfo());
                   },
                   shadowType: 2,
                   child: SvgPicture.asset(
-                    e['status'] == 'FIGHTING' ?
-                    'assets/pages/homepage/heroes/btn_to_wallet_dis.svg' :
-                    'assets/pages/homepage/heroes/btn_to_wallet.svg',
+                    e['status'] == 'FIGHTING'
+                        ? 'assets/pages/homepage/heroes/btn_to_wallet_dis.svg'
+                        : 'assets/pages/homepage/heroes/btn_to_wallet.svg',
                     fit: BoxFit.fitWidth,
                   ))),
           AnimButton(
@@ -329,9 +356,9 @@ class _HerosPageState extends State<HerosPage>
               },
               shadowType: 2,
               child: SvgPicture.asset(
-                e['status'] == 'FIGHTING' ?
-                'assets/pages/homepage/heroes/btn_stake_dis.svg' :
-                'assets/pages/homepage/heroes/btn_stake.svg',
+                e['status'] == 'FIGHTING'
+                    ? 'assets/pages/homepage/heroes/btn_stake_dis.svg'
+                    : 'assets/pages/homepage/heroes/btn_stake.svg',
                 fit: BoxFit.fitWidth,
               ))
         ]));
@@ -424,8 +451,9 @@ class _HerosPageState extends State<HerosPage>
                                         : fireUnclaimedDp) ??
                                     0) >
                                 0)
-                            ? widget.craftSwitch == 0 ? 'assets/pages/homepage/craft/btn_clame_water.svg' :
-                        'assets/pages/homepage/craft/btn_clame_fire.svg'
+                            ? widget.craftSwitch == 0
+                                ? 'assets/pages/homepage/craft/btn_clame_water.svg'
+                                : 'assets/pages/homepage/craft/btn_clame_fire.svg'
                             : 'assets/pages/homepage/craft/btn_clame_dis.svg',
                         fit: BoxFit.fitWidth,
                         width: width * 0.36),
@@ -452,8 +480,7 @@ class _HerosPageState extends State<HerosPage>
   }
 
   Widget progressBar(BuildContext context, double maxDp, double width) {
-    double xp =
-        (widget.craftSwitch == 0 ? waterDp : fireDp) ?? 0.0;
+    double xp = (widget.craftSwitch == 0 ? waterDp : fireDp) ?? 0.0;
     if (xp > maxDp) {
       xp = maxDp;
     }

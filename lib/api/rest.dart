@@ -148,7 +148,7 @@ class Rest {
     final Map<String, dynamic> reqBody;
 
     if (heroTokens.contains(token)) {
-      reqBody = {"chain": chain, "heroId": amount, "token": token, "toAddress": toAddress};
+      reqBody = {"chain": chain, "heroId": amount.toInt(), "token": token, "toAddress": toAddress};
     } else {
       reqBody = {"chain": chain, "amount": amount, "token": token, "toAddress": toAddress};
     }
@@ -195,22 +195,6 @@ class Rest {
     if (kDebugMode) {
       print('/api/users/hero/info');
     }
-
-    return data.data;
-  }
-
-  static Future<String> getPhotoByBgId(int heroId) async {
-    String? jwt = AppStorage().read('jwt');
-
-    final data = await dio.get(
-      '$serverIp/api/users/hero/heroImage/$heroId',
-      options: Options(
-        headers: {
-          'Authorization': 'Bearer $jwt',
-          'Content-Type': "	image/jpeg",
-        },
-      ),
-    );
 
     return data.data;
   }
