@@ -24,7 +24,8 @@ class CraftPageComponents {
     required double gas,
     required double balanceWithdraw,
     required String samuraiTypeRegular,
-    required String samuraiTypeGenesis
+    required String samuraiTypeGenesis,
+    required int samuraiGenesisBalance,
   }) async {
     String mode = 'toFree';
     String modeWithdraw = 'REGULAR';
@@ -395,7 +396,7 @@ class CraftPageComponents {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Available: ${num.parse(balanceWithdraw.toStringAsFixed(0))} SAMURAI",
+                    modeWithdraw == 'GENESIS' ? "Available: ${samuraiGenesisBalance} GENESIS SAMURAI" : "Available: ${num.parse(balanceWithdraw.toStringAsFixed(0))} SAMURAI", // HERE
                     style: GoogleFonts.spaceMono(
                       fontSize: 13 / 844 * height,
                       color: Colors.white,
@@ -579,7 +580,7 @@ class CraftPageComponents {
                           width,
                           height,
                           gas,
-                          balanceWithdraw.toInt(),
+                          balanceWithdraw.toInt(), // HERE
                           modeWithdraw,
                           (val) {
                             setState(() {

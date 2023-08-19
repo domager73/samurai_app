@@ -2,9 +2,12 @@ import 'package:flutter/foundation.dart';
 
 import '../api/rest.dart';
 
-class SamuraiStorage
-{
+class SamuraiStorage {
   var maxXP = 120.0; // TO-DO: this should be updated to current max XP every time
+  int fireSamuraiGenesisBalance = 0;
+  int waterSamuraiGenesisBalance = 0;
+  int fireSamuraiInFight = 0;
+  int waterSamuraiInFight = 0;
 
   late Map<String, dynamic> info;
   int fireSamuraiBalance = 0;
@@ -38,6 +41,10 @@ class SamuraiStorage
       fireSamuraiXpExpiresDate = DateTime.parse(info['fire_samurai_unclaimed_xp_locked_date']);
       fireSamuraiUnclaimedXp = info['fire_samurai_unclaimed_xp'] * 1;
       waterSamuraiUnclaimedXp = info['water_samurai_unclaimed_xp'] * 1;
+      fireSamuraiGenesisBalance = info['fire_samurai_genesis_balance'] * 1;
+      waterSamuraiGenesisBalance = info['water_samurai_genesis_balance'] * 1;
+      fireSamuraiInFight = info['battle_fire_samurai_balance'] * 1;
+      waterSamuraiInFight = info['battle_water_samurai_balance'] * 1;
     }
   }
 
