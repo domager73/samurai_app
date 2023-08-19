@@ -6,6 +6,8 @@ import 'package:samurai_app/components/storage.dart';
 import 'package:samurai_app/pages/home/wallet_page_components.dart';
 import 'package:trust_wallet_core_lib/trust_wallet_core_lib.dart';
 
+import '../../api/rest.dart';
+import '../../api/wallet.dart';
 import '../../components/anim_button.dart';
 
 class WalletPage extends StatefulWidget {
@@ -35,6 +37,8 @@ class _WalletPageState extends State<WalletPage>
 
   late final TextEditingController swapTapDialogTextEditingController;
 
+  Liat
+
   @override
   void initState() {
     super.initState();
@@ -63,6 +67,18 @@ class _WalletPageState extends State<WalletPage>
     transferToAddressTapDialogTextEditingController.dispose();
 
     swapTapDialogTextEditingController.dispose();
+  }
+
+  void loadHeroes() async {
+    int count = await WalletAPI.getCountHeroByAddress(
+        AppStorage().read('wallet_adress')!);
+
+    List<Map<String, dynamic>> heroes = [];
+
+    for (var i = 0; i < count; i++) {
+      heroes.add(await Rest.getHeroDetailsById(
+          (await WalletAPI.getHeroIdList(i)).toInt()));
+    }
   }
 
   @override
@@ -113,33 +129,8 @@ class _WalletPageState extends State<WalletPage>
                           Stack(
                             children: [
                               getHeroes(height, width),
-                              /*Container(
-                                width: double.infinity,
-                                height: double.infinity,
-                                color: Colors.black.withOpacity(0.6),
-                                child: Center(
-                                  child: Text(
-                                    "Coming soon",
-                                    style: TextStyle(
-                                      fontFamily: 'AmazObitaemOstrovItalic',
-                                      fontSize: height * 0.05,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              )*/
                             ],
                           ),
-                          // Center(
-                          //   child: Text(
-                          //     "Coming soon",
-                          //     style: TextStyle(
-                          //       fontFamily: 'AmazObitaemOstrovItalic',
-                          //       fontSize: height * 0.05,
-                          //       color: Colors.white,
-                          //     ),
-                          //   ),
-                          // ),
                         ],
                       ),
                     ),
@@ -167,7 +158,8 @@ class _WalletPageState extends State<WalletPage>
               }
               final double balance = double.parse(
                   (user['${e['name']}_balance_onchain'] ?? '0.0').toString());
-              if (balance == 0 && (e['nameToken'] == 'GWS' || e['nameToken'] == 'GFS')) {
+              if (balance == 0 &&
+                  (e['nameToken'] == 'GWS' || e['nameToken'] == 'GFS')) {
                 //Скрывать Юнита, если количетво равно Ноль
                 return const SizedBox(width: 1.0);
               }
@@ -180,35 +172,41 @@ class _WalletPageState extends State<WalletPage>
                 balance.toInt(),
                 () {
                   WalletPageComponents.openToGameModalPage(
-                    context: context,
-                    width: width,
-                    height: height,
-                    wallet: wallet,
-                    tokenAdress: e['address'],
-                    tokenId: e['tokenId'],
-                    tokenName: e['nameToken'],
-                    iconPath: e['logo_b'],
-                    balance: balance.toInt(),
-                    gas: (e['type'] != null && e['type'] == 'BNB' ? user['gasBnb'] : user['gas']) ?? 0.0,
-                    gasName: e['gasName'],
-                    isbnb: e['type'] == 'BNB'
-                  );
+                      context: context,
+                      width: width,
+                      height: height,
+                      wallet: wallet,
+                      tokenAdress: e['address'],
+                      tokenId: e['tokenId'],
+                      tokenName: e['nameToken'],
+                      iconPath: e['logo_b'],
+                      balance: balance.toInt(),
+                      gas: (e['type'] != null && e['type'] == 'BNB'
+                              ? user['gasBnb']
+                              : user['gas']) ??
+                          0.0,
+                      gasName: e['gasName'],
+                      isbnb: e['type'] == 'BNB');
                 },
                 () {
                   WalletPageComponents.openTransferModalPage(
-                    context: context,
-                    width: width,
-                    height: height,
-                    wallet: wallet,
-                    tokenAdress: e['address'],
-                    tokenId: e['tokenId'],
-                    tokenName: e['nameToken'],
-                    typeToken: e['typeToken'],
-                    iconPath: e['logo_b'],
-                    balance: double.parse((user['${e['name']}_balance_onchain'] ?? '0').toString()),
-                    gas: (e['type'] != null && e['type'] == 'BNB' ? user['gasBnb'] : user['gas']) ?? 0.0,
-                    gasName: 'BNB'
-                  );
+                      context: context,
+                      width: width,
+                      height: height,
+                      wallet: wallet,
+                      tokenAdress: e['address'],
+                      tokenId: e['tokenId'],
+                      tokenName: e['nameToken'],
+                      typeToken: e['typeToken'],
+                      iconPath: e['logo_b'],
+                      balance: double.parse(
+                          (user['${e['name']}_balance_onchain'] ?? '0')
+                              .toString()),
+                      gas: (e['type'] != null && e['type'] == 'BNB'
+                              ? user['gasBnb']
+                              : user['gas']) ??
+                          0.0,
+                      gasName: 'BNB');
                 },
               );
             }).toList(),
@@ -618,39 +616,50 @@ class _WalletPageState extends State<WalletPage>
             height,
             width,
             double.parse((user['${e['name']}_balance'] ?? '0.0').toString()),
-            double.parse((user['${e['name']}_balance_onchain'] ?? '0.0').toString()),
+            double.parse(
+                (user['${e['name']}_balance_onchain'] ?? '0.0').toString()),
             e['icon'],
             () {
               WalletPageComponents.openSwapModalPage(
-                context: context,
-                width: width,
-                height: height,
-                wallet: wallet,
-                tokenAdress: e['address'],
-                token: e['nameToken'],
-                typeToken: e['typeToken'],
-                walletAddress: walletAddress,
-                iconPath: e['logo_b'],
-                balance: double.parse((user['${e['name']}_balance_onchain'] ?? '0.0').toString()),
-                balanceGame: double.parse((user['${e['name']}_balance'] ?? '0.0').toString()),
-                gasName: e['gasName'],
-                gas: (e['type'] != null && e['type'] == 'BNB' ? user['gasBnb'] : user['gas']) ?? 0.0
-              ).then((_) => AppStorage().updateUserWallet());
+                      context: context,
+                      width: width,
+                      height: height,
+                      wallet: wallet,
+                      tokenAdress: e['address'],
+                      token: e['nameToken'],
+                      typeToken: e['typeToken'],
+                      walletAddress: walletAddress,
+                      iconPath: e['logo_b'],
+                      balance: double.parse(
+                          (user['${e['name']}_balance_onchain'] ?? '0.0')
+                              .toString()),
+                      balanceGame: double.parse(
+                          (user['${e['name']}_balance'] ?? '0.0').toString()),
+                      gasName: e['gasName'],
+                      gas: (e['type'] != null && e['type'] == 'BNB'
+                              ? user['gasBnb']
+                              : user['gas']) ??
+                          0.0)
+                  .then((_) => AppStorage().updateUserWallet());
             },
             () {
               WalletPageComponents.openTransferModalPage(
-                context: context,
-                width: width,
-                height: height,
-                wallet: wallet,
-                tokenAdress: e['address'],
-                tokenName: e['nameToken'],
-                typeToken: e['typeToken'],
-                iconPath: e['logo_b'],
-                balance: double.parse((user['${e['name']}_balance_onchain'] ?? '0.0').toString()),
-                gasName: e['gasName'],
-                gas: (e['type'] != null && e['type'] == 'BNB' ? user['gasBnb'] : user['gas']) ?? 0.0
-              );
+                  context: context,
+                  width: width,
+                  height: height,
+                  wallet: wallet,
+                  tokenAdress: e['address'],
+                  tokenName: e['nameToken'],
+                  typeToken: e['typeToken'],
+                  iconPath: e['logo_b'],
+                  balance: double.parse(
+                      (user['${e['name']}_balance_onchain'] ?? '0.0')
+                          .toString()),
+                  gasName: e['gasName'],
+                  gas: (e['type'] != null && e['type'] == 'BNB'
+                          ? user['gasBnb']
+                          : user['gas']) ??
+                      0.0);
             },
           ),
         ]);
