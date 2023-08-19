@@ -13,6 +13,7 @@ import 'package:samurai_app/pages/home/home_main_page.dart';
 import 'package:samurai_app/pages/home/wallet_page.dart';
 import 'package:samurai_app/pages/pin_code_page.dart';
 
+import '../api/wallet.dart';
 import '../components/anim_button.dart';
 import '../components/bg.dart';
 import '../components/show_error.dart';
@@ -23,6 +24,7 @@ import 'home/samurai_mint_page.dart';
 
 class HomePage extends StatefulWidget {
   final int initPageIdx;
+
   const HomePage({super.key, this.initPageIdx = 2});
 
   @override
@@ -35,7 +37,6 @@ class _HomePageState extends State<HomePage> {
   int craftSwitch = 0;
   int herosSwitch = 0;
   DateTime _lastUpdate = DateTime.now();
-
 
   String craftSwitchKey = 'craftSwitch';
 
@@ -64,14 +65,22 @@ class _HomePageState extends State<HomePage> {
         }
         if (ModalRoute.of(context)!.settings.arguments == 'heroMint0' ||
             ModalRoute.of(context)!.settings.arguments == 'heroMint1') {
-          herosSwitch = int.parse(ModalRoute.of(context)!.settings.arguments.toString().substring(8, 9));
+          herosSwitch = int.parse(ModalRoute.of(context)!
+              .settings
+              .arguments
+              .toString()
+              .substring(8, 9));
           setState(() {
             selectedPage = 6;
           });
         }
         if (ModalRoute.of(context)!.settings.arguments == 'samuraiMint0' ||
             ModalRoute.of(context)!.settings.arguments == 'samuraiMint1') {
-          herosSwitch = int.parse(ModalRoute.of(context)!.settings.arguments.toString().substring(11, 12));
+          herosSwitch = int.parse(ModalRoute.of(context)!
+              .settings
+              .arguments
+              .toString()
+              .substring(11, 12));
           setState(() {
             selectedPage = 8;
           });
@@ -108,7 +117,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> updateBalances() async {
-    if (_lastUpdate.microsecond < DateTime.now().subtract(const Duration(seconds: 30)).microsecond) {
+    if (_lastUpdate.microsecond <
+        DateTime.now().subtract(const Duration(seconds: 30)).microsecond) {
       _lastUpdate = DateTime.now();
       AppStorage().updateUserWallet();
     }
@@ -132,24 +142,33 @@ class _HomePageState extends State<HomePage> {
         width: width,
         height: height,
         decoration: BoxDecoration(
-          image: selectedPage == 0 || selectedPage == 2 || selectedPage == 3 || selectedPage == 4 || selectedPage == 6
-            ? DecorationImage(
-              image: selectedPage == 0
-                  ? (craftSwitch == 0 ? waterBg : fireBg)
-                  : selectedPage == 3
-                    ? homeForgeBg
-                    : selectedPage == 4
-                      ? homeStorageBg
-                      : selectedPage == 6
-                        ? (craftSwitch == 0 ? heroMintWaterBg : heroMintFireBg)
-                        : homeMainBg,
-              fit: BoxFit.fitWidth,
-            )
-            : null
-        ),
+            image: selectedPage == 0 ||
+                    selectedPage == 2 ||
+                    selectedPage == 3 ||
+                    selectedPage == 4 ||
+                    selectedPage == 6
+                ? DecorationImage(
+                    image: selectedPage == 0
+                        ? (craftSwitch == 0 ? waterBg : fireBg)
+                        : selectedPage == 3
+                            ? homeForgeBg
+                            : selectedPage == 4
+                                ? homeStorageBg
+                                : selectedPage == 6
+                                    ? (craftSwitch == 0
+                                        ? heroMintWaterBg
+                                        : heroMintFireBg)
+                                    : homeMainBg,
+                    fit: BoxFit.fitWidth,
+                  )
+                : null),
         child: Stack(
           children: [
-            if (!(selectedPage == 0 || selectedPage == 2 || selectedPage == 3 || selectedPage == 4 || selectedPage == 6))
+            if (!(selectedPage == 0 ||
+                selectedPage == 2 ||
+                selectedPage == 3 ||
+                selectedPage == 4 ||
+                selectedPage == 6))
               SizedBox(
                 width: width,
                 height: height,
@@ -159,246 +178,250 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             Container(
-              width: width,
-              height: height,
-              padding: EdgeInsets.only(
-                top: 135 / 880 * height,
-                bottom: height - height * 0.9,
-              ),
-              child: getContent(width, height)
-            ),
+                width: width,
+                height: height,
+                padding: EdgeInsets.only(
+                  top: 135 / 880 * height,
+                  bottom: height - height * 0.9,
+                ),
+                child: getContent(width, height)),
             SizedBox(
-              width: width,
-              height: height,
-              child: bottomNavigationAndAppBar(width, height, context)
-            ),
+                width: width,
+                height: height,
+                child: bottomNavigationAndAppBar(width, height, context)),
           ],
         ),
       ),
     );
   }
 
-  Widget bottomNavigationAndAppBar(double width, double height, BuildContext context) {
+  Widget bottomNavigationAndAppBar(
+      double width, double height, BuildContext context) {
     return Stack(
       children: [
         SizedBox(
-          width: width,
-          height: height,
-          child: Column(children: [
-            SizedBox(
-              width: width,
-              height: 112 / 880 * height,
-              child: Stack(
-                children: [
-                  SvgPicture.asset(
-                    'assets/pages/homepage/appbar_background.svg',
-                    width: width,
-                    fit: BoxFit.fill,
-                  ),
-                  ValueListenableBuilder(
-                    valueListenable: AppStorage().box.listenable(),
-                    builder: (context, box, widget) {
-                      final temp = box.get(
-                        'user',
-                        defaultValue: <String, dynamic>{},
-                      );
-                      Map<String, dynamic>? user;
-                      if (temp != <String, dynamic>{}) {
-                        user = Map.from(temp);
-                      }
-                      return Padding(
-                        padding: EdgeInsets.only(
-                          top: MediaQuery.of(context).viewPadding.top,
-                          bottom: 12 / 880 * height,
-                          left: 25 / 390 * width,
-                          right: 25 / 390 * width,
-                        ),
-                        child: Center(
-                          child: Row(
-                            children: [
-                              Material(
-                                color: Colors.transparent,
-                                child: PresButton(
-                                  onTap: () => setState(() {
-                                    isMenuOpened = true;
-                                  }),
-                                  params: {'width': width},
-                                  child: menuBtn,
-                                ),
-                              ),
-                              const Spacer(),
-                              if (selectedPage == 5)
-                                AnimButton(
-                                  shadowType: 2,
-                                  onTap: () => openQr(width, height),
-                                  child: SvgPicture.asset(
-                                    'assets/pages/homepage/receive.svg',
-                                    fit: BoxFit.fitHeight,
-                                  ),
-                                ),
-                              const Spacer(),
-                              if (selectedPage == 5)
-                                AnimButton(
-                                  shadowType: 2,
-                                  onTap: () async => await AppStorage().updateUserWallet(),
-                                  child: SvgPicture.asset(
-                                    'assets/pages/homepage/trade.svg',
-                                    fit: BoxFit.fitHeight,
-                                  )
-                                )
-                              else
-                                Row(children: [
-                                  SvgPicture.asset(
-                                    'assets/bnb_logo.svg',
-                                    height: height * 0.04,
-                                    fit: BoxFit.contain,
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(left: 10 / 390 * width, right: 20 / 390 * width),
-                                    child: Text(
-                                      double.parse(user?['bnb_balance'].toString() ?? '0.0').toStringAsFixed(5),
-                                      style: GoogleFonts.spaceMono(
-                                        fontSize: 16 / 844 * height,
-                                        color: Colors.white,
-                                      )
-                                    )
-                                  )
-                                ]),
-                              const Spacer(),
-                              Material(
-                                color: Colors.transparent,
-                                child: selectedPage != 5
-                                  ? PresButton(
-                                    onTap: () {
-                                      String? pin = AppStorage().read('pin');
-                                      String? walletAdress = AppStorage().read('wallet_adress');
-                                      String? walletMnemonic = AppStorage().read('wallet_mnemonic');
-                                      if (walletAdress == null ||walletMnemonic == null) {
-                                        Navigator.pushReplacementNamed(context, '/createWallet');
-                                      } else if (pin == null) {
-                                        Navigator.pushReplacementNamed(
-                                          context,
-                                          '/pin',
-                                          arguments: PinCodePageType.create,
-                                        );
-                                      } else {
-                                        Navigator.of(context).pushNamed(
-                                          '/pin',
-                                          arguments: PinCodePageType.enter,
-                                        );
-                                      }
-                                    },
-                                    params: {'width': width},
-                                    child: menuWalletBtn
-                                  )
-                                  : AnimButton(
-                                    shadowType: 2,
-                                    onTap: () {
-                                      Navigator.of(context).pushNamed('/settings');
-                                    },
-                                    child: SvgPicture.asset('assets/pages/homepage/settings.svg'),
-                                  ),
-                              ),
-                            ],
+            width: width,
+            height: height,
+            child: Column(children: [
+              SizedBox(
+                width: width,
+                height: 112 / 880 * height,
+                child: Stack(
+                  children: [
+                    SvgPicture.asset(
+                      'assets/pages/homepage/appbar_background.svg',
+                      width: width,
+                      fit: BoxFit.fill,
+                    ),
+                    ValueListenableBuilder(
+                      valueListenable: AppStorage().box.listenable(),
+                      builder: (context, box, widget) {
+                        final temp = box.get(
+                          'user',
+                          defaultValue: <String, dynamic>{},
+                        );
+                        Map<String, dynamic>? user;
+                        if (temp != <String, dynamic>{}) {
+                          user = Map.from(temp);
+                        }
+                        return Padding(
+                          padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).viewPadding.top,
+                            bottom: 12 / 880 * height,
+                            left: 25 / 390 * width,
+                            right: 25 / 390 * width,
                           ),
-                        ),
-                      );
-                    },
-                  ),
-                ],
+                          child: Center(
+                            child: Row(
+                              children: [
+                                Material(
+                                  color: Colors.transparent,
+                                  child: PresButton(
+                                    onTap: () => setState(() {
+                                      isMenuOpened = true;
+                                    }),
+                                    params: {'width': width},
+                                    child: menuBtn,
+                                  ),
+                                ),
+                                const Spacer(),
+                                if (selectedPage == 5)
+                                  AnimButton(
+                                    shadowType: 2,
+                                    onTap: () => openQr(width, height),
+                                    child: SvgPicture.asset(
+                                      'assets/pages/homepage/receive.svg',
+                                      fit: BoxFit.fitHeight,
+                                    ),
+                                  ),
+                                const Spacer(),
+                                if (selectedPage == 5)
+                                  AnimButton(
+                                      shadowType: 2,
+                                      onTap: () async =>
+                                          await AppStorage().updateUserWallet(),
+                                      child: SvgPicture.asset(
+                                        'assets/pages/homepage/trade.svg',
+                                        fit: BoxFit.fitHeight,
+                                      ))
+                                else
+                                  Row(children: [
+                                    SvgPicture.asset(
+                                      'assets/bnb_logo.svg',
+                                      height: height * 0.04,
+                                      fit: BoxFit.contain,
+                                    ),
+                                    Padding(
+                                        padding: EdgeInsets.only(
+                                            left: 10 / 390 * width,
+                                            right: 20 / 390 * width),
+                                        child: Text(
+                                            double.parse(user?['bnb_balance']
+                                                        .toString() ??
+                                                    '0.0')
+                                                .toStringAsFixed(5),
+                                            style: GoogleFonts.spaceMono(
+                                              fontSize: 16 / 844 * height,
+                                              color: Colors.white,
+                                            )))
+                                  ]),
+                                const Spacer(),
+                                Material(
+                                  color: Colors.transparent,
+                                  child: selectedPage != 5
+                                      ? PresButton(
+                                          onTap: () {
+                                            String? pin =
+                                                AppStorage().read('pin');
+                                            String? walletAdress = AppStorage()
+                                                .read('wallet_adress');
+                                            String? walletMnemonic =
+                                                AppStorage()
+                                                    .read('wallet_mnemonic');
+                                            if (walletAdress == null ||
+                                                walletMnemonic == null) {
+                                              Navigator.pushReplacementNamed(
+                                                  context, '/createWallet');
+                                            } else if (pin == null) {
+                                              Navigator.pushReplacementNamed(
+                                                context,
+                                                '/pin',
+                                                arguments:
+                                                    PinCodePageType.create,
+                                              );
+                                            } else {
+                                              Navigator.of(context).pushNamed(
+                                                '/pin',
+                                                arguments:
+                                                    PinCodePageType.enter,
+                                              );
+                                            }
+                                          },
+                                          params: {'width': width},
+                                          child: menuWalletBtn)
+                                      : AnimButton(
+                                          shadowType: 2,
+                                          onTap: () {
+                                            Navigator.of(context)
+                                                .pushNamed('/settings');
+                                          },
+                                          child: SvgPicture.asset(
+                                              'assets/pages/homepage/settings.svg'),
+                                        ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const Spacer(),
-            SizedBox(
-              width: width,
-              height: 190 / 880 * height,
-              child: Stack(
-                children: [
-                  IgnorePointer(
-                    child: SvgPicture.asset(
+              const Spacer(),
+              SizedBox(
+                width: width,
+                height: 190 / 880 * height,
+                child: Stack(
+                  children: [
+                    IgnorePointer(
+                        child: SvgPicture.asset(
                       'assets/pages/homepage/bottom_navigation_background.svg',
                       width: width,
                       fit: BoxFit.fill,
-                    )
-                  ),
-                  Column(
-                    children: [
-                      const Spacer(),
-                      Padding(
-                        padding: EdgeInsets.only(
-                          bottom: 8 / 360 * height,
-                        ),
-                        child: SizedBox(
-                          width: width,
-                          height: 160 / 880 * height,
-                          child: Flex(
-                            direction: Axis.horizontal,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              const Spacer(flex: 3),
-                              bottomNavigButton(
-                                SvgPicture.asset(
-                                  'assets/pages/homepage/page_1.svg',
-                                  fit: BoxFit.fitHeight
+                    )),
+                    Column(
+                      children: [
+                        const Spacer(),
+                        Padding(
+                          padding: EdgeInsets.only(
+                            bottom: 8 / 360 * height,
+                          ),
+                          child: SizedBox(
+                            width: width,
+                            height: 160 / 880 * height,
+                            child: Flex(
+                              direction: Axis.horizontal,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                const Spacer(flex: 3),
+                                bottomNavigButton(
+                                  SvgPicture.asset(
+                                      'assets/pages/homepage/page_1.svg',
+                                      fit: BoxFit.fitHeight),
+                                  height,
+                                  0,
                                 ),
-                                height,
-                                0,
-                              ),
-                              const Spacer(flex: 1),
-                              bottomNavigButton(
-                                SvgPicture.asset(
-                                  'assets/pages/homepage/page_2.svg',
-                                  fit: BoxFit.fitHeight
+                                const Spacer(flex: 1),
+                                bottomNavigButton(
+                                  SvgPicture.asset(
+                                      'assets/pages/homepage/page_2.svg',
+                                      fit: BoxFit.fitHeight),
+                                  height,
+                                  1,
                                 ),
-                                height,
-                                1,
-                              ),
-                              const Spacer(flex: 1),
-                              bottomNavigButton(
-                                SvgPicture.asset(
-                                  'assets/pages/homepage/page_3.svg',
-                                  fit: BoxFit.fitHeight
+                                const Spacer(flex: 1),
+                                bottomNavigButton(
+                                  SvgPicture.asset(
+                                      'assets/pages/homepage/page_3.svg',
+                                      fit: BoxFit.fitHeight),
+                                  height,
+                                  2,
                                 ),
-                                height,
-                                2,
-                              ),
-                              const Spacer(flex: 1),
-                              bottomNavigButton(
-                                SvgPicture.asset(
-                                  'assets/pages/homepage/page_4.svg',
-                                  fit: BoxFit.fitHeight,
+                                const Spacer(flex: 1),
+                                bottomNavigButton(
+                                  SvgPicture.asset(
+                                    'assets/pages/homepage/page_4.svg',
+                                    fit: BoxFit.fitHeight,
+                                  ),
+                                  height,
+                                  3,
                                 ),
-                                height,
-                                3,
-                              ),
-                              const Spacer(flex: 1),
-                              bottomNavigButton(
-                                SvgPicture.asset(
-                                  'assets/pages/homepage/page_5.svg',
-                                  fit: BoxFit.fitHeight
+                                const Spacer(flex: 1),
+                                bottomNavigButton(
+                                  SvgPicture.asset(
+                                      'assets/pages/homepage/page_5.svg',
+                                      fit: BoxFit.fitHeight),
+                                  height,
+                                  4,
                                 ),
-                                height,
-                                4,
-                              ),
-                              const Spacer(flex: 3),
-                            ],
+                                const Spacer(flex: 3),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  )
-                ],
+                      ],
+                    )
+                  ],
+                ),
               ),
-            ),
-          ])
-        ),
+            ])),
         isMenuOpened
-          ? SizedBox(
-            width: width,
-            height: height,
-            child: getMenu(width, height, context)
-          )
-          : const SizedBox(),
+            ? SizedBox(
+                width: width,
+                height: height,
+                child: getMenu(width, height, context))
+            : const SizedBox(),
       ],
     );
   }
@@ -439,13 +462,14 @@ class _HomePageState extends State<HomePage> {
                             print(AppStorage().read('wallet_adress')!);
                           }
                           Navigator.of(context).pop();
-                          },
+                        },
                         params: {'width': width},
                         child: backBtn,
                       ),
                       Expanded(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: width * 0.1),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: width * 0.1),
                           child: Center(
                             child: FittedBox(
                               child: Text(
@@ -462,12 +486,10 @@ class _HomePageState extends State<HomePage> {
                       ),
                       AnimButton(
                         shadowType: 2,
-                        onTap: ()  {
-                          showError(
-                            context,
-                            'This is a wallet linked to your game account. You can refill it in any convenient way by copying the address or using the QR code.\nAttention! Send tokens only on BEP20 (BSC) chain, otherwise the tokens will be lost!',
-                            type: 2
-                          );
+                        onTap: () {
+                          showError(context,
+                              'This is a wallet linked to your game account. You can refill it in any convenient way by copying the address or using the QR code.\nAttention! Send tokens only on BEP20 (BSC) chain, otherwise the tokens will be lost!',
+                              type: 2);
                         },
                         child: SvgPicture.asset(
                           'assets/pages/homepage/craft/info.svg',
@@ -475,10 +497,6 @@ class _HomePageState extends State<HomePage> {
                           width: width * 0.12,
                         ),
                       ),
-                      // SizedBox(
-                      //   height: width * 0.10,
-                      //   width: width * 0.10,
-                      // ),
                     ],
                   ),
                   const Spacer(flex: 18),
@@ -502,36 +520,33 @@ class _HomePageState extends State<HomePage> {
                   ),
                   const Spacer(flex: 18),
                   Expanded(
-                    flex: 16,
-                    child: FittedBox(
-                      fit: BoxFit.fitHeight,
-                      child: RichText(
-                        text: TextSpan(
-                          text: 'Your ',
-                          style: GoogleFonts.spaceMono(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w400,
-                          ),
-                          children: [
-                            TextSpan(
-                              text: 'BEP20 (BSC)',
-                              style: GoogleFonts.spaceMono(
-                                color: Colors.red,
-                                fontWeight: FontWeight.w400,
-                              ),
+                      flex: 16,
+                      child: FittedBox(
+                          fit: BoxFit.fitHeight,
+                          child: RichText(
+                              text: TextSpan(
+                            text: 'Your ',
+                            style: GoogleFonts.spaceMono(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w400,
                             ),
-                            TextSpan(
-                              text: ' Wallet Address:',
-                              style: GoogleFonts.spaceMono(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w400,
+                            children: [
+                              TextSpan(
+                                text: 'BEP20 (BSC)',
+                                style: GoogleFonts.spaceMono(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ),
-                            ),
-                          ],
-                        )
-                      )
-                    )
-                  ),
+                              TextSpan(
+                                text: ' Wallet Address:',
+                                style: GoogleFonts.spaceMono(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
+                          )))),
                   const Spacer(flex: 8),
                   FittedBox(
                     fit: BoxFit.fitWidth,
@@ -552,34 +567,33 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ).then(
                         (_) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               //shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(30.0))),
                               //backgroundColor: const Color(0xFF0D1238),
                               backgroundColor: Colors.transparent,
                               padding: const EdgeInsets.only(top: 30),
                               content: Container(
-                                height: 0.1 * height,
-                                decoration: const BoxDecoration(
-                                  color: Color(0xFF0D1238),
-                                  borderRadius: BorderRadius.only(topRight: Radius.circular(30), topLeft: Radius.circular(30)),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Color(0x2FFFFFFF),
-                                      blurRadius: 30,
-                                      spreadRadius: 30,
-                                      offset: Offset(0, 20)
-                                    )
-                                  ],
-                                ),
-                                alignment: Alignment.center,
-                                child: Text(
-                                  'Copied to your clipboard!'.toUpperCase(),
-                                  style: TextStyle(fontSize: 0.036 * width, fontWeight: FontWeight.w700, color: const Color(0xFF00FFFF))
-                                )
-                              )
-                            )
-                          );
+                                  height: 0.1 * height,
+                                  decoration: const BoxDecoration(
+                                    color: Color(0xFF0D1238),
+                                    borderRadius: BorderRadius.only(
+                                        topRight: Radius.circular(30),
+                                        topLeft: Radius.circular(30)),
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Color(0x2FFFFFFF),
+                                          blurRadius: 30,
+                                          spreadRadius: 30,
+                                          offset: Offset(0, 20))
+                                    ],
+                                  ),
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                      'Copied to your clipboard!'.toUpperCase(),
+                                      style: TextStyle(
+                                          fontSize: 0.036 * width,
+                                          fontWeight: FontWeight.w700,
+                                          color: const Color(0xFF00FFFF))))));
                           Navigator.of(context).pop();
                         },
                       );
@@ -657,20 +671,18 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   Center(
                     child: Container(
-                      height: height * 0.66,
-                      width: width,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF020A38),
-                        borderRadius: BorderRadius.circular(32),
-                        border: Border.all(
-                          color: const Color(0xFF00FFFF),
-                        ),
-                        image: const DecorationImage(
-                          image: backgroundLoginOpacity,
-                          fit: BoxFit.fitHeight,
-                        )
-                      )
-                    ),
+                        height: height * 0.66,
+                        width: width,
+                        decoration: BoxDecoration(
+                            color: const Color(0xFF020A38),
+                            borderRadius: BorderRadius.circular(32),
+                            border: Border.all(
+                              color: const Color(0xFF00FFFF),
+                            ),
+                            image: const DecorationImage(
+                              image: backgroundLoginOpacity,
+                              fit: BoxFit.fitHeight,
+                            ))),
                   ),
                   Column(
                     children: [
@@ -713,7 +725,8 @@ class _HomePageState extends State<HomePage> {
                             ),
                             Expanded(
                               child: getMenuButton(
-                                () => Navigator.of(context).pushNamed('/viewWebChronic'),
+                                () => Navigator.of(context)
+                                    .pushNamed('/viewWebChronic'),
                                 'CHRONICLES',
                                 height,
                               ),
@@ -803,8 +816,7 @@ class _HomePageState extends State<HomePage> {
               setState(() {
                 craftSwitch = type;
               });
-            }
-        );
+            });
       case 3:
         return getForgePage(height);
       case 4:
@@ -860,12 +872,11 @@ class _HomePageState extends State<HomePage> {
     return Stack(
       children: [
         Padding(
-          padding: EdgeInsets.only(top: 43 / 340 * width),
-          child: SizedBox(
-            width: width,
-            child: CraftPage(craftSwitch: craftSwitch),
-          )
-        ),
+            padding: EdgeInsets.only(top: 43 / 340 * width),
+            child: SizedBox(
+              width: width,
+              child: CraftPage(craftSwitch: craftSwitch),
+            )),
         switchWaterFire(width, heigth, craftSwitch, (val) {
           AppStorage().write(craftSwitchKey, val.toString());
           setState(() {
@@ -943,8 +954,8 @@ class _HomePageState extends State<HomePage> {
         children: [
           SvgPicture.asset(
             valueSwitch == 0
-              ? 'assets/pages/homepage/craft/water.svg'
-              : 'assets/pages/homepage/craft/fire.svg',
+                ? 'assets/pages/homepage/craft/water.svg'
+                : 'assets/pages/homepage/craft/fire.svg',
             fit: BoxFit.fitWidth,
           ),
           Row(
@@ -982,12 +993,11 @@ class _HomePageState extends State<HomePage> {
     return Stack(
       children: [
         Padding(
-          padding: EdgeInsets.only(top: 43 / 880 * height),
-          child: SizedBox(
-            width: width,
-            child: HerosPage(craftSwitch: craftSwitch),
-          )
-        ),
+            padding: EdgeInsets.only(top: 43 / 880 * height),
+            child: SizedBox(
+              width: width,
+              child: HerosPage(craftSwitch: craftSwitch),
+            )),
         switchWaterFire(width, height, craftSwitch, (val) {
           AppStorage().write(craftSwitchKey, val.toString());
           setState(() {
@@ -1002,12 +1012,12 @@ class _HomePageState extends State<HomePage> {
     return Stack(
       children: [
         Padding(
-          padding: EdgeInsets.only(top: 1 / 880 * height, left: width * 0.04, right: width * 0.04),
-          child: SizedBox(
-            width: width,
-            child: HeroMintPage(craftSwitch: herosSwitch),
-          )
-        ),
+            padding: EdgeInsets.only(
+                top: 1 / 880 * height, left: width * 0.04, right: width * 0.04),
+            child: SizedBox(
+              width: width,
+              child: HeroMintPage(craftSwitch: herosSwitch),
+            )),
       ],
     );
   }
@@ -1016,12 +1026,12 @@ class _HomePageState extends State<HomePage> {
     return Stack(
       children: [
         Padding(
-          padding: EdgeInsets.only(top: 1 / 880 * height, left: width * 0.04, right: width * 0.04),
-          child: SizedBox(
-            width: width,
-            child: SamuraiMintPage(craftSwitch: herosSwitch),
-          )
-        ),
+            padding: EdgeInsets.only(
+                top: 1 / 880 * height, left: width * 0.04, right: width * 0.04),
+            child: SizedBox(
+              width: width,
+              child: SamuraiMintPage(craftSwitch: herosSwitch),
+            )),
       ],
     );
   }

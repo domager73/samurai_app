@@ -1,11 +1,7 @@
-
 import 'package:flutter/material.dart';
 
 class HerosPageTab extends StatefulWidget {
-  const HerosPageTab({
-    super.key,
-    required this.wigetChild
-  });
+  const HerosPageTab({super.key, required this.wigetChild});
 
   final Widget wigetChild;
 
@@ -13,7 +9,8 @@ class HerosPageTab extends StatefulWidget {
   State<HerosPageTab> createState() => _HerosPageTabState();
 }
 
-class _HerosPageTabState extends State<HerosPageTab> with SingleTickerProviderStateMixin {
+class _HerosPageTabState extends State<HerosPageTab>
+    with SingleTickerProviderStateMixin {
   late final ScrollController scrollController;
 
   @override
@@ -31,14 +28,11 @@ class _HerosPageTabState extends State<HerosPageTab> with SingleTickerProviderSt
   @override
   Widget build(BuildContext context) {
     return RawScrollbar(
-      radius: const Radius.circular(36),
-      thumbColor: const Color(0xFF00FFFF),
-      thumbVisibility: true,
-      controller: scrollController,
-      child: SingleChildScrollView(
+        radius: const Radius.circular(36),
+        thumbColor: const Color(0xFF00FFFF),
+        thumbVisibility: true,
         controller: scrollController,
-        child: widget.wigetChild
-      )
-    );
+        child: SingleChildScrollView(
+            controller: scrollController, child: widget.wigetChild));
   }
 }

@@ -48,6 +48,7 @@ flutter:
   assets:
     - assets/
     - assets/pages/
+    - assets/abi/
     - assets/pages/account/
     - assets/pages/create_wallet/
     - assets/pages/homepage/

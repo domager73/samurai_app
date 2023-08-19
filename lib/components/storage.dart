@@ -179,15 +179,9 @@ class AppStorage {
                 el['address']!,
               ),
             );
-            if (kDebugMode) {
-              print(el['address']);
-            }
-            late Token token;
-            //if (el['type'] == 'BNB') {
-              token = Token(contractUsdc, WalletAPI.ethClientBnb, WalletAPI.chainIdBnb);
-            //} else {
-              //token = Token(contractUsdc, WalletAPI.ethClient, WalletAPI.chainIdPoligon);
-            //}
+
+            Token token = Token(contractUsdc, WalletAPI.ethClientBnb, WalletAPI.chainIdBnb);
+
             if (el['tokenId'] == null) {
               res = await token.read(
                 contractUsdc.function('balanceOf'),
@@ -206,6 +200,9 @@ class AppStorage {
                 null,
               );
             }
+            print('--------------------------------------------------');
+            print(res[0]);
+            print('--------------------------------------------------');
           } else {
             //bnb
             if (kDebugMode) {
@@ -214,9 +211,6 @@ class AppStorage {
             final bal = await WalletAPI.ethClientBnb
                 .getBalance(EthereumAddress.fromHex(walletAddress));
             res.add(bal.getInWei);
-          }
-          if (kDebugMode) {
-            print(res);
           }
           if (res.isNotEmpty) {
             if (el['name'].toString().contains('samurai')) {
@@ -242,9 +236,9 @@ class AppStorage {
 
       userData.addAll({'gasBnb': await WalletAPI.gasPriceBnb()});
     }
-    if (kDebugMode) {
-      print(userData);
-    }
+    // if (kDebugMode) {
+    //   print(userData);
+    // }
     await box.put('user', userData);
   }
 
