@@ -262,7 +262,7 @@ class WalletAPI {
     return res[0];
   }
 
-  static Future<dynamic> transferHeroToAnotherWallet(HDWallet wallet, String toAddress, int heroId) async {
+  static Future<dynamic> transferHero(HDWallet wallet, String toAddress, int heroId) async {
     final PrivateKey privateKey = wallet.getKeyForCoin(TWCoinType.TWCoinTypeSmartChain);
 
     final credentials = EthPrivateKey.fromHex(
