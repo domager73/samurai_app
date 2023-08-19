@@ -235,7 +235,6 @@ class _HerosPageState extends State<HerosPage>
 
   Widget heroBlock(
       Map e, BuildContext context, double width, double height, btnsWaiget) {
-    //print(e);
     return Stack(children: [
       if (e['status'] == 'FIGHTING')
         Container(
@@ -425,7 +424,8 @@ class _HerosPageState extends State<HerosPage>
                                         : fireUnclaimedDp) ??
                                     0) >
                                 0)
-                            ? 'assets/pages/homepage/craft/btn_clame_water.svg'
+                            ? widget.craftSwitch == 0 ? 'assets/pages/homepage/craft/btn_clame_water.svg' :
+                        'assets/pages/homepage/craft/btn_clame_fire.svg'
                             : 'assets/pages/homepage/craft/btn_clame_dis.svg',
                         fit: BoxFit.fitWidth,
                         width: width * 0.36),

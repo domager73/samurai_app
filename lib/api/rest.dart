@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
-import 'dart:convert' show jsonDecode;
+import 'dart:convert' show base64Decode, jsonDecode;
 
 import 'package:samurai_app/components/storage.dart';
 import 'package:samurai_app/utils/enums.dart';
@@ -189,6 +189,24 @@ class Rest {
     if (kDebugMode) {
       print('/api/users/hero/info');
     }
+
+    return data.data;
+  }
+
+  static Future<String> getPhotoByBgId(int heroId) async{
+    String? jwt = AppStorage().read('jwt');
+
+    final data = await dio.get(
+      '$serverIp/api/users/hero/heroImage/$heroId',
+      options: Options(
+        headers: {
+          'Authorization': 'Bearer $jwt',
+          'Content-Type': "	image/jpeg",
+        },
+      ),
+    );
+
+
     return data.data;
   }
 

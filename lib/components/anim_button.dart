@@ -311,7 +311,7 @@ Widget menuBtn(BuildContext context, Map<String, dynamic> params, bool state, bo
   );
 }
 
-Widget loginBtn(BuildContext context, Map<String, dynamic> params, bool state, bool disabled) {
+Widget loginBtn(BuildContext context, Map<String, dynamic> params, bool state, bool disabled,{String clan = 'water'}) {
   const img = AssetImage('assets/login_button.png');
   const imgPres = AssetImage('assets/login_button_pres.png');
   const imgDis = AssetImage('assets/login_button_dis.png');
