@@ -464,9 +464,14 @@ class Rest {
       'Content-Type': "application/json",
     };
 
-    final response = await dio.get(URL, options: Options(headers: reqHeader));
+    try {
+      final response = await dio.get(URL, options: Options(headers: reqHeader));
 
-    return response.data;
+      return response.data;
+    } catch (e) {
+      rethrow;
+    }
+
   }
 }
 

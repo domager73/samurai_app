@@ -32,7 +32,8 @@ class _HerosPageState extends State<HerosPage>
   double? fireDp = 0;
   int? fireUnclaimedDp = 0;
   int? waterUnclaimedDp = 0;
-  double maxDp = 100.0;
+  double maxwaterDp = 0;
+  double maxfireDp = 0;
 
   String? samuraiDpExpiresDate;
   late Timer _timer;
@@ -75,19 +76,20 @@ class _HerosPageState extends State<HerosPage>
     });
   }
 
-  Future<void> loadInfo() async {
-    await getHeroInfo()
-        .then((value) => setState(() {
-              info = value;
-              waterDp = info[''];
-              fireDp = 100;
-              fireUnclaimedDp = 100;
-              waterUnclaimedDp = 100;
-              maxDp = 120;
-            }))
-        .catchError((e) {
+  Future<bool> loadInfo() async {
+    await getHeroInfo().then((value) {
+      info = value;
+      waterDp = info['fire_dp_balance'].toDouble();
+      fireDp = info['water_dp_balance'].toDouble();
+      fireUnclaimedDp = 0;
+      waterUnclaimedDp = 0;
+      maxwaterDp = info['fire_dp_bar'].toDouble();
+      maxfireDp = info['water_dp_bar'].toDouble();
+    }).catchError((e) {
       print(e);
     });
+
+    return true;
   }
 
   Future<Map<String, dynamic>> getHeroInfo() async {
@@ -123,43 +125,23 @@ class _HerosPageState extends State<HerosPage>
       SizedBox(
           width: width - width * 0.04,
           height: height - height * 0.433,
-          child: TabBarView(controller: _tabController, children: [
-            FutureBuilder(
-              future: getHeroInfo(),
-              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          child: FutureBuilder(
+              future: loadInfo(),
+              builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  print(snapshot.data);
-                  return HerosPageTab(
-                      wigetChild: getActiveTab(
-                          context, width, height, snapshot.data['heroes']));
+                  return TabBarView(controller: _tabController, children: [
+                    HerosPageTab(
+                        wigetChild: getActiveTab(
+                            context, width, height, info['heroes'])),
+                    HerosPageTab(
+                        wigetChild: getStakingTab(
+                            context, width, height, info['heroes'])),
+                    getMintTab(context, width, height)
+                  ]);
                 }
 
                 return Container();
-              },
-            ),
-            FutureBuilder(
-              future: getHeroInfo(),
-              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                if (snapshot.hasData) {
-                  return HerosPageTab(
-                      wigetChild: getStakingTab(
-                          context, width, height, snapshot.data['heroes']));
-                }
-
-                return Container();
-              },
-            ),
-            FutureBuilder(
-              future: getHeroInfo(),
-              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                if (snapshot.hasData) {
-                  return getMintTab(context, width, height);
-                }
-
-                return Container();
-              },
-            ),
-          ]))
+              }))
     ]);
   }
 
@@ -217,7 +199,8 @@ class _HerosPageState extends State<HerosPage>
       Padding(
           padding: EdgeInsets.only(
               top: width * 0.04, left: width * 0.05, right: width * 0.04),
-          child: progressBar(context, maxDp, width)),
+          child: progressBar(context,
+              widget.craftSwitch == 0 ? maxwaterDp : maxfireDp, width)),
       Padding(
         padding: EdgeInsets.only(top: width * 0.06),
         child: PresButton(
@@ -252,10 +235,8 @@ class _HerosPageState extends State<HerosPage>
       Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Padding(
             padding: EdgeInsets.only(top: width * 0.075, left: width * 0.015),
-            child: Image.network(
-                e['image'],
-                fit:BoxFit.fitHeight,
-                width: width * 0.26)),
+            child: Image.network(e['image'],
+                fit: BoxFit.fitHeight, width: width * 0.26)),
         Padding(
             padding: EdgeInsets.only(top: width * 0.08, left: width * 0.04),
             child:
@@ -269,7 +250,7 @@ class _HerosPageState extends State<HerosPage>
                     fontWeight: FontWeight.w700,
                     color: Colors.white,
                   ),
-                  softWrap:true,
+                  softWrap: true,
                   maxLines: 2,
                 ),
               ),
@@ -340,7 +321,10 @@ class _HerosPageState extends State<HerosPage>
               padding: EdgeInsets.only(top: width * 0.03, bottom: width * 0.03),
               child: AnimButton(
                   onTap: () async {
-                    transferSamurai(heroId).then((value) => loadInfo());
+                    transferSamurai(heroId).then((value) {
+                      loadInfo();
+                      setState(() {});
+                    });
                   },
                   shadowType: 2,
                   child: SvgPicture.asset(
@@ -352,7 +336,7 @@ class _HerosPageState extends State<HerosPage>
           AnimButton(
               onTap: () async {
                 await Rest.placeHeroToStake(heroId);
-                await loadInfo();
+                await loadInfo().then((value) => setState(() {}));
               },
               shadowType: 2,
               child: SvgPicture.asset(
@@ -374,7 +358,7 @@ class _HerosPageState extends State<HerosPage>
               child: AnimButton(
                   onTap: () async {
                     await Rest.removeHeroFromStake(heroId);
-                    await loadInfo();
+                    await loadInfo().then((value) => setState(() {}));
                   },
                   shadowType: 2,
                   child: SvgPicture.asset(
@@ -484,6 +468,8 @@ class _HerosPageState extends State<HerosPage>
     if (xp > maxDp) {
       xp = maxDp;
     }
+    print('maxDp $maxDp');
+    print('Dp $xp');
     return Column(children: [
       Stack(children: [
         SvgPicture.asset(
