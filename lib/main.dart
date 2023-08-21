@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:samurai_app/components/storage.dart';
 import 'package:samurai_app/pages/view_web_page.dart';
 import 'package:samurai_app/pages/create_wallet.dart';
 import 'package:samurai_app/pages/home_page.dart';
@@ -16,12 +17,14 @@ import 'package:trust_wallet_core_lib/trust_wallet_core_lib.dart';
 
 import 'pages/enter_seed_page.dart';
 
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
   await Hive.initFlutter();
   await Hive.openBox('prefs');
   await Hive.box('prefs').put('appVer', packageInfo.version);
+
   TrustWalletCoreLib.init();
 
   runApp(MyApp());
@@ -56,7 +59,12 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    initMusic();
+    if (AppStorage().read(musicSwitchKey) == null) {
+      AppStorage().write(musicSwitchKey, "true");
+      log("swtich key inited");
+    }
+
+    _initMusic();
   }
 
   Future<void> initMusic() async {

@@ -1,9 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:samurai_app/components/storage.dart';
 import 'package:samurai_app/pages/home/account_page_components.dart';
+import 'package:samurai_app/utils/enums.dart';
 
 import '../../api/rest.dart';
 import '../../components/anim_button.dart';
@@ -20,8 +23,8 @@ class _AccountPageState extends State<AccountPage> {
   late final ScrollController scrollController;
   late bool googleAuthenticatorSwitch;
   late bool emailAuthenticatorSwitch;
-  late bool tfaSwitch;
   late bool soundSwitch;
+  late bool tfaSwitch;
 
   @override
   void initState() {
@@ -29,7 +32,7 @@ class _AccountPageState extends State<AccountPage> {
     scrollController = ScrollController();
     googleAuthenticatorSwitch = false; //TODO
     emailAuthenticatorSwitch = false; //TODO
-    soundSwitch = true;
+    soundSwitch = bool.parse(AppStorage().read(musicSwitchKey)!); //TODO
     final useTfa = AppStorage().read('use-tfa');
     tfaSwitch = useTfa != null && useTfa == '1';
   }
@@ -42,14 +45,8 @@ class _AccountPageState extends State<AccountPage> {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery
-        .of(context)
-        .size
-        .width;
-    final height = MediaQuery
-        .of(context)
-        .size
-        .height;
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
     return ValueListenableBuilder(
         valueListenable: AppStorage().box.listenable(),
         builder: (context, box, widget) {
@@ -103,20 +100,14 @@ class _AccountPageState extends State<AccountPage> {
                                       ),
                                     ),
                                     Padding(
-                                      padding:
-                                      EdgeInsets.only(top: 2 / 96 * height),
+                                      padding: EdgeInsets.only(top: 2 / 96 * height),
                                       child: PresButton(
-                                        onTap: () =>
-                                            AccountPageComponents
-                                                .openChangeEmailModalPage(
-                                              context: context,
-                                              width: width,
-                                              height: height,
-                                            ),
-                                        params: {
-                                          'width': width,
-                                          'height': height
-                                        },
+                                        onTap: () => AccountPageComponents.openChangeEmailModalPage(
+                                          context: context,
+                                          width: width,
+                                          height: height,
+                                        ),
+                                        params: {'width': width, 'height': height},
                                         child: changeEmailBtn,
                                       ),
                                     ),
@@ -167,10 +158,11 @@ class _AccountPageState extends State<AccountPage> {
                           Switch(
                             activeColor: const Color(0xFF00FFFF),
                             value: soundSwitch,
-                            onChanged: (value) =>
-                                setState(() {
-                                  soundSwitch = value;
-                                }),
+                            onChanged: (value) => setState(() {
+                              soundSwitch = value;
+                              AppStorage().write(musicSwitchKey, value.toString());
+                              log("changed music value $value");
+                            }),
                           ),
                         ),
                       ),
@@ -182,13 +174,11 @@ class _AccountPageState extends State<AccountPage> {
                           Switch(
                             activeColor: const Color(0xFF00FFFF),
                             value: tfaSwitch,
-                            onChanged: (value) =>
-                                setState(() {
-                                  tfaSwitch = value;
-                                  AppStorage().write(
-                                      'use-tfa', value ? '1' : '0');
-                                  Rest.checkUpdateUserUseTfa(value);
-                                }),
+                            onChanged: (value) => setState(() {
+                              tfaSwitch = value;
+                              AppStorage().write('use-tfa', value ? '1' : '0');
+                              Rest.checkUpdateUserUseTfa(value);
+                            }),
                           ),
                         ),
                       ),
@@ -260,22 +250,19 @@ class _AccountPageState extends State<AccountPage> {
                         padding: EdgeInsets.only(top: 3 / 96 * height),
                         child: PresButton(
                           onTap: () {
-                            showConfirm(
-                                context, 'Are you sure you want to get out?',
-                                    () async {
-                                  await AppStorage().remove('jwt');
-                                  //await AppStorage().remove('pin');
-                                  //await AppStorage().remove('wallet_adress');
-                                  //await AppStorage().remove('wallet_mnemonic');
-                                  await AppStorage().remove('user');
-                                  if (mounted) {
-                                    Navigator.of(context)
-                                        .pushNamedAndRemoveUntil(
-                                      '/login',
-                                          (route) => false,
-                                    );
-                                  }
-                                });
+                            showConfirm(context, 'Are you sure you want to get out?', () async {
+                              await AppStorage().remove('jwt');
+                              //await AppStorage().remove('pin');
+                              //await AppStorage().remove('wallet_adress');
+                              //await AppStorage().remove('wallet_mnemonic');
+                              await AppStorage().remove('user');
+                              if (mounted) {
+                                Navigator.of(context).pushNamedAndRemoveUntil(
+                                  '/login',
+                                  (route) => false,
+                                );
+                              }
+                            });
                           },
                           params: {'width': width, 'height': height},
                           child: logoutBtn,
@@ -291,9 +278,11 @@ class _AccountPageState extends State<AccountPage> {
         });
   }
 
-  Widget getMainAccountTextWidget(double height,
-      String title,
-      Widget endWidget,) {
+  Widget getMainAccountTextWidget(
+    double height,
+    String title,
+    Widget endWidget,
+  ) {
     return SizedBox(
       height: 4 / 96 * height,
       child: Row(
@@ -320,9 +309,11 @@ class _AccountPageState extends State<AccountPage> {
     );
   }
 
-  Widget getSecondaryAccountTextWidget(double height,
-      String title,
-      String endTitle,) {
+  Widget getSecondaryAccountTextWidget(
+    double height,
+    String title,
+    String endTitle,
+  ) {
     return SizedBox(
       height: 4 / 96 * height,
       child: Row(
