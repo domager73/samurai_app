@@ -50,6 +50,7 @@ flutter:
     - assets/
     - assets/pages/
     - assets/abi/
+    - assets/music/
     - assets/pages/account/
     - assets/pages/create_wallet/
     - assets/pages/homepage/
