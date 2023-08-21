@@ -1,9 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:samurai_app/components/storage.dart';
 import 'package:samurai_app/pages/home/account_page_components.dart';
+import 'package:samurai_app/utils/enums.dart';
 
 import '../../api/rest.dart';
 import '../../components/anim_button.dart';
@@ -29,7 +32,7 @@ class _AccountPageState extends State<AccountPage> {
     scrollController = ScrollController();
     googleAuthenticatorSwitch = false; //TODO
     emailAuthenticatorSwitch = false; //TODO
-    soundSwitch = true; //TODO
+    soundSwitch = bool.parse(AppStorage().read(musicSwitchKey)!); //TODO
     final useTfa = AppStorage().read('use-tfa');
     tfaSwitch = useTfa != null && useTfa == '1';
   }
@@ -157,6 +160,8 @@ class _AccountPageState extends State<AccountPage> {
                             value: soundSwitch,
                             onChanged: (value) => setState(() {
                               soundSwitch = value;
+                              AppStorage().write(musicSwitchKey, value.toString());
+                              log("changed music value $value");
                             }),
                           ),
                         ),
@@ -253,7 +258,8 @@ class _AccountPageState extends State<AccountPage> {
                               await AppStorage().remove('user');
                               if (mounted) {
                                 Navigator.of(context).pushNamedAndRemoveUntil(
-                                  '/login', (route) => false,
+                                  '/login',
+                                  (route) => false,
                                 );
                               }
                             });
@@ -262,9 +268,7 @@ class _AccountPageState extends State<AccountPage> {
                           child: logoutBtn,
                         ),
                       ),
-                      SizedBox(
-                        height: height * 0.03
-                      ),
+                      SizedBox(height: height * 0.03),
                     ],
                   ),
                 ),

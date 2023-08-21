@@ -17,3 +17,6 @@ class MusicAssets {
 
   static final mainLoop2 = "assets/music/mainLoop2.wav"; 
 }
+
+
+String musicSwitchKey = 'sound_value';
