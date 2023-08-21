@@ -11,3 +11,9 @@ class SamuraiType {
 
   static final FIRE = 'FIRE_HERO_BSC';
 }
+
+class MusicAssets {
+  static final mainLoop1 = "";
+
+  static final mainLoop2 = ""; 
+}
