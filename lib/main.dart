@@ -2,10 +2,12 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:samurai_app/components/storage.dart';
+import 'package:samurai_app/data/music_manager.dart';
 import 'package:samurai_app/pages/view_web_page.dart';
 import 'package:samurai_app/pages/create_wallet.dart';
 import 'package:samurai_app/pages/home_page.dart';
@@ -19,13 +21,14 @@ import 'package:trust_wallet_core_lib/trust_wallet_core_lib.dart';
 
 import 'pages/enter_seed_page.dart';
 
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
   await Hive.initFlutter();
   await Hive.openBox('prefs');
   await Hive.box('prefs').put('appVer', packageInfo.version);
+  GetIt.I.registerSingleton(MusicManager());
+  await GetIt.I<MusicManager>().registerMusicAssets();
 
   TrustWalletCoreLib.init();
 
@@ -35,12 +38,12 @@ Future<void> main() async {
 class MyApp extends StatefulWidget {
   MyApp({super.key});
 
-  static Future<void> stopPlayer(BuildContext context) async{
+  static Future<void> stopPlayer(BuildContext context) async {
     _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
     await state?.stopPlayer();
   }
 
-  static Future<void> playPlayer(BuildContext context) async{
+  static Future<void> playPlayer(BuildContext context) async {
     _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
     await state?.initMusic();
   }
@@ -66,8 +69,8 @@ class _MyAppState extends State<MyApp> {
       log("swtich key inited");
     }
 
-    if(AppStorage().read(musicSwitchKey) == 'true'){
-        initMusic();
+    if (AppStorage().read(musicSwitchKey) == 'true') {
+      initMusic();
     }
   }
 
@@ -86,7 +89,7 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  Future<void> stopPlayer()async {
+  Future<void> stopPlayer() async {
     await player.stop();
   }
 
@@ -115,8 +118,7 @@ class _MyAppState extends State<MyApp> {
         '/settings': (context) => const SettingsPage(),
         '/seed': (context) => const SeedPage(),
         '/enterSeed': (context) => const EnterSeedPage(),
-        '/viewWebChronic': (context) =>
-            const ViewWebPage(url: 'https://samurai-versus.io/chronicles'),
+        '/viewWebChronic': (context) => const ViewWebPage(url: 'https://samurai-versus.io/chronicles'),
       },
     );
   }
