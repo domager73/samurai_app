@@ -35,17 +35,17 @@ class MusicManager {
   Future<void> registerMusicAssets() async {
     await loadingPlayer.setAsset(MusicAssets.loading);
 
-    await menuSettingsSignWaterPlayer.setAsset(MusicAssets.loading);
+    await menuSettingsSignWaterPlayer.setAsset(MusicAssets.menuSettingSignWater);
 
-    await modalTextExplainPlayer.setAsset(MusicAssets.loading);
+    await modalTextExplainPlayer.setAsset(MusicAssets.modalTextExplain);
 
     await numbersCodePlayer.setAsset(MusicAssets.loading);
 
-    await okCanselTransPlayer.setAsset(MusicAssets.loading);
+    await okCanselTransPlayer.setAsset(MusicAssets.okCanselTrans);
 
-    await popupDownSybMenuPlayer.setAsset(MusicAssets.loading);
+    await popupDownSybMenuPlayer.setAsset(MusicAssets.popupDownSubMenu);
 
-    await popupSubmenuPlayer.setAsset(MusicAssets.loading);
+    await popupSubmenuPlayer.setAsset(MusicAssets.popupSubMenu);
 
     await screenChangePlayer.setAsset(MusicAssets.loading);
 

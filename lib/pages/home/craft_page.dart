@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/foundation.dart';
+import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:samurai_app/data/music_manager.dart';
 import 'package:samurai_app/pages/home/craft_page_components.dart';
 import 'package:samurai_app/widgets/custom_snackbar.dart';
 
@@ -342,11 +344,16 @@ class _CraftPageState extends State<CraftPage> {
                               Expanded(
                                 flex: 55,
                                 child: PresButton(
-                                    onTap: () => CraftPageComponents.openHealModalPage(
-                                          context: context,
-                                          width: width,
-                                          height: height,
-                                        ),
+                                    onTap: () async {
+                                      await GetIt.I<MusicManager>().popupSubmenuPlayer.play().then((value) async {
+                                        await GetIt.I<MusicManager>().popupSubmenuPlayer.seek(Duration(seconds: 0));
+                                      });
+                                      CraftPageComponents.openHealModalPage(
+                                        context: context,
+                                        width: width,
+                                        height: height,
+                                      );
+                                    },
                                     params: const {},
                                     child: widget.craftSwitch == 0 ? waterHeartBtn : fireHeartBtn),
                               ),
