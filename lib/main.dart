@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -33,14 +35,14 @@ Future<void> main() async {
 class MyApp extends StatefulWidget {
   MyApp({super.key});
 
-  static void stopPlayer(BuildContext context) {
+  static Future<void> stopPlayer(BuildContext context) async{
     _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
-    state?.stopPlayer();
+    await state?.stopPlayer();
   }
 
-  static void playPlayer(BuildContext context) {
+  static Future<void> playPlayer(BuildContext context) async{
     _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
-    state?.stopPlayer();
+    await state?.initMusic();
   }
 
   @override
@@ -64,12 +66,13 @@ class _MyAppState extends State<MyApp> {
       log("swtich key inited");
     }
 
-    _initMusic();
+    if(AppStorage().read(musicSwitchKey) == 'true'){
+        initMusic();
+    }
   }
 
   Future<void> initMusic() async {
     player = AudioPlayer();
-    List<String> musicAssets = [MusicAssets.mainLoop1, MusicAssets.mainLoop2];
     await player.setAsset(MusicAssets.mainLoop1);
     await player.play();
     await player.playerStateStream.listen((event) async {
@@ -84,11 +87,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> stopPlayer()async {
-    await player.pause();
-  }
-
-  Future<void> playPlayer()async {
-    await player.play();
+    await player.stop();
   }
 
   @override

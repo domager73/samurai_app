@@ -11,6 +11,7 @@ import 'package:samurai_app/utils/enums.dart';
 import '../../api/rest.dart';
 import '../../components/anim_button.dart';
 import '../../components/show_confirm.dart';
+import '../../main.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -100,14 +101,19 @@ class _AccountPageState extends State<AccountPage> {
                                       ),
                                     ),
                                     Padding(
-                                      padding: EdgeInsets.only(top: 2 / 96 * height),
+                                      padding:
+                                          EdgeInsets.only(top: 2 / 96 * height),
                                       child: PresButton(
-                                        onTap: () => AccountPageComponents.openChangeEmailModalPage(
+                                        onTap: () => AccountPageComponents
+                                            .openChangeEmailModalPage(
                                           context: context,
                                           width: width,
                                           height: height,
                                         ),
-                                        params: {'width': width, 'height': height},
+                                        params: {
+                                          'width': width,
+                                          'height': height
+                                        },
                                         child: changeEmailBtn,
                                       ),
                                     ),
@@ -156,14 +162,20 @@ class _AccountPageState extends State<AccountPage> {
                           height,
                           'Sound',
                           Switch(
-                            activeColor: const Color(0xFF00FFFF),
-                            value: soundSwitch,
-                            onChanged: (value) => setState(() {
-                              soundSwitch = value;
-                              AppStorage().write(musicSwitchKey, value.toString());
-                              log("changed music value $value");
-                            }),
-                          ),
+                              activeColor: const Color(0xFF00FFFF),
+                              value: soundSwitch,
+                              onChanged: (value) async {
+                                soundSwitch = value;
+                                setState(() {});
+                                if (value) {
+                                  await MyApp.playPlayer(context);
+                                } else {
+                                  await MyApp.stopPlayer(context);
+                                }
+                                AppStorage()
+                                    .write(musicSwitchKey, value.toString());
+                                log("changed music value $value");
+                              }),
                         ),
                       ),
                       Padding(
@@ -250,7 +262,9 @@ class _AccountPageState extends State<AccountPage> {
                         padding: EdgeInsets.only(top: 3 / 96 * height),
                         child: PresButton(
                           onTap: () {
-                            showConfirm(context, 'Are you sure you want to get out?', () async {
+                            showConfirm(
+                                context, 'Are you sure you want to get out?',
+                                () async {
                               await AppStorage().remove('jwt');
                               //await AppStorage().remove('pin');
                               //await AppStorage().remove('wallet_adress');
