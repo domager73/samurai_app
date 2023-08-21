@@ -29,7 +29,7 @@ class _AccountPageState extends State<AccountPage> {
     scrollController = ScrollController();
     googleAuthenticatorSwitch = false; //TODO
     emailAuthenticatorSwitch = false; //TODO
-    soundSwitch = false; //TODO
+    soundSwitch = true; //TODO
     final useTfa = AppStorage().read('use-tfa');
     tfaSwitch = useTfa != null && useTfa == '1';
   }
