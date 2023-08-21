@@ -20,8 +20,8 @@ class _AccountPageState extends State<AccountPage> {
   late final ScrollController scrollController;
   late bool googleAuthenticatorSwitch;
   late bool emailAuthenticatorSwitch;
-  late bool soundSwitch;
   late bool tfaSwitch;
+  late bool soundSwitch;
 
   @override
   void initState() {
@@ -29,7 +29,7 @@ class _AccountPageState extends State<AccountPage> {
     scrollController = ScrollController();
     googleAuthenticatorSwitch = false; //TODO
     emailAuthenticatorSwitch = false; //TODO
-    soundSwitch = true; //TODO
+    soundSwitch = true;
     final useTfa = AppStorage().read('use-tfa');
     tfaSwitch = useTfa != null && useTfa == '1';
   }
@@ -42,8 +42,14 @@ class _AccountPageState extends State<AccountPage> {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery
+        .of(context)
+        .size
+        .width;
+    final height = MediaQuery
+        .of(context)
+        .size
+        .height;
     return ValueListenableBuilder(
         valueListenable: AppStorage().box.listenable(),
         builder: (context, box, widget) {
@@ -97,14 +103,20 @@ class _AccountPageState extends State<AccountPage> {
                                       ),
                                     ),
                                     Padding(
-                                      padding: EdgeInsets.only(top: 2 / 96 * height),
+                                      padding:
+                                      EdgeInsets.only(top: 2 / 96 * height),
                                       child: PresButton(
-                                        onTap: () => AccountPageComponents.openChangeEmailModalPage(
-                                          context: context,
-                                          width: width,
-                                          height: height,
-                                        ),
-                                        params: {'width': width, 'height': height},
+                                        onTap: () =>
+                                            AccountPageComponents
+                                                .openChangeEmailModalPage(
+                                              context: context,
+                                              width: width,
+                                              height: height,
+                                            ),
+                                        params: {
+                                          'width': width,
+                                          'height': height
+                                        },
                                         child: changeEmailBtn,
                                       ),
                                     ),
@@ -155,9 +167,10 @@ class _AccountPageState extends State<AccountPage> {
                           Switch(
                             activeColor: const Color(0xFF00FFFF),
                             value: soundSwitch,
-                            onChanged: (value) => setState(() {
-                              soundSwitch = value;
-                            }),
+                            onChanged: (value) =>
+                                setState(() {
+                                  soundSwitch = value;
+                                }),
                           ),
                         ),
                       ),
@@ -169,11 +182,13 @@ class _AccountPageState extends State<AccountPage> {
                           Switch(
                             activeColor: const Color(0xFF00FFFF),
                             value: tfaSwitch,
-                            onChanged: (value) => setState(() {
-                              tfaSwitch = value;
-                              AppStorage().write('use-tfa', value ? '1' : '0');
-                              Rest.checkUpdateUserUseTfa(value);
-                            }),
+                            onChanged: (value) =>
+                                setState(() {
+                                  tfaSwitch = value;
+                                  AppStorage().write(
+                                      'use-tfa', value ? '1' : '0');
+                                  Rest.checkUpdateUserUseTfa(value);
+                                }),
                           ),
                         ),
                       ),
@@ -245,26 +260,28 @@ class _AccountPageState extends State<AccountPage> {
                         padding: EdgeInsets.only(top: 3 / 96 * height),
                         child: PresButton(
                           onTap: () {
-                            showConfirm(context, 'Are you sure you want to get out?', () async {
-                              await AppStorage().remove('jwt');
-                              //await AppStorage().remove('pin');
-                              //await AppStorage().remove('wallet_adress');
-                              //await AppStorage().remove('wallet_mnemonic');
-                              await AppStorage().remove('user');
-                              if (mounted) {
-                                Navigator.of(context).pushNamedAndRemoveUntil(
-                                  '/login', (route) => false,
-                                );
-                              }
-                            });
+                            showConfirm(
+                                context, 'Are you sure you want to get out?',
+                                    () async {
+                                  await AppStorage().remove('jwt');
+                                  //await AppStorage().remove('pin');
+                                  //await AppStorage().remove('wallet_adress');
+                                  //await AppStorage().remove('wallet_mnemonic');
+                                  await AppStorage().remove('user');
+                                  if (mounted) {
+                                    Navigator.of(context)
+                                        .pushNamedAndRemoveUntil(
+                                      '/login',
+                                          (route) => false,
+                                    );
+                                  }
+                                });
                           },
                           params: {'width': width, 'height': height},
                           child: logoutBtn,
                         ),
                       ),
-                      SizedBox(
-                        height: height * 0.03
-                      ),
+                      SizedBox(height: height * 0.03),
                     ],
                   ),
                 ),
@@ -274,11 +291,9 @@ class _AccountPageState extends State<AccountPage> {
         });
   }
 
-  Widget getMainAccountTextWidget(
-    double height,
-    String title,
-    Widget endWidget,
-  ) {
+  Widget getMainAccountTextWidget(double height,
+      String title,
+      Widget endWidget,) {
     return SizedBox(
       height: 4 / 96 * height,
       child: Row(
@@ -305,11 +320,9 @@ class _AccountPageState extends State<AccountPage> {
     );
   }
 
-  Widget getSecondaryAccountTextWidget(
-    double height,
-    String title,
-    String endTitle,
-  ) {
+  Widget getSecondaryAccountTextWidget(double height,
+      String title,
+      String endTitle,) {
     return SizedBox(
       height: 4 / 96 * height,
       child: Row(

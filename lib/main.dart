@@ -24,13 +24,21 @@ Future<void> main() async {
   await Hive.box('prefs').put('appVer', packageInfo.version);
   TrustWalletCoreLib.init();
 
-  // final loopPlayeTwo = AudioPlayer();
-
   runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {
   MyApp({super.key});
+
+  static void stopPlayer(BuildContext context) {
+    _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
+    state?.stopPlayer();
+  }
+
+  static void playPlayer(BuildContext context) {
+    _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
+    state?.stopPlayer();
+  }
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -48,21 +56,31 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    _initMusic();
+    initMusic();
   }
 
-  Future<void> _initMusic() async {
+  Future<void> initMusic() async {
     player = AudioPlayer();
     List<String> musicAssets = [MusicAssets.mainLoop1, MusicAssets.mainLoop2];
     await player.setAsset(MusicAssets.mainLoop1);
     await player.play();
     await player.playerStateStream.listen((event) async {
+      print(event.processingState);
+
       switch (event.processingState) {
         case ProcessingState.completed:
           await player.setAsset(MusicAssets.mainLoop2);
           await player.play();
       }
     });
+  }
+
+  Future<void> stopPlayer()async {
+    await player.pause();
+  }
+
+  Future<void> playPlayer()async {
+    await player.play();
   }
 
   @override
@@ -90,7 +108,8 @@ class _MyAppState extends State<MyApp> {
         '/settings': (context) => const SettingsPage(),
         '/seed': (context) => const SeedPage(),
         '/enterSeed': (context) => const EnterSeedPage(),
-        '/viewWebChronic': (context) => const ViewWebPage(url: 'https://samurai-versus.io/chronicles'),
+        '/viewWebChronic': (context) =>
+            const ViewWebPage(url: 'https://samurai-versus.io/chronicles'),
       },
     );
   }
