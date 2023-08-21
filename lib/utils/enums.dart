@@ -13,10 +13,39 @@ class SamuraiType {
 }
 
 class MusicAssets {
-  static final mainLoop1 = "assets/music/mainLoop1.wav";
+  static String root = "assets/music";
 
-  static final mainLoop2 = "assets/music/mainLoop2.wav"; 
+  static final mainLoop1 = "$root/mainLoop1.wav";
+
+  static final mainLoop2 = "$root/mainLoop2.wav";
+
+  static final keybackSignCloseX = "$root/keybackSignCloseX.wav";
+
+  static final loading = "$root/loading.wav";
+
+  static final menuSettingSignWater = "$root/menuSettingSignWater.wav";
+
+  static final modalTextExplain = "$root/modalTextExplain.wav";
+
+  static final numbersCode = "$root/numbersCode.wav";
+
+  static final okCanselTrans = "$root/okCanselTrans.wav";
+
+  static final popupDownSubMenu = "$root/popupDownSubMenu.wav";
+
+  static final popupSubMenu = "$root/popupSubMenu.wav";
+
+  static final screenChange = "$root/screenChange.wav";
+
+  static final smallKeyLightning = "$root/smallKeyLightning.wav";
+
+  static final smallkeyRegAmountAll = "$root/smallkeyRegAmountAll.wav";
+
+  static final smallKeyWeaoponLighning = "$root/smallKeyWeaoponLighning.wav";
+
+  static final swipeBackward = "$root/swipeBackward.wav";
+
+  static final zeroAmountNumber = "$root/zeroAmountNumber.wav";
 }
-
 
 String musicSwitchKey = 'sound_value';
