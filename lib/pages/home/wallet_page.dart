@@ -36,7 +36,7 @@ class _WalletPageState extends State<WalletPage>
 
   late final TextEditingController transferTapDialogTextEditingController;
   late final TextEditingController
-  transferToAddressTapDialogTextEditingController;
+      transferToAddressTapDialogTextEditingController;
 
   late final TextEditingController swapTapDialogTextEditingController;
 
@@ -86,7 +86,7 @@ class _WalletPageState extends State<WalletPage>
       } catch (e) {
         continue;
       }
-      heroes.add(hero!);
+      heroes!.add(hero!);
     }
 
     return 0;
@@ -94,14 +94,8 @@ class _WalletPageState extends State<WalletPage>
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery
-        .of(context)
-        .size
-        .width;
-    final height = MediaQuery
-        .of(context)
-        .size
-        .height;
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
     return ValueListenableBuilder(
         valueListenable: AppStorage().box.listenable(),
         builder: (context, box, widget) {
@@ -187,7 +181,7 @@ class _WalletPageState extends State<WalletPage>
                 e['nameHero'],
                 e['iconHero'],
                 balance.toInt(),
-                    () {
+                () {
                   WalletPageComponents.openToGameModalPage(
                       context: context,
                       width: width,
@@ -199,13 +193,13 @@ class _WalletPageState extends State<WalletPage>
                       iconPath: e['logo_b'],
                       balance: balance.toInt(),
                       gas: (e['type'] != null && e['type'] == 'BNB'
-                          ? user['gasBnb']
-                          : user['gas']) ??
+                              ? user['gasBnb']
+                              : user['gas']) ??
                           0.0,
                       gasName: e['gasName'],
                       isbnb: e['type'] == 'BNB');
                 },
-                    () {
+                () {
                   WalletPageComponents.openTransferModalPageSamurai(
                       context: context,
                       width: width,
@@ -220,8 +214,8 @@ class _WalletPageState extends State<WalletPage>
                           (user['${e['name']}_balance_onchain'] ?? '0')
                               .toString()),
                       gas: (e['type'] != null && e['type'] == 'BNB'
-                          ? user['gasBnb']
-                          : user['gas']) ??
+                              ? user['gasBnb']
+                              : user['gas']) ??
                           0.0,
                       gasName: 'BNB');
                 },
@@ -249,33 +243,34 @@ class _WalletPageState extends State<WalletPage>
               controller: _heroesController,
               child: Column(
                 children: heroes
-                    .map((hero) =>
-                    getHero(
-                        height,
-                        width,
-                        hero['image'],
-                        hero['name'],
-                        hero['clan'],
-                        hero['chronicle'],
-                        hero['type'], () {
-                      WalletAPI.transferHero(
-                          wallet,
-                          WalletAPI.rootWalletAddressBnb,
-                          hero['heroId'])
-                          .then((value) {
-                        heroes = heroes.where((element) =>
-                        element['heroId'] != hero['heroId']).toList();
-                        setState(() {});
-                      });
-                    }, () {
-                      WalletPageComponents.openTransferModalPageHero(
-                          context: context,
-                          width: width,
-                          height: height,
-                          wallet: wallet,
-                          iconPath: 'assets/hero_nft_bsc.svg',
-                          heroId: hero['heroId']);
-                    }))
+                    .map((hero) => getHero(
+                            height,
+                            width,
+                            hero['image'],
+                            hero['name'],
+                            hero['clan'],
+                            hero['chronicle'],
+                            hero['type'], () async {
+                          showSpinner(context);
+                          await WalletAPI.transferHero(
+                                  wallet,
+                                  WalletAPI.rootWalletAddressBnb,
+                                  hero['heroId'])
+                              .then((value) {
+                            heroes.where((element) =>
+                                element['heroId'] == hero['heroId']);
+                            setState(() {});
+                          });
+                          hideSpinner(context);
+                        }, () {
+                          WalletPageComponents.openTransferModalPageHero(
+                              context: context,
+                              width: width,
+                              height: height,
+                              wallet: wallet,
+                              iconPath: 'assets/hero_nft_bsc.svg',
+                              heroId: hero['heroId']);
+                        }))
                     .toList(),
               ),
             ),
@@ -287,15 +282,17 @@ class _WalletPageState extends State<WalletPage>
     );
   }
 
-  Widget getHero(double height,
-      double width,
-      String heroPath,
-      String heroName,
-      String heroClass,
-      bool inChronicles,
-      String heroRare,
-      Function toGame,
-      Function transfer,) {
+  Widget getHero(
+    double height,
+    double width,
+    String heroPath,
+    String heroName,
+    String heroClass,
+    bool inChronicles,
+    String heroRare,
+    Function toGame,
+    Function transfer,
+  ) {
     return Container(
       height: width * 0.9 * 0.6,
       width: width * 0.9,
@@ -310,8 +307,8 @@ class _WalletPageState extends State<WalletPage>
               heroRare == 'shogun'
                   ? 'assets/pages/homepage/heroes/feudal_border.svg'
                   : heroRare == 'daimyo'
-                  ? 'assets/pages/homepage/heroes/diamyo_border.svg'
-                  : 'assets/pages/homepage/heroes/hatamoto_border.svg',
+                      ? 'assets/pages/homepage/heroes/diamyo_border.svg'
+                      : 'assets/pages/homepage/heroes/hatamoto_border.svg',
               width: width * 0.9,
             ),
           ),
@@ -358,8 +355,8 @@ class _WalletPageState extends State<WalletPage>
                             color: heroRare == 'feudal'
                                 ? const Color(0xFF2589FF)
                                 : heroRare == 'diamyo'
-                                ? const Color(0xFFFF0049)
-                                : const Color(0xFF00E417),
+                                    ? const Color(0xFFFF0049)
+                                    : const Color(0xFF00E417),
                           ),
                         ),
                         Padding(
@@ -429,14 +426,16 @@ class _WalletPageState extends State<WalletPage>
     );
   }
 
-  Widget getSamurai(double height,
-      double width,
-      String samuraiPath,
-      String samuraiName,
-      String samuraiLogoPath,
-      int amount,
-      Function toGame,
-      Function transfer,) {
+  Widget getSamurai(
+    double height,
+    double width,
+    String samuraiPath,
+    String samuraiName,
+    String samuraiLogoPath,
+    int amount,
+    Function toGame,
+    Function transfer,
+  ) {
     return Container(
       height: width * 0.9 * 0.6,
       width: width * 0.9,
@@ -627,30 +626,30 @@ class _WalletPageState extends State<WalletPage>
             double.parse(
                 (user['${e['name']}_balance_onchain'] ?? '0.0').toString()),
             e['icon'],
-                () {
+            () {
               WalletPageComponents.openSwapModalPage(
-                  context: context,
-                  width: width,
-                  height: height,
-                  wallet: wallet,
-                  tokenAdress: e['address'],
-                  token: e['nameToken'],
-                  typeToken: e['typeToken'],
-                  walletAddress: walletAddress,
-                  iconPath: e['logo_b'],
-                  balance: double.parse(
-                      (user['${e['name']}_balance_onchain'] ?? '0.0')
-                          .toString()),
-                  balanceGame: double.parse(
-                      (user['${e['name']}_balance'] ?? '0.0').toString()),
-                  gasName: e['gasName'],
-                  gas: (e['type'] != null && e['type'] == 'BNB'
-                      ? user['gasBnb']
-                      : user['gas']) ??
-                      0.0)
+                      context: context,
+                      width: width,
+                      height: height,
+                      wallet: wallet,
+                      tokenAdress: e['address'],
+                      token: e['nameToken'],
+                      typeToken: e['typeToken'],
+                      walletAddress: walletAddress,
+                      iconPath: e['logo_b'],
+                      balance: double.parse(
+                          (user['${e['name']}_balance_onchain'] ?? '0.0')
+                              .toString()),
+                      balanceGame: double.parse(
+                          (user['${e['name']}_balance'] ?? '0.0').toString()),
+                      gasName: e['gasName'],
+                      gas: (e['type'] != null && e['type'] == 'BNB'
+                              ? user['gasBnb']
+                              : user['gas']) ??
+                          0.0)
                   .then((_) => AppStorage().updateUserWallet());
             },
-                () {
+            () {
               WalletPageComponents.openTransferModalPageSamurai(
                   context: context,
                   width: width,
@@ -665,8 +664,8 @@ class _WalletPageState extends State<WalletPage>
                           .toString()),
                   gasName: e['gasName'],
                   gas: (e['type'] != null && e['type'] == 'BNB'
-                      ? user['gasBnb']
-                      : user['gas']) ??
+                          ? user['gasBnb']
+                          : user['gas']) ??
                       0.0);
             },
           ),
@@ -688,13 +687,15 @@ class _WalletPageState extends State<WalletPage>
     );
   }
 
-  Widget getExchanger(double height,
-      double width,
-      double balanceIngame,
-      double balanceOnchain,
-      String iconPath,
-      Function onSwapTap,
-      Function onExportTap,) {
+  Widget getExchanger(
+    double height,
+    double width,
+    double balanceIngame,
+    double balanceOnchain,
+    String iconPath,
+    Function onSwapTap,
+    Function onExportTap,
+  ) {
     return Container(
       margin: EdgeInsets.symmetric(
         horizontal: width * 0.05,

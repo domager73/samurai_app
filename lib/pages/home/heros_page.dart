@@ -12,6 +12,9 @@ import '../../components/anim_button.dart';
 import '../../components/pop_up_spinner.dart';
 import '../../components/show_error.dart';
 import '../../components/storage.dart';
+import '../../models/dp.dart';
+import '../../utils/enums.dart';
+import '../../widgets/custom_snackbar.dart';
 import 'hero_page_components.dart';
 
 class HerosPage extends StatefulWidget {
@@ -28,12 +31,8 @@ class _HerosPageState extends State<HerosPage>
   late final TabController _tabController;
 
   late Map<String, dynamic> info;
-  double? waterDp = 0;
-  double? fireDp = 0;
-  int? fireUnclaimedDp = 0;
-  int? waterUnclaimedDp = 0;
-  double maxwaterDp = 0;
-  double maxfireDp = 0;
+  Dp? water;
+  Dp? fire;
 
   String? samuraiDpExpiresDate;
   late Timer _timer;
@@ -79,12 +78,9 @@ class _HerosPageState extends State<HerosPage>
   Future<bool> loadInfo() async {
     await getHeroInfo().then((value) {
       info = value;
-      waterDp = info['fire_dp_balance'].toDouble();
-      fireDp = info['water_dp_balance'].toDouble();
-      fireUnclaimedDp = 0;
-      waterUnclaimedDp = 0;
-      maxwaterDp = info['fire_dp_bar'].toDouble();
-      maxfireDp = info['water_dp_bar'].toDouble();
+
+      water = Dp.fromJson(json: info['water']);
+      fire = Dp.fromJson(json: info['fire']);
     }).catchError((e) {
       print(e);
     });
@@ -200,7 +196,7 @@ class _HerosPageState extends State<HerosPage>
           padding: EdgeInsets.only(
               top: width * 0.04, left: width * 0.05, right: width * 0.04),
           child: progressBar(context,
-              widget.craftSwitch == 0 ? maxwaterDp : maxfireDp, width)),
+              widget.craftSwitch == 0 ? water!.bar : fire!.bar, width)),
       Padding(
         padding: EdgeInsets.only(top: width * 0.06),
         child: PresButton(
@@ -209,7 +205,8 @@ class _HerosPageState extends State<HerosPage>
             (route) => false,
             arguments: 'samuraiMint${widget.craftSwitch}',
           ),
-          disabled: ((widget.craftSwitch == 0 ? waterDp : fireDp) ?? 0.0) < 12,
+          disabled:
+              (widget.craftSwitch == 0 ? water!.balance : fire!.balance) < 12,
           params: {'text': 'samuari mint', 'width': width, 'height': height},
           child: loginBtn,
         ),
@@ -321,10 +318,8 @@ class _HerosPageState extends State<HerosPage>
               padding: EdgeInsets.only(top: width * 0.03, bottom: width * 0.03),
               child: AnimButton(
                   onTap: () async {
-                    transferSamurai(heroId).then((value) {
-                      loadInfo();
-                      setState(() {});
-                    });
+                    await transferSamurai(heroId);
+                    await loadInfo().then((value) => setState(() {}));
                   },
                   shadowType: 2,
                   child: SvgPicture.asset(
@@ -407,7 +402,8 @@ class _HerosPageState extends State<HerosPage>
                               fontWeight: FontWeight.w700,
                               color: const Color(0xFF00FFFF),
                             )),
-                        Text("+${getDaylyDp()} DP ",
+                        Text(
+                            "+${widget.craftSwitch == 0 ? water!.perDay : fire!.perDay} DP ",
                             style: GoogleFonts.spaceMono(
                               fontSize: width * 0.034,
                               fontWeight: FontWeight.w700,
@@ -421,19 +417,39 @@ class _HerosPageState extends State<HerosPage>
                 child: Stack(children: [
                   AnimButton(
                     onTap: () {
-                      Rest.sendClameHero(widget.craftSwitch == 0
-                              ? "WATER_HERO_MATIC"
-                              : "FIRE_HERO_MATIC")
+                      if (water!.balance >= water!.bar &&
+                          widget.craftSwitch == 0) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            buildCustomSnackbar(
+                                context, 'Your water dp is FULL', false));
+
+                        return;
+                      }
+
+                      if (fire!.balance >= fire!.bar &&
+                          widget.craftSwitch == 1) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            buildCustomSnackbar(
+                                context, 'Your fiure dp is FULL', false));
+
+                        return;
+                      }
+
+                      Rest.sendClameHero(
+                              widget.craftSwitch == 0 ? 'water' : 'fire')
                           .then((value) {
-                        loadInfo();
+                        loadInfo().then((value) => setState(() {}));
                       }).catchError((_) {});
                     },
+                    disabled: !((widget.craftSwitch == 0
+                            ? water!.unclaimed
+                            : fire!.unclaimed) >
+                        0),
                     shadowType: 1,
                     child: SvgPicture.asset(
-                        (((widget.craftSwitch == 0
-                                        ? waterUnclaimedDp
-                                        : fireUnclaimedDp) ??
-                                    0) >
+                        ((widget.craftSwitch == 0
+                                    ? water!.unclaimed
+                                    : fire!.unclaimed) >
                                 0)
                             ? widget.craftSwitch == 0
                                 ? 'assets/pages/homepage/craft/btn_clame_water.svg'
@@ -446,14 +462,13 @@ class _HerosPageState extends State<HerosPage>
                       padding: EdgeInsets.only(
                           top: width * 0.086, left: width * 0.23),
                       child: Text(
-                          "${(widget.craftSwitch == 0 ? waterUnclaimedDp : fireUnclaimedDp) ?? 0} DP",
+                          "${(widget.craftSwitch == 0 ? water!.unclaimed : fire!.unclaimed) ?? 0} DP",
                           style: GoogleFonts.spaceMono(
                             fontWeight: FontWeight.w700,
                             fontSize: width * 0.028,
-                            color: (((widget.craftSwitch == 0
-                                            ? waterUnclaimedDp
-                                            : fireUnclaimedDp) ??
-                                        0) >
+                            color: ((widget.craftSwitch == 0
+                                        ? water!.unclaimed
+                                        : fire!.unclaimed) >
                                     0)
                                 ? const Color(0xFF00FFFF)
                                 : Colors.grey,
@@ -463,23 +478,23 @@ class _HerosPageState extends State<HerosPage>
     ]);
   }
 
-  Widget progressBar(BuildContext context, double maxDp, double width) {
-    double xp = (widget.craftSwitch == 0 ? waterDp : fireDp) ?? 0.0;
-    if (xp > maxDp) {
-      xp = maxDp;
+  Widget progressBar(BuildContext context, int maxDp, double width) {
+    int balance = widget.craftSwitch == 0 ? water!.balance : fire!.balance;
+
+    if (balance > maxDp) {
+      balance = maxDp;
     }
-    print('maxDp $maxDp');
-    print('Dp $xp');
+
     return Column(children: [
       Stack(children: [
         SvgPicture.asset(
           'assets/pages/homepage/heroes/progress.svg',
           fit: BoxFit.fitWidth,
-          width: width - width * 0.09,
+          width: width * 0.91,
         ),
         Container(
           margin: EdgeInsets.only(top: width * 0.002),
-          width: (width - width * 0.09) * (xp + 1) / (maxDp * 1.12),
+          width: (width * 0.91) * balance / maxDp,
           height: width * 0.041,
           decoration: BoxDecoration(
             color: widget.craftSwitch == 0
@@ -499,7 +514,7 @@ class _HerosPageState extends State<HerosPage>
                   color: const Color(0xFF00FFFF),
                 )),
             Text(
-                '${((widget.craftSwitch == 0 ? waterDp : fireDp) ?? 0.0).toStringAsFixed(0)}/${maxDp.round()}',
+                '${(widget.craftSwitch == 0 ? water!.balance : fire!.balance).toStringAsFixed(0)}/${maxDp.round()}',
                 style: GoogleFonts.spaceMono(
                   fontSize: width * 0.038,
                   fontWeight: FontWeight.w700,
@@ -507,18 +522,5 @@ class _HerosPageState extends State<HerosPage>
                 ))
           ]))
     ]);
-  }
-
-  String getDaylyDp() {
-    // if (widget.craftSwitch == 0) {
-    //   if (lockedWaterSamuraiBalance != null) {
-    //     return (lockedWaterSamuraiBalance! ~/ 5).toString();
-    //   }
-    // } else {
-    //   if (lockedFireSamuraiBalance != null) {
-    //     return (lockedFireSamuraiBalance! ~/ 5).toString();
-    //   }
-    // }
-    return "0";
   }
 }

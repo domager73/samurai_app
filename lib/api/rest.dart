@@ -304,8 +304,10 @@ class Rest {
     String? jwt = AppStorage().read('jwt');
     try {
       final data = await dio.post(
-        '$serverIp/api/users/hero/bank/dp/claim/$type/HATAMOTO',
-        data: {},
+        '$serverIp/api/users/hero/bank/dp/claim',
+        data: {
+          'clan': type
+        },
         options: Options(
           headers: {
             'Authorization': 'Bearer $jwt',
@@ -403,9 +405,7 @@ class Rest {
     }
   }
 
-  static Future<Map<String, dynamic>> placeHeroToStake(int heroId) async {
-    // replace hero to a stake state
-
+  static Future<dynamic> placeHeroToStake(int heroId) async {
     String URL = "$serverIp/api/users/hero/transfer/staking";
     final jwtToken = AppStorage().read('jwt');
 

@@ -7,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:samurai_app/components/pop_up_spinner.dart';
 import 'package:samurai_app/components/storage.dart';
 import 'package:samurai_app/pages/home/craft_page.dart';
 import 'package:samurai_app/pages/home/home_main_page.dart';
@@ -47,26 +48,45 @@ class _HomePageState extends State<HomePage> {
     Future.delayed(
       Duration.zero,
     ).then((value) {
-      if (ModalRoute.of(context)!.settings.arguments != null) {
-        if (ModalRoute.of(context)!.settings.arguments == 'wallet') {
+      if (ModalRoute
+          .of(context)!
+          .settings
+          .arguments != null) {
+        if (ModalRoute
+            .of(context)!
+            .settings
+            .arguments == 'wallet') {
           setState(() {
             selectedPage = 5;
           });
         }
-        if (ModalRoute.of(context)!.settings.arguments == 'samurai') {
+        if (ModalRoute
+            .of(context)!
+            .settings
+            .arguments == 'samurai') {
           setState(() {
             selectedPage = 0;
           });
         }
 
-        if (ModalRoute.of(context)!.settings.arguments == 'heros') {
+        if (ModalRoute
+            .of(context)!
+            .settings
+            .arguments == 'heros') {
           setState(() {
             selectedPage = 1;
           });
         }
-        if (ModalRoute.of(context)!.settings.arguments == 'heroMint0' ||
-            ModalRoute.of(context)!.settings.arguments == 'heroMint1') {
-          herosSwitch = int.parse(ModalRoute.of(context)!
+        if (ModalRoute
+            .of(context)!
+            .settings
+            .arguments == 'heroMint0' ||
+            ModalRoute
+                .of(context)!
+                .settings
+                .arguments == 'heroMint1') {
+          herosSwitch = int.parse(ModalRoute
+              .of(context)!
               .settings
               .arguments
               .toString()
@@ -75,9 +95,16 @@ class _HomePageState extends State<HomePage> {
             selectedPage = 6;
           });
         }
-        if (ModalRoute.of(context)!.settings.arguments == 'samuraiMint0' ||
-            ModalRoute.of(context)!.settings.arguments == 'samuraiMint1') {
-          herosSwitch = int.parse(ModalRoute.of(context)!
+        if (ModalRoute
+            .of(context)!
+            .settings
+            .arguments == 'samuraiMint0' ||
+            ModalRoute
+                .of(context)!
+                .settings
+                .arguments == 'samuraiMint1') {
+          herosSwitch = int.parse(ModalRoute
+              .of(context)!
               .settings
               .arguments
               .toString()
@@ -119,7 +146,10 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> updateBalances() async {
     if (_lastUpdate.microsecond <
-        DateTime.now().subtract(const Duration(seconds: 30)).microsecond) {
+        DateTime
+            .now()
+            .subtract(const Duration(seconds: 30))
+            .microsecond) {
       _lastUpdate = DateTime.now();
       AppStorage().updateUserWallet();
     }
@@ -127,8 +157,14 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery
+        .of(context)
+        .size
+        .width;
+    final height = MediaQuery
+        .of(context)
+        .size
+        .height;
     precacheImage(homeMainBg, context);
     precacheImage(homeForgeBg, context);
     precacheImage(homeStorageBg, context);
@@ -144,24 +180,24 @@ class _HomePageState extends State<HomePage> {
         height: height,
         decoration: BoxDecoration(
             image: selectedPage == 0 ||
-                    selectedPage == 2 ||
-                    selectedPage == 3 ||
-                    selectedPage == 4 ||
-                    selectedPage == 6
+                selectedPage == 2 ||
+                selectedPage == 3 ||
+                selectedPage == 4 ||
+                selectedPage == 6
                 ? DecorationImage(
-                    image: selectedPage == 0
-                        ? (craftSwitch == 0 ? waterBg : fireBg)
-                        : selectedPage == 3
-                            ? homeForgeBg
-                            : selectedPage == 4
-                                ? homeStorageBg
-                                : selectedPage == 6
-                                    ? (craftSwitch == 0
-                                        ? heroMintWaterBg
-                                        : heroMintFireBg)
-                                    : homeMainBg,
-                    fit: BoxFit.fitWidth,
-                  )
+              image: selectedPage == 0
+                  ? (craftSwitch == 0 ? waterBg : fireBg)
+                  : selectedPage == 3
+                  ? homeForgeBg
+                  : selectedPage == 4
+                  ? homeStorageBg
+                  : selectedPage == 6
+                  ? (craftSwitch == 0
+                  ? heroMintWaterBg
+                  : heroMintFireBg)
+                  : homeMainBg,
+              fit: BoxFit.fitWidth,
+            )
                 : null),
         child: Stack(
           children: [
@@ -196,8 +232,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget bottomNavigationAndAppBar(
-      double width, double height, BuildContext context) {
+  Widget bottomNavigationAndAppBar(double width, double height,
+      BuildContext context) {
     return Stack(
       children: [
         SizedBox(
@@ -227,7 +263,10 @@ class _HomePageState extends State<HomePage> {
                         }
                         return Padding(
                           padding: EdgeInsets.only(
-                            top: MediaQuery.of(context).viewPadding.top,
+                            top: MediaQuery
+                                .of(context)
+                                .viewPadding
+                                .top,
                             bottom: 12 / 880 * height,
                             left: 25 / 390 * width,
                             right: 25 / 390 * width,
@@ -238,9 +277,10 @@ class _HomePageState extends State<HomePage> {
                                 Material(
                                   color: Colors.transparent,
                                   child: PresButton(
-                                    onTap: () => setState(() {
-                                      isMenuOpened = true;
-                                    }),
+                                    onTap: () =>
+                                        setState(() {
+                                          isMenuOpened = true;
+                                        }),
                                     params: {'width': width},
                                     child: menuBtn,
                                   ),
@@ -259,8 +299,13 @@ class _HomePageState extends State<HomePage> {
                                 if (selectedPage == 5)
                                   AnimButton(
                                       shadowType: 2,
-                                      onTap: () async =>
-                                          await AppStorage().updateUserWallet(),
+                                      onTap: () async {
+                                        showSpinner(context);
+
+                                        await AppStorage().updateUserWallet();
+
+                                        hideSpinner(context);
+                                      },
                                       child: SvgPicture.asset(
                                         'assets/pages/homepage/trade.svg',
                                         fit: BoxFit.fitHeight,
@@ -278,8 +323,8 @@ class _HomePageState extends State<HomePage> {
                                             right: 20 / 390 * width),
                                         child: Text(
                                             double.parse(user?['bnb_balance']
-                                                        .toString() ??
-                                                    '0.0')
+                                                .toString() ??
+                                                '0.0')
                                                 .toStringAsFixed(5),
                                             style: GoogleFonts.spaceMono(
                                               fontSize: 16 / 844 * height,
@@ -291,44 +336,44 @@ class _HomePageState extends State<HomePage> {
                                   color: Colors.transparent,
                                   child: selectedPage != 5
                                       ? PresButton(
-                                          onTap: () {
-                                            String? pin =
-                                                AppStorage().read('pin');
-                                            String? walletAdress = AppStorage()
-                                                .read('wallet_adress');
-                                            String? walletMnemonic =
-                                                AppStorage()
-                                                    .read('wallet_mnemonic');
-                                            if (walletAdress == null ||
-                                                walletMnemonic == null) {
-                                              Navigator.pushReplacementNamed(
-                                                  context, '/createWallet');
-                                            } else if (pin == null) {
-                                              Navigator.pushReplacementNamed(
-                                                context,
-                                                '/pin',
-                                                arguments:
-                                                    PinCodePageType.create,
-                                              );
-                                            } else {
-                                              Navigator.of(context).pushNamed(
-                                                '/pin',
-                                                arguments:
-                                                    PinCodePageType.enter,
-                                              );
-                                            }
-                                          },
-                                          params: {'width': width},
-                                          child: menuWalletBtn)
+                                      onTap: () {
+                                        String? pin =
+                                        AppStorage().read('pin');
+                                        String? walletAdress = AppStorage()
+                                            .read('wallet_adress');
+                                        String? walletMnemonic =
+                                        AppStorage()
+                                            .read('wallet_mnemonic');
+                                        if (walletAdress == null ||
+                                            walletMnemonic == null) {
+                                          Navigator.pushReplacementNamed(
+                                              context, '/createWallet');
+                                        } else if (pin == null) {
+                                          Navigator.pushReplacementNamed(
+                                            context,
+                                            '/pin',
+                                            arguments:
+                                            PinCodePageType.create,
+                                          );
+                                        } else {
+                                          Navigator.of(context).pushNamed(
+                                            '/pin',
+                                            arguments:
+                                            PinCodePageType.enter,
+                                          );
+                                        }
+                                      },
+                                      params: {'width': width},
+                                      child: menuWalletBtn)
                                       : AnimButton(
-                                          shadowType: 2,
-                                          onTap: () {
-                                            Navigator.of(context)
-                                                .pushNamed('/settings');
-                                          },
-                                          child: SvgPicture.asset(
-                                              'assets/pages/homepage/settings.svg'),
-                                        ),
+                                    shadowType: 2,
+                                    onTap: () {
+                                      Navigator.of(context)
+                                          .pushNamed('/settings');
+                                    },
+                                    child: SvgPicture.asset(
+                                        'assets/pages/homepage/settings.svg'),
+                                  ),
                                 ),
                               ],
                             ),
@@ -347,10 +392,10 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     IgnorePointer(
                         child: SvgPicture.asset(
-                      'assets/pages/homepage/bottom_navigation_background.svg',
-                      width: width,
-                      fit: BoxFit.fill,
-                    )),
+                          'assets/pages/homepage/bottom_navigation_background.svg',
+                          width: width,
+                          fit: BoxFit.fill,
+                        )),
                     Column(
                       children: [
                         const Spacer(),
@@ -419,9 +464,9 @@ class _HomePageState extends State<HomePage> {
             ])),
         isMenuOpened
             ? SizedBox(
-                width: width,
-                height: height,
-                child: getMenu(width, height, context))
+            width: width,
+            height: height,
+            child: getMenu(width, height, context))
             : const SizedBox(),
       ],
     );
@@ -431,187 +476,191 @@ class _HomePageState extends State<HomePage> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      builder: (BuildContext context) => SizedBox(
-        width: width,
-        height: height * 0.65,
-        child: Stack(
-          children: [
-            ClipRRect(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(32),
-                topRight: Radius.circular(32),
-              ),
-              child: SizedBox(
-                width: width,
-                height: height * 0.65,
-                child: Image.asset(
-                  'assets/modal_bottom_sheet_bg.png',
-                  fit: BoxFit.fill,
+      builder: (BuildContext context) =>
+          SizedBox(
+            width: width,
+            height: height * 0.65,
+            child: Stack(
+              children: [
+                ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(32),
+                    topRight: Radius.circular(32),
+                  ),
+                  child: SizedBox(
+                    width: width,
+                    height: height * 0.65,
+                    child: Image.asset(
+                      'assets/modal_bottom_sheet_bg.png',
+                      fit: BoxFit.fill,
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(28),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Padding(
+                  padding: const EdgeInsets.all(28),
+                  child: Column(
                     children: [
-                      PresButton(
-                        onTap: () {
-                          if (kDebugMode) {
-                            print(AppStorage().read('wallet_adress')!);
-                          }
-                          Navigator.of(context).pop();
-                        },
-                        params: {'width': width},
-                        child: backBtn,
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding:
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          PresButton(
+                            onTap: () {
+                              if (kDebugMode) {
+                                print(AppStorage().read('wallet_adress')!);
+                              }
+                              Navigator.of(context).pop();
+                            },
+                            params: {'width': width},
+                            child: backBtn,
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding:
                               EdgeInsets.symmetric(horizontal: width * 0.1),
-                          child: Center(
-                            child: FittedBox(
-                              child: Text(
-                                'receive',
-                                style: TextStyle(
-                                  fontFamily: 'AmazObitaemOstrovItalic',
-                                  fontSize: 37 / 844 * height,
-                                  color: Colors.white,
+                              child: Center(
+                                child: FittedBox(
+                                  child: Text(
+                                    'receive',
+                                    style: TextStyle(
+                                      fontFamily: 'AmazObitaemOstrovItalic',
+                                      fontSize: 37 / 844 * height,
+                                      color: Colors.white,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
                           ),
+                          AnimButton(
+                            shadowType: 2,
+                            onTap: () async {
+                              showError(context,
+                                  'This is a wallet linked to your game account. You can refill it in any convenient way by copying the address or using the QR code.\nAttention! Send tokens only on BEP20 (BSC) chain, otherwise the tokens will be lost!',
+                                  type: 2);
+                            },
+                            child: SvgPicture.asset(
+                              'assets/pages/homepage/craft/info.svg',
+                              height: width * 0.12,
+                              width: width * 0.12,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const Spacer(flex: 18),
+                      Expanded(
+                        flex: 200,
+                        child: Container(
+                          padding: EdgeInsets.all(width * 0.01),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: QrImageView(
+                            data: AppStorage().read('wallet_adress')!,
+                            version: QrVersions.auto,
+                            eyeStyle: const QrEyeStyle(
+                              eyeShape: QrEyeShape.square,
+                              color: Colors.black,
+                            ),
+                          ),
                         ),
                       ),
-                      AnimButton(
-                        shadowType: 2,
-                        onTap: () async {
-                          showError(context,
-                              'This is a wallet linked to your game account. You can refill it in any convenient way by copying the address or using the QR code.\nAttention! Send tokens only on BEP20 (BSC) chain, otherwise the tokens will be lost!',
-                              type: 2);
-                        },
-                        child: SvgPicture.asset(
-                          'assets/pages/homepage/craft/info.svg',
-                          height: width * 0.12,
-                          width: width * 0.12,
+                      const Spacer(flex: 18),
+                      Expanded(
+                          flex: 16,
+                          child: FittedBox(
+                              fit: BoxFit.fitHeight,
+                              child: RichText(
+                                  text: TextSpan(
+                                    text: 'Your ',
+                                    style: GoogleFonts.spaceMono(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                    children: [
+                                      TextSpan(
+                                        text: 'BEP20 (BSC)',
+                                        style: GoogleFonts.spaceMono(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: ' Wallet Address:',
+                                        style: GoogleFonts.spaceMono(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                    ],
+                                  )))),
+                      const Spacer(flex: 8),
+                      FittedBox(
+                        fit: BoxFit.fitWidth,
+                        child: Text(
+                          AppStorage().read('wallet_adress')!,
+                          style: GoogleFonts.spaceMono(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
+                      ),
+                      const Spacer(flex: 18),
+                      PresButton(
+                        onTap: () async {
+                          await Clipboard.setData(
+                            ClipboardData(
+                              text: AppStorage().read('wallet_adress')!,
+                            ),
+                          ).then(
+                                (_) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    //shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(30.0))),
+                                    //backgroundColor: const Color(0xFF0D1238),
+                                      backgroundColor: Colors.transparent,
+                                      padding: const EdgeInsets.only(top: 30),
+                                      content: Container(
+                                          height: 0.1 * height,
+                                          decoration: const BoxDecoration(
+                                            color: Color(0xFF0D1238),
+                                            borderRadius: BorderRadius.only(
+                                                topRight: Radius.circular(30),
+                                                topLeft: Radius.circular(30)),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                  color: Color(0x2FFFFFFF),
+                                                  blurRadius: 30,
+                                                  spreadRadius: 30,
+                                                  offset: Offset(0, 20))
+                                            ],
+                                          ),
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                              'Copied to your clipboard!'
+                                                  .toUpperCase(),
+                                              style: TextStyle(
+                                                  fontSize: 0.036 * width,
+                                                  fontWeight: FontWeight.w700,
+                                                  color: const Color(
+                                                      0xFF00FFFF))))));
+                              Navigator.of(context).pop();
+                            },
+                          );
+                        },
+                        params: {
+                          'text': 'copy address',
+                          'width': width,
+                          'height': height
+                        },
+                        child: loginBtn,
                       ),
                     ],
                   ),
-                  const Spacer(flex: 18),
-                  Expanded(
-                    flex: 200,
-                    child: Container(
-                      padding: EdgeInsets.all(width * 0.01),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: QrImageView(
-                        data: AppStorage().read('wallet_adress')!,
-                        version: QrVersions.auto,
-                        eyeStyle: const QrEyeStyle(
-                          eyeShape: QrEyeShape.square,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const Spacer(flex: 18),
-                  Expanded(
-                      flex: 16,
-                      child: FittedBox(
-                          fit: BoxFit.fitHeight,
-                          child: RichText(
-                              text: TextSpan(
-                            text: 'Your ',
-                            style: GoogleFonts.spaceMono(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w400,
-                            ),
-                            children: [
-                              TextSpan(
-                                text: 'BEP20 (BSC)',
-                                style: GoogleFonts.spaceMono(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                              TextSpan(
-                                text: ' Wallet Address:',
-                                style: GoogleFonts.spaceMono(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ],
-                          )))),
-                  const Spacer(flex: 8),
-                  FittedBox(
-                    fit: BoxFit.fitWidth,
-                    child: Text(
-                      AppStorage().read('wallet_adress')!,
-                      style: GoogleFonts.spaceMono(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                  const Spacer(flex: 18),
-                  PresButton(
-                    onTap: () async {
-                      await Clipboard.setData(
-                        ClipboardData(
-                          text: AppStorage().read('wallet_adress')!,
-                        ),
-                      ).then(
-                        (_) {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              //shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(30.0))),
-                              //backgroundColor: const Color(0xFF0D1238),
-                              backgroundColor: Colors.transparent,
-                              padding: const EdgeInsets.only(top: 30),
-                              content: Container(
-                                  height: 0.1 * height,
-                                  decoration: const BoxDecoration(
-                                    color: Color(0xFF0D1238),
-                                    borderRadius: BorderRadius.only(
-                                        topRight: Radius.circular(30),
-                                        topLeft: Radius.circular(30)),
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: Color(0x2FFFFFFF),
-                                          blurRadius: 30,
-                                          spreadRadius: 30,
-                                          offset: Offset(0, 20))
-                                    ],
-                                  ),
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                      'Copied to your clipboard!'.toUpperCase(),
-                                      style: TextStyle(
-                                          fontSize: 0.036 * width,
-                                          fontWeight: FontWeight.w700,
-                                          color: const Color(0xFF00FFFF))))));
-                          Navigator.of(context).pop();
-                        },
-                      );
-                    },
-                    params: {
-                      'text': 'copy address',
-                      'width': width,
-                      'height': height
-                    },
-                    child: loginBtn,
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
+          ),
     );
   }
 
@@ -716,18 +765,20 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             Expanded(
                               child: getMenuButton(
-                                () => setState(() {
-                                  selectedPage = 7;
-                                  isMenuOpened = false;
-                                }),
+                                    () =>
+                                    setState(() {
+                                      selectedPage = 7;
+                                      isMenuOpened = false;
+                                    }),
                                 'ACCOUNT',
                                 height,
                               ),
                             ),
                             Expanded(
                               child: getMenuButton(
-                                () => Navigator.of(context)
-                                    .pushNamed('/viewWebChronic'),
+                                    () =>
+                                    Navigator.of(context)
+                                        .pushNamed('/viewWebChronic'),
                                 'CHRONICLES',
                                 height,
                               ),
@@ -760,9 +811,10 @@ class _HomePageState extends State<HomePage> {
                       Expanded(
                         flex: 80,
                         child: PresButton(
-                          onTap: () => setState(() {
-                            isMenuOpened = false;
-                          }),
+                          onTap: () =>
+                              setState(() {
+                                isMenuOpened = false;
+                              }),
                           params: const {},
                           child: menuCloseBtn,
                         ),
@@ -946,8 +998,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget switchWaterFire(
-      double width, double height, int valueSwitch, Function onSwitch) {
+  Widget switchWaterFire(double width, double height, int valueSwitch,
+      Function onSwitch) {
     return Container(
       width: width - width * 0.05,
       padding: EdgeInsets.only(left: 25 / 880 * height),
