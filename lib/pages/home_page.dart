@@ -7,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:samurai_app/components/pop_up_spinner.dart';
 import 'package:samurai_app/components/storage.dart';
@@ -16,11 +17,10 @@ import 'package:samurai_app/pages/home/home_main_page.dart';
 import 'package:samurai_app/pages/home/wallet_page.dart';
 import 'package:samurai_app/pages/pin_code_page.dart';
 
-import '../api/rest.dart';
-import '../api/wallet.dart';
 import '../components/anim_button.dart';
 import '../components/bg.dart';
 import '../components/show_error.dart';
+import '../utils/enums.dart';
 import 'home/account_page.dart';
 import 'home/hero_mint_page.dart';
 import 'home/heros_page.dart';
@@ -42,12 +42,13 @@ class _HomePageState extends State<HomePage> {
   int herosSwitch = 0;
   DateTime _lastUpdate = DateTime.now();
 
+  late AudioPlayer audioPlayer;
+
   String craftSwitchKey = 'craftSwitch';
 
   @override
   void initState() {
     super.initState();
-    GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.play();
     Future.delayed(
       Duration.zero,
     ).then((value) {
@@ -68,14 +69,24 @@ class _HomePageState extends State<HomePage> {
             selectedPage = 1;
           });
         }
-        if (ModalRoute.of(context)!.settings.arguments == 'heroMint0' || ModalRoute.of(context)!.settings.arguments == 'heroMint1') {
-          herosSwitch = int.parse(ModalRoute.of(context)!.settings.arguments.toString().substring(8, 9));
+        if (ModalRoute.of(context)!.settings.arguments == 'heroMint0' ||
+            ModalRoute.of(context)!.settings.arguments == 'heroMint1') {
+          herosSwitch = int.parse(ModalRoute.of(context)!
+              .settings
+              .arguments
+              .toString()
+              .substring(8, 9));
           setState(() {
             selectedPage = 6;
           });
         }
-        if (ModalRoute.of(context)!.settings.arguments == 'samuraiMint0' || ModalRoute.of(context)!.settings.arguments == 'samuraiMint1') {
-          herosSwitch = int.parse(ModalRoute.of(context)!.settings.arguments.toString().substring(11, 12));
+        if (ModalRoute.of(context)!.settings.arguments == 'samuraiMint0' ||
+            ModalRoute.of(context)!.settings.arguments == 'samuraiMint1') {
+          herosSwitch = int.parse(ModalRoute.of(context)!
+              .settings
+              .arguments
+              .toString()
+              .substring(11, 12));
           setState(() {
             selectedPage = 8;
           });
@@ -112,7 +123,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> updateBalances() async {
-    if (_lastUpdate.microsecond < DateTime.now().subtract(const Duration(seconds: 30)).microsecond) {
+    if (_lastUpdate.microsecond <
+        DateTime.now().subtract(const Duration(seconds: 30)).microsecond) {
       _lastUpdate = DateTime.now();
       AppStorage().updateUserWallet();
     }
@@ -136,7 +148,11 @@ class _HomePageState extends State<HomePage> {
         width: width,
         height: height,
         decoration: BoxDecoration(
-            image: selectedPage == 0 || selectedPage == 2 || selectedPage == 3 || selectedPage == 4 || selectedPage == 6
+            image: selectedPage == 0 ||
+                    selectedPage == 2 ||
+                    selectedPage == 3 ||
+                    selectedPage == 4 ||
+                    selectedPage == 6
                 ? DecorationImage(
                     image: selectedPage == 0
                         ? (craftSwitch == 0 ? waterBg : fireBg)
@@ -145,14 +161,20 @@ class _HomePageState extends State<HomePage> {
                             : selectedPage == 4
                                 ? homeStorageBg
                                 : selectedPage == 6
-                                    ? (craftSwitch == 0 ? heroMintWaterBg : heroMintFireBg)
+                                    ? (craftSwitch == 0
+                                        ? heroMintWaterBg
+                                        : heroMintFireBg)
                                     : homeMainBg,
                     fit: BoxFit.fitWidth,
                   )
                 : null),
         child: Stack(
           children: [
-            if (!(selectedPage == 0 || selectedPage == 2 || selectedPage == 3 || selectedPage == 4 || selectedPage == 6))
+            if (!(selectedPage == 0 ||
+                selectedPage == 2 ||
+                selectedPage == 3 ||
+                selectedPage == 4 ||
+                selectedPage == 6))
               SizedBox(
                 width: width,
                 height: height,
@@ -169,14 +191,18 @@ class _HomePageState extends State<HomePage> {
                   bottom: height - height * 0.9,
                 ),
                 child: getContent(width, height)),
-            SizedBox(width: width, height: height, child: bottomNavigationAndAppBar(width, height, context)),
+            SizedBox(
+                width: width,
+                height: height,
+                child: bottomNavigationAndAppBar(width, height, context)),
           ],
         ),
       ),
     );
   }
 
-  Widget bottomNavigationAndAppBar(double width, double height, BuildContext context) {
+  Widget bottomNavigationAndAppBar(
+      double width, double height, BuildContext context) {
     return Stack(
       children: [
         SizedBox(
@@ -257,8 +283,14 @@ class _HomePageState extends State<HomePage> {
                                       fit: BoxFit.contain,
                                     ),
                                     Padding(
-                                        padding: EdgeInsets.only(left: 10 / 390 * width, right: 20 / 390 * width),
-                                        child: Text(double.parse(user?['bnb_balance'].toString() ?? '0.0').toStringAsFixed(5),
+                                        padding: EdgeInsets.only(
+                                            left: 10 / 390 * width,
+                                            right: 20 / 390 * width),
+                                        child: Text(
+                                            double.parse(user?['bnb_balance']
+                                                        .toString() ??
+                                                    '0.0')
+                                                .toStringAsFixed(5),
                                             style: GoogleFonts.spaceMono(
                                               fontSize: 16 / 844 * height,
                                               color: Colors.white,
@@ -270,21 +302,29 @@ class _HomePageState extends State<HomePage> {
                                   child: selectedPage != 5
                                       ? PresButton(
                                           onTap: () {
-                                            String? pin = AppStorage().read('pin');
-                                            String? walletAdress = AppStorage().read('wallet_adress');
-                                            String? walletMnemonic = AppStorage().read('wallet_mnemonic');
-                                            if (walletAdress == null || walletMnemonic == null) {
-                                              Navigator.pushReplacementNamed(context, '/createWallet');
+                                            String? pin =
+                                                AppStorage().read('pin');
+                                            String? walletAdress = AppStorage()
+                                                .read('wallet_adress');
+                                            String? walletMnemonic =
+                                                AppStorage()
+                                                    .read('wallet_mnemonic');
+                                            if (walletAdress == null ||
+                                                walletMnemonic == null) {
+                                              Navigator.pushReplacementNamed(
+                                                  context, '/createWallet');
                                             } else if (pin == null) {
                                               Navigator.pushReplacementNamed(
                                                 context,
                                                 '/pin',
-                                                arguments: PinCodePageType.create,
+                                                arguments:
+                                                    PinCodePageType.create,
                                               );
                                             } else {
                                               Navigator.of(context).pushNamed(
                                                 '/pin',
-                                                arguments: PinCodePageType.enter,
+                                                arguments:
+                                                    PinCodePageType.enter,
                                               );
                                             }
                                           },
@@ -293,9 +333,11 @@ class _HomePageState extends State<HomePage> {
                                       : AnimButton(
                                           shadowType: 2,
                                           onTap: () {
-                                            Navigator.of(context).pushNamed('/settings');
+                                            Navigator.of(context)
+                                                .pushNamed('/settings');
                                           },
-                                          child: SvgPicture.asset('assets/pages/homepage/settings.svg'),
+                                          child: SvgPicture.asset(
+                                              'assets/pages/homepage/settings.svg'),
                                         ),
                                 ),
                               ],
@@ -335,19 +377,25 @@ class _HomePageState extends State<HomePage> {
                               children: [
                                 const Spacer(flex: 3),
                                 bottomNavigButton(
-                                  SvgPicture.asset('assets/pages/homepage/page_1.svg', fit: BoxFit.fitHeight),
+                                  SvgPicture.asset(
+                                      'assets/pages/homepage/page_1.svg',
+                                      fit: BoxFit.fitHeight),
                                   height,
                                   0,
                                 ),
                                 const Spacer(flex: 1),
                                 bottomNavigButton(
-                                  SvgPicture.asset('assets/pages/homepage/page_2.svg', fit: BoxFit.fitHeight),
+                                  SvgPicture.asset(
+                                      'assets/pages/homepage/page_2.svg',
+                                      fit: BoxFit.fitHeight),
                                   height,
                                   1,
                                 ),
                                 const Spacer(flex: 1),
                                 bottomNavigButton(
-                                  SvgPicture.asset('assets/pages/homepage/page_3.svg', fit: BoxFit.fitHeight),
+                                  SvgPicture.asset(
+                                      'assets/pages/homepage/page_3.svg',
+                                      fit: BoxFit.fitHeight),
                                   height,
                                   2,
                                 ),
@@ -362,7 +410,9 @@ class _HomePageState extends State<HomePage> {
                                 ),
                                 const Spacer(flex: 1),
                                 bottomNavigButton(
-                                  SvgPicture.asset('assets/pages/homepage/page_5.svg', fit: BoxFit.fitHeight),
+                                  SvgPicture.asset(
+                                      'assets/pages/homepage/page_5.svg',
+                                      fit: BoxFit.fitHeight),
                                   height,
                                   4,
                                 ),
@@ -377,7 +427,12 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ])),
-        isMenuOpened ? SizedBox(width: width, height: height, child: getMenu(width, height, context)) : const SizedBox(),
+        isMenuOpened
+            ? SizedBox(
+                width: width,
+                height: height,
+                child: getMenu(width, height, context))
+            : const SizedBox(),
       ],
     );
   }
@@ -424,7 +479,8 @@ class _HomePageState extends State<HomePage> {
                       ),
                       Expanded(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: width * 0.1),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: width * 0.1),
                           child: Center(
                             child: FittedBox(
                               child: Text(
@@ -442,7 +498,9 @@ class _HomePageState extends State<HomePage> {
                       AnimButton(
                         shadowType: 2,
                         onTap: () async {
-                          showError(context, 'This is a wallet linked to your game account. You can refill it in any convenient way by copying the address or using the QR code.\nAttention! Send tokens only on BEP20 (BSC) chain, otherwise the tokens will be lost!', type: 2);
+                          showError(context,
+                              'This is a wallet linked to your game account. You can refill it in any convenient way by copying the address or using the QR code.\nAttention! Send tokens only on BEP20 (BSC) chain, otherwise the tokens will be lost!',
+                              type: 2);
                         },
                         child: SvgPicture.asset(
                           'assets/pages/homepage/craft/info.svg',
@@ -529,16 +587,33 @@ class _HomePageState extends State<HomePage> {
                                   height: 0.1 * height,
                                   decoration: const BoxDecoration(
                                     color: Color(0xFF0D1238),
-                                    borderRadius: BorderRadius.only(topRight: Radius.circular(30), topLeft: Radius.circular(30)),
-                                    boxShadow: [BoxShadow(color: Color(0x2FFFFFFF), blurRadius: 30, spreadRadius: 30, offset: Offset(0, 20))],
+                                    borderRadius: BorderRadius.only(
+                                        topRight: Radius.circular(30),
+                                        topLeft: Radius.circular(30)),
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Color(0x2FFFFFFF),
+                                          blurRadius: 30,
+                                          spreadRadius: 30,
+                                          offset: Offset(0, 20))
+                                    ],
                                   ),
                                   alignment: Alignment.center,
-                                  child: Text('Copied to your clipboard!'.toUpperCase(), style: TextStyle(fontSize: 0.036 * width, fontWeight: FontWeight.w700, color: const Color(0xFF00FFFF))))));
+                                  child: Text(
+                                      'Copied to your clipboard!'.toUpperCase(),
+                                      style: TextStyle(
+                                          fontSize: 0.036 * width,
+                                          fontWeight: FontWeight.w700,
+                                          color: const Color(0xFF00FFFF))))));
                           Navigator.of(context).pop();
                         },
                       );
                     },
-                    params: {'text': 'copy address', 'width': width, 'height': height},
+                    params: {
+                      'text': 'copy address',
+                      'width': width,
+                      'height': height
+                    },
                     child: loginBtn,
                   ),
                 ],
@@ -661,7 +736,8 @@ class _HomePageState extends State<HomePage> {
                             ),
                             Expanded(
                               child: getMenuButton(
-                                () => Navigator.of(context).pushNamed('/viewWebChronic'),
+                                () => Navigator.of(context)
+                                    .pushNamed('/viewWebChronic'),
                                 'CHRONICLES',
                                 height,
                               ),
@@ -725,7 +801,9 @@ class _HomePageState extends State<HomePage> {
               text,
               style: TextStyle(
                 fontFamily: 'AmazObitaemOstrovItalic',
-                color: onTap != null ? const Color(0xFF00FFFF) : const Color(0xFF9E9E9E),
+                color: onTap != null
+                    ? const Color(0xFF00FFFF)
+                    : const Color(0xFF9E9E9E),
                 fontSize: height * 0.025,
               ),
             ),
@@ -878,14 +956,17 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget switchWaterFire(double width, double height, int valueSwitch, Function onSwitch) {
+  Widget switchWaterFire(
+      double width, double height, int valueSwitch, Function onSwitch) {
     return Container(
       width: width - width * 0.05,
       padding: EdgeInsets.only(left: 25 / 880 * height),
       child: Stack(
         children: [
           SvgPicture.asset(
-            valueSwitch == 0 ? 'assets/pages/homepage/craft/water.svg' : 'assets/pages/homepage/craft/fire.svg',
+            valueSwitch == 0
+                ? 'assets/pages/homepage/craft/water.svg'
+                : 'assets/pages/homepage/craft/fire.svg',
             fit: BoxFit.fitWidth,
           ),
           Row(
@@ -895,7 +976,12 @@ class _HomePageState extends State<HomePage> {
                   overlayColor: MaterialStateProperty.all(
                     Colors.transparent,
                   ),
-                  onTap: () => onSwitch(0),
+                  onTap: () async {
+                    onSwitch(0);
+                    await GetIt.I<MusicManager>().loadingPlayer.play().then((value) async {
+                      await GetIt.I<MusicManager>().loadingPlayer.seek(Duration(seconds: 0));
+                    });
+                  },
                   child: SizedBox(
                     height: 45.73 / 880 * (height - height * 0.10),
                   ),
@@ -906,7 +992,12 @@ class _HomePageState extends State<HomePage> {
                   overlayColor: MaterialStateProperty.all(
                     Colors.transparent,
                   ),
-                  onTap: () => onSwitch(1),
+                  onTap: () async{
+                    onSwitch(1);
+                    await GetIt.I<MusicManager>().loadingPlayer.play().then((value) async {
+                      await GetIt.I<MusicManager>().loadingPlayer.seek(Duration(seconds: 0));
+                    });
+                  },
                   child: SizedBox(
                     height: 45.73 / 880 * (height - height * 0.10),
                   ),
@@ -942,7 +1033,8 @@ class _HomePageState extends State<HomePage> {
     return Stack(
       children: [
         Padding(
-            padding: EdgeInsets.only(top: 1 / 880 * height, left: width * 0.04, right: width * 0.04),
+            padding: EdgeInsets.only(
+                top: 1 / 880 * height, left: width * 0.04, right: width * 0.04),
             child: SizedBox(
               width: width,
               child: HeroMintPage(craftSwitch: herosSwitch),
@@ -955,7 +1047,8 @@ class _HomePageState extends State<HomePage> {
     return Stack(
       children: [
         Padding(
-            padding: EdgeInsets.only(top: 1 / 880 * height, left: width * 0.04, right: width * 0.04),
+            padding: EdgeInsets.only(
+                top: 1 / 880 * height, left: width * 0.04, right: width * 0.04),
             child: SizedBox(
               width: width,
               child: SamuraiMintPage(craftSwitch: herosSwitch),
