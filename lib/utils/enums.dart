@@ -13,7 +13,7 @@ class SamuraiType {
 }
 
 class MusicAssets {
-  static final mainLoop1 = "";
+  static final mainLoop1 = "assets/music/mainLoop1.wav";
 
-  static final mainLoop2 = ""; 
+  static final mainLoop2 = "assets/music/mainLoop2.wav"; 
 }

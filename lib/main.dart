@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:samurai_app/pages/view_web_page.dart';
 import 'package:samurai_app/pages/create_wallet.dart';
@@ -10,6 +11,7 @@ import 'package:samurai_app/pages/pin_code_page.dart';
 import 'package:samurai_app/pages/seed_page.dart';
 import 'package:samurai_app/pages/settings_page.dart';
 import 'package:samurai_app/pages/splash_screen_page.dart';
+import 'package:samurai_app/utils/enums.dart';
 import 'package:trust_wallet_core_lib/trust_wallet_core_lib.dart';
 
 import 'pages/enter_seed_page.dart';
@@ -21,11 +23,47 @@ Future<void> main() async {
   await Hive.openBox('prefs');
   await Hive.box('prefs').put('appVer', packageInfo.version);
   TrustWalletCoreLib.init();
-  runApp(const MyApp());
+
+  // final loopPlayeTwo = AudioPlayer();
+
+  runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MyApp extends StatefulWidget {
+  MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  late AudioPlayer player;
+
+  @override
+  void dispose() {
+    super.dispose();
+    player.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initMusic();
+  }
+
+  Future<void> _initMusic() async {
+    player = AudioPlayer();
+    List<String> musicAssets = [MusicAssets.mainLoop1, MusicAssets.mainLoop2];
+    await player.setAsset(MusicAssets.mainLoop1);
+    await player.play();
+    await player.playerStateStream.listen((event) async {
+      switch (event.processingState) {
+        case ProcessingState.completed:
+          await player.setAsset(MusicAssets.mainLoop2);
+          await player.play();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
