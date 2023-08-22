@@ -28,10 +28,6 @@ class AccountPageComponents {
     String code = '';
     String newcode = '';
 
-    await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.play().then((value) async {
-      await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.seek(Duration(seconds: 0));
-    });
-
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -53,6 +49,7 @@ class AccountPageComponents {
                 Row(
                   children: [
                     PresButton(
+                      player: GetIt.I<MusicManager>().popupDownSybMenuPlayer,
                       onTap: () => Navigator.of(context).pop(),
                       params: {'width': width},
                       child: backBtn,

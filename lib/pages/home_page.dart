@@ -215,6 +215,7 @@ class _HomePageState extends State<HomePage> {
                                 Material(
                                   color: Colors.transparent,
                                   child: PresButton(
+                                    player: GetIt.I<MusicManager>().menuSettingsSignWaterPlayer, //menu
                                     onTap: () => setState(() {
                                       isMenuOpened = true;
                                     }),
@@ -225,8 +226,9 @@ class _HomePageState extends State<HomePage> {
                                 const Spacer(),
                                 if (selectedPage == 5)
                                   AnimButton(
+                                    player: GetIt.I<MusicManager>().popupSubmenuPlayer,
                                     shadowType: 2,
-                                    onTap: () => openQr(width, height),
+                                    onTap: () => openQr(width, height), // HERE
                                     child: SvgPicture.asset(
                                       'assets/pages/homepage/receive.svg',
                                       fit: BoxFit.fitHeight,
@@ -381,10 +383,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   void openQr(double width, double height) async {
-    await GetIt.I<MusicManager>().modalTextExplainPlayer.play().then((value) async {
-      await GetIt.I<MusicManager>().modalTextExplainPlayer.seek(Duration(seconds: 0));
-    });
-
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -415,6 +413,7 @@ class _HomePageState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       PresButton(
+                        player: GetIt.I<MusicManager>().popupDownSybMenuPlayer, // HERE
                         onTap: () {
                           if (kDebugMode) {
                             print(AppStorage().read('wallet_adress')!);
@@ -699,6 +698,7 @@ class _HomePageState extends State<HomePage> {
                       Expanded(
                         flex: 80,
                         child: PresButton(
+                          player: GetIt.I<MusicManager>().okCanselTransPlayer,
                           onTap: () => setState(() {
                             isMenuOpened = false;
                           }),
@@ -722,6 +722,7 @@ class _HomePageState extends State<HomePage> {
     return Material(
       color: Colors.transparent,
       child: AnimButton(
+        player: GetIt.I<MusicManager>().smallKeyLightningPlayer,
         onTap:  onTap != null ? () => onTap() : null,
         child: Padding(
           padding: const EdgeInsets.all(4),

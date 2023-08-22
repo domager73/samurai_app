@@ -46,6 +46,8 @@ class MusicAssets {
   static final swipeBackward = "$root/swipeBackward.wav";
 
   static final zeroAmountNumber = "$root/zeroAmountNumber.wav";
+
+  static final swipeForw = "$root/swipeForward.wav";
 }
 
 String musicSwitchKey = 'sound_value';

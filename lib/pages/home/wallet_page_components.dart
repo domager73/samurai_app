@@ -124,6 +124,7 @@ class WalletPageComponents {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         PresButton(
+                          player: GetIt.I<MusicManager>().swipeBackPlayer,
                           onTap: () => Navigator.of(context).pop(),
                           params: {'width': width},
                           child: backBtn,
@@ -217,6 +218,8 @@ class WalletPageComponents {
                               SizedBox(
                                 width: width * 0.25,
                                 child: AnimButton(
+                                  player: GetIt.I<MusicManager>().okCanselTransPlayer,
+
                                   shadowType: 2,
                                   onTap: () => setState(() {
                                     mode == 'inGame' ? mode = 'inChain' : mode = 'inGame';

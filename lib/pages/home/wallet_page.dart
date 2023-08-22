@@ -28,6 +28,8 @@ class _WalletPageState extends State<WalletPage> with SingleTickerProviderStateM
   late HDWallet wallet;
   final AppStorage appStorage = AppStorage();
 
+  int lastPage = 0;
+
   List<Map<String, dynamic>> heroes = [];
 
   late Map<String, dynamic> user;
@@ -112,9 +114,20 @@ class _WalletPageState extends State<WalletPage> with SingleTickerProviderStateM
                 Column(
                   children: [
                     TabBar(
-                      onTap: (_) async {
-                        await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.play().then((value) async {
-                          await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.seek(Duration(seconds: 0));
+                      onTap: (newPage) async {
+                        if (lastPage < newPage) {
+                          print(lastPage);
+                          await GetIt.I<MusicManager>().swipeForwPlayer.play().then((value) async {
+                            await GetIt.I<MusicManager>().swipeForwPlayer.seek(Duration(seconds: 0));
+                          });
+                        } else {
+                          print(lastPage);
+                          await GetIt.I<MusicManager>().swipeBackPlayer.play().then((value) async {
+                            await GetIt.I<MusicManager>().swipeBackPlayer.seek(Duration(seconds: 0));
+                          });
+                        }
+                        setState(() {
+                          lastPage = newPage;
                         });
                       },
                       controller: _tabController,
@@ -690,9 +703,6 @@ class _WalletPageState extends State<WalletPage> with SingleTickerProviderStateM
           Padding(
             padding: EdgeInsets.symmetric(vertical: height * 0.007),
             child: AnimButton(
-              //overlayColor: MaterialStateProperty.all(
-              //Colors.transparent,
-              //),
               onTap: () => onSwapTap(),
               child: SvgPicture.asset(
                 'assets/pages/homepage/refresh.svg',

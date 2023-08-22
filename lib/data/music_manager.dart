@@ -39,7 +39,7 @@ class MusicManager {
     modalTextExplainPlayer = AudioPlayer()
       ..setAsset(MusicAssets.modalTextExplain);
 
-    numbersCodePlayer = AudioPlayer()..setAsset(MusicAssets.loading);
+    numbersCodePlayer = AudioPlayer()..setAsset(MusicAssets.numbersCode);
 
     okCanselTransPlayer = AudioPlayer()..setAsset(MusicAssets.okCanselTrans);
 
@@ -48,19 +48,19 @@ class MusicManager {
 
     popupSubmenuPlayer = AudioPlayer()..setAsset(MusicAssets.popupSubMenu);
 
-    screenChangePlayer = AudioPlayer()..setAsset(MusicAssets.loading);
+    screenChangePlayer = AudioPlayer()..setAsset(MusicAssets.screenChange);
 
-    smallKeyLightningPlayer = AudioPlayer()..setAsset(MusicAssets.loading);
+    smallKeyLightningPlayer = AudioPlayer()..setAsset(MusicAssets.smallKeyLightning);
 
-    smallKeyRegAmountAllPlayer = AudioPlayer()..setAsset(MusicAssets.loading);
+    smallKeyRegAmountAllPlayer = AudioPlayer()..setAsset(MusicAssets.smallkeyRegAmountAll);
 
-    smallKeyWeaponPlayer = AudioPlayer()..setAsset(MusicAssets.loading);
+    smallKeyWeaponPlayer = AudioPlayer()..setAsset(MusicAssets.smallKeyWeaoponLighning);
 
-    swipeBackPlayer = AudioPlayer()..setAsset(MusicAssets.loading);
+    swipeBackPlayer = AudioPlayer()..setAsset(MusicAssets.swipeBackward);
 
-    swipeForwPlayer = AudioPlayer()..setAsset(MusicAssets.loading);
+    swipeForwPlayer = AudioPlayer()..setAsset(MusicAssets.swipeForw);
 
-    zeroAmountNumberPlayer = AudioPlayer()..setAsset(MusicAssets.loading);
+    zeroAmountNumberPlayer = AudioPlayer()..setAsset(MusicAssets.zeroAmountNumber);
   }
 
   Future<void> disposeMusicAssets() async {
