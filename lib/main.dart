@@ -28,7 +28,6 @@ Future<void> main() async {
   await Hive.openBox('prefs');
   await Hive.box('prefs').put('appVer', packageInfo.version);
   GetIt.I.registerSingleton(MusicManager());
-  await GetIt.I<MusicManager>().registerMusicAssets();
 
   TrustWalletCoreLib.init();
 
@@ -76,6 +75,8 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> initMusic() async {
     player = AudioPlayer();
+    await GetIt.I<MusicManager>().registerMusicAssets();
+
     await player.setAsset(MusicAssets.mainLoop1);
     await player.play();
     await player.playerStateStream.listen((event) async {
@@ -91,6 +92,7 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> stopPlayer() async {
     await player.stop();
+    await GetIt.I<MusicManager>().disposeMusicAssets();
   }
 
   @override

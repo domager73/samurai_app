@@ -63,7 +63,7 @@ class ErrorDialog extends StatelessWidget {
                     shadowType: 1,
                     onTap: () async {
                       await GetIt.I<MusicManager>().okCanselTransPlayer.play().then((value) async {
-                        await GetIt.I<MusicManager>().okCanselTransPlayer.seek(Duration(seconds: 0));
+                        await GetIt.I<MusicManager>().okCanselTransPlayer.seek(const Duration(seconds: 0));
                       });
                       Navigator.pop(context);
                     },

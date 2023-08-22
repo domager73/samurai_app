@@ -33,7 +33,8 @@ class _AccountPageState extends State<AccountPage> {
     scrollController = ScrollController();
     googleAuthenticatorSwitch = false; //TODO
     emailAuthenticatorSwitch = false; //TODO
-    soundSwitch = bool.parse(AppStorage().read(musicSwitchKey)!); //TODO
+    soundSwitch = bool.parse(AppStorage().read(musicSwitchKey)!);
+    print(bool.parse(AppStorage().read(musicSwitchKey)!));
     final useTfa = AppStorage().read('use-tfa');
     tfaSwitch = useTfa != null && useTfa == '1';
   }
@@ -134,15 +135,17 @@ class _AccountPageState extends State<AccountPage> {
                               value: soundSwitch,
                               onChanged: (value) async {
                                 soundSwitch = value;
+                                AppStorage()
+                                    .write(musicSwitchKey, value.toString());
+                                log("changed music value $value");
+
                                 setState(() {});
+
                                 if (value) {
                                   await MyApp.playPlayer(context);
                                 } else {
                                   await MyApp.stopPlayer(context);
                                 }
-                                AppStorage()
-                                    .write(musicSwitchKey, value.toString());
-                                log("changed music value $value");
                               }),
                         ),
                       ),

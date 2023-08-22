@@ -30,35 +30,66 @@ class MusicManager {
 
   AudioPlayer zeroAmountNumberPlayer = AudioPlayer();
 
-
-
   Future<void> registerMusicAssets() async {
-    await loadingPlayer.setAsset(MusicAssets.loading);
+    loadingPlayer = AudioPlayer()..setAsset(MusicAssets.loading);
 
-    await menuSettingsSignWaterPlayer.setAsset(MusicAssets.menuSettingSignWater);
+    menuSettingsSignWaterPlayer = AudioPlayer()
+      ..setAsset(MusicAssets.menuSettingSignWater);
 
-    await modalTextExplainPlayer.setAsset(MusicAssets.modalTextExplain);
+    modalTextExplainPlayer = AudioPlayer()
+      ..setAsset(MusicAssets.modalTextExplain);
 
-    await numbersCodePlayer.setAsset(MusicAssets.loading);
+    numbersCodePlayer = AudioPlayer()..setAsset(MusicAssets.loading);
 
-    await okCanselTransPlayer.setAsset(MusicAssets.okCanselTrans);
+    okCanselTransPlayer = AudioPlayer()..setAsset(MusicAssets.okCanselTrans);
 
-    await popupDownSybMenuPlayer.setAsset(MusicAssets.popupDownSubMenu);
+    popupDownSybMenuPlayer = AudioPlayer()
+      ..setAsset(MusicAssets.popupDownSubMenu);
 
-    await popupSubmenuPlayer.setAsset(MusicAssets.popupSubMenu);
+    popupSubmenuPlayer = AudioPlayer()..setAsset(MusicAssets.popupSubMenu);
 
-    await screenChangePlayer.setAsset(MusicAssets.loading);
+    screenChangePlayer = AudioPlayer()..setAsset(MusicAssets.loading);
 
-    await smallKeyLightningPlayer.setAsset(MusicAssets.loading);
+    smallKeyLightningPlayer = AudioPlayer()..setAsset(MusicAssets.loading);
 
-    await smallKeyRegAmountAllPlayer.setAsset(MusicAssets.loading);
+    smallKeyRegAmountAllPlayer = AudioPlayer()..setAsset(MusicAssets.loading);
 
-    await smallKeyWeaponPlayer.setAsset(MusicAssets.loading);
+    smallKeyWeaponPlayer = AudioPlayer()..setAsset(MusicAssets.loading);
 
-    await swipeBackPlayer.setAsset(MusicAssets.loading);
+    swipeBackPlayer = AudioPlayer()..setAsset(MusicAssets.loading);
 
-    await swipeForwPlayer.setAsset(MusicAssets.loading);
+    swipeForwPlayer = AudioPlayer()..setAsset(MusicAssets.loading);
 
-    await zeroAmountNumberPlayer.setAsset(MusicAssets.loading);
+    zeroAmountNumberPlayer = AudioPlayer()..setAsset(MusicAssets.loading);
+  }
+
+  Future<void> disposeMusicAssets() async {
+    await loadingPlayer.dispose();
+
+    await menuSettingsSignWaterPlayer.dispose();
+
+    await modalTextExplainPlayer.dispose();
+
+    await numbersCodePlayer.dispose();
+
+    await okCanselTransPlayer.dispose();
+
+    await popupDownSybMenuPlayer.dispose();
+
+    await popupSubmenuPlayer.dispose();
+
+    await screenChangePlayer.dispose();
+
+    await smallKeyLightningPlayer.dispose();
+
+    await smallKeyRegAmountAllPlayer.dispose();
+
+    await smallKeyWeaponPlayer.dispose();
+
+    await swipeBackPlayer.dispose();
+
+    await swipeForwPlayer.dispose();
+
+    await zeroAmountNumberPlayer.dispose();
   }
 }

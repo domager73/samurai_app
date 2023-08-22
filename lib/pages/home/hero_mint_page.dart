@@ -4,14 +4,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart';
 import 'package:samurai_app/components/show_confirm.dart';
+import 'package:samurai_app/components/storage.dart';
 import 'package:samurai_app/pages/home/craft_page_components.dart';
 import 'package:samurai_app/utils/enums.dart';
 
 import '../../api/rest.dart';
 import '../../components/anim_button.dart';
-import '../../components/bg.dart';
 import '../../components/pop_up_spinner.dart';
-import '../../components/storage.dart';
 import 'hero_page_components.dart';
 
 class HeroMintPage extends StatefulWidget {
@@ -31,6 +30,8 @@ class _HeroMintPageState extends State<HeroMintPage>
     {'name': 'Shogun', 'RYO': 140000, 'CLC': 100, 'XP': 4200},
   ];
 
+  late Map<String, dynamic> user;
+
   double? fireSamuraiXp = 0;
   double? waterSamuraiXp = 0;
 
@@ -45,6 +46,9 @@ class _HeroMintPageState extends State<HeroMintPage>
   @override
   void initState() {
     super.initState();
+
+    user = Map.from(
+        AppStorage().box.get('user', defaultValue: <String, dynamic>{}));
 
     updateXp();
   }
@@ -169,22 +173,21 @@ class _HeroMintPageState extends State<HeroMintPage>
           child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(padding: EdgeInsets.only(
-                    top: width * 0.0, left: width * 0.015),
-                    child: Image.asset('assets/pages/homepage/mint/${e['name']
-                        .toString()
-                        .toLowerCase()}_mask_${widget.craftSwitch == 0
-                        ? 'water'
-                        : 'fire'}.png', fit: BoxFit.fitWidth,
-                        width: width * 0.255)),
+                Image.asset('assets/pages/homepage/mint/${e['name']
+                    .toString()
+                    .toLowerCase()}_mask_${widget.craftSwitch == 0
+                    ? 'water'
+                    : 'fire'}.png', fit: BoxFit.contain,
+                    width: width * 0.3),
                 Container(
                     width: width * 0.3,
                     padding: EdgeInsets.only(
-                        top: width * 0.035, left: width * 0.04),
+                        top: width * 0.035),
                     child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             e['name'].toString(),
+                            maxLines: 1,
                             style: GoogleFonts.spaceMono(
                               fontSize: width * 0.045,
                               fontWeight: FontWeight.w700,
@@ -246,7 +249,7 @@ class _HeroMintPageState extends State<HeroMintPage>
                         ])),
                 Padding(
                     padding: EdgeInsets.only(
-                        left: width * 0.05, top: width * 0.06),
+                        top: width * 0.06),
                     child: PresButton(
                         onTap: () {
                           showConfirm(context,
@@ -275,7 +278,7 @@ class _HeroMintPageState extends State<HeroMintPage>
                         },
                         disabled: ((widget.craftSwitch == 0
                             ? waterSamuraiXp
-                            : fireSamuraiXp) ?? 0.0) < e['XP'],
+                            : fireSamuraiXp) ?? 0.0) < e['XP'] && user['ryo'] < 4000,
                         params: {'width': width},
                         child: mintBtn))
               ]))

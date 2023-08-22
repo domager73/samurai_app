@@ -181,13 +181,13 @@ class WalletPageComponents {
                                         child: Text(
                                           textAlign: TextAlign.start,
                                           "from".toUpperCase(),
-                                          style: GoogleFonts.spaceMono(fontWeight: FontWeight.w800, fontSize: 13, color: Colors.white, textStyle: TextStyle(height: 1.2)),
+                                          style: GoogleFonts.spaceMono(fontWeight: FontWeight.w800, fontSize: 13, color: Colors.white, textStyle: TextStyle(height: 1)),
                                         ),
                                       ),
                                       Text(
                                         mode == 'inGame' ? 'WALLET' : 'GAME',
                                         textHeightBehavior: TextHeightBehavior(),
-                                        style: GoogleFonts.spaceMono(fontWeight: FontWeight.w700, color: Colors.white, fontSize: 20, textStyle: TextStyle(height: 1.2)),
+                                        style: GoogleFonts.spaceMono(fontWeight: FontWeight.w700, color: Colors.white, fontSize: 20, textStyle: TextStyle(height: 1.01)),
                                         textAlign: TextAlign.start,
                                       ),
                                     ]),
@@ -200,14 +200,14 @@ class WalletPageComponents {
                                           width: width * 0.116,
                                           child: Text(
                                             "to".toUpperCase(),
-                                            style: GoogleFonts.spaceMono(fontWeight: FontWeight.w800, fontSize: 13, color: Colors.white, textStyle: TextStyle(height: 1.2)),
+                                            style: GoogleFonts.spaceMono(fontWeight: FontWeight.w800, fontSize: 13, color: Colors.white, textStyle: TextStyle(height: 1)),
                                             textAlign: TextAlign.start,
                                           ),
                                         ),
                                         Text(
                                           textAlign: TextAlign.start,
                                           mode == 'inGame' ? 'GAME' : 'WALLET',
-                                          style: GoogleFonts.spaceMono(fontWeight: FontWeight.w700, color: Colors.white, textStyle: TextStyle(height: 1.2), fontSize: 20),
+                                          style: GoogleFonts.spaceMono(fontWeight: FontWeight.w700, color: Colors.white, textStyle: TextStyle(height: 1.01), fontSize: 20),
                                         ),
                                       ],
                                     ),
