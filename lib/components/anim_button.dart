@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:samurai_app/data/music_manager.dart';
 
 class AnimButton extends StatefulWidget {
   const AnimButton({required this.onTap, required this.child, this.shadowType = 0, this.disabled = false, super.key});
@@ -12,7 +14,6 @@ class AnimButton extends StatefulWidget {
 }
 
 class _AnimButtonState extends State<AnimButton> {
-
   bool _elevation = false;
 
   void _onTapDown(TapDownDetails t) {
@@ -35,7 +36,11 @@ class _AnimButtonState extends State<AnimButton> {
     });
   }
 
-  void _onTap() {
+  Future<void> _onTap() async {
+    await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.play().then((value) async {
+      await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.seek(Duration(seconds: 0));
+    });
+
     Future.delayed(const Duration(milliseconds: 20), () {
       if (widget.onTap != null) {
         widget.onTap!();
@@ -43,7 +48,7 @@ class _AnimButtonState extends State<AnimButton> {
     });
   }
 
- @override
+  @override
   Widget build(BuildContext context) {
     return InkWell(
       overlayColor: MaterialStateProperty.all(
@@ -56,20 +61,19 @@ class _AnimButtonState extends State<AnimButton> {
       onTapUp: widget.disabled ? null : _onTapUp,
       onTapCancel: widget.disabled ? null : _onTapCancel,
       child: AnimatedContainer(
-        duration: Duration(milliseconds: !_elevation ? 1 : 20),
-        curve: Curves.easeInOut,
-        decoration: BoxDecorationCustom(
-          borderRadius: BorderRadius.circular(8),
-          shadowType: widget.shadowType,
-          boxShadow: [
-            BoxShadow(
-              color: _elevation ? const Color(0xFF00E3FF).withOpacity(0.5) : Colors.transparent,
-              blurRadius: 10.0,
-            )
-          ],
-        ),
-        child: widget.child
-      ),
+          duration: Duration(milliseconds: !_elevation ? 1 : 20),
+          curve: Curves.easeInOut,
+          decoration: BoxDecorationCustom(
+            borderRadius: BorderRadius.circular(8),
+            shadowType: widget.shadowType,
+            boxShadow: [
+              BoxShadow(
+                color: _elevation ? const Color(0xFF00E3FF).withOpacity(0.5) : Colors.transparent,
+                blurRadius: 10.0,
+              )
+            ],
+          ),
+          child: widget.child),
     );
   }
 }
@@ -89,7 +93,7 @@ class BoxDecorationCustom extends BoxDecoration {
   final int shadowType;
 
   @override
-  BoxPainter createBoxPainter([ VoidCallback? onChanged ]) {
+  BoxPainter createBoxPainter([VoidCallback? onChanged]) {
     assert(onChanged != null || image == null);
     return _BoxDecorationPainterCustom(this, onChanged, shadowType: shadowType);
   }
@@ -97,8 +101,7 @@ class BoxDecorationCustom extends BoxDecoration {
 
 /// An object that paints a [BoxDecoration] into a canvas.
 class _BoxDecorationPainterCustom extends BoxPainter {
-  _BoxDecorationPainterCustom(this._decoration, super.onChanged, {required this.shadowType})
-      : assert(_decoration != null);
+  _BoxDecorationPainterCustom(this._decoration, super.onChanged, {required this.shadowType}) : assert(_decoration != null);
 
   final int shadowType;
   final BoxDecoration _decoration;
@@ -109,8 +112,7 @@ class _BoxDecorationPainterCustom extends BoxPainter {
     assert(rect != null);
     assert(_decoration.gradient != null || _rectForCachedBackgroundPaint == null);
 
-    if (_cachedBackgroundPaint == null ||
-        (_decoration.gradient != null && _rectForCachedBackgroundPaint != rect)) {
+    if (_cachedBackgroundPaint == null || (_decoration.gradient != null && _rectForCachedBackgroundPaint != rect)) {
       final Paint paint = Paint();
       if (_decoration.backgroundBlendMode != null) {
         paint.blendMode = _decoration.backgroundBlendMode!;
@@ -129,35 +131,44 @@ class _BoxDecorationPainterCustom extends BoxPainter {
   }
 
   void _paintBox(Canvas canvas, Rect rect, Paint paint, TextDirection? textDirection) {
-    switch(shadowType) {
-      case 1: {
-        final r = Path();
-        final double gap = (rect.bottom - rect.top) / 2.4;
-        r.addPolygon([
-          Offset(rect.left + gap, rect.top), Offset(rect.right, rect.top),
-          Offset(rect.right, rect.top), Offset(rect.right, rect.bottom - gap),
-          Offset(rect.right, rect.bottom - 30), Offset(rect.right - gap, rect.bottom),
-          Offset(rect.right - gap, rect.bottom), Offset(rect.left, rect.bottom),
-          Offset(rect.left, rect.top - 30), Offset(rect.left, rect.top + gap),
-          Offset(rect.left, rect.top + 30), Offset(rect.left + gap, rect.top)
-        ], true);
-        canvas.drawPath(r, paint);
-        break;
-      }
-      case 2: {
-        final Offset center = rect.center;
-        final double radius = rect.shortestSide / 2.0;
-        canvas.drawCircle(center, radius, paint);
-        break;
-      }
-      default: {
-        if (_decoration.borderRadius == null || _decoration.borderRadius == BorderRadius.zero) {
-          canvas.drawRect(rect, paint);
-        } else {
-          canvas.drawRRect(_decoration.borderRadius!.resolve(textDirection).toRRect(rect), paint);
+    switch (shadowType) {
+      case 1:
+        {
+          final r = Path();
+          final double gap = (rect.bottom - rect.top) / 2.4;
+          r.addPolygon([
+            Offset(rect.left + gap, rect.top),
+            Offset(rect.right, rect.top),
+            Offset(rect.right, rect.top),
+            Offset(rect.right, rect.bottom - gap),
+            Offset(rect.right, rect.bottom - 30),
+            Offset(rect.right - gap, rect.bottom),
+            Offset(rect.right - gap, rect.bottom),
+            Offset(rect.left, rect.bottom),
+            Offset(rect.left, rect.top - 30),
+            Offset(rect.left, rect.top + gap),
+            Offset(rect.left, rect.top + 30),
+            Offset(rect.left + gap, rect.top)
+          ], true);
+          canvas.drawPath(r, paint);
+          break;
         }
-        break;
-      }
+      case 2:
+        {
+          final Offset center = rect.center;
+          final double radius = rect.shortestSide / 2.0;
+          canvas.drawCircle(center, radius, paint);
+          break;
+        }
+      default:
+        {
+          if (_decoration.borderRadius == null || _decoration.borderRadius == BorderRadius.zero) {
+            canvas.drawRect(rect, paint);
+          } else {
+            canvas.drawRRect(_decoration.borderRadius!.resolve(textDirection).toRRect(rect), paint);
+          }
+          break;
+        }
     }
   }
 
@@ -245,7 +256,6 @@ class PresButton extends StatefulWidget {
 }
 
 class _PresButtonState extends State<PresButton> {
-
   bool _elevation = false;
 
   void _onTapDown(TapDownDetails t) {
@@ -253,6 +263,7 @@ class _PresButtonState extends State<PresButton> {
       _elevation = true;
     });
   }
+
   void _onTapUp(TapUpDetails t) {
     Future.delayed(const Duration(milliseconds: 20), () {
       setState(() {
@@ -267,7 +278,11 @@ class _PresButtonState extends State<PresButton> {
     });
   }
 
-  void _onTap() {
+  Future<void> _onTap() async {
+    await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.play().then((value) async {
+      await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.seek(Duration(seconds: 0));
+    });
+
     if (widget.onTap != null) {
       Future.delayed(const Duration(milliseconds: 20), () {
         widget.onTap!();
@@ -278,21 +293,20 @@ class _PresButtonState extends State<PresButton> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      overlayColor: MaterialStateProperty.all(
-        Colors.transparent,
-      ),
-      //splashColor: const Color(0xFF9E9E9E).withOpacity(0.5),
-      //highlightColor: const Color(0xFF00E3FF).withOpacity(0.5),
-      onTap: !widget.disabled ? _onTap : null,
-      onTapDown: !widget.disabled ? _onTapDown : null,
-      onTapUp: !widget.disabled ? _onTapUp : null,
-      onTapCancel: _onTapCancel,
-      child: AnimatedContainer(
+        overlayColor: MaterialStateProperty.all(
+          Colors.transparent,
+        ),
+        //splashColor: const Color(0xFF9E9E9E).withOpacity(0.5),
+        //highlightColor: const Color(0xFF00E3FF).withOpacity(0.5),
+        onTap: !widget.disabled ? _onTap : null,
+        onTapDown: !widget.disabled ? _onTapDown : null,
+        onTapUp: !widget.disabled ? _onTapUp : null,
+        onTapCancel: _onTapCancel,
+        child: AnimatedContainer(
           duration: Duration(milliseconds: !_elevation ? 1 : 20),
           curve: Curves.easeInOut,
           child: widget.child(context, widget.params, _elevation, widget.disabled),
-      )
-    );
+        ));
   }
 }
 
@@ -311,7 +325,7 @@ Widget menuBtn(BuildContext context, Map<String, dynamic> params, bool state, bo
   );
 }
 
-Widget loginBtn(BuildContext context, Map<String, dynamic> params, bool state, bool disabled,{String clan = 'water'}) {
+Widget loginBtn(BuildContext context, Map<String, dynamic> params, bool state, bool disabled, {String clan = 'water'}) {
   const img = AssetImage('assets/login_button.png');
   const imgPres = AssetImage('assets/login_button_pres.png');
   const imgDis = AssetImage('assets/login_button_dis.png');
@@ -322,7 +336,11 @@ Widget loginBtn(BuildContext context, Map<String, dynamic> params, bool state, b
   return Stack(
     children: [
       Image(
-        image: disabled ? imgDis : !state ? img : imgPres,
+        image: disabled
+            ? imgDis
+            : !state
+                ? img
+                : imgPres,
         width: params['width'] - params['width'] * 0.0,
         height: (params['width'] - params['width'] * 0.14) * 0.32,
       ),
@@ -364,10 +382,7 @@ Widget changeEmailBtn(BuildContext context, Map<String, dynamic> params, bool st
   precacheImage(img, context);
   precacheImage(imgPres, context);
 
-  return Image(
-    image: !state ? img : imgPres,
-    height: 6 / 96 * params['height']
-  );
+  return Image(image: !state ? img : imgPres, height: 6 / 96 * params['height']);
 }
 
 Widget logoutBtn(BuildContext context, Map<String, dynamic> params, bool state, bool disabled) {
@@ -376,10 +391,7 @@ Widget logoutBtn(BuildContext context, Map<String, dynamic> params, bool state, 
   precacheImage(img, context);
   precacheImage(imgPres, context);
 
-  return Image(
-      image: !state ? img : imgPres,
-      height: 83 / 960 * params['height']
-  );
+  return Image(image: !state ? img : imgPres, height: 83 / 960 * params['height']);
 }
 
 Widget menuCloseBtn(BuildContext context, Map<String, dynamic> params, bool state, bool disabled) {

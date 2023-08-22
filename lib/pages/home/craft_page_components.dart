@@ -376,7 +376,10 @@ class CraftPageComponents {
         SizedBox(
             width: width * (switchMode == 0 ? 0.45 : 0.53),
             child: InkWell(
-                onTap: () {
+                onTap: () async {
+                  // await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.play().then((value) async {
+                  //   await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.seek(Duration(seconds: 0));
+                  // });
                   onSwitch(0);
                 },
                 child: SvgPicture.asset(
@@ -388,7 +391,8 @@ class CraftPageComponents {
             child: SizedBox(
                 width: width * (switchMode == 0 ? 0.483 : 0.46),
                 child: InkWell(
-                    onTap: () {
+                    onTap: () async {
+                      // dont put the music here. it will inited twice... shit-_-
                       onSwitch(1);
                     },
                     child: SvgPicture.asset('assets/pages/homepage/craft/withdraw_$switchMode.svg', fit: BoxFit.fitWidth))))
@@ -489,11 +493,15 @@ class CraftPageComponents {
                     ])))));
   }
 
-  static void openHealModalPage({
+  static Future<void> openHealModalPage({
     required BuildContext context,
     required double width,
     required double height,
-  }) {
+  }) async{
+    await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.play().then((value) async {
+      await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.seek(Duration(seconds: 0));
+    });
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -548,9 +556,6 @@ class CraftPageComponents {
                           AnimButton(
                             shadowType: 2,
                             onTap: () async {
-                              await GetIt.I<MusicManager>().modalTextExplainPlayer.play().then((value) async {
-                                await GetIt.I<MusicManager>().modalTextExplainPlayer.seek(Duration(seconds: 0));
-                              });
                               showError(context, 'You will not be able to participate in battles when the health of your Army drops to 0%. You can heal the Army or add new Samurai to the Army to replenish the health bar.', type: 2);
                             },
                             child: SvgPicture.asset(
@@ -615,7 +620,11 @@ class CraftPageComponents {
     );
   }
 
-  static void openSwitchDialog({required BuildContext context, required double width, required double height, required Function(int) onSwitch, required int valSwitch}) {
+  static Future<void> openSwitchDialog({required BuildContext context, required double width, required double height, required Function(int) onSwitch, required int valSwitch}) async{
+    await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.play().then((value) async {
+      await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.seek(Duration(seconds: 0));
+    });
+
     showDialog(
         context: context,
         builder: (BuildContext context) => StatefulBuilder(

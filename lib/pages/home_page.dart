@@ -86,9 +86,6 @@ class _HomePageState extends State<HomePage> {
 
     craftSwitch = int.parse(AppStorage().read(craftSwitchKey) ?? '0');
     herosSwitch = int.parse(AppStorage().read(craftSwitchKey) ?? '0');
-    // dialog
-    //WidgetsBinding.instance.addPostFrameCallback((_) {
-    //});
   }
 
   void _showDialog() {
@@ -383,7 +380,11 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void openQr(double width, double height) {
+  void openQr(double width, double height) async {
+    await GetIt.I<MusicManager>().modalTextExplainPlayer.play().then((value) async {
+      await GetIt.I<MusicManager>().modalTextExplainPlayer.seek(Duration(seconds: 0));
+    });
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -721,7 +722,7 @@ class _HomePageState extends State<HomePage> {
     return Material(
       color: Colors.transparent,
       child: AnimButton(
-        onTap: onTap != null ? () => onTap() : null,
+        onTap:  onTap != null ? () => onTap() : null,
         child: Padding(
           padding: const EdgeInsets.all(4),
           child: Center(
@@ -780,30 +781,6 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  /*Widget getBackground(double width, double height) {
-    switch (selectedPage) {
-      case 0:
-        return SizedBox(
-          width: width,
-          height: height,
-          child: Image(
-            image: craftSwitch == 0 ? waterBg : fireBg,
-            fit: BoxFit.fitWidth,
-          ),
-        );
-      case 2:
-        return SizedBox(
-          width: width,
-          height: height,
-          child: const Image(
-            image: homeMainBg,
-            fit: BoxFit.fitWidth,
-          ),
-        );
-      default:
-        return Container();
-    }
-  }*/
 
   Widget getCraftPage(double width, double heigth) {
     return Stack(

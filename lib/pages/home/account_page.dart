@@ -124,38 +124,6 @@ class _AccountPageState extends State<AccountPage> {
                           ),
                         ),
                       ),
-                      /*Padding(
-                        padding: EdgeInsets.only(top: 16 / 960 * height),
-                        child: getMainAccountTextWidget(
-                          height,
-                          "Google Authenticator",
-                          Switch(
-                            activeColor: const Color(0xFF00FFFF),
-                            value: googleAuthenticatorSwitch,
-                            onChanged: (value) => setState(
-                              () {
-                                // googleAuthenticatorSwitch = value; //TODO
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 16 / 960 * height),
-                        child: getMainAccountTextWidget(
-                          height,
-                          "E-mail Authenticator",
-                          Switch(
-                            activeColor: const Color(0xFF00FFFF),
-                            value: emailAuthenticatorSwitch,
-                            onChanged: (value) => setState(
-                              () {
-                                // emailAuthenticatorSwitch = value; //TODO
-                              },
-                            ),
-                          ),
-                        ),
-                      ),*/
                       Padding(
                         padding: EdgeInsets.only(top: 16 / 960 * height),
                         child: getMainAccountTextWidget(
@@ -266,9 +234,6 @@ class _AccountPageState extends State<AccountPage> {
                                 context, 'Are you sure you want to get out?',
                                 () async {
                               await AppStorage().remove('jwt');
-                              //await AppStorage().remove('pin');
-                              //await AppStorage().remove('wallet_adress');
-                              //await AppStorage().remove('wallet_mnemonic');
                               await AppStorage().remove('user');
                               if (mounted) {
                                 Navigator.of(context).pushNamedAndRemoveUntil(

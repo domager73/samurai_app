@@ -1,47 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:samurai_app/components/anim_button.dart';
+import 'package:samurai_app/data/music_manager.dart';
 
 class SamuraiTextField extends StatelessWidget {
-  const SamuraiTextField({
-    super.key,
-    required this.screeenHeight,
-    required this.screeenWidth,
-    this.hint,
-    this.buttonWithTimerEnabled = false,
-    this.timerValue,
-    this.onTapTimerButton,
-    this.controller,
-    this.initialValue,
-    this.focusNode,
-    this.keyboardType,
-    this.textCapitalization = TextCapitalization.none,
-    this.textInputAction,
-    this.autofocus = false,
-    this.readOnly = false,
-    this.obscureText = false,
-    this.autocorrect = true,
-    this.maxLengthEnforcement,
-    this.maxLines = 1,
-    this.minLines,
-    this.expands = false,
-    this.maxLength,
-    this.onChanged,
-    this.onTap,
-    this.onTapOutside,
-    this.onEditingComplete,
-    this.onFieldSubmitted,
-    this.inputFormatters,
-    this.enabled,
-    this.keyboardAppearance,
-    this.enableInteractiveSelection,
-    this.selectionControls,
-    this.autofillHints,
-    this.scrollController,
-    this.allButton
-  });
+  const SamuraiTextField(
+      {super.key,
+      required this.screeenHeight,
+      required this.screeenWidth,
+      this.hint,
+      this.buttonWithTimerEnabled = false,
+      this.timerValue,
+      this.onTapTimerButton,
+      this.controller,
+      this.initialValue,
+      this.focusNode,
+      this.keyboardType,
+      this.textCapitalization = TextCapitalization.none,
+      this.textInputAction,
+      this.autofocus = false,
+      this.readOnly = false,
+      this.obscureText = false,
+      this.autocorrect = true,
+      this.maxLengthEnforcement,
+      this.maxLines = 1,
+      this.minLines,
+      this.expands = false,
+      this.maxLength,
+      this.onChanged,
+      this.onTap,
+      this.onTapOutside,
+      this.onEditingComplete,
+      this.onFieldSubmitted,
+      this.inputFormatters,
+      this.enabled,
+      this.keyboardAppearance,
+      this.enableInteractiveSelection,
+      this.selectionControls,
+      this.autofillHints,
+      this.scrollController,
+      this.allButton});
 
   final double screeenHeight;
   final double screeenWidth;
@@ -114,8 +115,18 @@ class SamuraiTextField extends StatelessWidget {
                   onChanged: onChanged,
                   onEditingComplete: onEditingComplete,
                   onFieldSubmitted: onFieldSubmitted,
-                  onTap: onTap,
-                  onTapOutside: onTapOutside,
+                  onTap: () async {
+                    await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.play().then((value) async {
+                      await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.seek(Duration(seconds: 0));
+                    });
+                    onTap;
+                  },
+                  onTapOutside: (_) async {
+                    await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.play().then((value) async {
+                      await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.seek(Duration(seconds: 0));
+                    });
+                    onTapOutside;
+                  },
                   scrollController: scrollController,
                   selectionControls: selectionControls,
                   keyboardAppearance: keyboardAppearance,
@@ -148,32 +159,29 @@ class SamuraiTextField extends StatelessWidget {
               ),
               if (buttonWithTimerEnabled)
                 Expanded(
-                  flex: 67,
-                  child: Column(
-                    children: [
+                    flex: 67,
+                    child: Column(children: [
                       Spacer(flex: timerValue == null ? 1 : 2),
                       timerValue == null
-                        ? AnimButton(
-                            shadowType: 1,
-                            onTap: onTapTimerButton,
-                            child: SvgPicture.asset(
-                              'assets/text_field_send_button.svg',
-                              width: (screeenWidth - screeenWidth * 0.14) * 0.2,
+                          ? AnimButton(
+                              shadowType: 1,
+                              onTap: onTapTimerButton,
+                              child: SvgPicture.asset(
+                                'assets/text_field_send_button.svg',
+                                width: (screeenWidth - screeenWidth * 0.14) * 0.2,
+                              ),
+                            )
+                          : Text(
+                              timerValue!.toString(),
+                              style: TextStyle(
+                                fontFamily: 'AmazObitaemOstrovItalic',
+                                fontSize: screeenHeight * 0.02,
+                                height: 1.4,
+                                color: Colors.white,
+                              ),
                             ),
-                          )
-                        : Text(
-                            timerValue!.toString(),
-                            style: TextStyle(
-                              fontFamily: 'AmazObitaemOstrovItalic',
-                              fontSize: screeenHeight * 0.02,
-                              height: 1.4,
-                              color: Colors.white,
-                            ),
-                          ),
                       Spacer(flex: timerValue == null ? 2 : 3),
-                    ]
-                  )
-                ),
+                    ])),
               if (allButton != null)
                 Container(
                   width: screeenHeight * 0.1,
@@ -183,12 +191,11 @@ class SamuraiTextField extends StatelessWidget {
                     shadowType: 2,
                     onTap: () => allButton!(),
                     child: Text('All',
-                      style: GoogleFonts.spaceMono(
-                        fontSize: screeenHeight * 0.018,
-                        fontWeight: FontWeight.w700,
-                        color: const Color(0xFF00FFFF),
-                      )
-                    ),
+                        style: GoogleFonts.spaceMono(
+                          fontSize: screeenHeight * 0.018,
+                          fontWeight: FontWeight.w700,
+                          color: const Color(0xFF00FFFF),
+                        )),
                   ),
                 ),
               const Spacer(

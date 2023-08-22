@@ -345,9 +345,6 @@ class _CraftPageState extends State<CraftPage> {
                                 flex: 55,
                                 child: PresButton(
                                     onTap: () async {
-                                      await GetIt.I<MusicManager>().popupSubmenuPlayer.play().then((value) async {
-                                        await GetIt.I<MusicManager>().popupSubmenuPlayer.seek(Duration(seconds: 0));
-                                      });
                                       CraftPageComponents.openHealModalPage(
                                         context: context,
                                         width: width,

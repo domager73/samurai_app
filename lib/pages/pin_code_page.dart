@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get_it/get_it.dart';
 import 'package:samurai_app/components/storage.dart';
+import 'package:samurai_app/data/music_manager.dart';
 
 import '../components/show_error.dart';
 
@@ -46,8 +48,7 @@ class _PinCodePageState extends State<PinCodePage> {
                     child: Text(
                       isConfirmationStep
                           ? "Confirm the code"
-                          : ModalRoute.of(context)!.settings.arguments ==
-                                  PinCodePageType.create
+                          : ModalRoute.of(context)!.settings.arguments == PinCodePageType.create
                               ? "create the code"
                               : "enter the code",
                       style: const TextStyle(
@@ -96,8 +97,7 @@ class _PinCodePageState extends State<PinCodePage> {
               'assets/pin_indicator_1.svg',
               fit: BoxFit.fitWidth,
               width: 12 / 390 * width,
-              color:
-                  pinCode.length > id ? const Color(0xFF00FFFF) : Colors.white,
+              color: pinCode.length > id ? const Color(0xFF00FFFF) : Colors.white,
             ),
           ),
           Center(
@@ -105,9 +105,7 @@ class _PinCodePageState extends State<PinCodePage> {
               'assets/pin_indicator_2.svg',
               fit: BoxFit.fitWidth,
               width: 30 / 390 * width,
-              color: pinCode.length == id
-                  ? const Color(0xFF00FFFF)
-                  : Colors.transparent,
+              color: pinCode.length == id ? const Color(0xFF00FFFF) : Colors.transparent,
             ),
           ),
         ],
@@ -179,9 +177,12 @@ class _PinCodePageState extends State<PinCodePage> {
           children: [
             Expanded(
               child: InkWell(
-                onTap: () {
-                  ModalRoute.of(context)!.settings.arguments ==
-                          PinCodePageType.create
+                onTap: () async {
+                  await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.play().then((value) async {
+                    await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.seek(Duration(seconds: 0));
+                  });
+
+                  ModalRoute.of(context)!.settings.arguments == PinCodePageType.create
                       ? Navigator.pushReplacementNamed(
                           context,
                           '/home',
@@ -214,7 +215,11 @@ class _PinCodePageState extends State<PinCodePage> {
             ),
             Expanded(
               child: InkWell(
-                onTap: () {
+                onTap: () async {
+                  await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.play().then((value) async {
+                    await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.seek(Duration(seconds: 0));
+                  });
+
                   if (pinCode.isNotEmpty) {
                     setState(() {
                       pinCode = pinCode.substring(0, pinCode.length - 1);
@@ -231,9 +236,7 @@ class _PinCodePageState extends State<PinCodePage> {
                         height: 20 / 844 * height,
                         width: 40 / 844 * height,
                         child: SvgPicture.asset(
-                          pinCode.isEmpty
-                              ? 'assets/keyboard_symb_dis.svg'
-                              : 'assets/keyboard_symb.svg',
+                          pinCode.isEmpty ? 'assets/keyboard_symb_dis.svg' : 'assets/keyboard_symb.svg',
                           fit: BoxFit.fitHeight,
                         ),
                       ),
@@ -251,7 +254,11 @@ class _PinCodePageState extends State<PinCodePage> {
   Widget getButton(double width, double height, String id) {
     return Expanded(
       child: InkWell(
-        onTap: () {
+        onTap: () async {
+          await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.play().then((value) async {
+            await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.seek(Duration(seconds: 0));
+          });
+
           if (pinCode.length < 4) {
             setState(() {
               pinCode += id;
@@ -303,8 +310,7 @@ class _PinCodePageState extends State<PinCodePage> {
           pinCode = '';
         });
       }
-    } else if (ModalRoute.of(context)!.settings.arguments ==
-        PinCodePageType.enter) {
+    } else if (ModalRoute.of(context)!.settings.arguments == PinCodePageType.enter) {
       String? validCode = AppStorage().read('pin');
       if (pinCode == validCode) {
         Navigator.of(context).pushNamedAndRemoveUntil(
@@ -324,25 +330,14 @@ class _PinCodePageState extends State<PinCodePage> {
             backgroundColor: Colors.transparent,
             padding: const EdgeInsets.only(top: 30),
             content: Container(
-              height: 0.1 * height,
-              decoration: const BoxDecoration(
-                color: Color(0xFF0D1238),
-                borderRadius: BorderRadius.only(topRight: Radius.circular(30), topLeft: Radius.circular(30)),
-                boxShadow: [
-                  BoxShadow(
-                    color: Color(0x2FFFFFFF),
-                    blurRadius: 30,
-                    spreadRadius: 30,
-                    offset: Offset(0, 20)
-                  )
-                ],
-              ),
-              alignment: Alignment.center,
-              child: Text(
-                'Invalid code'.toUpperCase(),
-                style: TextStyle(fontSize: 0.021 * height, fontWeight: FontWeight.w700, color: const Color(0xFFFF0049))
-              )
-            ),
+                height: 0.1 * height,
+                decoration: const BoxDecoration(
+                  color: Color(0xFF0D1238),
+                  borderRadius: BorderRadius.only(topRight: Radius.circular(30), topLeft: Radius.circular(30)),
+                  boxShadow: [BoxShadow(color: Color(0x2FFFFFFF), blurRadius: 30, spreadRadius: 30, offset: Offset(0, 20))],
+                ),
+                alignment: Alignment.center,
+                child: Text('Invalid code'.toUpperCase(), style: TextStyle(fontSize: 0.021 * height, fontWeight: FontWeight.w700, color: const Color(0xFFFF0049)))),
           ),
         );
       }

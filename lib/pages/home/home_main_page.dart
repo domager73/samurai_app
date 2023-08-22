@@ -310,7 +310,7 @@ class _HomeMainPageState extends State<HomeMainPage> {
                 Padding(
                   padding: EdgeInsets.only(top: 0.04 * height),
                   child: Text(
-                    "BUY samurai from your army:".toUpperCase(),
+                    "BUY samurai for your army:".toUpperCase(),
                     style: GoogleFonts.spaceMono(
                       fontSize: 14 / 844 * height,
                       fontWeight: FontWeight.w700,

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-void showSpinner(BuildContext context, {bool? barrierDismissible = false}) =>
-    showDialog(
+void showSpinner(BuildContext context, {bool? barrierDismissible = false}) 
+{    showDialog(
         context: context,
         barrierDismissible: false,
         builder: (_) => reqtangleSpinner(context)
-    );
+    );}
 
 void hideSpinner(BuildContext context) {
     Navigator.of(context, rootNavigator: true).pop();
