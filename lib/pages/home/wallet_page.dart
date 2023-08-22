@@ -112,12 +112,16 @@ class _WalletPageState extends State<WalletPage> with SingleTickerProviderStateM
                 Column(
                   children: [
                     TabBar(
+                      onTap: (_) async {
+                        await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.play().then((value) async {
+                          await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.seek(Duration(seconds: 0));
+                        });
+                      },
                       controller: _tabController,
                       tabs: const [
                         Tab(text: 'TOKENS'),
                         Tab(text: 'SAMURAI'),
                         Tab(text: 'HEROES'),
-                        //Tab(text: 'ITEMS'),
                       ],
                       labelStyle: GoogleFonts.spaceMono(
                         fontSize: 14 / 880 * height,
@@ -715,9 +719,6 @@ class _WalletPageState extends State<WalletPage> with SingleTickerProviderStateM
           Padding(
             padding: EdgeInsets.symmetric(vertical: height * 0.007),
             child: AnimButton(
-              //overlayColor: MaterialStateProperty.all(
-              //Colors.transparent,
-              //),
               onTap: () => onExportTap(),
               child: SvgPicture.asset(
                 'assets/pages/homepage/next.svg',

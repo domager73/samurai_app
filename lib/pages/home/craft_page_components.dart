@@ -271,7 +271,11 @@ class CraftPageComponents {
                                                 context: context,
                                                 width: width,
                                                 height: height,
-                                                onSwitch: (val) {
+                                                onSwitch: (val) async {
+                                                  await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.play().then((value) async {
+                                                    await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.seek(Duration(seconds: 0));
+                                                  });
+
                                                   if (val == 1) {
                                                     onShitchMode('REGULAR');
                                                   } else {
@@ -377,9 +381,7 @@ class CraftPageComponents {
             width: width * (switchMode == 0 ? 0.45 : 0.53),
             child: InkWell(
                 onTap: () async {
-                  // await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.play().then((value) async {
-                  //   await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.seek(Duration(seconds: 0));
-                  // });
+
                   onSwitch(0);
                 },
                 child: SvgPicture.asset(
@@ -392,7 +394,7 @@ class CraftPageComponents {
                 width: width * (switchMode == 0 ? 0.483 : 0.46),
                 child: InkWell(
                     onTap: () async {
-                      // dont put the music here. it will inited twice... shit-_-
+
                       onSwitch(1);
                     },
                     child: SvgPicture.asset('assets/pages/homepage/craft/withdraw_$switchMode.svg', fit: BoxFit.fitWidth))))
@@ -456,7 +458,11 @@ class CraftPageComponents {
                           )),
                       Padding(
                           padding: EdgeInsets.only(top: width * 0.03, bottom: width * 0.03),
-                          child: switchType(width, switchMode, (mode) {
+                          child: switchType(width, switchMode, (mode) async {
+                            await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.play().then((value) async {
+                              await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.seek(Duration(seconds: 0));
+                            });
+
                             setState(() {
                               switchMode = mode;
                             });
@@ -497,10 +503,10 @@ class CraftPageComponents {
     required BuildContext context,
     required double width,
     required double height,
-  }) async{
-    await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.play().then((value) async {
-      await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.seek(Duration(seconds: 0));
-    });
+  }) async {
+    // await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.play().then((value) async {
+    //   await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.seek(Duration(seconds: 0));
+    // });
 
     showModalBottomSheet(
       context: context,
@@ -620,11 +626,7 @@ class CraftPageComponents {
     );
   }
 
-  static Future<void> openSwitchDialog({required BuildContext context, required double width, required double height, required Function(int) onSwitch, required int valSwitch}) async{
-    await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.play().then((value) async {
-      await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.seek(Duration(seconds: 0));
-    });
-
+  static Future<void> openSwitchDialog({required BuildContext context, required double width, required double height, required Function(int) onSwitch, required int valSwitch}) async {
     showDialog(
         context: context,
         builder: (BuildContext context) => StatefulBuilder(

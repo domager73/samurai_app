@@ -122,9 +122,6 @@ class SamuraiTextField extends StatelessWidget {
                     onTap;
                   },
                   onTapOutside: (_) async {
-                    await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.play().then((value) async {
-                      await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.seek(Duration(seconds: 0));
-                    });
                     onTapOutside;
                   },
                   scrollController: scrollController,
