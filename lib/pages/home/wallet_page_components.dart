@@ -187,7 +187,7 @@ class WalletPageComponents {
                                       Text(
                                         mode == 'inGame' ? 'WALLET' : 'GAME',
                                         textHeightBehavior: TextHeightBehavior(),
-                                        style: GoogleFonts.spaceMono(fontWeight: FontWeight.w700, color: Colors.white, fontSize: 20, textStyle: TextStyle(height: 1.01)),
+                                        style: GoogleFonts.spaceMono(fontWeight: FontWeight.w700, color: Colors.white, fontSize: 20, textStyle: TextStyle(height: 0.927)),
                                         textAlign: TextAlign.start,
                                       ),
                                     ]),
@@ -207,7 +207,7 @@ class WalletPageComponents {
                                         Text(
                                           textAlign: TextAlign.start,
                                           mode == 'inGame' ? 'GAME' : 'WALLET',
-                                          style: GoogleFonts.spaceMono(fontWeight: FontWeight.w700, color: Colors.white, textStyle: TextStyle(height: 1.01), fontSize: 20),
+                                          style: GoogleFonts.spaceMono(fontWeight: FontWeight.w700, color: Colors.white, textStyle: TextStyle(height: 0.9), fontSize: 20),
                                         ),
                                       ],
                                     ),
