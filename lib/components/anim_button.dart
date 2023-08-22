@@ -3,11 +3,12 @@ import 'package:get_it/get_it.dart';
 import 'package:samurai_app/data/music_manager.dart';
 
 class AnimButton extends StatefulWidget {
-  const AnimButton({required this.onTap, required this.child, this.shadowType = 0, this.disabled = false, super.key});
+  const AnimButton({this.onDown, required this.onTap, required this.child, this.shadowType = 0, this.disabled = false, super.key});
   final void Function()? onTap;
   final Widget? child;
   final int shadowType;
   final bool disabled;
+  final Function? onDown;
 
   @override
   State<AnimButton> createState() => _AnimButtonState();
@@ -17,6 +18,10 @@ class _AnimButtonState extends State<AnimButton> {
   bool _elevation = false;
 
   void _onTapDown(TapDownDetails t) {
+    if (widget.onDown != null) {
+      widget.onDown!;
+    }
+
     setState(() {
       _elevation = true;
     });
@@ -54,8 +59,6 @@ class _AnimButtonState extends State<AnimButton> {
       overlayColor: MaterialStateProperty.all(
         Colors.transparent,
       ),
-      //splashColor: const Color(0xFF9E9E9E).withOpacity(0.5),
-      //highlightColor: const Color(0xFF00E3FF).withOpacity(0.5),
       onTap: widget.disabled ? null : _onTap,
       onTapDown: widget.disabled ? null : _onTapDown,
       onTapUp: widget.disabled ? null : _onTapUp,
