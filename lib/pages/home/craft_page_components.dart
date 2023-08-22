@@ -128,6 +128,7 @@ class CraftPageComponents {
                                   flex: 15,
                                   child: AnimButton(
                                     shadowType: 2,
+                                    player: GetIt.I<MusicManager>().okCanselTransPlayer,
                                     onTap: () {
                                       onShitchMode();
                                     },

@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:samurai_app/data/music_manager.dart';
 
 class AnimButton extends StatefulWidget {
-  const AnimButton({this.onDown, required this.onTap, required this.child, this.shadowType = 0, this.disabled = false, super.key});
+  const AnimButton({this.player, this.onDown, required this.onTap, required this.child, this.shadowType = 0, this.disabled = false, super.key});
   final void Function()? onTap;
   final Widget? child;
   final int shadowType;
   final bool disabled;
   final Function? onDown;
+  final AudioPlayer? player;
 
   @override
   State<AnimButton> createState() => _AnimButtonState();
@@ -42,9 +44,11 @@ class _AnimButtonState extends State<AnimButton> {
   }
 
   Future<void> _onTap() async {
-    await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.play().then((value) async {
-      await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.seek(Duration(seconds: 0));
-    });
+    if (widget.player != null) {
+      await widget.player!.play().then((value) async {
+        await widget.player!.seek(Duration(seconds: 0));
+      });
+    }
 
     Future.delayed(const Duration(milliseconds: 20), () {
       if (widget.onTap != null) {
@@ -248,11 +252,12 @@ class _BoxDecorationPainterCustom extends BoxPainter {
 }
 
 class PresButton extends StatefulWidget {
-  const PresButton({required this.onTap, required this.child, required this.params, super.key, this.disabled = false});
+  const PresButton({this.player, required this.onTap, required this.child, required this.params, super.key, this.disabled = false});
   final void Function()? onTap;
   final Function child;
   final Map<String, dynamic> params;
   final bool disabled;
+  final AudioPlayer? player;
 
   @override
   State<PresButton> createState() => _PresButtonState();
@@ -282,9 +287,11 @@ class _PresButtonState extends State<PresButton> {
   }
 
   Future<void> _onTap() async {
-    await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.play().then((value) async {
-      await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.seek(Duration(seconds: 0));
-    });
+    if (widget.player != null) {
+      await widget.player!.play().then((value) async {
+        await widget.player!.seek(Duration(seconds: 0));
+      });
+    }
 
     if (widget.onTap != null) {
       Future.delayed(const Duration(milliseconds: 20), () {

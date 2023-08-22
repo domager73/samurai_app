@@ -255,8 +255,8 @@ class _PinCodePageState extends State<PinCodePage> {
     return Expanded(
       child: InkWell(
         onTap: () async {
-          await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.play().then((value) async {
-            await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.seek(Duration(seconds: 0));
+          await GetIt.I<MusicManager>().numbersCodePlayer.play().then((value) async {
+            await GetIt.I<MusicManager>().numbersCodePlayer.seek(Duration(seconds: 0));
           });
 
           if (pinCode.length < 4) {
