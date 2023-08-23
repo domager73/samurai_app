@@ -4,7 +4,15 @@ import 'package:just_audio/just_audio.dart';
 import 'package:samurai_app/data/music_manager.dart';
 
 class AnimButton extends StatefulWidget {
-  const AnimButton({this.player, this.onDown, required this.onTap, required this.child, this.shadowType = 0, this.disabled = false, super.key});
+  const AnimButton(
+      {this.player,
+      this.onDown,
+      required this.onTap,
+      required this.child,
+      this.shadowType = 0,
+      this.disabled = false,
+      super.key});
+
   final void Function()? onTap;
   final Widget? child;
   final int shadowType;
@@ -46,7 +54,16 @@ class _AnimButtonState extends State<AnimButton> {
   Future<void> _onTap() async {
     if (widget.player != null) {
       await widget.player!.play().then((value) async {
-        await widget.player!.seek(Duration(seconds: 0));
+        await widget.player!.seek(const Duration(seconds: 0));
+      });
+    } else {
+      await GetIt.I<MusicManager>()
+          .smallKeyLightningPlayer
+          .play()
+          .then((value) async {
+        await GetIt.I<MusicManager>()
+            .smallKeyLightningPlayer
+            .seek(const Duration(seconds: 0));
       });
     }
 
@@ -75,7 +92,9 @@ class _AnimButtonState extends State<AnimButton> {
             shadowType: widget.shadowType,
             boxShadow: [
               BoxShadow(
-                color: _elevation ? const Color(0xFF00E3FF).withOpacity(0.5) : Colors.transparent,
+                color: _elevation
+                    ? const Color(0xFF00E3FF).withOpacity(0.5)
+                    : Colors.transparent,
                 blurRadius: 10.0,
               )
             ],
@@ -97,6 +116,7 @@ class BoxDecorationCustom extends BoxDecoration {
     super.shape = BoxShape.rectangle,
     required this.shadowType,
   });
+
   final int shadowType;
 
   @override
@@ -108,18 +128,24 @@ class BoxDecorationCustom extends BoxDecoration {
 
 /// An object that paints a [BoxDecoration] into a canvas.
 class _BoxDecorationPainterCustom extends BoxPainter {
-  _BoxDecorationPainterCustom(this._decoration, super.onChanged, {required this.shadowType}) : assert(_decoration != null);
+  _BoxDecorationPainterCustom(this._decoration, super.onChanged,
+      {required this.shadowType})
+      : assert(_decoration != null);
 
   final int shadowType;
   final BoxDecoration _decoration;
 
   Paint? _cachedBackgroundPaint;
   Rect? _rectForCachedBackgroundPaint;
+
   Paint _getBackgroundPaint(Rect rect, TextDirection? textDirection) {
     assert(rect != null);
-    assert(_decoration.gradient != null || _rectForCachedBackgroundPaint == null);
+    assert(
+        _decoration.gradient != null || _rectForCachedBackgroundPaint == null);
 
-    if (_cachedBackgroundPaint == null || (_decoration.gradient != null && _rectForCachedBackgroundPaint != rect)) {
+    if (_cachedBackgroundPaint == null ||
+        (_decoration.gradient != null &&
+            _rectForCachedBackgroundPaint != rect)) {
       final Paint paint = Paint();
       if (_decoration.backgroundBlendMode != null) {
         paint.blendMode = _decoration.backgroundBlendMode!;
@@ -128,7 +154,8 @@ class _BoxDecorationPainterCustom extends BoxPainter {
         paint.color = _decoration.color!;
       }
       if (_decoration.gradient != null) {
-        paint.shader = _decoration.gradient!.createShader(rect, textDirection: textDirection);
+        paint.shader = _decoration.gradient!
+            .createShader(rect, textDirection: textDirection);
         _rectForCachedBackgroundPaint = rect;
       }
       _cachedBackgroundPaint = paint;
@@ -137,7 +164,8 @@ class _BoxDecorationPainterCustom extends BoxPainter {
     return _cachedBackgroundPaint!;
   }
 
-  void _paintBox(Canvas canvas, Rect rect, Paint paint, TextDirection? textDirection) {
+  void _paintBox(
+      Canvas canvas, Rect rect, Paint paint, TextDirection? textDirection) {
     switch (shadowType) {
       case 1:
         {
@@ -169,10 +197,13 @@ class _BoxDecorationPainterCustom extends BoxPainter {
         }
       default:
         {
-          if (_decoration.borderRadius == null || _decoration.borderRadius == BorderRadius.zero) {
+          if (_decoration.borderRadius == null ||
+              _decoration.borderRadius == BorderRadius.zero) {
             canvas.drawRect(rect, paint);
           } else {
-            canvas.drawRRect(_decoration.borderRadius!.resolve(textDirection).toRRect(rect), paint);
+            canvas.drawRRect(
+                _decoration.borderRadius!.resolve(textDirection).toRRect(rect),
+                paint);
           }
           break;
         }
@@ -185,19 +216,24 @@ class _BoxDecorationPainterCustom extends BoxPainter {
     }
     for (final BoxShadow boxShadow in _decoration.boxShadow!) {
       final Paint paint = boxShadow.toPaint();
-      final Rect bounds = rect.shift(boxShadow.offset).inflate(boxShadow.spreadRadius);
+      final Rect bounds =
+          rect.shift(boxShadow.offset).inflate(boxShadow.spreadRadius);
       _paintBox(canvas, bounds, paint, textDirection);
     }
   }
 
-  void _paintBackgroundColor(Canvas canvas, Rect rect, TextDirection? textDirection) {
+  void _paintBackgroundColor(
+      Canvas canvas, Rect rect, TextDirection? textDirection) {
     if (_decoration.color != null || _decoration.gradient != null) {
-      _paintBox(canvas, rect, _getBackgroundPaint(rect, textDirection), textDirection);
+      _paintBox(canvas, rect, _getBackgroundPaint(rect, textDirection),
+          textDirection);
     }
   }
 
   DecorationImagePainter? _imagePainter;
-  void _paintBackgroundImage(Canvas canvas, Rect rect, ImageConfiguration configuration) {
+
+  void _paintBackgroundImage(
+      Canvas canvas, Rect rect, ImageConfiguration configuration) {
     if (_decoration.image == null) {
       return;
     }
@@ -213,7 +249,10 @@ class _BoxDecorationPainterCustom extends BoxPainter {
         break;
       case BoxShape.rectangle:
         if (_decoration.borderRadius != null) {
-          clipPath = Path()..addRRect(_decoration.borderRadius!.resolve(configuration.textDirection).toRRect(rect));
+          clipPath = Path()
+            ..addRRect(_decoration.borderRadius!
+                .resolve(configuration.textDirection)
+                .toRRect(rect));
         }
         break;
     }
@@ -252,7 +291,14 @@ class _BoxDecorationPainterCustom extends BoxPainter {
 }
 
 class PresButton extends StatefulWidget {
-  const PresButton({this.player, required this.onTap, required this.child, required this.params, super.key, this.disabled = false});
+  const PresButton(
+      {this.player,
+      required this.onTap,
+      required this.child,
+      required this.params,
+      super.key,
+      this.disabled = false});
+
   final void Function()? onTap;
   final Function child;
   final Map<String, dynamic> params;
@@ -289,7 +335,16 @@ class _PresButtonState extends State<PresButton> {
   Future<void> _onTap() async {
     if (widget.player != null) {
       await widget.player!.play().then((value) async {
-        await widget.player!.seek(Duration(seconds: 0));
+        await widget.player!.seek(const Duration(seconds: 0));
+      });
+    } else {
+      await GetIt.I<MusicManager>()
+          .smallKeyLightningPlayer
+          .play()
+          .then((value) async {
+        await GetIt.I<MusicManager>()
+            .smallKeyLightningPlayer
+            .seek(const Duration(seconds: 0));
       });
     }
 
@@ -315,12 +370,14 @@ class _PresButtonState extends State<PresButton> {
         child: AnimatedContainer(
           duration: Duration(milliseconds: !_elevation ? 1 : 20),
           curve: Curves.easeInOut,
-          child: widget.child(context, widget.params, _elevation, widget.disabled),
+          child:
+              widget.child(context, widget.params, _elevation, widget.disabled),
         ));
   }
 }
 
-Widget menuBtn(BuildContext context, Map<String, dynamic> params, bool state, bool disabled) {
+Widget menuBtn(BuildContext context, Map<String, dynamic> params, bool state,
+    bool disabled) {
   const img = AssetImage('assets/pages/homepage/menu_icon.png');
   const imgPres = AssetImage('assets/pages/homepage/menu_icon_pres.png');
   precacheImage(img, context);
@@ -335,7 +392,9 @@ Widget menuBtn(BuildContext context, Map<String, dynamic> params, bool state, bo
   );
 }
 
-Widget loginBtn(BuildContext context, Map<String, dynamic> params, bool state, bool disabled, {String clan = 'water'}) {
+Widget loginBtn(BuildContext context, Map<String, dynamic> params, bool state,
+    bool disabled,
+    {String clan = 'water'}) {
   const img = AssetImage('assets/login_button.png');
   const imgPres = AssetImage('assets/login_button_pres.png');
   const imgDis = AssetImage('assets/login_button_dis.png');
@@ -373,7 +432,8 @@ Widget loginBtn(BuildContext context, Map<String, dynamic> params, bool state, b
   );
 }
 
-Widget backBtn(BuildContext context, Map<String, dynamic> params, bool state, bool disabled) {
+Widget backBtn(BuildContext context, Map<String, dynamic> params, bool state,
+    bool disabled) {
   const img = AssetImage('assets/back_button.png');
   const imgPres = AssetImage('assets/back_button_pres.png');
   precacheImage(img, context);
@@ -386,25 +446,30 @@ Widget backBtn(BuildContext context, Map<String, dynamic> params, bool state, bo
   );
 }
 
-Widget changeEmailBtn(BuildContext context, Map<String, dynamic> params, bool state, bool disabled) {
+Widget changeEmailBtn(BuildContext context, Map<String, dynamic> params,
+    bool state, bool disabled) {
   const img = AssetImage('assets/pages/account/change_email_bt.png');
   const imgPres = AssetImage('assets/pages/account/change_email_bt_pres.png');
   precacheImage(img, context);
   precacheImage(imgPres, context);
 
-  return Image(image: !state ? img : imgPres, height: 6 / 96 * params['height']);
+  return Image(
+      image: !state ? img : imgPres, height: 6 / 96 * params['height']);
 }
 
-Widget logoutBtn(BuildContext context, Map<String, dynamic> params, bool state, bool disabled) {
+Widget logoutBtn(BuildContext context, Map<String, dynamic> params, bool state,
+    bool disabled) {
   const img = AssetImage('assets/pages/account/logout_bt.png');
   const imgPres = AssetImage('assets/pages/account/logout_bt_pres.png');
   precacheImage(img, context);
   precacheImage(imgPres, context);
 
-  return Image(image: !state ? img : imgPres, height: 83 / 960 * params['height']);
+  return Image(
+      image: !state ? img : imgPres, height: 83 / 960 * params['height']);
 }
 
-Widget menuCloseBtn(BuildContext context, Map<String, dynamic> params, bool state, bool disabled) {
+Widget menuCloseBtn(BuildContext context, Map<String, dynamic> params,
+    bool state, bool disabled) {
   const img = AssetImage('assets/pages/homepage/menu_pop_icon.png');
   const imgPres = AssetImage('assets/pages/homepage/menu_pop_icon_pres.png');
   precacheImage(img, context);
@@ -416,7 +481,8 @@ Widget menuCloseBtn(BuildContext context, Map<String, dynamic> params, bool stat
   );
 }
 
-Widget sendToWalletBtn(BuildContext context, Map<String, dynamic> params, bool state, bool disabled) {
+Widget sendToWalletBtn(BuildContext context, Map<String, dynamic> params,
+    bool state, bool disabled) {
   const img = AssetImage('assets/pages/homepage/craft/send_bt.png');
   const imgPres = AssetImage('assets/pages/homepage/craft/send_bt_pres.png');
   precacheImage(img, context);
@@ -428,9 +494,11 @@ Widget sendToWalletBtn(BuildContext context, Map<String, dynamic> params, bool s
   );
 }
 
-Widget waterHeartBtn(BuildContext context, Map<String, dynamic> params, bool state, bool disabled) {
+Widget waterHeartBtn(BuildContext context, Map<String, dynamic> params,
+    bool state, bool disabled) {
   const img = AssetImage('assets/pages/homepage/craft/heart_water.png');
-  const imgPres = AssetImage('assets/pages/homepage/craft/heart_water_pres.png');
+  const imgPres =
+      AssetImage('assets/pages/homepage/craft/heart_water_pres.png');
   precacheImage(img, context);
   precacheImage(imgPres, context);
 
@@ -441,7 +509,8 @@ Widget waterHeartBtn(BuildContext context, Map<String, dynamic> params, bool sta
   );
 }
 
-Widget fireHeartBtn(BuildContext context, Map<String, dynamic> params, bool state, bool disabled) {
+Widget fireHeartBtn(BuildContext context, Map<String, dynamic> params,
+    bool state, bool disabled) {
   const img = AssetImage('assets/pages/homepage/craft/heart_fire.png');
   const imgPres = AssetImage('assets/pages/homepage/craft/heart_fire_pres.png');
   precacheImage(img, context);
@@ -454,9 +523,11 @@ Widget fireHeartBtn(BuildContext context, Map<String, dynamic> params, bool stat
   );
 }
 
-Widget waterChangeBtn(BuildContext context, Map<String, dynamic> params, bool state, bool disabled) {
+Widget waterChangeBtn(BuildContext context, Map<String, dynamic> params,
+    bool state, bool disabled) {
   const img = AssetImage('assets/pages/homepage/craft/change_water.png');
-  const imgPres = AssetImage('assets/pages/homepage/craft/change_water_pres.png');
+  const imgPres =
+      AssetImage('assets/pages/homepage/craft/change_water_pres.png');
   precacheImage(img, context);
   precacheImage(imgPres, context);
 
@@ -467,9 +538,11 @@ Widget waterChangeBtn(BuildContext context, Map<String, dynamic> params, bool st
   );
 }
 
-Widget fireChangeBtn(BuildContext context, Map<String, dynamic> params, bool state, bool disabled) {
+Widget fireChangeBtn(BuildContext context, Map<String, dynamic> params,
+    bool state, bool disabled) {
   const img = AssetImage('assets/pages/homepage/craft/change_fire.png');
-  const imgPres = AssetImage('assets/pages/homepage/craft/change_fire_pres.png');
+  const imgPres =
+      AssetImage('assets/pages/homepage/craft/change_fire_pres.png');
   precacheImage(img, context);
   precacheImage(imgPres, context);
 
@@ -480,7 +553,8 @@ Widget fireChangeBtn(BuildContext context, Map<String, dynamic> params, bool sta
   );
 }
 
-Widget menuWalletBtn(BuildContext context, Map<String, dynamic> params, bool state, bool disabled) {
+Widget menuWalletBtn(BuildContext context, Map<String, dynamic> params,
+    bool state, bool disabled) {
   const img = AssetImage('assets/pages/homepage/wallet_icon.png');
   const imgPres = AssetImage('assets/pages/homepage/wallet_icon_pres.png');
   precacheImage(img, context);
@@ -493,9 +567,11 @@ Widget menuWalletBtn(BuildContext context, Map<String, dynamic> params, bool sta
   );
 }
 
-Widget mintBtn(BuildContext context, Map<String, dynamic> params, bool state, bool disabled) {
+Widget mintBtn(BuildContext context, Map<String, dynamic> params, bool state,
+    bool disabled) {
   const img = AssetImage('assets/pages/homepage/mint/btn_mint_water.png');
-  const imgPres = AssetImage('assets/pages/homepage/mint/btn_mint_water_pres.png');
+  const imgPres =
+      AssetImage('assets/pages/homepage/mint/btn_mint_water_pres.png');
   const imgDis = AssetImage('assets/pages/homepage/mint/btn_mint_fire_dis.png');
   precacheImage(img, context);
   precacheImage(imgPres, context);
@@ -508,9 +584,11 @@ Widget mintBtn(BuildContext context, Map<String, dynamic> params, bool state, bo
   );
 }
 
-Widget mintBtn2(BuildContext context, Map<String, dynamic> params, bool state, bool disabled) {
+Widget mintBtn2(BuildContext context, Map<String, dynamic> params, bool state,
+    bool disabled) {
   const img = AssetImage('assets/pages/homepage/mint/btn_mint_fire.png');
-  const imgPres = AssetImage('assets/pages/homepage/mint/btn_mint_water_pres.png');
+  const imgPres =
+      AssetImage('assets/pages/homepage/mint/btn_mint_water_pres.png');
   const imgDis = AssetImage('assets/pages/homepage/mint/btn_mint_fire_dis.png');
   precacheImage(img, context);
   precacheImage(imgPres, context);

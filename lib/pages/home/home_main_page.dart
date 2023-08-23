@@ -209,25 +209,6 @@ class _HomeMainPageState extends State<HomeMainPage> {
                             ),
                             Expanded(
                               flex: 62,
-                              /*child: WheelChooser.integer(
-                                controller: daysController,
-                                onValueChanged: (i) => debugPrint(i.toString()),
-                                maxValue: 100,
-                                minValue: 0,
-                                isInfinite: true,
-                                selectTextStyle: GoogleFonts.spaceMono(
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.white,
-                                  fontSize: 30 / 354 * (width - width * 0.14),
-                                ),
-                                unSelectTextStyle: GoogleFonts.spaceMono(
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.white.withOpacity(0.15),
-                                  fontSize: 30 / 354 * (width - width * 0.14),
-                                ),
-                                itemSize: 60 / 354 * (width - width * 0.14),
-                                listHeight: 120 / 354 * (width - width * 0.14),
-                              ),*/
                               child: clockWheel(width, days, daysPrev, daysNext)
                             ),
                             const Spacer(
@@ -239,27 +220,6 @@ class _HomeMainPageState extends State<HomeMainPage> {
                             ),
                             Expanded(
                               flex: 57,
-                              /*child: WheelChooser(
-                                datas: List<String>.generate(25, (i) => i.toString().padLeft(2, '0')),
-                                controller: hoursController,
-                                onValueChanged: (i) => debugPrint(i.toString()),
-                                startPosition: null,
-                                // maxValue: 24,
-                                // minValue: 0,
-                                isInfinite: true,
-                                selectTextStyle: GoogleFonts.spaceMono(
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.white,
-                                  fontSize: 30 / 354 * (width - width * 0.14),
-                                ),
-                                unSelectTextStyle: GoogleFonts.spaceMono(
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.white.withOpacity(0.15),
-                                  fontSize: 30 / 354 * (width - width * 0.14),
-                                ),
-                                itemSize: 60 / 354 * (width - width * 0.14),
-                                listHeight: 120 / 354 * (width - width * 0.14),
-                              ),*/
                                 child: clockWheel(width, hours, hoursPrev, hoursNext)
                             ),
                             const Spacer(
