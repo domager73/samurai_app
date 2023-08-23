@@ -363,6 +363,8 @@ class _HerosPageState extends State<HerosPage> with SingleTickerProviderStateMix
             child: Stack(children: [
               AnimButton(
                 onTap: () {
+                  ScaffoldMessenger.of(context).clearSnackBars();
+
                   if (water!.balance >= water!.bar && widget.craftSwitch == 0) {
                     ScaffoldMessenger.of(context).showSnackBar(buildCustomSnackbar(context, 'Your water dp is FULL', false));
 
@@ -374,6 +376,7 @@ class _HerosPageState extends State<HerosPage> with SingleTickerProviderStateMix
 
                     return;
                   }
+
 
                   Rest.sendClameHero(widget.craftSwitch == 0 ? 'water' : 'fire').then((value) {
                     loadInfo().then((value) => setState(() {}));

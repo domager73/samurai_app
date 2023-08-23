@@ -77,17 +77,17 @@ class _MyAppState extends State<MyApp> {
     player = AudioPlayer();
     await GetIt.I<MusicManager>().registerMusicAssets();
 
-    // await player.setAsset(MusicAssets.mainLoop1);
-    // await player.play();
-    // await player.playerStateStream.listen((event) async {
-    //   print(event.processingState);
+    await player.setAsset(MusicAssets.mainLoop1);
+    await player.play();
+    await player.playerStateStream.listen((event) async {
+      print(event.processingState);
 
-    //   switch (event.processingState) {
-    //     case ProcessingState.completed:
-    //       await player.setAsset(MusicAssets.mainLoop2);
-    //       await player.play();
-    //   }
-    // });
+      switch (event.processingState) {
+        case ProcessingState.completed:
+          await player.setAsset(MusicAssets.mainLoop2);
+          await player.play();
+      }
+    });
   }
 
   Future<void> stopPlayer() async {

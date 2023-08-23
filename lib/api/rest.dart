@@ -4,7 +4,6 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'dart:convert' show base64Decode, jsonDecode;
 
 import 'package:samurai_app/components/storage.dart';
-import 'package:samurai_app/utils/enums.dart';
 
 //const SERVER_IP = 'http://192.168.1.5:820'; //net
 const serverIp = 'https://api.samurai-versus.io'; //work

@@ -208,7 +208,7 @@ class WalletPageComponents {
                                         Text(
                                           textAlign: TextAlign.start,
                                           mode == 'inGame' ? 'GAME' : 'WALLET',
-                                          style: GoogleFonts.spaceMono(fontWeight: FontWeight.w700, color: Colors.white, textStyle: TextStyle(height: 0.9), fontSize: 20),
+                                          style: GoogleFonts.spaceMono(fontWeight: FontWeight.w700, color: Colors.white, textStyle: TextStyle(height: 0.927), fontSize: 20),
                                         ),
                                       ],
                                     ),
