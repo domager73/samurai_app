@@ -171,7 +171,8 @@ class _HerosPageState extends State<HerosPage> with SingleTickerProviderStateMix
   }
 
   Widget getMintTab(BuildContext context, double width, double height) {
-    return Column(children: [
+    return Column(
+      children: [
       clameBlock(context, width),
       Padding(padding: EdgeInsets.only(top: width * 0.04, left: width * 0.05, right: width * 0.04), child: progressBar(context, widget.craftSwitch == 0 ? water!.bar : fire!.bar, width)),
       Padding(
@@ -419,7 +420,7 @@ class _HerosPageState extends State<HerosPage> with SingleTickerProviderStateMix
         ),
         Container(
           margin: EdgeInsets.only(top: width * 0.002),
-          width: (width * 0.91) * balance / maxDp,
+          width: maxDp != 0 ? (width * 0.91) * balance / maxDp : 0.001,
           height: width * 0.041,
           decoration: BoxDecoration(
             color: widget.craftSwitch == 0 ? const Color(0xFF00FFFF) : const Color(0xFFFF0049),
