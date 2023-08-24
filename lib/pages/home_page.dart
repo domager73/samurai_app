@@ -698,7 +698,7 @@ class _HomePageState extends State<HomePage> {
                       Expanded(
                         flex: 80,
                         child: PresButton(
-                          player: GetIt.I<MusicManager>().okCanselTransPlayer,
+                          player: GetIt.I<MusicManager>().keyBackSignCloseX,
                           onTap: () => setState(() {
                             isMenuOpened = false;
                           }),

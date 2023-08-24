@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../components/anim_button.dart';
 import '../components/show_confirm.dart';
 import '../components/storage.dart';
+import '../data/music_manager.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -75,7 +77,9 @@ class _SettingsPageState extends State<SettingsPage> {
                   width,
                   'SEED PHRASE',
                   onTap: () {
-                    showConfirm(context, 'Anyone who knows your wallet\'s seed phrase will be able to access it. Make sure no one sees your screen now!', () {
+                    showConfirm(context,
+                        'Anyone who knows your wallet\'s seed phrase will be able to access it. Make sure no one sees your screen now!',
+                        () {
                       Navigator.pop(context);
                       Navigator.of(context).pushNamed('/seed');
                     });
@@ -94,6 +98,15 @@ class _SettingsPageState extends State<SettingsPage> {
                   width,
                   'SIGN OUT',
                   onTap: () async {
+                    await GetIt.I<MusicManager>()
+                        .keyBackSignCloseX
+                        .play()
+                        .then((value) async {
+                      await GetIt.I<MusicManager>()
+                          .keyBackSignCloseX
+                          .seek(Duration(seconds: 0));
+                    });
+
                     await AppStorage().remove('pin');
                     await AppStorage().remove('wallet_adress');
                     await AppStorage().remove('wallet_mnemonic');
@@ -141,7 +154,9 @@ class _SettingsPageState extends State<SettingsPage> {
                 fontSize: 20 / 844 * height,
                 height: 1.5,
                 fontWeight: FontWeight.w700,
-                color: isActive ? const Color(0xFF00FFFF) : const Color(0xFF9D9D9D).withOpacity(0.3),
+                color: isActive
+                    ? const Color(0xFF00FFFF)
+                    : const Color(0xFF9D9D9D).withOpacity(0.3),
               ),
             ),
           ),

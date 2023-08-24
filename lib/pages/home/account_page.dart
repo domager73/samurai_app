@@ -107,6 +107,7 @@ class _AccountPageState extends State<AccountPage> {
                                       padding:
                                           EdgeInsets.only(top: 2 / 96 * height),
                                       child: PresButton(
+                                        player: GetIt.I<MusicManager>().keyBackSignCloseX,
                                         onTap: () => AccountPageComponents
                                             .openChangeEmailModalPage(
                                           context: context,
@@ -270,6 +271,7 @@ class _AccountPageState extends State<AccountPage> {
                       Padding(
                         padding: EdgeInsets.only(top: 3 / 96 * height),
                         child: PresButton(
+                          player: GetIt.I<MusicManager>().keyBackSignCloseX,
                           onTap: () {
                             showConfirm(
                                 context, 'Are you sure you want to get out?',

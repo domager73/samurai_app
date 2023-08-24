@@ -178,8 +178,8 @@ class _PinCodePageState extends State<PinCodePage> {
             Expanded(
               child: InkWell(
                 onTap: () async {
-                  await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.play().then((value) async {
-                    await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.seek(Duration(seconds: 0));
+                  await GetIt.I<MusicManager>().keyBackSignCloseX.play().then((value) async {
+                    await GetIt.I<MusicManager>().keyBackSignCloseX.seek(Duration(seconds: 0));
                   });
 
                   ModalRoute.of(context)!.settings.arguments == PinCodePageType.create

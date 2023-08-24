@@ -30,6 +30,8 @@ class MusicManager {
 
   AudioPlayer zeroAmountNumberPlayer = AudioPlayer();
 
+  AudioPlayer keyBackSignCloseX = AudioPlayer();
+
   Future<void> registerMusicAssets() async {
     loadingPlayer = AudioPlayer()..setAsset(MusicAssets.loading);
 
@@ -61,6 +63,8 @@ class MusicManager {
     swipeForwPlayer = AudioPlayer()..setAsset(MusicAssets.swipeForw);
 
     zeroAmountNumberPlayer = AudioPlayer()..setAsset(MusicAssets.zeroAmountNumber);
+
+    keyBackSignCloseX = AudioPlayer()..setAsset(MusicAssets.keybackSignCloseX);
   }
 
   Future<void> disposeMusicAssets() async {
@@ -91,5 +95,7 @@ class MusicManager {
     await swipeForwPlayer.dispose();
 
     await zeroAmountNumberPlayer.dispose();
+
+    await keyBackSignCloseX.dispose();
   }
 }
