@@ -218,7 +218,8 @@ class _HerosPageState extends State<HerosPage>
   }
 
   Widget getMintTab(BuildContext context, double width, double height) {
-    return Column(children: [
+    return Column(
+      children: [
       clameBlock(context, width),
       Padding(
           padding: EdgeInsets.only(
@@ -525,7 +526,7 @@ class _HerosPageState extends State<HerosPage>
         ),
         Container(
           margin: EdgeInsets.only(top: width * 0.002),
-          width: (width * 0.91) * balance / maxDp,
+          width: maxDp != 0 ? (width * 0.91) * balance / maxDp : 0.001,
           height: width * 0.041,
           decoration: BoxDecoration(
             color: widget.craftSwitch == 0
