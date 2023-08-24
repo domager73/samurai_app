@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:samurai_app/components/storage.dart';
@@ -11,6 +12,7 @@ import 'package:samurai_app/utils/enums.dart';
 import '../../api/rest.dart';
 import '../../components/anim_button.dart';
 import '../../components/show_confirm.dart';
+import '../../data/music_manager.dart';
 import '../../main.dart';
 
 class AccountPage extends StatefulWidget {
@@ -134,6 +136,15 @@ class _AccountPageState extends State<AccountPage> {
                               activeColor: const Color(0xFF00FFFF),
                               value: soundSwitch,
                               onChanged: (value) async {
+                                GetIt.I<MusicManager>()
+                                    .smallKeyWeaponPlayer
+                                    .play()
+                                    .then((value) async {
+                                  await GetIt.I<MusicManager>()
+                                      .smallKeyWeaponPlayer
+                                      .seek(Duration(seconds: 0));
+                                });
+
                                 soundSwitch = value;
                                 AppStorage()
                                     .write(musicSwitchKey, value.toString());
@@ -158,6 +169,15 @@ class _AccountPageState extends State<AccountPage> {
                             activeColor: const Color(0xFF00FFFF),
                             value: tfaSwitch,
                             onChanged: (value) => setState(() {
+                              GetIt.I<MusicManager>()
+                                  .smallKeyWeaponPlayer
+                                  .play()
+                                  .then((value) async {
+                                await GetIt.I<MusicManager>()
+                                    .smallKeyWeaponPlayer
+                                    .seek(Duration(seconds: 0));
+                              });
+
                               tfaSwitch = value;
                               AppStorage().write('use-tfa', value ? '1' : '0');
                               Rest.checkUpdateUserUseTfa(value);
@@ -171,7 +191,16 @@ class _AccountPageState extends State<AccountPage> {
                           height,
                           "Terms of Use",
                           IconButton(
-                            onPressed: () => {}, //TODO
+                            onPressed: () async {
+                              await GetIt.I<MusicManager>()
+                                  .smallKeyWeaponPlayer
+                                  .play()
+                                  .then((value) async {
+                                await GetIt.I<MusicManager>()
+                                    .smallKeyWeaponPlayer
+                                    .seek(Duration(seconds: 0));
+                              });
+                            }, //TODO
                             icon: const Icon(
                               Icons.arrow_forward_ios_rounded,
                               color: Color(0xFF00FFFF),
@@ -185,7 +214,16 @@ class _AccountPageState extends State<AccountPage> {
                           height,
                           "Privacy Policy",
                           IconButton(
-                            onPressed: () => {}, //TODO
+                            onPressed: () async {
+                              await GetIt.I<MusicManager>()
+                                  .smallKeyWeaponPlayer
+                                  .play()
+                                  .then((value) async {
+                                await GetIt.I<MusicManager>()
+                                    .smallKeyWeaponPlayer
+                                    .seek(Duration(seconds: 0));
+                              });
+                            }, //TODO
                             icon: const Icon(
                               Icons.arrow_forward_ios_rounded,
                               color: Color(0xFF00FFFF),

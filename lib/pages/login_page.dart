@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:samurai_app/api/rest.dart';
 import 'package:samurai_app/components/samurai_text_field.dart';
@@ -11,6 +12,7 @@ import '../components/anim_button.dart';
 import '../components/bg.dart';
 import '../components/pop_up_spinner.dart';
 import '../components/show_error.dart';
+import '../data/music_manager.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -184,10 +186,26 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           child: Checkbox(
                             value: isAgree,
-                            onChanged: (value) => setState(() {
-                              errorTerms = false;
-                              isAgree = !isAgree;
-                            }),
+                            onChanged: (value) async{
+                              GetIt.I<
+                                  MusicManager>()
+                                  .smallKeyWeaponPlayer
+                                  .play()
+                                  .then(
+                                      (value) async {
+                                    await GetIt.I<
+                                        MusicManager>()
+                                        .smallKeyWeaponPlayer
+                                        .seek(Duration(
+                                        seconds:
+                                        0));
+                                  });
+
+                              setState(() {
+                                errorTerms = false;
+                                isAgree = !isAgree;
+                              });
+                            },
                             fillColor: MaterialStateProperty.all(
                               errorTerms ? Colors.red : Colors.transparent,
                             ),

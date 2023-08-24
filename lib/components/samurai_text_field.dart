@@ -98,7 +98,9 @@ class SamuraiTextField extends StatelessWidget {
                 flex: 30,
               ),
               Expanded(
-                flex: buttonWithTimerEnabled ? 225 : (allButton != null ? 225 : 292),
+                flex: buttonWithTimerEnabled
+                    ? 225
+                    : (allButton != null ? 225 : 292),
                 child: TextFormField(
                   controller: controller,
                   initialValue: initialValue,
@@ -116,8 +118,13 @@ class SamuraiTextField extends StatelessWidget {
                   onEditingComplete: onEditingComplete,
                   onFieldSubmitted: onFieldSubmitted,
                   onTap: () async {
-                    await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.play().then((value) async {
-                      await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.seek(Duration(seconds: 0));
+                    await GetIt.I<MusicManager>()
+                        .menuSettingsSignWaterPlayer
+                        .play()
+                        .then((value) async {
+                      await GetIt.I<MusicManager>()
+                          .menuSettingsSignWaterPlayer
+                          .seek(Duration(seconds: 0));
                     });
                     onTap;
                   },
@@ -161,11 +168,14 @@ class SamuraiTextField extends StatelessWidget {
                       Spacer(flex: timerValue == null ? 1 : 2),
                       timerValue == null
                           ? AnimButton(
+                              player: GetIt.I<MusicManager>()
+                                  .smallKeyWeaponPlayer,
                               shadowType: 1,
                               onTap: onTapTimerButton,
                               child: SvgPicture.asset(
                                 'assets/text_field_send_button.svg',
-                                width: (screeenWidth - screeenWidth * 0.14) * 0.2,
+                                width:
+                                    (screeenWidth - screeenWidth * 0.14) * 0.2,
                               ),
                             )
                           : Text(
@@ -183,8 +193,10 @@ class SamuraiTextField extends StatelessWidget {
                 Container(
                   width: screeenHeight * 0.1,
                   height: screeenHeight * 0.05,
-                  padding: EdgeInsets.only(left: screeenHeight * 0.04, top: screeenHeight * 0.005),
+                  padding: EdgeInsets.only(
+                      left: screeenHeight * 0.04, top: screeenHeight * 0.005),
                   child: AnimButton(
+                    player: GetIt.I<MusicManager>().smallKeyRegAmountAllPlayer,
                     shadowType: 2,
                     onTap: () => allButton!(),
                     child: Text('All',

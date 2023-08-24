@@ -248,6 +248,7 @@ class _CraftPageState extends State<CraftPage> {
                     top: width * 0.087, right: width - width * 0.9),
                 child: Stack(children: [
                   AnimButton(
+                      player: GetIt.I<MusicManager>().zeroAmountNumberPlayer,
                       onTap: () {
                         // CLAME_FIX
                         if ((widget.craftSwitch == 0) &&
@@ -681,7 +682,8 @@ class _CraftPageState extends State<CraftPage> {
             arguments: 'heroMint${widget.craftSwitch}',
           );
         },
-        disabled: (widget.craftSwitch == 0 ? waterSamuraiXp : fireSamuraiXp) < maxXP,
+        disabled:
+            (widget.craftSwitch == 0 ? waterSamuraiXp : fireSamuraiXp) < maxXP,
         params: {'text': 'hero mint', 'width': width, 'height': height},
         child: loginBtn);
   }
