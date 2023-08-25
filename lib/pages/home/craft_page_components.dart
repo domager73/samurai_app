@@ -47,7 +47,15 @@ class CraftPageComponents {
         Function onAllBtn) {
       return StatefulBuilder(
           builder: (context, StateSetter setState) => GestureDetector(
-              onTap: () {
+              onTap: () async {
+                await GetIt.I<MusicManager>()
+                    .keyBackSignCloseX
+                    .play()
+                    .then((value) async{
+                      await GetIt.I<MusicManager>()
+                          .keyBackSignCloseX.seek(Duration(seconds: 0));
+                });
+
                 FocusScope.of(context).requestFocus(FocusNode());
               },
               child: Wrap(
