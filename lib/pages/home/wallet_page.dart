@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
@@ -44,9 +46,50 @@ class _WalletPageState extends State<WalletPage> with SingleTickerProviderStateM
 
   @override
   void initState() {
+    _tabController = TabController(length: 3, vsync: this);
+
+    int flag = 0;
+    int oldPage = 0;
+
+    _tabController.animation!.addListener(() async {
+      double value = _tabController.animation!.value % 1;
+      int page = _tabController.animation!.value ~/ 1;
+
+      if (oldPage <= page) {
+        if (0.09 < value && 0.2 > value) {
+          if (flag == 0) {
+            flag = 1;
+            log("value $value, page $page, oldPage $oldPage");
+
+            await GetIt.I<MusicManager>().swipeForwPlayer.play().then((value) async {
+              await GetIt.I<MusicManager>().swipeForwPlayer.stop();
+            }).then((value) async => await GetIt.I<MusicManager>().swipeForwPlayer.seek(Duration(seconds: 0)));
+          }
+        } else {
+          flag = 0;
+        }
+      } else {
+        if (0.91 > value && 0.79 < value) {
+          if (flag == 0) {
+            flag = 1;
+            log("value $value, page $page, oldPage $oldPage");
+
+            await GetIt.I<MusicManager>().swipeBackPlayer.play().then((value) async => await GetIt.I<MusicManager>().swipeBackPlayer.stop()).then((value) async {
+              await GetIt.I<MusicManager>().swipeBackPlayer.seek(Duration(seconds: 0));
+            });
+          }
+        } else {
+          flag = 0;
+        }
+      }
+
+      if (value == 0) {
+        oldPage = page;
+      }
+    });
+
     super.initState();
 
-    _tabController = TabController(length: 3, vsync: this);
     _samuraiController = ScrollController();
     _heroesController = ScrollController();
 
@@ -114,22 +157,7 @@ class _WalletPageState extends State<WalletPage> with SingleTickerProviderStateM
                 Column(
                   children: [
                     TabBar(
-                      onTap: (newPage) async {
-                        if (lastPage < newPage) {
-                          print(lastPage);
-                          await GetIt.I<MusicManager>().swipeForwPlayer.play().then((value) async {
-                            await GetIt.I<MusicManager>().swipeForwPlayer.seek(Duration(seconds: 0));
-                          });
-                        } else {
-                          print(lastPage);
-                          await GetIt.I<MusicManager>().swipeBackPlayer.play().then((value) async {
-                            await GetIt.I<MusicManager>().swipeBackPlayer.seek(Duration(seconds: 0));
-                          });
-                        }
-                        setState(() {
-                          lastPage = newPage;
-                        });
-                      },
+                      onTap: (newPage) async {},
                       controller: _tabController,
                       tabs: const [
                         Tab(text: 'TOKENS'),
