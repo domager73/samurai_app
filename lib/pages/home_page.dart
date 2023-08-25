@@ -215,7 +215,7 @@ class _HomePageState extends State<HomePage> {
                                 Material(
                                   color: Colors.transparent,
                                   child: PresButton(
-                                    player: GetIt.I<MusicManager>().menuSettingsSignWaterPlayer, //menu
+                                    player: GetIt.I<MusicManager>().smallKeyRegAmountAllPlayer, //menu
                                     onTap: () => setState(() {
                                       isMenuOpened = true;
                                     }),
@@ -226,7 +226,7 @@ class _HomePageState extends State<HomePage> {
                                 const Spacer(),
                                 if (selectedPage == 5)
                                   AnimButton(
-                                    player: GetIt.I<MusicManager>().popupSubmenuPlayer,
+                                    player: GetIt.I<MusicManager>().smallKeyRegAmountAllPlayer,
                                     shadowType: 2,
                                     onTap: () => openQr(width, height), // HERE
                                     child: SvgPicture.asset(
@@ -291,6 +291,7 @@ class _HomePageState extends State<HomePage> {
                                           params: {'width': width},
                                           child: menuWalletBtn)
                                       : AnimButton(
+                                          player: GetIt.I<MusicManager>().smallKeyRegAmountAllPlayer,
                                           shadowType: 2,
                                           onTap: () {
                                             Navigator.of(context).pushNamed('/settings');
@@ -722,7 +723,7 @@ class _HomePageState extends State<HomePage> {
     return Material(
       color: Colors.transparent,
       child: AnimButton(
-        player: GetIt.I<MusicManager>().smallKeyLightningPlayer,
+        player: GetIt.I<MusicManager>().smallKeyRegAmountAllPlayer,
         onTap:  onTap != null ? () => onTap() : null,
         child: Padding(
           padding: const EdgeInsets.all(4),
@@ -751,6 +752,11 @@ class _HomePageState extends State<HomePage> {
         return HomeMainPage(
             watchSamurai: () => setState(() => selectedPage = 0),
             switchSamuraiType: (type) async {
+              await GetIt.I<MusicManager>().smallKeyRegAmountAllPlayer.play().then((value) async { 
+                    await GetIt.I<MusicManager>().smallKeyRegAmountAllPlayer.seek(Duration(seconds: 0)); 
+                  });
+
+
               AppStorage().write(craftSwitchKey, type.toString());
               setState(() {
                 craftSwitch = type;
@@ -879,8 +885,8 @@ class _HomePageState extends State<HomePage> {
                   ),
                   onTap: () async {
                     onSwitch(0);
-                    await GetIt.I<MusicManager>().loadingPlayer.play().then((value) async {
-                      await GetIt.I<MusicManager>().loadingPlayer.seek(Duration(seconds: 0));
+                    await GetIt.I<MusicManager>().smallKeyRegAmountAllPlayer.play().then((value) async {
+                      await GetIt.I<MusicManager>().smallKeyRegAmountAllPlayer.seek(Duration(seconds: 0));
                     });
                   },
                   child: SizedBox(
@@ -895,8 +901,8 @@ class _HomePageState extends State<HomePage> {
                   ),
                   onTap: () async {
                     onSwitch(1);
-                    await GetIt.I<MusicManager>().loadingPlayer.play().then((value) async {
-                      await GetIt.I<MusicManager>().loadingPlayer.seek(Duration(seconds: 0));
+                    await GetIt.I<MusicManager>().smallKeyRegAmountAllPlayer.play().then((value) async {
+                      await GetIt.I<MusicManager>().smallKeyRegAmountAllPlayer.seek(Duration(seconds: 0));
                     });
                   },
                   child: SizedBox(

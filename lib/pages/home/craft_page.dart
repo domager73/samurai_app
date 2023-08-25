@@ -531,7 +531,6 @@ class _CraftPageState extends State<CraftPage> {
                                                         ? waterSamuraiBalance
                                                         : fireSamuraiBalance)
                                                     .toDouble(),
-                                                //TODO: genesis balance HERE
                                                 samuraiTypeRegular:
                                                     widget.craftSwitch == 0
                                                         ? "WATER_SAMURAI_BSC"

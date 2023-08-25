@@ -8,10 +8,6 @@ import 'package:samurai_app/data/music_manager.dart';
 import 'bg.dart';
 
 Future<void> showError(BuildContext context, dynamic err, {int type = 0}) async {
-  await GetIt.I<MusicManager>().modalTextExplainPlayer.play().then((value) async {
-    await GetIt.I<MusicManager>().modalTextExplainPlayer.seek(Duration(seconds: 0));
-  });
-
   await showDialog(
     context: context,
     builder: (context) => ErrorDialog(err.toString(), type),
@@ -77,9 +73,6 @@ class ErrorDialog extends StatelessWidget {
 }
 
 Future<void> showError0(BuildContext context, dynamic err) async {
-  await GetIt.I<MusicManager>().modalTextExplainPlayer.play().then((value) async {
-    await GetIt.I<MusicManager>().modalTextExplainPlayer.seek(Duration(seconds: 0));
-  });
 
   await showDialog(
     context: context,
@@ -93,7 +86,7 @@ Future<void> showError0(BuildContext context, dynamic err) async {
                 height: 63,
                 child: TextButton(
                     onPressed: () async{
-                                            await GetIt.I<MusicManager>().okCanselTransPlayer.play().then((value) async {
+                        await GetIt.I<MusicManager>().okCanselTransPlayer.play().then((value) async {
                         await GetIt.I<MusicManager>().okCanselTransPlayer.seek(Duration(seconds: 0));
                       });
                       Navigator.pop(context);

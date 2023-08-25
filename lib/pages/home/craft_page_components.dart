@@ -482,6 +482,7 @@ class CraftPageComponents {
                 width: width * (switchMode == 0 ? 0.483 : 0.46),
                 child: InkWell(
                     onTap: () async {
+                      
                       onSwitch(1);
                     },
                     child: SvgPicture.asset(
@@ -561,11 +562,11 @@ class CraftPageComponents {
                               child:
                                   switchType(width, switchMode, (mode) async {
                                 await GetIt.I<MusicManager>()
-                                    .menuSettingsSignWaterPlayer
+                                    .smallKeyRegAmountAllPlayer
                                     .play()
                                     .then((value) async {
                                   await GetIt.I<MusicManager>()
-                                      .menuSettingsSignWaterPlayer
+                                      .smallKeyRegAmountAllPlayer
                                       .seek(Duration(seconds: 0));
                                 });
 
@@ -629,9 +630,6 @@ class CraftPageComponents {
     required double width,
     required double height,
   }) async {
-    // await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.play().then((value) async {
-    //   await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.seek(Duration(seconds: 0));
-    // });
 
     showModalBottomSheet(
       context: context,
@@ -686,6 +684,7 @@ class CraftPageComponents {
                           ),
                           AnimButton(
                             shadowType: 2,
+                            player: GetIt.I<MusicManager>().smallKeyRegAmountAllPlayer,
                             onTap: () async {
                               showError(context,
                                   'You will not be able to participate in battles when the health of your Army drops to 0%. You can heal the Army or add new Samurai to the Army to replenish the health bar.',

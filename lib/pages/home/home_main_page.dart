@@ -238,35 +238,6 @@ class _HomeMainPageState extends State<HomeMainPage> {
                     ],
                   ),
                 ),
-                /*SizedBox(height: 25 / 844 * height),
-                AnimButton(
-                  shadowType: 1,
-                  onTap: () => {}, //TODO AR
-                  child: Stack(
-                    children: [
-                      SvgPicture.asset(
-                        'assets/transparent_button.svg',
-                        width: width - width * 0.14,
-                        height: (width - width * 0.14) * 0.32,
-                      ),
-                      SizedBox(
-                        width: width - width * 0.14,
-                        height: (width - width * 0.14) * 0.32,
-                        child: Center(
-                          child: Text(
-                            "ar masks",
-                            style: TextStyle(
-                              fontFamily: 'AmazObitaemOstrovItalic',
-                              fontSize: height * 0.025,
-                              color: const Color(0xFF00FFFF),
-                              height: 0.98,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),*/
                 Padding(
                   padding: EdgeInsets.only(top: 0.04 * height),
                   child: Text(

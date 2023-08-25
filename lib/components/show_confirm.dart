@@ -7,9 +7,6 @@ import 'package:samurai_app/data/music_manager.dart';
 import 'bg.dart';
 
 Future<void> showConfirm(BuildContext context, dynamic text, Function onConfirm, {String? price}) async {
-  await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.play().then((value) async {
-    await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.seek(Duration(seconds: 0));
-  });
   await showDialog<bool>(
     context: context,
     builder: (context) => ConfirmDialog(text.toString(), onConfirm, price),
@@ -67,6 +64,7 @@ class ConfirmDialog extends StatelessWidget {
                           height: width * 0.099,
                           width: width * 0.35,
                           child: AnimButton(
+                            player: GetIt.I<MusicManager>().okCanselTransPlayer,
                             shadowType: 1,
                             onTap: () {
                               Navigator.pop(context);
@@ -81,6 +79,7 @@ class ConfirmDialog extends StatelessWidget {
                           height: width * 0.099,
                           width: width * 0.35,
                           child: AnimButton(
+                            player: GetIt.I<MusicManager>().okCanselTransPlayer,
                             shadowType: 1,
                             onTap: () {
                               onConfirm();

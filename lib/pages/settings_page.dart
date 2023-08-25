@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:samurai_app/data/music_manager.dart';
 
 import '../components/anim_button.dart';
 import '../components/show_confirm.dart';
@@ -74,7 +76,11 @@ class _SettingsPageState extends State<SettingsPage> {
                   height,
                   width,
                   'SEED PHRASE',
-                  onTap: () {
+                  onTap: () async {
+                    await GetIt.I<MusicManager>().smallKeyRegAmountAllPlayer.play().then((value) async {
+                      await GetIt.I<MusicManager>().smallKeyRegAmountAllPlayer.seek(Duration(seconds: 0));
+                    });
+
                     showConfirm(context, 'Anyone who knows your wallet\'s seed phrase will be able to access it. Make sure no one sees your screen now!', () {
                       Navigator.pop(context);
                       Navigator.of(context).pushNamed('/seed');
