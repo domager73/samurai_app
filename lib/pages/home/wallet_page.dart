@@ -64,9 +64,10 @@ class _WalletPageState extends State<WalletPage>
             flag = 1;
             log("value $value, page $page, oldPage $oldPage");
 
-            await GetIt.I<MusicManager>().swipeForwPlayer.play().then((value) async {
-              await GetIt.I<MusicManager>().swipeForwPlayer.stop();
-            }).then((value) async => await GetIt.I<MusicManager>().swipeForwPlayer.seek(Duration(seconds: 0)));
+            await GetIt.I<MusicManager>().swipeForwPlayer.play().then(
+                (value) async => await GetIt.I<MusicManager>()
+                    .swipeForwPlayer
+                    .seek(Duration(seconds: 0)));
           }
         } else {
           flag = 0;
@@ -77,8 +78,13 @@ class _WalletPageState extends State<WalletPage>
             flag = 1;
             log("value $value, page $page, oldPage $oldPage");
 
-            await GetIt.I<MusicManager>().swipeBackPlayer.play().then((value) async => await GetIt.I<MusicManager>().swipeBackPlayer.stop()).then((value) async {
-              await GetIt.I<MusicManager>().swipeBackPlayer.seek(Duration(seconds: 0));
+            await GetIt.I<MusicManager>()
+                .swipeBackPlayer
+                .play()
+                .then((value) async {
+              await GetIt.I<MusicManager>()
+                  .swipeBackPlayer
+                  .seek(Duration(seconds: 0));
             });
           }
         } else {
@@ -360,9 +366,7 @@ class _WalletPageState extends State<WalletPage>
                             hideSpinner(context);
 
                             print(1);
-                            showError(context,
-                                'You don`t have gas',
-                                type: 2);
+                            showError(context, 'You don`t have gas', type: 2);
                             return;
                           }
 
@@ -476,7 +480,9 @@ class _WalletPageState extends State<WalletPage>
                         Padding(
                           padding: const EdgeInsets.only(left: 8),
                           child: SvgPicture.asset(
-                            heroClass == 'fire' ? 'assets/pages/homepage/samurai/fire_icon.svg' : 'assets/pages/homepage/samurai/water_icon.svg',
+                            heroClass == 'fire'
+                                ? 'assets/pages/homepage/samurai/fire_icon.svg'
+                                : 'assets/pages/homepage/samurai/water_icon.svg',
                             height: height * 0.025,
                           ),
                         ),
@@ -485,7 +491,9 @@ class _WalletPageState extends State<WalletPage>
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: SvgPicture.asset(
-                        inChronicles ? 'assets/pages/homepage/heroes/in_chronicles.svg' : 'assets/pages/homepage/heroes/unknown.svg',
+                        inChronicles
+                            ? 'assets/pages/homepage/heroes/in_chronicles.svg'
+                            : 'assets/pages/homepage/heroes/unknown.svg',
                       ),
                     ),
                     SizedBox(
@@ -733,7 +741,8 @@ class _WalletPageState extends State<WalletPage>
             height,
             width,
             double.parse((user['${e['name']}_balance'] ?? '0.0').toString()),
-            double.parse((user['${e['name']}_balance_onchain'] ?? '0.0').toString()),
+            double.parse(
+                (user['${e['name']}_balance_onchain'] ?? '0.0').toString()),
             e['icon'],
             () async {
               WalletPageComponents.openSwapModalPage(
@@ -746,10 +755,16 @@ class _WalletPageState extends State<WalletPage>
                       typeToken: e['typeToken'],
                       walletAddress: walletAddress,
                       iconPath: e['logo_b'],
-                      balance: double.parse((user['${e['name']}_balance_onchain'] ?? '0.0').toString()),
-                      balanceGame: double.parse((user['${e['name']}_balance'] ?? '0.0').toString()),
+                      balance: double.parse(
+                          (user['${e['name']}_balance_onchain'] ?? '0.0')
+                              .toString()),
+                      balanceGame: double.parse(
+                          (user['${e['name']}_balance'] ?? '0.0').toString()),
                       gasName: e['gasName'],
-                      gas: (e['type'] != null && e['type'] == 'BNB' ? user['gasBnb'] : user['gas']) ?? 0.0)
+                      gas: (e['type'] != null && e['type'] == 'BNB'
+                              ? user['gasBnb']
+                              : user['gas']) ??
+                          0.0)
                   .then((_) => AppStorage().updateUserWallet());
             },
             () {
@@ -762,9 +777,14 @@ class _WalletPageState extends State<WalletPage>
                   tokenName: e['nameToken'],
                   typeToken: e['typeToken'],
                   iconPath: e['logo_b'],
-                  balance: double.parse((user['${e['name']}_balance_onchain'] ?? '0.0').toString()),
+                  balance: double.parse(
+                      (user['${e['name']}_balance_onchain'] ?? '0.0')
+                          .toString()),
                   gasName: e['gasName'],
-                  gas: (e['type'] != null && e['type'] == 'BNB' ? user['gasBnb'] : user['gas']) ?? 0.0);
+                  gas: (e['type'] != null && e['type'] == 'BNB'
+                          ? user['gasBnb']
+                          : user['gas']) ??
+                      0.0);
             },
           ),
         ]);
