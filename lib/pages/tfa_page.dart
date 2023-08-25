@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:samurai_app/api/rest.dart';
 import 'package:samurai_app/components/pop_up_spinner.dart';
@@ -12,6 +13,7 @@ import 'package:samurai_app/components/storage.dart';
 import '../components/anim_button.dart';
 import '../components/bg.dart';
 import '../components/show_error.dart';
+import '../data/music_manager.dart';
 
 class TfaPage extends StatefulWidget {
   const TfaPage({super.key});
@@ -175,6 +177,7 @@ class _TfaPageState extends State<TfaPage> {
               onTap: () => Navigator.of(context).pop(false),
               params: {'width': width},
               child: backBtn,
+              player: GetIt.I<MusicManager>().keyBackSignCloseX,
             )
           )
         ],

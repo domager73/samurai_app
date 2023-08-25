@@ -21,6 +21,17 @@ class _PinCodePageState extends State<PinCodePage> {
   String firstAttempt = '';
 
   @override
+  void initState(){
+    super.initState();
+
+    GetIt.I<MusicManager>().screenChangePlayer.play().then((value) async {
+      await GetIt.I<MusicManager>()
+          .screenChangePlayer
+          .seek(Duration(seconds: 0));
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;

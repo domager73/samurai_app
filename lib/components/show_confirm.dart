@@ -13,11 +13,30 @@ Future<void> showConfirm(BuildContext context, dynamic text, Function onConfirm,
   );
 }
 
-class ConfirmDialog extends StatelessWidget {
+class ConfirmDialog extends StatefulWidget {
   const ConfirmDialog(this.text, this.onConfirm, this.price, {super.key});
   final String text;
   final Function onConfirm;
   final String? price;
+
+  @override
+  State<ConfirmDialog> createState() => _ConfirmDialogState();
+}
+
+class _ConfirmDialogState extends State<ConfirmDialog> {
+  @override
+  void initState(){
+    super.initState();
+
+    GetIt.I<MusicManager>()
+        .modalTextExplainPlayer
+        .play()
+        .then((value) async {
+      await GetIt.I<MusicManager>()
+          .modalTextExplainPlayer
+          .seek(Duration(seconds: 0));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,12 +44,12 @@ class ConfirmDialog extends StatelessWidget {
     precacheImage(backgroundDialog, context);
 
     final TextPainter textPainter = TextPainter(
-      text: TextSpan(text: text, style: GoogleFonts.spaceMono()),
+      text: TextSpan(text: widget.text, style: GoogleFonts.spaceMono()),
       textDirection: TextDirection.ltr,
       maxLines: 1,
     )..layout(minWidth: 0, maxWidth: double.infinity);
     int countLines = (textPainter.size.width / (width - width * 0.2)).ceil();
-    countLines += (RegExp(r'[\n]')).allMatches(text).length * 2;
+    countLines += (RegExp(r'[\n]')).allMatches(widget.text).length * 2;
     final heightText = countLines * textPainter.size.height;
     //print("heightText=$heightText lines=$countLines len=${err.toString().length} width=$width height=$height");
     final hCont = heightText + width * 0.33;
@@ -40,7 +59,7 @@ class ConfirmDialog extends StatelessWidget {
         elevation: 0,
         insetPadding: EdgeInsets.only(top: width * 0.3, bottom: width * 0.3, left: width * 0.02, right: width * 0.02),
         child: Container(
-            height: hCont + (price != null ? width * 0.085 : 0),
+            height: hCont + (widget.price != null ? width * 0.085 : 0),
             width: width - width * 0.16,
             decoration: const BoxDecoration(
               image: DecorationImage(image: backgroundDialog, fit: BoxFit.fill),
@@ -48,13 +67,13 @@ class ConfirmDialog extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Padding(padding: EdgeInsets.only(top: width * 0.06, left: width * 0.05, right: width * 0.05), child: Text(text.toString(), textAlign: TextAlign.center, softWrap: true, style: GoogleFonts.spaceMono(fontSize: width * 0.04, color: Colors.white))),
-                if (price != null)
+                Padding(padding: EdgeInsets.only(top: width * 0.06, left: width * 0.05, right: width * 0.05), child: Text(widget.text.toString(), textAlign: TextAlign.center, softWrap: true, style: GoogleFonts.spaceMono(fontSize: width * 0.04, color: Colors.white))),
+                if (widget.price != null)
                   Padding(
                       padding: EdgeInsets.only(top: width * 0.02, left: width * 0.05, right: width * 0.05, bottom: width * 0.01),
                       child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                         Text('PRICE: ', textAlign: TextAlign.center, softWrap: true, style: GoogleFonts.spaceMono(fontSize: width * 0.035, color: const Color(0xFF00FFFF), fontWeight: FontWeight.w700)),
-                        Text(price!, textAlign: TextAlign.center, softWrap: true, style: GoogleFonts.spaceMono(fontSize: width * 0.035, color: Colors.white, fontWeight: FontWeight.w700))
+                        Text(widget.price!, textAlign: TextAlign.center, softWrap: true, style: GoogleFonts.spaceMono(fontSize: width * 0.035, color: Colors.white, fontWeight: FontWeight.w700))
                       ])),
                 Padding(
                     padding: EdgeInsets.only(bottom: width * 0.05),
@@ -82,7 +101,7 @@ class ConfirmDialog extends StatelessWidget {
                             player: GetIt.I<MusicManager>().okCanselTransPlayer,
                             shadowType: 1,
                             onTap: () {
-                              onConfirm();
+                              widget.onConfirm();
                             },
                             child: SvgPicture.asset(
                               'assets/pages/dialog/yes_btn.svg',

@@ -52,6 +52,12 @@ class _HeroMintPageState extends State<HeroMintPage>
         AppStorage().box.get('user', defaultValue: <String, dynamic>{}));
 
     updateXp();
+
+    GetIt.I<MusicManager>().screenChangePlayer.play().then((value) async {
+      await GetIt.I<MusicManager>()
+          .screenChangePlayer
+          .seek(Duration(seconds: 0));
+    });
   }
 
   Future<Map<String, dynamic>> getSamuraiInfo() async {
@@ -73,6 +79,7 @@ class _HeroMintPageState extends State<HeroMintPage>
             ),
             params: {'width': width},
             child: backBtn,
+            player: GetIt.I<MusicManager>().keyBackSignCloseX,
           ),
           FittedBox(
             fit: BoxFit.fitWidth,

@@ -39,6 +39,12 @@ class _AccountPageState extends State<AccountPage> {
     print(bool.parse(AppStorage().read(musicSwitchKey)!));
     final useTfa = AppStorage().read('use-tfa');
     tfaSwitch = useTfa != null && useTfa == '1';
+
+    GetIt.I<MusicManager>().screenChangePlayer.play().then((value) async {
+      await GetIt.I<MusicManager>()
+          .screenChangePlayer
+          .seek(Duration(seconds: 0));
+    });
   }
 
   @override
@@ -107,13 +113,23 @@ class _AccountPageState extends State<AccountPage> {
                                       padding:
                                           EdgeInsets.only(top: 2 / 96 * height),
                                       child: PresButton(
-                                        player: GetIt.I<MusicManager>().keyBackSignCloseX,
-                                        onTap: () => AccountPageComponents
-                                            .openChangeEmailModalPage(
-                                          context: context,
-                                          width: width,
-                                          height: height,
-                                        ),
+                                        player: GetIt.I<MusicManager>()
+                                            .keyBackSignCloseX,
+                                        onTap: () {
+                                          GetIt.I<MusicManager>()
+                                              .popupSubmenuPlayer
+                                              .play()
+                                              .then((value) => GetIt.I<
+                                                      MusicManager>()
+                                                  .popupSubmenuPlayer
+                                                  .seek(Duration(seconds: 0)));
+                                          AccountPageComponents
+                                              .openChangeEmailModalPage(
+                                            context: context,
+                                            width: width,
+                                            height: height,
+                                          );
+                                        },
                                         params: {
                                           'width': width,
                                           'height': height

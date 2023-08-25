@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:samurai_app/components/storage.dart';
+import 'package:samurai_app/data/music_manager.dart';
 
 import '../components/anim_button.dart';
 
@@ -55,6 +57,7 @@ class _SeedPageState extends State<SeedPage> {
                       onTap: () => Navigator.of(context).pop(),
                       params: {'width': width},
                       child: backBtn,
+                      player: GetIt.I<MusicManager>().keyBackSignCloseX,
                     ),
                     Expanded(
                       child: Text(

@@ -32,4 +32,5 @@ Widget reqtangleSpinner(context) => Center(
           valueColor: AlwaysStoppedAnimation<Color>(Color(0xff8A898E)),
         ),
       ),
-    ));
+    )
+);

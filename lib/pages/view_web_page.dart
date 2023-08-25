@@ -1,17 +1,20 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get_it/get_it.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+
 // #docregion platform_imports
 // Import for Android features.
 import 'package:webview_flutter_android/webview_flutter_android.dart';
+
 // Import for iOS features.
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
+
 // #enddocregion platform_imports
 import '../components/anim_button.dart';
+import '../data/music_manager.dart';
 
-class ViewWebPage extends StatefulWidget
-{
+class ViewWebPage extends StatefulWidget {
   const ViewWebPage({required this.url, super.key});
 
   final String url;
@@ -39,15 +42,14 @@ class _ViewWebPageState extends State<ViewWebPage> {
     }
 
     final WebViewController controller =
-    WebViewController.fromPlatformCreationParams(params);
+        WebViewController.fromPlatformCreationParams(params);
     // #enddocregion platform_features
 
     controller
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(const Color(0x00000000))
       ..setNavigationDelegate(
-        NavigationDelegate(
-        ),
+        NavigationDelegate(),
       )
       ..loadRequest(Uri.parse(widget.url));
 
@@ -60,20 +62,26 @@ class _ViewWebPageState extends State<ViewWebPage> {
     // #enddocregion platform_features
 
     _controller = controller;
+
+    GetIt.I<MusicManager>().screenChangePlayer.play().then((value) async {
+      await GetIt.I<MusicManager>()
+          .screenChangePlayer
+          .seek(Duration(seconds: 0));
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
-    return SafeArea(child: Scaffold(
-      body: Stack(children: [
-        SizedBox(
+    return SafeArea(
+        child: Scaffold(
+            body: Stack(children: [
+      SizedBox(
           width: width,
           height: height,
-          child: WebViewWidget(controller: _controller)
-        ),
-        Container(
+          child: WebViewWidget(controller: _controller)),
+      Container(
           decoration: const BoxDecoration(
             color: Color(0xFF0C133D),
             shape: BoxShape.circle,
@@ -83,9 +91,8 @@ class _ViewWebPageState extends State<ViewWebPage> {
             onTap: () => Navigator.of(context).pop(),
             params: {'width': width},
             child: backBtn,
-          )
-        )
-      ])
-    ));
+            player: GetIt.I<MusicManager>().keyBackSignCloseX,
+          ))
+    ])));
   }
 }

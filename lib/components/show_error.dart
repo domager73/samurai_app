@@ -14,28 +14,47 @@ Future<void> showError(BuildContext context, dynamic err, {int type = 0}) async 
   );
 }
 
-class ErrorDialog extends StatelessWidget {
+class ErrorDialog extends StatefulWidget {
   const ErrorDialog(this.err, this.type, {super.key});
   final String err;
   final int type;
+
+  @override
+  State<ErrorDialog> createState() => _ErrorDialogState();
+}
+
+class _ErrorDialogState extends State<ErrorDialog> {
+  @override
+  void initState(){
+    super.initState();
+
+    GetIt.I<MusicManager>()
+        .modalTextExplainPlayer
+        .play()
+        .then((value) async {
+      await GetIt.I<MusicManager>()
+          .modalTextExplainPlayer
+          .seek(Duration(seconds: 0));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     precacheImage(backgroundDialog, context);
-    final fSz = height * (type == 0 ? 0.021 : 0.0167);
+    final fSz = height * (widget.type == 0 ? 0.021 : 0.0167);
 
     final TextPainter textPainter = TextPainter(
-      text: TextSpan(text: err.toString(), style: GoogleFonts.spaceMono(fontSize: fSz, color: type == 0 ? const Color(0xFFFF0049) : Colors.white)),
+      text: TextSpan(text: widget.err.toString(), style: GoogleFonts.spaceMono(fontSize: fSz, color: widget.type == 0 ? const Color(0xFFFF0049) : Colors.white)),
       textDirection: TextDirection.ltr,
       maxLines: 1,
     )..layout(minWidth: 0, maxWidth: double.infinity);
     int countLines = (textPainter.size.width / (width - width * 0.2)).ceil();
-    countLines += (RegExp(r'[\n]')).allMatches(err.toString()).length * 2;
+    countLines += (RegExp(r'[\n]')).allMatches(widget.err.toString()).length * 2;
     final heightText = countLines * textPainter.size.height;
 
-    final hCont = heightText + height * (type == 0 ? 0.236 : 0.188);
+    final hCont = heightText + height * (widget.type == 0 ? 0.236 : 0.188);
 
     return Dialog(
         backgroundColor: Colors.transparent,
@@ -51,7 +70,7 @@ class ErrorDialog extends StatelessWidget {
               Container(
                   padding: EdgeInsets.only(left: width * 0.04, right: width * 0.04, top: height * 0.04),
                   height: hCont - height * 0.125,
-                  child: Text(err.toString(), style: GoogleFonts.spaceMono(fontSize: fSz, color: type == 0 ? const Color(0xFFFF0049) : Colors.white), maxLines: 10, softWrap: true)),
+                  child: Text(widget.err.toString(), style: GoogleFonts.spaceMono(fontSize: fSz, color: widget.type == 0 ? const Color(0xFFFF0049) : Colors.white), maxLines: 10, softWrap: true)),
               Container(
                   padding: EdgeInsets.only(top: height * 0.00),
                   height: height * 0.1,

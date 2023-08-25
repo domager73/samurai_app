@@ -142,8 +142,19 @@ class WalletPageComponents {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         PresButton(
-                          player: GetIt.I<MusicManager>().swipeBackPlayer,
-                          onTap: () => Navigator.of(context).pop(),
+                          player: GetIt.I<MusicManager>().keyBackSignCloseX,
+                          onTap: () async {
+                            await GetIt.I<MusicManager>()
+                                .popupDownSybMenuPlayer
+                                .play()
+                                .then((value) async {
+                              await GetIt.I<MusicManager>()
+                                  .popupDownSybMenuPlayer
+                                  .seek(Duration(seconds: 0));
+                            });
+
+                            Navigator.of(context).pop();
+                          },
                           params: {'width': width},
                           child: backBtn,
                         ),
@@ -448,9 +459,22 @@ class WalletPageComponents {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               PresButton(
-                                onTap: () => Navigator.of(context).pop(),
+                                onTap: () async {
+                                  await GetIt.I<MusicManager>()
+                                      .popupDownSybMenuPlayer
+                                      .play()
+                                      .then((value) async {
+                                    await GetIt.I<MusicManager>()
+                                        .popupDownSybMenuPlayer
+                                        .seek(Duration(seconds: 0));
+                                  });
+
+                                  Navigator.of(context).pop();
+                                },
                                 params: {'width': width},
                                 child: backBtn,
+                                player:
+                                    GetIt.I<MusicManager>().keyBackSignCloseX,
                               ),
                               Expanded(
                                 child: FittedBox(
@@ -644,7 +668,18 @@ class WalletPageComponents {
                   children: <Widget>[
                     Row(mainAxisAlignment: MainAxisAlignment.start, children: [
                       PresButton(
-                        onTap: () => Navigator.of(context).pop(),
+                        player: GetIt.I<MusicManager>().keyBackSignCloseX,
+                        onTap: () async {
+                          await GetIt.I<MusicManager>()
+                              .popupDownSybMenuPlayer
+                              .play()
+                              .then((value) async {
+                            await GetIt.I<MusicManager>()
+                                .popupDownSybMenuPlayer
+                                .seek(Duration(seconds: 0));
+                          });
+                          Navigator.of(context).pop();
+                        },
                         params: {'width': width},
                         child: backBtn,
                       ),
@@ -850,6 +885,7 @@ class WalletPageComponents {
                         onTap: () => Navigator.of(context).pop(),
                         params: {'width': width},
                         child: backBtn,
+                        player: GetIt.I<MusicManager>().keyBackSignCloseX,
                       ),
                       FittedBox(
                           fit: BoxFit.fitWidth,

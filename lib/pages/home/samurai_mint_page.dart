@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_xlider/flutter_xlider.dart';
+import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart';
@@ -11,6 +12,7 @@ import '../../api/rest.dart';
 import '../../components/anim_button.dart';
 import '../../components/bg.dart';
 import '../../components/storage.dart';
+import '../../data/music_manager.dart';
 import 'hero_page_components.dart';
 
 class SamuraiMintPage extends StatefulWidget {
@@ -48,6 +50,12 @@ class _SamuraiMintPageState extends State<SamuraiMintPage> with SingleTickerProv
       fireSamuraiDp = value['fire_heroes_dp'] * 1.0;
       waterSamuraiDp = value['water_heroes_dp'] * 1.0;
     }));
+
+    GetIt.I<MusicManager>().screenChangePlayer.play().then((value) async {
+      await GetIt.I<MusicManager>()
+          .screenChangePlayer
+          .seek(Duration(seconds: 0));
+    });
   }
 
   @override
@@ -77,6 +85,7 @@ class _SamuraiMintPageState extends State<SamuraiMintPage> with SingleTickerProv
             ),
             params: { 'width': width },
             child: backBtn,
+            player: GetIt.I<MusicManager>().keyBackSignCloseX,
           ),
           FittedBox(
             fit: BoxFit.fitWidth,

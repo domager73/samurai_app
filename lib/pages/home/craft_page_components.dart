@@ -48,14 +48,6 @@ class CraftPageComponents {
       return StatefulBuilder(
           builder: (context, StateSetter setState) => GestureDetector(
               onTap: () async {
-                await GetIt.I<MusicManager>()
-                    .keyBackSignCloseX
-                    .play()
-                    .then((value) async{
-                      await GetIt.I<MusicManager>()
-                          .keyBackSignCloseX.seek(Duration(seconds: 0));
-                });
-
                 FocusScope.of(context).requestFocus(FocusNode());
               },
               child: Wrap(
@@ -490,7 +482,6 @@ class CraftPageComponents {
                 width: width * (switchMode == 0 ? 0.483 : 0.46),
                 child: InkWell(
                     onTap: () async {
-                      
                       onSwitch(1);
                     },
                     child: SvgPicture.asset(
@@ -530,9 +521,22 @@ class CraftPageComponents {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   PresButton(
-                                    onTap: () => Navigator.of(context).pop(),
+                                    onTap: () async {
+                                      await GetIt.I<MusicManager>()
+                                          .popupDownSybMenuPlayer
+                                          .play()
+                                          .then((value) async {
+                                        await GetIt.I<MusicManager>()
+                                            .popupDownSybMenuPlayer
+                                            .seek(Duration(seconds: 0));
+                                      });
+
+                                      Navigator.of(context).pop();
+                                    },
                                     params: {'width': width},
                                     child: backBtn,
+                                    player: GetIt.I<MusicManager>()
+                                        .keyBackSignCloseX,
                                   ),
                                   Expanded(
                                     child: Center(
@@ -638,7 +642,6 @@ class CraftPageComponents {
     required double width,
     required double height,
   }) async {
-
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -674,9 +677,21 @@ class CraftPageComponents {
                       Row(
                         children: [
                           PresButton(
-                            onTap: () => Navigator.of(context).pop(),
+                            onTap: () async{
+                              await GetIt.I<MusicManager>()
+                                  .popupDownSybMenuPlayer
+                                  .play()
+                                  .then((value) async {
+                                await GetIt.I<MusicManager>()
+                                    .popupDownSybMenuPlayer
+                                    .seek(Duration(seconds: 0));
+                              });
+
+                              Navigator.of(context).pop();
+                            },
                             params: {'width': width},
                             child: backBtn,
+                            player: GetIt.I<MusicManager>().keyBackSignCloseX,
                           ),
                           Expanded(
                             child: Center(
@@ -692,7 +707,8 @@ class CraftPageComponents {
                           ),
                           AnimButton(
                             shadowType: 2,
-                            player: GetIt.I<MusicManager>().smallKeyRegAmountAllPlayer,
+                            player: GetIt.I<MusicManager>()
+                                .smallKeyRegAmountAllPlayer,
                             onTap: () async {
                               showError(context,
                                   'You will not be able to participate in battles when the health of your Army drops to 0%. You can heal the Army or add new Samurai to the Army to replenish the health bar.',

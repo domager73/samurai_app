@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:samurai_app/components/show_error.dart';
 import 'package:samurai_app/pages/pin_code_page.dart';
@@ -11,6 +12,7 @@ import '../api/rest.dart';
 import '../components/anim_button.dart';
 import '../components/pop_up_spinner.dart';
 import '../components/storage.dart';
+import '../data/music_manager.dart';
 
 class EnterSeedPage extends StatefulWidget {
   const EnterSeedPage({super.key});
@@ -122,6 +124,7 @@ class _EnterSeedPageState extends State<EnterSeedPage> {
                           onTap: () => Navigator.of(context).pop(),
                           params: {'width': width},
                           child: backBtn,
+                          player: GetIt.I<MusicManager>().keyBackSignCloseX,
                         ),
                         Expanded(
                           child: Center(

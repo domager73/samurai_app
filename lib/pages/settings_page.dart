@@ -47,6 +47,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       onTap: () => Navigator.of(context).pop(),
                       params: {'width': width},
                       child: backBtn,
+                      player: GetIt.I<MusicManager>().keyBackSignCloseX,
                     ),
                     Expanded(
                       child: Padding(

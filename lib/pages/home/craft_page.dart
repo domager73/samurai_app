@@ -410,7 +410,15 @@ class _CraftPageState extends State<CraftPage> {
                               Expanded(
                                 flex: 55,
                                 child: PresButton(
-                                    onTap: () async {
+                                    onTap: () async{
+                                      await GetIt.I<MusicManager>()
+                                          .popupSubmenuPlayer
+                                          .play()
+                                          .then((value) =>
+                                              GetIt.I<MusicManager>()
+                                                  .popupSubmenuPlayer
+                                                  .seek(Duration(seconds: 0)));
+
                                       CraftPageComponents.openHealModalPage(
                                         context: context,
                                         width: width,
@@ -511,37 +519,50 @@ class _CraftPageState extends State<CraftPage> {
                               Expanded(
                                 flex: 75,
                                 child: PresButton(
-                                    onTap: () => CraftPageComponents
-                                            .openTransferModalPage(
-                                                context: context,
-                                                width: width,
-                                                height: height,
-                                                samuraiTypeIngame:
-                                                    widget.craftSwitch == 0
-                                                        ? "WATER_SAMURAI_MATIC"
-                                                        : "FIRE_SAMURAI_MATIC",
-                                                balance: widget.craftSwitch == 0
-                                                    ? waterSamuraiBalance
-                                                    : fireSamuraiBalance,
-                                                lockedBalance: widget.craftSwitch == 0
-                                                    ? lockedWaterSamuraiBalance
-                                                    : lockedFireSamuraiBalance,
-                                                gas: user?['gasBnb'] ?? 0.0,
-                                                balanceWithdraw: (widget.craftSwitch == 0
-                                                        ? waterSamuraiBalance
-                                                        : fireSamuraiBalance)
-                                                    .toDouble(),
-                                                samuraiTypeRegular:
-                                                    widget.craftSwitch == 0
-                                                        ? "WATER_SAMURAI_BSC"
-                                                        : "FIRE_SAMURAI_BSC",
-                                                samuraiTypeGenesis: widget.craftSwitch == 0
-                                                    ? "WATER_SAMURAI_GENESIS_BSC"
-                                                    : "FIRE_SAMURAI_GENESIS_BSC",
-                                                samuraiGenesisBalance: widget.craftSwitch == 0
-                                                    ? waterSamuraiGenesisBalance
-                                                    : fireSamuraiGenesisBalance)
-                                        .then((_) => loadInfo()),
+                                    onTap: () {
+                                      GetIt.I<MusicManager>()
+                                          .popupSubmenuPlayer
+                                          .play()
+                                          .then((value) =>
+                                              GetIt.I<MusicManager>()
+                                                  .popupSubmenuPlayer
+                                                  .seek(Duration(seconds: 0)));
+                                      CraftPageComponents.openTransferModalPage(
+                                              context: context,
+                                              width: width,
+                                              height: height,
+                                              samuraiTypeIngame:
+                                                  widget.craftSwitch == 0
+                                                      ? "WATER_SAMURAI_MATIC"
+                                                      : "FIRE_SAMURAI_MATIC",
+                                              balance: widget.craftSwitch == 0
+                                                  ? waterSamuraiBalance
+                                                  : fireSamuraiBalance,
+                                              lockedBalance: widget.craftSwitch == 0
+                                                  ? lockedWaterSamuraiBalance
+                                                  : lockedFireSamuraiBalance,
+                                              gas: user?['gasBnb'] ?? 0.0,
+                                              balanceWithdraw:
+                                                  (widget.craftSwitch == 0
+                                                          ? waterSamuraiBalance
+                                                          : fireSamuraiBalance)
+                                                      .toDouble(),
+                                              samuraiTypeRegular:
+                                                  widget.craftSwitch == 0
+                                                      ? "WATER_SAMURAI_BSC"
+                                                      : "FIRE_SAMURAI_BSC",
+                                              samuraiTypeGenesis: widget
+                                                          .craftSwitch ==
+                                                      0
+                                                  ? "WATER_SAMURAI_GENESIS_BSC"
+                                                  : "FIRE_SAMURAI_GENESIS_BSC",
+                                              samuraiGenesisBalance: widget
+                                                          .craftSwitch ==
+                                                      0
+                                                  ? waterSamuraiGenesisBalance
+                                                  : fireSamuraiGenesisBalance)
+                                          .then((_) => loadInfo());
+                                    },
                                     params: const {},
                                     child: widget.craftSwitch == 0
                                         ? waterChangeBtn
