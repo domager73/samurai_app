@@ -79,8 +79,8 @@ class _SettingsPageState extends State<SettingsPage> {
                   width,
                   'SEED PHRASE',
                   onTap: () async {
-                    await GetIt.I<MusicManager>().smallKeyRegAmountAllPlayer.play().then((value) async {
-                      await GetIt.I<MusicManager>().smallKeyRegAmountAllPlayer.seek(Duration(seconds: 0));
+                    await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.play().then((value) async {
+                      await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.seek(Duration(seconds: 0));
                     });
 
                     showConfirm(context, 'Anyone who knows your wallet\'s seed phrase will be able to access it. Make sure no one sees your screen now!', () {
@@ -96,6 +96,11 @@ class _SettingsPageState extends State<SettingsPage> {
                   width,
                   'TRANSACTION HISTORY',
                   isActive: false,
+                  onTap: () async { 
+                    await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.play().then((value) async {
+                      await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.seek(Duration(seconds: 0));
+                    });
+                  }
                 ),
                 separator(width),
                 settingsButton(

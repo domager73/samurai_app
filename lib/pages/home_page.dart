@@ -247,7 +247,7 @@ class _HomePageState extends State<HomePage> {
                                   color: Colors.transparent,
                                   child: PresButton(
                                     player: GetIt.I<MusicManager>()
-                                        .smallKeyRegAmountAllPlayer, //menu
+                                        .menuSettingsSignWaterPlayer, //menu
                                     onTap: () => setState(() {
                                       isMenuOpened = true;
                                     }),
@@ -259,7 +259,7 @@ class _HomePageState extends State<HomePage> {
                                 if (selectedPage == 5)
                                   AnimButton(
                                     player: GetIt.I<MusicManager>()
-                                        .smallKeyRegAmountAllPlayer,
+                                        .menuSettingsSignWaterPlayer,
                                     shadowType: 2,
                                     onTap: () async {
                                       await GetIt.I<MusicManager>()
@@ -349,7 +349,7 @@ class _HomePageState extends State<HomePage> {
                                           child: menuWalletBtn)
                                       : AnimButton(
                                           player: GetIt.I<MusicManager>()
-                                              .smallKeyRegAmountAllPlayer,
+                                              .menuSettingsSignWaterPlayer,
                                           shadowType: 2,
                                           onTap: () {
                                             Navigator.of(context)
@@ -832,7 +832,7 @@ class _HomePageState extends State<HomePage> {
     return Material(
       color: Colors.transparent,
       child: AnimButton(
-        player: GetIt.I<MusicManager>().smallKeyRegAmountAllPlayer,
+        player: GetIt.I<MusicManager>().menuSettingsSignWaterPlayer,
         onTap: onTap != null ? () => onTap() : null,
         child: Padding(
           padding: const EdgeInsets.all(4),
@@ -864,11 +864,11 @@ class _HomePageState extends State<HomePage> {
             watchSamurai: () => setState(() => selectedPage = 0),
             switchSamuraiType: (type) async {
               await GetIt.I<MusicManager>()
-                  .smallKeyRegAmountAllPlayer
+                  .menuSettingsSignWaterPlayer
                   .play()
                   .then((value) async {
                 await GetIt.I<MusicManager>()
-                    .smallKeyRegAmountAllPlayer
+                    .menuSettingsSignWaterPlayer
                     .seek(Duration(seconds: 0));
               });
 
@@ -1003,11 +1003,11 @@ class _HomePageState extends State<HomePage> {
                   onTap: () async {
                     onSwitch(0);
                     await GetIt.I<MusicManager>()
-                        .smallKeyRegAmountAllPlayer
+                        .menuSettingsSignWaterPlayer
                         .play()
                         .then((value) async {
                       await GetIt.I<MusicManager>()
-                          .smallKeyRegAmountAllPlayer
+                          .menuSettingsSignWaterPlayer
                           .seek(Duration(seconds: 0));
                     });
                   },
@@ -1024,11 +1024,11 @@ class _HomePageState extends State<HomePage> {
                   onTap: () async {
                     onSwitch(1);
                     await GetIt.I<MusicManager>()
-                        .smallKeyRegAmountAllPlayer
+                        .menuSettingsSignWaterPlayer
                         .play()
                         .then((value) async {
                       await GetIt.I<MusicManager>()
-                          .smallKeyRegAmountAllPlayer
+                          .menuSettingsSignWaterPlayer
                           .seek(Duration(seconds: 0));
                     });
                   },

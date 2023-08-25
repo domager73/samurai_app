@@ -826,7 +826,7 @@ class _WalletPageState extends State<WalletPage>
           Padding(
             padding: EdgeInsets.symmetric(vertical: height * 0.007),
             child: AnimButton(
-              player: GetIt.I<MusicManager>().smallKeyRegAmountAllPlayer,
+              player: GetIt.I<MusicManager>().menuSettingsSignWaterPlayer,
               onTap: () => onSwapTap(),
               child: SvgPicture.asset(
                 'assets/pages/homepage/refresh.svg',
@@ -853,7 +853,7 @@ class _WalletPageState extends State<WalletPage>
           Padding(
             padding: EdgeInsets.symmetric(vertical: height * 0.007),
             child: AnimButton(
-              player: GetIt.I<MusicManager>().smallKeyRegAmountAllPlayer,
+              player: GetIt.I<MusicManager>().menuSettingsSignWaterPlayer,
               onTap: () => onExportTap(),
               child: SvgPicture.asset(
                 'assets/pages/homepage/next.svg',

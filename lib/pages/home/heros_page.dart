@@ -50,30 +50,27 @@ class _HerosPageState extends State<HerosPage> with SingleTickerProviderStateMix
       int page = _tabController.animation!.value ~/ 1;
 
       if (oldPage <= page) {
-        if (0.09 < value && 0.2 > value) {
+        if (0.0 < value && 0.5 > value) {
           if (flag == 0) {
             flag = 1;
             log("value $value, page $page, oldPage $oldPage");
 
-            await GetIt.I<MusicManager>().swipeForwPlayer.play().then((value) async {
-              await GetIt.I<MusicManager>().swipeForwPlayer.stop();
-            })
-            .then((value) async => await GetIt.I<MusicManager>().swipeForwPlayer.seek(Duration(seconds: 0)));
+            await GetIt.I<MusicManager>().swipeForwPlayer.play().then((value) async {}).then((value) async => await GetIt.I<MusicManager>().swipeForwPlayer.seek(Duration(seconds: 0)));
           }
         } else {
           flag = 0;
         }
       } else {
-        if (0.91 > value && 0.79 < value) {
+        if (1 > value && 0.51 < value) {
           if (flag == 0) {
             flag = 1;
             log("value $value, page $page, oldPage $oldPage");
 
-            await GetIt.I<MusicManager>().swipeBackPlayer.play()
-            .then((value) async  => await GetIt.I<MusicManager>().swipeBackPlayer.stop())
-            .then((value) async {
-              await GetIt.I<MusicManager>().swipeBackPlayer.seek(Duration(seconds: 0));
-            });
+            await GetIt.I<MusicManager>().swipeForwPlayer.stop();
+
+            await GetIt.I<MusicManager>().swipeBackPlayer.play().then((value) async {}).then((value) async => await GetIt.I<MusicManager>().swipeBackPlayer.seek(Duration(seconds: 0)));
+
+            await GetIt.I<MusicManager>().swipeBackPlayer.stop();
           }
         } else {
           flag = 0;
@@ -109,7 +106,6 @@ class _HerosPageState extends State<HerosPage> with SingleTickerProviderStateMix
     final now = DateTime.now();
     DateTime end = DateTime(now.year, now.month, now.day, 12, 59, 59);
     final diff = now.subtract(now.timeZoneOffset).difference(end);
-    //print("$diff, ${diff.inHours}, ${diff.inMinutes}");
     setState(() {
       samuraiDpExpiresDate = DateFormat.Hm().format(DateTime(now.year, now.month, now.day, -diff.inHours, -diff.inMinutes + diff.inHours * 60));
     });
@@ -141,9 +137,6 @@ class _HerosPageState extends State<HerosPage> with SingleTickerProviderStateMix
           padding: EdgeInsets.only(top: width * 0.04, bottom: width * 0.07, left: width * 0.12, right: width * 0.12),
           child: TabBar(
             onTap: (newPage) async {
-              // setState(() {
-              //   page = newPage;
-              // });
             },
             controller: _tabController,
             tabs: const [

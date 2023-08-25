@@ -35,16 +35,7 @@ class CraftPageComponents {
     TextEditingController controllerWithdraw = TextEditingController();
     int switchMode = 0;
 
-    Widget tabIngame(
-        BuildContext context,
-        double width,
-        double height,
-        String samuraiTypeIngame,
-        int balance,
-        lockedBalance,
-        String mode,
-        Function onShitchMode,
-        Function onAllBtn) {
+    Widget tabIngame(BuildContext context, double width, double height, String samuraiTypeIngame, int balance, lockedBalance, String mode, Function onShitchMode, Function onAllBtn) {
       return StatefulBuilder(
           builder: (context, StateSetter setState) => GestureDetector(
               onTap: () async {
@@ -55,11 +46,7 @@ class CraftPageComponents {
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: <Widget>[
                   Padding(
-                      padding: EdgeInsets.only(
-                          top: width * 0.0,
-                          bottom: width * 0.04,
-                          left: width * 0.02,
-                          right: width * 0.02),
+                      padding: EdgeInsets.only(top: width * 0.0, bottom: width * 0.04, left: width * 0.02, right: width * 0.02),
                       child: SizedBox(
                         height: width * 0.37,
                         child: Stack(
@@ -70,8 +57,7 @@ class CraftPageComponents {
                               width: width - width * 0.14,
                             ),
                             Padding(
-                                padding: EdgeInsets.only(
-                                    top: width * 0.175, left: width * 0.04),
+                                padding: EdgeInsets.only(top: width * 0.175, left: width * 0.04),
                                 child: SvgPicture.asset(
                                   'assets/pages/homepage/craft/transfer_line.svg',
                                   fit: BoxFit.fitWidth,
@@ -96,14 +82,11 @@ class CraftPageComponents {
                                             ),
                                           ),
                                           Padding(
-                                              padding: EdgeInsets.only(
-                                                  left: width * 0.04),
+                                              padding: EdgeInsets.only(left: width * 0.04),
                                               child: FittedBox(
                                                 fit: BoxFit.fitHeight,
                                                 child: Text(
-                                                  mode == 'toArmy'
-                                                      ? 'FREE'
-                                                      : 'ARMY',
+                                                  mode == 'toArmy' ? 'FREE' : 'ARMY',
                                                   style: GoogleFonts.spaceMono(
                                                     fontWeight: FontWeight.w700,
                                                     color: Colors.white,
@@ -124,14 +107,11 @@ class CraftPageComponents {
                                           ),
                                         ),
                                         Padding(
-                                            padding: EdgeInsets.only(
-                                                left: width * 0.04),
+                                            padding: EdgeInsets.only(left: width * 0.04),
                                             child: FittedBox(
                                               fit: BoxFit.fitHeight,
                                               child: Text(
-                                                mode == 'toArmy'
-                                                    ? 'ARMY'
-                                                    : 'FREE',
+                                                mode == 'toArmy' ? 'ARMY' : 'FREE',
                                                 style: GoogleFonts.spaceMono(
                                                   fontWeight: FontWeight.w700,
                                                   color: Colors.white,
@@ -148,8 +128,7 @@ class CraftPageComponents {
                                   flex: 15,
                                   child: AnimButton(
                                     shadowType: 2,
-                                    player: GetIt.I<MusicManager>()
-                                        .okCanselTransPlayer,
+                                    player: GetIt.I<MusicManager>().okCanselTransPlayer,
                                     onTap: () {
                                       onShitchMode();
                                     },
@@ -172,11 +151,9 @@ class CraftPageComponents {
                           screeenHeight: height,
                           screeenWidth: width,
                           hint: 'Amount',
-                          keyboardType: const TextInputType.numberWithOptions(
-                              signed: false, decimal: false),
+                          keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
                           inputFormatters: [
-                            FilteringTextInputFormatter.allow(
-                                RegExp(r'^[0-9]*')),
+                            FilteringTextInputFormatter.allow(RegExp(r'^[0-9]*')),
                           ],
                           controller: controller,
                           onChanged: (_) {
@@ -241,15 +218,8 @@ class CraftPageComponents {
                         Navigator.of(context).pop();
                       }
                     },
-                    disabled: controller.text.isEmpty ||
-                        (int.tryParse(controller.text) ?? 0) <= 0 ||
-                        (int.tryParse(controller.text) ?? 0) >
-                            (mode == 'toArmy' ? balance : lockedBalance),
-                    params: {
-                      'text': 'confirm',
-                      'width': width,
-                      'height': height
-                    },
+                    disabled: controller.text.isEmpty || (int.tryParse(controller.text) ?? 0) <= 0 || (int.tryParse(controller.text) ?? 0) > (mode == 'toArmy' ? balance : lockedBalance),
+                    params: {'text': 'confirm', 'width': width, 'height': height},
                     child: loginBtn,
                   ),
                 ],
@@ -273,193 +243,139 @@ class CraftPageComponents {
         }
       } catch (e) {
         hideSpinner(context);
-        await showError(context,
-            'Insufficient funds. Deposit some BNB to your crypto wallet.');
+        await showError(context, 'Insufficient funds. Deposit some BNB to your crypto wallet.');
       }
       if (context.mounted) {
         Navigator.of(context).pop();
       }
     }
 
-    Widget tabWithdraw(
-        BuildContext context,
-        double width,
-        double height,
-        double gas,
-        int balanceWithdraw,
-        String mode,
-        Function(String) onShitchMode,
-        Function onAllBtn) {
+    Widget tabWithdraw(BuildContext context, double width, double height, double gas, int balanceWithdraw, String mode, Function(String) onShitchMode, Function onAllBtn) {
       return StatefulBuilder(
-          builder: (context, StateSetter setState) => Wrap(
-                  alignment: WrapAlignment.center,
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: <Widget>[
-                    Padding(
-                        padding: EdgeInsets.only(
-                            top: width * 0.0,
-                            bottom: width * 0.04,
-                            left: width * 0.02,
-                            right: width * 0.02),
-                        child: SizedBox(
-                          height: width * 0.37,
-                          child: Stack(
+          builder: (context, StateSetter setState) => Wrap(alignment: WrapAlignment.center, crossAxisAlignment: WrapCrossAlignment.center, children: <Widget>[
+                Padding(
+                    padding: EdgeInsets.only(top: width * 0.0, bottom: width * 0.04, left: width * 0.02, right: width * 0.02),
+                    child: SizedBox(
+                      height: width * 0.37,
+                      child: Stack(
+                        children: [
+                          Row(
                             children: [
-                              Row(
-                                children: [
-                                  Expanded(
-                                      flex: 30,
-                                      child: SizedBox(
-                                          height: width * 0.2,
-                                          child: AnimButton(
-                                              player: GetIt.I<MusicManager>()
-                                                  .smallKeyRegAmountAllPlayer,
-                                              shadowType: 1,
-                                              onTap: () {
-                                                CraftPageComponents
-                                                    .openSwitchDialog(
-                                                        context: context,
-                                                        width: width,
-                                                        height: height,
-                                                        onSwitch: (val) async {
-                                                          await GetIt.I<
-                                                                  MusicManager>()
-                                                              .smallKeyRegAmountAllPlayer
-                                                              .play()
-                                                              .then(
-                                                                  (value) async {
-                                                            await GetIt.I<
-                                                                    MusicManager>()
-                                                                .smallKeyRegAmountAllPlayer
-                                                                .seek(Duration(
-                                                                    seconds:
-                                                                        0));
-                                                          });
+                              Expanded(
+                                  flex: 30,
+                                  child: SizedBox(
+                                      height: width * 0.2,
+                                      child: AnimButton(
+                                          player: GetIt.I<MusicManager>().smallKeyRegAmountAllPlayer,
+                                          shadowType: 1,
+                                          onTap: () {
+                                            CraftPageComponents.openSwitchDialog(
+                                                context: context,
+                                                width: width,
+                                                height: height,
+                                                onSwitch: (val) async {
+                                                  await GetIt.I<MusicManager>().smallKeyRegAmountAllPlayer.play().then((value) async {
+                                                    await GetIt.I<MusicManager>().smallKeyRegAmountAllPlayer.seek(Duration(seconds: 0));
+                                                  });
 
-                                                          if (val == 1) {
-                                                            onShitchMode(
-                                                                'REGULAR');
-                                                          } else {
-                                                            onShitchMode(
-                                                                'GENESIS');
-                                                          }
-                                                        },
-                                                        valSwitch:
-                                                            mode == 'REGULAR'
-                                                                ? 1
-                                                                : 0);
-                                              },
-                                              child: Stack(children: [
-                                                Padding(
-                                                    padding: EdgeInsets.only(
-                                                        left: width * 0.0,
-                                                        top: width * 0.05),
-                                                    child: Image.asset(
-                                                      'assets/pages/homepage/craft/btn_sel.png',
-                                                      fit: BoxFit.fitHeight,
-                                                      height: width * 0.105,
-                                                    )),
-                                                Padding(
-                                                  padding: EdgeInsets.only(
-                                                      left: width * 0.12,
-                                                      top: width * 0.07),
-                                                  child: Text(mode,
-                                                      style:
-                                                          GoogleFonts.spaceMono(
-                                                        fontSize: width * 0.036,
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                        color: const Color(
-                                                            0xFF00FFFF),
-                                                      )),
-                                                )
-                                              ])))),
-                                  const Spacer(flex: 6),
-                                  Expanded(
-                                    flex: 15,
-                                    child: SvgPicture.asset(
-                                      'assets/nft_bnb.svg',
-                                      fit: BoxFit.fitWidth,
-                                      height: height * 0.2,
-                                    ),
-                                  ),
-                                ],
+                                                  if (val == 1) {
+                                                    onShitchMode('REGULAR');
+                                                  } else {
+                                                    onShitchMode('GENESIS');
+                                                  }
+                                                },
+                                                valSwitch: mode == 'REGULAR' ? 1 : 0);
+                                          },
+                                          child: Stack(children: [
+                                            Padding(
+                                                padding: EdgeInsets.only(left: width * 0.0, top: width * 0.05),
+                                                child: Image.asset(
+                                                  'assets/pages/homepage/craft/btn_sel.png',
+                                                  fit: BoxFit.fitHeight,
+                                                  height: width * 0.105,
+                                                )),
+                                            Padding(
+                                              padding: EdgeInsets.only(left: width * 0.12, top: width * 0.07),
+                                              child: Text(mode,
+                                                  style: GoogleFonts.spaceMono(
+                                                    fontSize: width * 0.036,
+                                                    fontWeight: FontWeight.w700,
+                                                    color: const Color(0xFF00FFFF),
+                                                  )),
+                                            )
+                                          ])))),
+                              const Spacer(flex: 6),
+                              Expanded(
+                                flex: 15,
+                                child: SvgPicture.asset(
+                                  'assets/nft_bnb.svg',
+                                  fit: BoxFit.fitWidth,
+                                  height: height * 0.2,
+                                ),
                               ),
                             ],
                           ),
-                        )),
-                    Padding(
-                        padding: EdgeInsets.only(bottom: width * 0.04),
-                        child: SamuraiTextField(
-                            screeenHeight: height,
-                            screeenWidth: width,
-                            hint: 'Quantity',
-                            keyboardType: const TextInputType.numberWithOptions(
-                                signed: false, decimal: false),
-                            inputFormatters: [
-                              FilteringTextInputFormatter.allow(
-                                  RegExp(r'^[0-9]*')),
-                            ],
-                            controller: controllerWithdraw,
-                            onChanged: (_) {
-                              setState(() {});
-                            },
-                            allButton: () {
-                              onAllBtn();
-                            })),
-                    Container(
-                        width: width,
-                        padding: EdgeInsets.only(bottom: width * 0.02),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              modeWithdraw == 'GENESIS'
-                                  ? "Available: ${samuraiGenesisBalance} GENESIS SAMURAI"
-                                  : "Available: ${num.parse(balanceWithdraw.toStringAsFixed(0))} SAMURAI",
-                              // HERE
-                              style: GoogleFonts.spaceMono(
-                                fontSize: 13 / 844 * height,
-                                color: Colors.white,
-                              ),
-                            ),
-                            Text(
-                              "Gas: ${gas.toStringAsFixed(9)} BNB",
-                              style: GoogleFonts.spaceMono(
-                                fontSize: 13 / 844 * height,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ],
-                        )),
-                    PresButton(
-                      onTap: () {
-                        final useTfa = AppStorage().read('use-tfa');
-                        if (useTfa != null && useTfa == '1') {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) => const TfaPage())).then((res) {
-                            if (res) {
-                              transferSamurai();
-                            }
-                          });
-                        } else {
+                        ],
+                      ),
+                    )),
+                Padding(
+                    padding: EdgeInsets.only(bottom: width * 0.04),
+                    child: SamuraiTextField(
+                        screeenHeight: height,
+                        screeenWidth: width,
+                        hint: 'Quantity',
+                        keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(RegExp(r'^[0-9]*')),
+                        ],
+                        controller: controllerWithdraw,
+                        onChanged: (_) {
+                          setState(() {});
+                        },
+                        allButton: () {
+                          onAllBtn();
+                        })),
+                Container(
+                    width: width,
+                    padding: EdgeInsets.only(bottom: width * 0.02),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          modeWithdraw == 'GENESIS' ? "Available: ${samuraiGenesisBalance} GENESIS SAMURAI" : "Available: ${num.parse(balanceWithdraw.toStringAsFixed(0))} SAMURAI",
+                          // HERE
+                          style: GoogleFonts.spaceMono(
+                            fontSize: 13 / 844 * height,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Text(
+                          "Gas: ${gas.toStringAsFixed(9)} BNB",
+                          style: GoogleFonts.spaceMono(
+                            fontSize: 13 / 844 * height,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    )),
+                PresButton(
+                  onTap: () {
+                    final useTfa = AppStorage().read('use-tfa');
+                    if (useTfa != null && useTfa == '1') {
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => const TfaPage())).then((res) {
+                        if (res) {
                           transferSamurai();
                         }
-                      },
-                      disabled: controllerWithdraw.text.isEmpty ||
-                          (int.tryParse(controllerWithdraw.text) ?? 0) <= 0 ||
-                          (int.tryParse(controllerWithdraw.text) ?? 0) >
-                              balanceWithdraw,
-                      params: {
-                        'text': 'confirm',
-                        'width': width,
-                        'height': height
-                      },
-                      child: loginBtn,
-                    ),
-                  ]));
+                      });
+                    } else {
+                      transferSamurai();
+                    }
+                  },
+                  disabled: controllerWithdraw.text.isEmpty || (int.tryParse(controllerWithdraw.text) ?? 0) <= 0 || (int.tryParse(controllerWithdraw.text) ?? 0) > balanceWithdraw,
+                  params: {'text': 'confirm', 'width': width, 'height': height},
+                  child: loginBtn,
+                ),
+              ]));
     }
 
     Widget switchType(double width, int switchMode, Function onSwitch) {
@@ -468,6 +384,9 @@ class CraftPageComponents {
             width: width * (switchMode == 0 ? 0.45 : 0.53),
             child: InkWell(
                 onTap: () async {
+                  await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.play().then((value) async {
+                    await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.seek(Duration(seconds: 0));
+                  });
                   onSwitch(0);
                 },
                 child: SvgPicture.asset(
@@ -475,18 +394,17 @@ class CraftPageComponents {
                   fit: BoxFit.fitWidth,
                 ))),
         Padding(
-            padding: EdgeInsets.only(
-                left: width * 0.34,
-                top: width * (switchMode == 0 ? 0.004 : 0.009)),
+            padding: EdgeInsets.only(left: width * 0.34, top: width * (switchMode == 0 ? 0.004 : 0.009)),
             child: SizedBox(
                 width: width * (switchMode == 0 ? 0.483 : 0.46),
                 child: InkWell(
                     onTap: () async {
+                      await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.play().then((value) async {
+                        await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.seek(Duration(seconds: 0));
+                      });
                       onSwitch(1);
                     },
-                    child: SvgPicture.asset(
-                        'assets/pages/homepage/craft/withdraw_$switchMode.svg',
-                        fit: BoxFit.fitWidth))))
+                    child: SvgPicture.asset('assets/pages/homepage/craft/withdraw_$switchMode.svg', fit: BoxFit.fitWidth))))
       ]);
     }
 
@@ -500,141 +418,97 @@ class CraftPageComponents {
                       topLeft: Radius.circular(32),
                       topRight: Radius.circular(32),
                     ),
-                    image: DecorationImage(
-                        image: AssetImage('assets/modal_bottom_sheet_bg.png'),
-                        fit: BoxFit.fill)),
-                padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).viewInsets.bottom),
+                    image: DecorationImage(image: AssetImage('assets/modal_bottom_sheet_bg.png'), fit: BoxFit.fill)),
+                padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
                 child: Padding(
-                    padding: const EdgeInsets.fromLTRB(
-                        18.0, 28.0, 18.0, 0.0), // content padding
-                    child: Wrap(
-                        alignment: WrapAlignment.center,
-                        crossAxisAlignment: WrapCrossAlignment.center,
-                        children: <Widget>[
-                          Padding(
-                              padding: const EdgeInsets.fromLTRB(
-                                  10.0, 0.0, 10.0, 0.0),
-                              // content padding
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  PresButton(
-                                    onTap: () async {
-                                      await GetIt.I<MusicManager>()
-                                          .popupDownSybMenuPlayer
-                                          .play()
-                                          .then((value) async {
-                                        await GetIt.I<MusicManager>()
-                                            .popupDownSybMenuPlayer
-                                            .seek(Duration(seconds: 0));
+                    padding: const EdgeInsets.fromLTRB(18.0, 28.0, 18.0, 0.0), // content padding
+                    child: Wrap(alignment: WrapAlignment.center, crossAxisAlignment: WrapCrossAlignment.center, children: <Widget>[
+                      Padding(
+                          padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
+                          // content padding
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              PresButton(
+                                onTap: () async {
+                                  await GetIt.I<MusicManager>().popupDownSybMenuPlayer.play().then((value) async {
+                                    await GetIt.I<MusicManager>().popupDownSybMenuPlayer.seek(Duration(seconds: 0));
+                                  });
+
+                                  Navigator.of(context).pop();
+                                },
+                                params: {'width': width},
+                                child: backBtn,
+                                player: GetIt.I<MusicManager>().keyBackSignCloseX,
+                              ),
+                              Expanded(
+                                child: Center(
+                                  child: Text(
+                                    'transfer',
+                                    style: TextStyle(
+                                      fontFamily: 'AmazObitaemOstrovItalic',
+                                      fontSize: 37 / 844 * height,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              AnimButton(
+                                shadowType: 2,
+                                onTap: () => {
+                                  showError(
+                                      context,
+                                      switchMode == 0
+                                          ? 'Army Samurai can participate in battles and accumulate XP. Free Samurai can be withdrawn to your wallet. Army Samurai must be at 100% health to transfer.'
+                                          : 'You can withdraw Free Samurai, after which they will available on your wallet',
+                                      type: 2)
+                                },
+                                child: SvgPicture.asset(
+                                  'assets/pages/homepage/craft/info.svg',
+                                  height: width * 0.12,
+                                  width: width * 0.12,
+                                ),
+                              )
+                            ],
+                          )),
+                      Padding(
+                          padding: EdgeInsets.only(top: width * 0.03, bottom: width * 0.03),
+                          child: switchType(width, switchMode, (mode) async {
+                            setState(() {
+                              switchMode = mode;
+                            });
+                          })),
+                      Padding(
+                          padding: EdgeInsets.only(top: width * 0.03, bottom: width * 0.03, left: width * 0.03, right: width * 0.03),
+                          child: SizedBox(
+                              height: height * 0.5,
+                              child: switchMode == 0
+                                  ? tabIngame(context, width, height, samuraiTypeIngame, balance, lockedBalance, mode, () {
+                                      setState(() {
+                                        mode == 'toArmy' ? mode = 'toFree' : mode = 'toArmy';
                                       });
-
-                                      Navigator.of(context).pop();
-                                    },
-                                    params: {'width': width},
-                                    child: backBtn,
-                                    player: GetIt.I<MusicManager>()
-                                        .keyBackSignCloseX,
-                                  ),
-                                  Expanded(
-                                    child: Center(
-                                      child: Text(
-                                        'transfer',
-                                        style: TextStyle(
-                                          fontFamily: 'AmazObitaemOstrovItalic',
-                                          fontSize: 37 / 844 * height,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  AnimButton(
-                                    shadowType: 2,
-                                    onTap: () => {
-                                      showError(
-                                          context,
-                                          switchMode == 0
-                                              ? 'Army Samurai can participate in battles and accumulate XP. Free Samurai can be withdrawn to your wallet. Army Samurai must be at 100% health to transfer.'
-                                              : 'You can withdraw Free Samurai, after which they will available on your wallet',
-                                          type: 2)
-                                    },
-                                    child: SvgPicture.asset(
-                                      'assets/pages/homepage/craft/info.svg',
-                                      height: width * 0.12,
-                                      width: width * 0.12,
-                                    ),
-                                  )
-                                ],
-                              )),
-                          Padding(
-                              padding: EdgeInsets.only(
-                                  top: width * 0.03, bottom: width * 0.03),
-                              child:
-                                  switchType(width, switchMode, (mode) async {
-                                await GetIt.I<MusicManager>()
-                                    .smallKeyRegAmountAllPlayer
-                                    .play()
-                                    .then((value) async {
-                                  await GetIt.I<MusicManager>()
-                                      .smallKeyRegAmountAllPlayer
-                                      .seek(Duration(seconds: 0));
-                                });
-
-                                setState(() {
-                                  switchMode = mode;
-                                });
-                              })),
-                          Padding(
-                              padding: EdgeInsets.only(
-                                  top: width * 0.03,
-                                  bottom: width * 0.03,
-                                  left: width * 0.03,
-                                  right: width * 0.03),
-                              child: SizedBox(
-                                  height: height * 0.5,
-                                  child: switchMode == 0
-                                      ? tabIngame(
-                                          context,
-                                          width,
-                                          height,
-                                          samuraiTypeIngame,
-                                          balance,
-                                          lockedBalance,
-                                          mode, () {
-                                          setState(() {
-                                            mode == 'toArmy'
-                                                ? mode = 'toFree'
-                                                : mode = 'toArmy';
-                                          });
-                                        }, () {
-                                          setState(() {
-                                            controller.text = (mode == 'toArmy'
-                                                    ? balance
-                                                    : lockedBalance)
-                                                .toStringAsFixed(0);
-                                          });
-                                        })
-                                      : tabWithdraw(
-                                          context,
-                                          width,
-                                          height,
-                                          gas,
-                                          balanceWithdraw.toInt(),
-                                          // HERE
-                                          modeWithdraw, (val) {
-                                          setState(() {
-                                            modeWithdraw = val;
-                                          });
-                                        }, () {
-                                          setState(() {
-                                            controllerWithdraw.text =
-                                                (balanceWithdraw)
-                                                    .toStringAsFixed(0);
-                                          });
-                                        }))),
-                        ])))));
+                                    }, () {
+                                      setState(() {
+                                        controller.text = (mode == 'toArmy' ? balance : lockedBalance).toStringAsFixed(0);
+                                      });
+                                    })
+                                  : tabWithdraw(
+                                      context,
+                                      width,
+                                      height,
+                                      gas,
+                                      balanceWithdraw.toInt(),
+                                      // HERE
+                                      modeWithdraw, (val) {
+                                      setState(() {
+                                        modeWithdraw = val;
+                                      });
+                                    }, () {
+                                      setState(() {
+                                        controllerWithdraw.text = (balanceWithdraw).toStringAsFixed(0);
+                                      });
+                                    }))),
+                    ])))));
   }
 
   static Future<void> openHealModalPage({
@@ -677,14 +551,9 @@ class CraftPageComponents {
                       Row(
                         children: [
                           PresButton(
-                            onTap: () async{
-                              await GetIt.I<MusicManager>()
-                                  .popupDownSybMenuPlayer
-                                  .play()
-                                  .then((value) async {
-                                await GetIt.I<MusicManager>()
-                                    .popupDownSybMenuPlayer
-                                    .seek(Duration(seconds: 0));
+                            onTap: () async {
+                              await GetIt.I<MusicManager>().popupDownSybMenuPlayer.play().then((value) async {
+                                await GetIt.I<MusicManager>().popupDownSybMenuPlayer.seek(Duration(seconds: 0));
                               });
 
                               Navigator.of(context).pop();
@@ -707,12 +576,9 @@ class CraftPageComponents {
                           ),
                           AnimButton(
                             shadowType: 2,
-                            player: GetIt.I<MusicManager>()
-                                .smallKeyRegAmountAllPlayer,
+                            player: GetIt.I<MusicManager>().smallKeyRegAmountAllPlayer,
                             onTap: () async {
-                              showError(context,
-                                  'You will not be able to participate in battles when the health of your Army drops to 0%. You can heal the Army or add new Samurai to the Army to replenish the health bar.',
-                                  type: 2);
+                              showError(context, 'You will not be able to participate in battles when the health of your Army drops to 0%. You can heal the Army or add new Samurai to the Army to replenish the health bar.', type: 2);
                             },
                             child: SvgPicture.asset(
                               'assets/pages/homepage/craft/info.svg',
@@ -753,11 +619,8 @@ class CraftPageComponents {
                       const Spacer(flex: 12),
                       PresButton(
                         onTap: () {
-                          showConfirm(context,
-                              'Are you sure you want to spend RYO to heal your army?',
-                              () {
-                            Navigator.of(context)
-                                .popUntil((route) => route.isFirst);
+                          showConfirm(context, 'Are you sure you want to spend RYO to heal your army?', () {
+                            Navigator.of(context).popUntil((route) => route.isFirst);
                           });
                         },
                         disabled: true,
@@ -780,25 +643,16 @@ class CraftPageComponents {
     );
   }
 
-  static Future<void> openSwitchDialog(
-      {required BuildContext context,
-      required double width,
-      required double height,
-      required Function(int) onSwitch,
-      required int valSwitch}) async {
+  static Future<void> openSwitchDialog({required BuildContext context, required double width, required double height, required Function(int) onSwitch, required int valSwitch}) async {
     showDialog(
         context: context,
         builder: (BuildContext context) => StatefulBuilder(
             builder: (context, StateSetter setState) => Dialog(
-                insetPadding:
-                    const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+                insetPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
                 elevation: 0,
                 backgroundColor: Colors.transparent,
                 child: Padding(
-                    padding: EdgeInsets.only(
-                        top: width * 0.28,
-                        left: width * 0.1,
-                        right: width * 0.445),
+                    padding: EdgeInsets.only(top: width * 0.28, left: width * 0.1, right: width * 0.445),
                     child: Stack(children: <Widget>[
                       Padding(
                           padding: EdgeInsets.only(top: width * 0.09),
@@ -808,49 +662,38 @@ class CraftPageComponents {
                             width: width - width * 0.09,
                           )),
                       Padding(
-                          padding: EdgeInsets.only(
-                              top: width * 0.075,
-                              left: width * 0.088,
-                              right: width * 0.02),
+                          padding: EdgeInsets.only(top: width * 0.075, left: width * 0.088, right: width * 0.02),
                           child: TextButton(
                               onPressed: () {
                                 onSwitch(valSwitch == 0 ? 0 : 1);
                                 Navigator.of(context).pop();
                               },
-                              child:
-                                  Text(valSwitch == 0 ? 'GENESIS' : 'REGULAR',
-                                      style: GoogleFonts.spaceMono(
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: width * 0.036,
-                                        color: const Color(0xFF00FFFF),
-                                      )))),
+                              child: Text(valSwitch == 0 ? 'GENESIS' : 'REGULAR',
+                                  style: GoogleFonts.spaceMono(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: width * 0.036,
+                                    color: const Color(0xFF00FFFF),
+                                  )))),
                       Padding(
-                          padding: EdgeInsets.only(
-                              top: width * 0.195,
-                              left: width * 0.02,
-                              right: width * 0.02),
+                          padding: EdgeInsets.only(top: width * 0.195, left: width * 0.02, right: width * 0.02),
                           child: SvgPicture.asset(
                             'assets/pages/homepage/craft/transfer_line.svg',
                             fit: BoxFit.fitWidth,
                             width: width - width * 0.54,
                           )),
                       Padding(
-                          padding: EdgeInsets.only(
-                              top: width * 0.19,
-                              left: width * 0.088,
-                              right: width * 0.02),
+                          padding: EdgeInsets.only(top: width * 0.19, left: width * 0.088, right: width * 0.02),
                           child: TextButton(
                               onPressed: () {
                                 onSwitch(valSwitch == 1 ? 0 : 1);
                                 Navigator.of(context).pop();
                               },
-                              child:
-                                  Text(valSwitch == 1 ? 'GENESIS' : 'REGULAR',
-                                      style: GoogleFonts.spaceMono(
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: width * 0.036,
-                                        color: Colors.white,
-                                      )))),
+                              child: Text(valSwitch == 1 ? 'GENESIS' : 'REGULAR',
+                                  style: GoogleFonts.spaceMono(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: width * 0.036,
+                                    color: Colors.white,
+                                  )))),
                     ])))));
   }
 }

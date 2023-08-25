@@ -58,11 +58,11 @@ class _AnimButtonState extends State<AnimButton> {
       });
     } else {
       await GetIt.I<MusicManager>()
-          .smallKeyRegAmountAllPlayer
+          .menuSettingsSignWaterPlayer
           .play()
           .then((value) async {
         await GetIt.I<MusicManager>()
-            .smallKeyRegAmountAllPlayer
+            .menuSettingsSignWaterPlayer
             .seek(const Duration(seconds: 0));
       });
     }
@@ -339,11 +339,11 @@ class _PresButtonState extends State<PresButton> {
       });
     } else {
       await GetIt.I<MusicManager>()
-          .smallKeyRegAmountAllPlayer
+          .menuSettingsSignWaterPlayer
           .play()
           .then((value) async {
         await GetIt.I<MusicManager>()
-            .smallKeyRegAmountAllPlayer
+            .menuSettingsSignWaterPlayer
             .seek(const Duration(seconds: 0));
       });
     }
