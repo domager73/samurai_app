@@ -498,7 +498,6 @@ class CraftPageComponents {
                                       height,
                                       gas,
                                       balanceWithdraw.toInt(),
-                                      // HERE
                                       modeWithdraw, (val) {
                                       setState(() {
                                         modeWithdraw = val;
@@ -576,7 +575,6 @@ class CraftPageComponents {
                           ),
                           AnimButton(
                             shadowType: 2,
-                            player: GetIt.I<MusicManager>().smallKeyRegAmountAllPlayer,
                             onTap: () async {
                               showError(context, 'You will not be able to participate in battles when the health of your Army drops to 0%. You can heal the Army or add new Samurai to the Army to replenish the health bar.', type: 2);
                             },

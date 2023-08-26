@@ -250,7 +250,6 @@ class _CraftPageState extends State<CraftPage> {
                   AnimButton(
                       player: GetIt.I<MusicManager>().zeroAmountNumberPlayer,
                       onTap: () {
-                        // CLAME_FIX
                         if ((widget.craftSwitch == 0) &&
                             (waterSamuraiXp >= maxXP)) {
                           ScaffoldMessenger.of(context).clearSnackBars();

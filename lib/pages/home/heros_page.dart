@@ -66,11 +66,8 @@ class _HerosPageState extends State<HerosPage> with SingleTickerProviderStateMix
             flag = 1;
             log("value $value, page $page, oldPage $oldPage");
 
-            await GetIt.I<MusicManager>().swipeForwPlayer.stop();
-
             await GetIt.I<MusicManager>().swipeBackPlayer.play().then((value) async {}).then((value) async => await GetIt.I<MusicManager>().swipeBackPlayer.seek(Duration(seconds: 0)));
 
-            await GetIt.I<MusicManager>().swipeBackPlayer.stop();
           }
         } else {
           flag = 0;

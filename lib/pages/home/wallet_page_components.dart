@@ -19,30 +19,19 @@ import '../../components/storage.dart';
 import '../tfa_page.dart';
 
 class WalletPageComponents {
-  static void transferSamurai(
-      BuildContext context,
-      String mode,
-      HDWallet wallet,
-      String text,
-      String? tokenAdress,
-      String token,
-      String typeToken,
-      String walletAddress) {
+  static void transferSamurai(BuildContext context, String mode, HDWallet wallet, String text, String? tokenAdress, String token, String typeToken, String walletAddress) {
     if (text.isEmpty) {
       return;
     }
     showSpinner(context);
     if (token == 'USDT' || token == 'CLC' || token == 'RYO') {
       if (mode == 'inGame') {
-        WalletAPI.transferERC20Bnb(wallet, tokenAdress!,
-                double.tryParse(text) ?? 0.0, null, 'assets/usdt.abi.json')
-            .then((_) {
+        WalletAPI.transferERC20Bnb(wallet, tokenAdress!, double.tryParse(text) ?? 0.0, null, 'assets/usdt.abi.json').then((_) {
           hideSpinner(context);
           Navigator.of(context).pop();
         }).catchError((e) {
           hideSpinner(context);
-          showError(context, 'Insufficient funds')
-              .then((_) => Navigator.of(context).pop());
+          showError(context, 'Insufficient funds').then((_) => Navigator.of(context).pop());
         });
       } else if (mode == 'inChain') {
         Rest.transfer(
@@ -55,8 +44,7 @@ class WalletPageComponents {
           Navigator.of(context).pop();
         }).catchError((e) {
           hideSpinner(context);
-          showError(context, 'Insufficient funds')
-              .then((_) => Navigator.of(context).pop());
+          showError(context, 'Insufficient funds').then((_) => Navigator.of(context).pop());
         });
       }
     } else if (token == 'BNB') {
@@ -70,8 +58,7 @@ class WalletPageComponents {
           Navigator.of(context).pop();
         }).catchError((e) {
           hideSpinner(context);
-          showError(context, 'Insufficient funds')
-              .then((_) => Navigator.of(context).pop());
+          showError(context, 'Insufficient funds').then((_) => Navigator.of(context).pop());
         });
       } else if (mode == 'inChain') {
         Rest.transfer(
@@ -84,13 +71,11 @@ class WalletPageComponents {
           Navigator.of(context).pop();
         }).catchError((e) {
           hideSpinner(context);
-          showError(context, 'Insufficient funds')
-              .then((_) => Navigator.of(context).pop());
+          showError(context, 'Insufficient funds').then((_) => Navigator.of(context).pop());
         });
       } else {
         hideSpinner(context);
-        showError(context, 'Token error')
-            .then((_) => Navigator.of(context).pop());
+        showError(context, 'Token error').then((_) => Navigator.of(context).pop());
       }
     }
   }
@@ -127,13 +112,10 @@ class WalletPageComponents {
                     topLeft: Radius.circular(32),
                     topRight: Radius.circular(32),
                   ),
-                  image: DecorationImage(
-                      image: modalBottomsheetBg, fit: BoxFit.fill)),
-              padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).viewInsets.bottom),
+                  image: DecorationImage(image: modalBottomsheetBg, fit: BoxFit.fill)),
+              padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(
-                    28.0, 28.0, 28.0, 0.0), //  padding
+                padding: const EdgeInsets.fromLTRB(28.0, 28.0, 28.0, 0.0), //  padding
                 child: Wrap(
                   alignment: WrapAlignment.center,
                   crossAxisAlignment: WrapCrossAlignment.center,
@@ -144,13 +126,8 @@ class WalletPageComponents {
                         PresButton(
                           player: GetIt.I<MusicManager>().keyBackSignCloseX,
                           onTap: () async {
-                            await GetIt.I<MusicManager>()
-                                .popupDownSybMenuPlayer
-                                .play()
-                                .then((value) async {
-                              await GetIt.I<MusicManager>()
-                                  .popupDownSybMenuPlayer
-                                  .seek(Duration(seconds: 0));
+                            await GetIt.I<MusicManager>().popupDownSybMenuPlayer.play().then((value) async {
+                              await GetIt.I<MusicManager>().popupDownSybMenuPlayer.seek(Duration(seconds: 0));
                             });
 
                             Navigator.of(context).pop();
@@ -159,8 +136,7 @@ class WalletPageComponents {
                           child: backBtn,
                         ),
                         Padding(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: width * 0.1),
+                          padding: EdgeInsets.symmetric(horizontal: width * 0.1),
                           child: Text(
                             'swap',
                             style: TextStyle(
@@ -174,9 +150,7 @@ class WalletPageComponents {
                         AnimButton(
                           shadowType: 2,
                           onTap: () async {
-                            showError(context,
-                                'Send your tokens TO GAME to use them in the game. Send your tokens TO WALLET to use them outside of the game.',
-                                type: 2);
+                            showError(context, 'Send your tokens TO GAME to use them in the game. Send your tokens TO WALLET to use them outside of the game.', type: 2);
                           },
                           child: SvgPicture.asset(
                             'assets/pages/homepage/craft/info.svg',
@@ -208,73 +182,39 @@ class WalletPageComponents {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
+                                    Row(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.end, children: [
+                                      SizedBox(
+                                        width: width * 0.116,
+                                        child: Text(
+                                          textAlign: TextAlign.start,
+                                          "from".toUpperCase(),
+                                          style: GoogleFonts.spaceMono(fontWeight: FontWeight.w800, fontSize: 13, color: Colors.white, textStyle: TextStyle(height: 1)),
+                                        ),
+                                      ),
+                                      Text(
+                                        mode == 'inGame' ? 'WALLET' : 'GAME',
+                                        textHeightBehavior: TextHeightBehavior(),
+                                        style: GoogleFonts.spaceMono(fontWeight: FontWeight.w700, color: Colors.white, fontSize: 20, textStyle: TextStyle(height: 0.927)),
+                                        textAlign: TextAlign.start,
+                                      ),
+                                    ]),
+                                    Container(color: Colors.white.withOpacity(0.6), height: 1, margin: const EdgeInsets.only(top: 22, bottom: 16)),
                                     Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: [
-                                          SizedBox(
-                                            width: width * 0.116,
-                                            child: Text(
-                                              textAlign: TextAlign.start,
-                                              "from".toUpperCase(),
-                                              style: GoogleFonts.spaceMono(
-                                                  fontWeight: FontWeight.w800,
-                                                  fontSize: 13,
-                                                  color: Colors.white,
-                                                  textStyle:
-                                                      TextStyle(height: 1)),
-                                            ),
-                                          ),
-                                          Text(
-                                            mode == 'inGame'
-                                                ? 'WALLET'
-                                                : 'GAME',
-                                            textHeightBehavior:
-                                                TextHeightBehavior(),
-                                            style: GoogleFonts.spaceMono(
-                                                fontWeight: FontWeight.w700,
-                                                color: Colors.white,
-                                                fontSize: 20,
-                                                textStyle:
-                                                    TextStyle(height: 0.927)),
-                                            textAlign: TextAlign.start,
-                                          ),
-                                        ]),
-                                    Container(
-                                        color: Colors.white.withOpacity(0.6),
-                                        height: 1,
-                                        margin: const EdgeInsets.only(
-                                            top: 22, bottom: 16)),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.end,
                                       children: [
                                         SizedBox(
                                           width: width * 0.116,
                                           child: Text(
                                             "to".toUpperCase(),
-                                            style: GoogleFonts.spaceMono(
-                                                fontWeight: FontWeight.w800,
-                                                fontSize: 13,
-                                                color: Colors.white,
-                                                textStyle:
-                                                    TextStyle(height: 1)),
+                                            style: GoogleFonts.spaceMono(fontWeight: FontWeight.w800, fontSize: 13, color: Colors.white, textStyle: TextStyle(height: 1)),
                                             textAlign: TextAlign.start,
                                           ),
                                         ),
                                         Text(
                                           textAlign: TextAlign.start,
                                           mode == 'inGame' ? 'GAME' : 'WALLET',
-                                          style: GoogleFonts.spaceMono(
-                                              fontWeight: FontWeight.w700,
-                                              color: Colors.white,
-                                              textStyle:
-                                                  TextStyle(height: 0.927),
-                                              fontSize: 20),
+                                          style: GoogleFonts.spaceMono(fontWeight: FontWeight.w700, color: Colors.white, textStyle: TextStyle(height: 0.927), fontSize: 20),
                                         ),
                                       ],
                                     ),
@@ -284,13 +224,10 @@ class WalletPageComponents {
                               SizedBox(
                                 width: width * 0.25,
                                 child: AnimButton(
-                                  player: GetIt.I<MusicManager>()
-                                      .okCanselTransPlayer,
+                                  player: GetIt.I<MusicManager>().okCanselTransPlayer,
                                   shadowType: 2,
                                   onTap: () => setState(() {
-                                    mode == 'inGame'
-                                        ? mode = 'inChain'
-                                        : mode = 'inGame';
+                                    mode == 'inGame' ? mode = 'inChain' : mode = 'inGame';
                                   }),
                                   child: SvgPicture.asset(
                                     'assets/swap_change_bt.svg',
@@ -307,20 +244,16 @@ class WalletPageComponents {
                             screeenHeight: height,
                             screeenWidth: width,
                             hint: 'Amount',
-                            keyboardType: const TextInputType.numberWithOptions(
-                                signed: false, decimal: true),
+                            keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: true),
                             inputFormatters: [
                               CommaFormatter(),
-                              FilteringTextInputFormatter.allow(
-                                  RegExp(r'^[0-9]*[.]?[0-9]*')),
+                              FilteringTextInputFormatter.allow(RegExp(r'^[0-9]*[.]?[0-9]*')),
                             ],
                             controller: controller,
                             onChanged: (_) => setState(() {}),
                             allButton: () {
                               setState(() {
-                                controller.text = mode == 'inGame'
-                                    ? balance.toString()
-                                    : balanceGame.toString();
+                                controller.text = mode == 'inGame' ? balance.toString() : balanceGame.toString();
                               });
                             })),
                     Container(
@@ -355,45 +288,17 @@ class WalletPageComponents {
                           onTap: () {
                             final useTfa = AppStorage().read('use-tfa');
                             if (useTfa != null && useTfa == '1') {
-                              Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (_) => const TfaPage()))
-                                  .then((res) {
+                              Navigator.push(context, MaterialPageRoute(builder: (_) => const TfaPage())).then((res) {
                                 if (res) {
-                                  transferSamurai(
-                                      context,
-                                      mode,
-                                      wallet,
-                                      controller.text,
-                                      tokenAdress,
-                                      token,
-                                      typeToken,
-                                      walletAddress);
+                                  transferSamurai(context, mode, wallet, controller.text, tokenAdress, token, typeToken, walletAddress);
                                 }
                               });
                             } else {
-                              transferSamurai(
-                                  context,
-                                  mode,
-                                  wallet,
-                                  controller.text,
-                                  tokenAdress,
-                                  token,
-                                  typeToken,
-                                  walletAddress);
+                              transferSamurai(context, mode, wallet, controller.text, tokenAdress, token, typeToken, walletAddress);
                             }
                           },
-                          disabled: (controller.text.isEmpty) ||
-                              ((double.tryParse(controller.text) ?? 0.0) <=
-                                  0) ||
-                              ((double.tryParse(controller.text) ?? 0.0) >
-                                  (mode == 'inGame' ? balance : balanceGame)),
-                          params: {
-                            'text': 'confirm',
-                            'width': width,
-                            'height': height
-                          },
+                          disabled: (controller.text.isEmpty) || ((double.tryParse(controller.text) ?? 0.0) <= 0) || ((double.tryParse(controller.text) ?? 0.0) > (mode == 'inGame' ? balance : balanceGame)),
+                          params: {'text': 'confirm', 'width': width, 'height': height},
                           child: loginBtn,
                         )),
                   ],
@@ -460,28 +365,21 @@ class WalletPageComponents {
                             children: [
                               PresButton(
                                 onTap: () async {
-                                  await GetIt.I<MusicManager>()
-                                      .popupDownSybMenuPlayer
-                                      .play()
-                                      .then((value) async {
-                                    await GetIt.I<MusicManager>()
-                                        .popupDownSybMenuPlayer
-                                        .seek(Duration(seconds: 0));
+                                  await GetIt.I<MusicManager>().popupDownSybMenuPlayer.play().then((value) async {
+                                    await GetIt.I<MusicManager>().popupDownSybMenuPlayer.seek(Duration(seconds: 0));
                                   });
 
                                   Navigator.of(context).pop();
                                 },
                                 params: {'width': width},
                                 child: backBtn,
-                                player:
-                                    GetIt.I<MusicManager>().keyBackSignCloseX,
+                                player: GetIt.I<MusicManager>().keyBackSignCloseX,
                               ),
                               Expanded(
                                 child: FittedBox(
                                   fit: BoxFit.fitWidth,
                                   child: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: width * 0.1),
+                                    padding: EdgeInsets.symmetric(horizontal: width * 0.1),
                                     child: Center(
                                       child: Text(
                                         "to game",
@@ -502,9 +400,7 @@ class WalletPageComponents {
                               ),
                             ],
                           ),
-                          MediaQuery.of(context).viewInsets.bottom == 0
-                              ? const Spacer(flex: 17)
-                              : Container(),
+                          MediaQuery.of(context).viewInsets.bottom == 0 ? const Spacer(flex: 17) : Container(),
                           MediaQuery.of(context).viewInsets.bottom == 0
                               ? Expanded(
                                   flex: 85,
@@ -520,12 +416,9 @@ class WalletPageComponents {
                               screeenHeight: height,
                               screeenWidth: width,
                               hint: 'Amount',
-                              keyboardType:
-                                  const TextInputType.numberWithOptions(
-                                      signed: false, decimal: false),
+                              keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
                               inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp(r'^[0-9]*')),
+                                FilteringTextInputFormatter.allow(RegExp(r'^[0-9]*')),
                               ],
                               controller: controller,
                               onChanged: (_) => setState(() {}),
@@ -535,28 +428,25 @@ class WalletPageComponents {
                           const Spacer(flex: 15),
                           SizedBox(
                               width: width,
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Available: $balance $tokenName",
-                                      style: GoogleFonts.spaceMono(
-                                        fontSize: 13 / 844 * height,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    Text(
-                                      "Gas: ${gas.toStringAsFixed(9)} $gasName",
-                                      style: GoogleFonts.spaceMono(
-                                        fontSize: 13 / 844 * height,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ])),
+                              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                                Text(
+                                  "Available: $balance $tokenName",
+                                  style: GoogleFonts.spaceMono(
+                                    fontSize: 13 / 844 * height,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                Text(
+                                  "Gas: ${gas.toStringAsFixed(9)} $gasName",
+                                  style: GoogleFonts.spaceMono(
+                                    fontSize: 13 / 844 * height,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ])),
                           const Spacer(flex: 10),
                           SizedBox(
-                            height:
-                                MediaQuery.of(context).viewInsets.bottom / 2,
+                            height: MediaQuery.of(context).viewInsets.bottom / 2,
                           ),
                           PresButton(
                             onTap: () {
@@ -565,13 +455,7 @@ class WalletPageComponents {
                               }
                               showSpinner(context);
                               if (isbnb) {
-                                WalletAPI.transfer1155Bnb(
-                                        wallet,
-                                        tokenAdress,
-                                        tokenId,
-                                        int.tryParse(controller.text) ?? 0,
-                                        null)
-                                    .then((_) {
+                                WalletAPI.transfer1155Bnb(wallet, tokenAdress, tokenId, int.tryParse(controller.text) ?? 0, null).then((_) {
                                   hideSpinner(context);
                                   Navigator.of(context).pop();
                                 }).catchError((e) {
@@ -579,8 +463,7 @@ class WalletPageComponents {
                                     print(e);
                                   }
                                   hideSpinner(context);
-                                  showError(context, 'Insufficient funds')
-                                      .then((_) => Navigator.of(context).pop());
+                                  showError(context, 'Insufficient funds').then((_) => Navigator.of(context).pop());
                                 });
                               } else {
                                 /*WalletAPI.transferERC1155(
@@ -602,15 +485,8 @@ class WalletPageComponents {
                             });*/
                               }
                             },
-                            disabled: (controller.text.isEmpty) ||
-                                (double.tryParse(controller.text) ?? 0) <= 0 ||
-                                (double.tryParse(controller.text) ?? 0) >
-                                    balance,
-                            params: {
-                              'text': 'confirm',
-                              'width': width,
-                              'height': height
-                            },
+                            disabled: (controller.text.isEmpty) || (double.tryParse(controller.text) ?? 0) <= 0 || (double.tryParse(controller.text) ?? 0) > balance,
+                            params: {'text': 'confirm', 'width': width, 'height': height},
                             child: loginBtn,
                           ),
                         ],
@@ -655,13 +531,10 @@ class WalletPageComponents {
                     topLeft: Radius.circular(32),
                     topRight: Radius.circular(32),
                   ),
-                  image: DecorationImage(
-                      image: modalBottomsheetBg, fit: BoxFit.fill)),
-              padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).viewInsets.bottom),
+                  image: DecorationImage(image: modalBottomsheetBg, fit: BoxFit.fill)),
+              padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(
-                    28.0, 28.0, 28.0, 0.0), // content padding
+                padding: const EdgeInsets.fromLTRB(28.0, 28.0, 28.0, 0.0), // content padding
                 child: Wrap(
                   alignment: WrapAlignment.center,
                   crossAxisAlignment: WrapCrossAlignment.center,
@@ -670,13 +543,8 @@ class WalletPageComponents {
                       PresButton(
                         player: GetIt.I<MusicManager>().keyBackSignCloseX,
                         onTap: () async {
-                          await GetIt.I<MusicManager>()
-                              .popupDownSybMenuPlayer
-                              .play()
-                              .then((value) async {
-                            await GetIt.I<MusicManager>()
-                                .popupDownSybMenuPlayer
-                                .seek(Duration(seconds: 0));
+                          await GetIt.I<MusicManager>().popupDownSybMenuPlayer.play().then((value) async {
+                            await GetIt.I<MusicManager>().popupDownSybMenuPlayer.seek(Duration(seconds: 0));
                           });
                           Navigator.of(context).pop();
                         },
@@ -701,8 +569,7 @@ class WalletPageComponents {
                               )))),
                     ]),
                     Padding(
-                        padding: EdgeInsets.only(
-                            top: height * 0.02, bottom: height * 0.02),
+                        padding: EdgeInsets.only(top: height * 0.02, bottom: height * 0.02),
                         child: SvgPicture.asset(
                           iconPath,
                           height: height * 0.11,
@@ -718,29 +585,21 @@ class WalletPageComponents {
                           onChanged: (_) => setState(() {}),
                         )),
                     Padding(
-                        padding: EdgeInsets.only(
-                            top: height * 0.02, bottom: height * 0.01),
+                        padding: EdgeInsets.only(top: height * 0.02, bottom: height * 0.01),
                         child: SamuraiTextField(
                             screeenHeight: height,
                             screeenWidth: width,
                             hint: 'Amount',
-                            keyboardType: const TextInputType.numberWithOptions(
-                                signed: false, decimal: true),
+                            keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: true),
                             inputFormatters: [
                               CommaFormatter(),
-                              tokenId != null
-                                  ? FilteringTextInputFormatter.allow(
-                                      RegExp(r'^[0-9]*'))
-                                  : FilteringTextInputFormatter.allow(
-                                      RegExp(r'^[0-9]*[.]?[0-9]*')),
+                              tokenId != null ? FilteringTextInputFormatter.allow(RegExp(r'^[0-9]*')) : FilteringTextInputFormatter.allow(RegExp(r'^[0-9]*[.]?[0-9]*')),
                             ],
                             controller: amountController,
                             onChanged: (_) => setState(() {}),
                             allButton: () {
                               setState(() {
-                                amountController.text = tokenId != null
-                                    ? balance.toStringAsFixed(0)
-                                    : balance.toString();
+                                amountController.text = tokenId != null ? balance.toStringAsFixed(0) : balance.toString();
                               });
                             })),
                     SizedBox(
@@ -765,32 +624,20 @@ class WalletPageComponents {
                           ],
                         )),
                     Padding(
-                        padding: EdgeInsets.only(
-                            top: height * 0.02, bottom: height * 0.01),
+                        padding: EdgeInsets.only(top: height * 0.02, bottom: height * 0.01),
                         child: PresButton(
                           onTap: () {
-                            if (adressController.text.isEmpty ||
-                                amountController.text.isEmpty) {
+                            if (adressController.text.isEmpty || amountController.text.isEmpty) {
                               return;
                             }
                             showSpinner(context);
-                            if (tokenName.toUpperCase() == 'USDT' ||
-                                tokenName.toUpperCase() == 'CLC' ||
-                                tokenName.toUpperCase() == 'RYO') {
-                              WalletAPI.transferERC20Bnb(
-                                      wallet,
-                                      tokenAdress,
-                                      double.tryParse(amountController.text) ??
-                                          0.0,
-                                      adressController.text,
-                                      'assets/usdt.abi.json')
-                                  .then((_) {
+                            if (tokenName.toUpperCase() == 'USDT' || tokenName.toUpperCase() == 'CLC' || tokenName.toUpperCase() == 'RYO') {
+                              WalletAPI.transferERC20Bnb(wallet, tokenAdress, double.tryParse(amountController.text) ?? 0.0, adressController.text, 'assets/usdt.abi.json').then((_) {
                                 hideSpinner(context);
                                 Navigator.of(context).pop();
                               }).catchError((e) {
                                 hideSpinner(context);
-                                showError(context, 'Insufficient funds')
-                                    .then((_) => Navigator.of(context).pop());
+                                showError(context, 'Insufficient funds').then((_) => Navigator.of(context).pop());
                               });
                             } else if (tokenName.toUpperCase() == 'BNB') {
                               WalletAPI.transferBNB(
@@ -802,40 +649,20 @@ class WalletPageComponents {
                                 Navigator.of(context).pop();
                               }).catchError((e) {
                                 hideSpinner(context);
-                                showError(context, 'Insufficient funds')
-                                    .then((_) => Navigator.of(context).pop());
+                                showError(context, 'Insufficient funds').then((_) => Navigator.of(context).pop());
                               });
-                            } else if (tokenName.toUpperCase() == 'BB' ||
-                                tokenName.toLowerCase() == 'BA' ||
-                                tokenName.toLowerCase() == 'GWS' ||
-                                tokenName.toLowerCase() == 'GFS') {
-                              WalletAPI.transfer1155Bnb(
-                                      wallet,
-                                      tokenAdress,
-                                      tokenId!,
-                                      int.tryParse(amountController.text) ?? 0,
-                                      adressController.text)
-                                  .then((_) {
+                            } else if (tokenName.toUpperCase() == 'BB' || tokenName.toLowerCase() == 'BA' || tokenName.toLowerCase() == 'GWS' || tokenName.toLowerCase() == 'GFS') {
+                              WalletAPI.transfer1155Bnb(wallet, tokenAdress, tokenId!, int.tryParse(amountController.text) ?? 0, adressController.text).then((_) {
                                 hideSpinner(context);
                                 Navigator.of(context).pop();
                               }).catchError((e) {
                                 hideSpinner(context);
-                                showError(context, 'Insufficient funds')
-                                    .then((_) => Navigator.of(context).pop());
+                                showError(context, 'Insufficient funds').then((_) => Navigator.of(context).pop());
                               });
                             }
                           },
-                          disabled: adressController.text.isEmpty ||
-                              amountController.text.isEmpty ||
-                              (double.tryParse(amountController.text) ?? 0.0) <=
-                                  0 ||
-                              (double.tryParse(amountController.text) ?? 0.0) >
-                                  balance,
-                          params: {
-                            'text': 'confirm',
-                            'width': width,
-                            'height': height
-                          },
+                          disabled: adressController.text.isEmpty || amountController.text.isEmpty || (double.tryParse(amountController.text) ?? 0.0) <= 0 || (double.tryParse(amountController.text) ?? 0.0) > balance,
+                          params: {'text': 'confirm', 'width': width, 'height': height},
                           child: loginBtn,
                         )),
                   ],
@@ -846,13 +673,7 @@ class WalletPageComponents {
     );
   }
 
-  static void openTransferModalPageHero(
-      {required BuildContext context,
-      required double width,
-      required double height,
-      required HDWallet wallet,
-      required String iconPath,
-      required int heroId}) {
+  static void openTransferModalPageHero({required BuildContext context, required double width, required double height, required HDWallet wallet, required String iconPath, required int heroId}) {
     TextEditingController addressController = TextEditingController();
 
     showModalBottomSheet(
@@ -869,20 +690,22 @@ class WalletPageComponents {
                     topLeft: Radius.circular(32),
                     topRight: Radius.circular(32),
                   ),
-                  image: DecorationImage(
-                      image: modalBottomsheetBg, fit: BoxFit.fill)),
-              padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).viewInsets.bottom),
+                  image: DecorationImage(image: modalBottomsheetBg, fit: BoxFit.fill)),
+              padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(
-                    28.0, 28.0, 28.0, 0.0), // content padding
+                padding: const EdgeInsets.fromLTRB(28.0, 28.0, 28.0, 0.0), // content padding
                 child: Wrap(
                   alignment: WrapAlignment.center,
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: <Widget>[
                     Row(mainAxisAlignment: MainAxisAlignment.start, children: [
                       PresButton(
-                        onTap: () => Navigator.of(context).pop(),
+                        onTap: () {
+                          GetIt.I<MusicManager>().popupDownSybMenuPlayer.play().then((value) async {
+                            await GetIt.I<MusicManager>().popupDownSybMenuPlayer.seek(Duration(seconds: 0));
+                          });
+                          Navigator.of(context).pop();
+                        },
                         params: {'width': width},
                         child: backBtn,
                         player: GetIt.I<MusicManager>().keyBackSignCloseX,
@@ -905,8 +728,7 @@ class WalletPageComponents {
                               )))),
                     ]),
                     Padding(
-                        padding: EdgeInsets.only(
-                            top: height * 0.02, bottom: height * 0.02),
+                        padding: EdgeInsets.only(top: height * 0.02, bottom: height * 0.02),
                         child: SvgPicture.asset(
                           iconPath,
                           height: height * 0.11,
@@ -922,8 +744,7 @@ class WalletPageComponents {
                           onChanged: (_) => setState(() {}),
                         )),
                     Padding(
-                        padding: EdgeInsets.only(
-                            top: height * 0.02, bottom: height * 0.01),
+                        padding: EdgeInsets.only(top: height * 0.02, bottom: height * 0.01),
                         child: PresButton(
                           onTap: () async {
                             if (addressController.text.isEmpty) {
@@ -931,19 +752,13 @@ class WalletPageComponents {
                             }
                             showSpinner(context);
 
-                            await WalletAPI.transferHero(
-                                    wallet, addressController.text, heroId)
-                                .then((value) {
+                            await WalletAPI.transferHero(wallet, addressController.text, heroId).then((value) {
                               hideSpinner(context);
                               Navigator.pop(context);
                             });
                           },
                           disabled: addressController.text.isEmpty,
-                          params: {
-                            'text': 'confirm',
-                            'width': width,
-                            'height': height
-                          },
+                          params: {'text': 'confirm', 'width': width, 'height': height},
                           child: loginBtn,
                         )),
                   ],

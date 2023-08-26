@@ -210,11 +210,11 @@ class _AccountPageState extends State<AccountPage> {
                           IconButton(
                             onPressed: () async {
                               await GetIt.I<MusicManager>()
-                                  .smallKeyWeaponPlayer
+                                  .smallKeyLightningPlayer
                                   .play()
                                   .then((value) async {
                                 await GetIt.I<MusicManager>()
-                                    .smallKeyWeaponPlayer
+                                    .smallKeyLightningPlayer
                                     .seek(Duration(seconds: 0));
                               });
                             }, //TODO
@@ -233,11 +233,11 @@ class _AccountPageState extends State<AccountPage> {
                           IconButton(
                             onPressed: () async {
                               await GetIt.I<MusicManager>()
-                                  .smallKeyWeaponPlayer
+                                  .smallKeyLightningPlayer
                                   .play()
                                   .then((value) async {
                                 await GetIt.I<MusicManager>()
-                                    .smallKeyWeaponPlayer
+                                    .smallKeyLightningPlayer
                                     .seek(Duration(seconds: 0));
                               });
                             }, //TODO

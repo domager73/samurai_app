@@ -18,6 +18,13 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   @override
+  void initState() {
+    GetIt.I<MusicManager>().screenChangePlayer.play().then((value) {
+      GetIt.I<MusicManager>().screenChangePlayer.seek(Duration(seconds: 0));
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
@@ -84,37 +91,25 @@ class _SettingsPageState extends State<SettingsPage> {
                     });
 
                     showConfirm(context, 'Anyone who knows your wallet\'s seed phrase will be able to access it. Make sure no one sees your screen now!', () {
-
                       Navigator.pop(context);
                       Navigator.of(context).pushNamed('/seed');
                     });
                   },
                 ),
                 separator(width),
-                settingsButton(
-                  height,
-                  width,
-                  'TRANSACTION HISTORY',
-                  isActive: false,
-                  onTap: () async { 
-                    await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.play().then((value) async {
-                      await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.seek(Duration(seconds: 0));
-                    });
-                  }
-                ),
+                settingsButton(height, width, 'TRANSACTION HISTORY', isActive: false, onTap: () async {
+                  await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.play().then((value) async {
+                    await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.seek(Duration(seconds: 0));
+                  });
+                }),
                 separator(width),
                 settingsButton(
                   height,
                   width,
                   'SIGN OUT',
                   onTap: () async {
-                    await GetIt.I<MusicManager>()
-                        .keyBackSignCloseX
-                        .play()
-                        .then((value) async {
-                      await GetIt.I<MusicManager>()
-                          .keyBackSignCloseX
-                          .seek(Duration(seconds: 0));
+                    await GetIt.I<MusicManager>().keyBackSignCloseX.play().then((value) async {
+                      await GetIt.I<MusicManager>().keyBackSignCloseX.seek(Duration(seconds: 0));
                     });
 
                     await AppStorage().remove('pin');
@@ -164,9 +159,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 fontSize: 20 / 844 * height,
                 height: 1.5,
                 fontWeight: FontWeight.w700,
-                color: isActive
-                    ? const Color(0xFF00FFFF)
-                    : const Color(0xFF9D9D9D).withOpacity(0.3),
+                color: isActive ? const Color(0xFF00FFFF) : const Color(0xFF9D9D9D).withOpacity(0.3),
               ),
             ),
           ),
