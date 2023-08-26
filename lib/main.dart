@@ -65,7 +65,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) async{
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
     super.didChangeAppLifecycleState(state);
 
     print(state);
@@ -108,6 +108,19 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   Future<void> initMusic() async {
     player = AudioPlayer();
     await GetIt.I<MusicManager>().registerMusicAssets();
+
+    List<AudioPlayer> players = GetIt.I<MusicManager>().players;
+
+    for (var player in players) {
+      await player.setVolume(0)
+      .then((value) async=> await player.play())
+      .then((value) async=> await player.setSpeed(1000000000.0))
+      .then((value) async=> await player.stop())
+      .then((value) async=> await player.setSpeed(1))
+      .then((value) async=> await player.setVolume(1));
+      // .then((value) async=>await player.seek(Duration.zero));
+      log('done');
+    }
 
     // await player.setAsset(MusicAssets.mainLoop1);
     // await player.play();

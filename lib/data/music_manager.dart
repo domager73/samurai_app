@@ -32,6 +32,25 @@ class MusicManager {
 
   AudioPlayer keyBackSignCloseX = AudioPlayer();
 
+  List<AudioPlayer> get players => [
+    loadingPlayer,
+    menuSettingsSignWaterPlayer, 
+    modalTextExplainPlayer,
+    numbersCodePlayer,
+    okCanselTransPlayer,
+    popupDownSybMenuPlayer,
+    popupSubmenuPlayer,
+    screenChangePlayer,
+    smallKeyLightningPlayer,
+    smallKeyRegAmountAllPlayer,
+    smallKeyWeaponPlayer,
+    swipeBackPlayer,
+    swipeForwPlayer,
+    zeroAmountNumberPlayer,
+    keyBackSignCloseX
+  ];
+
+
   Future<void> registerMusicAssets() async {
     loadingPlayer = AudioPlayer()..setAsset(MusicAssets.loading);
 
@@ -66,6 +85,9 @@ class MusicManager {
 
     keyBackSignCloseX = AudioPlayer()..setAsset(MusicAssets.keybackSignCloseX);
   }
+
+
+
 
   Future<void> disposeMusicAssets() async {
     await loadingPlayer.dispose();
