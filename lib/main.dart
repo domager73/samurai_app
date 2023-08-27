@@ -106,6 +106,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   }
 
   Future<void> initMusic() async {
+    await initBackgroundMusic();
+
     List<AudioPlayer> players = GetIt.I<MusicManager>().players;
 
     for (var player in players) {
