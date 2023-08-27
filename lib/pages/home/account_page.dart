@@ -6,6 +6,7 @@ import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:samurai_app/components/storage.dart';
 import 'package:samurai_app/pages/home/account_page_components.dart';
 import 'package:samurai_app/utils/enums.dart';
@@ -31,6 +32,7 @@ class _AccountPageState extends State<AccountPage> {
   late bool emailAuthenticatorSwitch;
   late bool soundSwitch;
   late bool tfaSwitch;
+  late BehaviorSubject<bool> stream = BehaviorSubject<bool>.seeded(false);
 
   @override
   void initState() {
@@ -47,7 +49,9 @@ class _AccountPageState extends State<AccountPage> {
     tfaSwitch = useTfa != null && useTfa == '1';
 
     GetIt.I<MusicManager>().screenChangePlayer.play().then((value) async {
-      await GetIt.I<MusicManager>().screenChangePlayer.seek(Duration(seconds: 0));
+      await GetIt.I<MusicManager>()
+          .screenChangePlayer
+          .seek(Duration(seconds: 0));
     });
   }
 
@@ -59,6 +63,14 @@ class _AccountPageState extends State<AccountPage> {
   void dispose() {
     super.dispose();
     scrollController.dispose();
+  }
+
+  Future<void> setPlayer(bool value) async {
+    if (value) {
+      await MyApp.playPlayer(context);
+    } else {
+      await MyApp.stopPlayer(context);
+    }
   }
 
   @override
@@ -118,18 +130,30 @@ class _AccountPageState extends State<AccountPage> {
                                       ),
                                     ),
                                     Padding(
-                                      padding: EdgeInsets.only(top: 2 / 96 * height),
+                                      padding:
+                                          EdgeInsets.only(top: 2 / 96 * height),
                                       child: PresButton(
-                                        player: GetIt.I<MusicManager>().keyBackSignCloseX,
+                                        player: GetIt.I<MusicManager>()
+                                            .keyBackSignCloseX,
                                         onTap: () {
-                                          GetIt.I<MusicManager>().popupSubmenuPlayer.play().then((value) => GetIt.I<MusicManager>().popupSubmenuPlayer.seek(Duration(seconds: 0)));
-                                          AccountPageComponents.openChangeEmailModalPage(
+                                          GetIt.I<MusicManager>()
+                                              .popupSubmenuPlayer
+                                              .play()
+                                              .then((value) => GetIt.I<
+                                                      MusicManager>()
+                                                  .popupSubmenuPlayer
+                                                  .seek(Duration(seconds: 0)));
+                                          AccountPageComponents
+                                              .openChangeEmailModalPage(
                                             context: context,
                                             width: width,
                                             height: height,
                                           );
                                         },
-                                        params: {'width': width, 'height': height},
+                                        params: {
+                                          'width': width,
+                                          'height': height
+                                        },
                                         child: changeEmailBtn,
                                       ),
                                     ),
@@ -145,27 +169,35 @@ class _AccountPageState extends State<AccountPage> {
                         child: getMainAccountTextWidget(
                           height,
                           'Sound',
-                          Switch(
-                              // here
-                              activeColor: const Color(0xFF00FFFF),
-                              value: soundSwitch,
-                              onChanged: (value) async {
-                                // GetIt.I<MusicManager>().smallKeyWeaponPlayer.play().then((value) async {
-                                //   await GetIt.I<MusicManager>().smallKeyWeaponPlayer.seek(Duration(seconds: 0));
-                                // });
-                                await player.play().then((value) => player.seek(Duration.zero));
+                          StreamBuilder<bool>(
+                              stream: stream,
+                              builder: (context, snapshot) {
+                                return AbsorbPointer(
+                                  absorbing: snapshot.data ?? false,
+                                  child: Switch(
+                                      // here
+                                      activeColor: const Color(0xFF00FFFF),
+                                      value: soundSwitch,
+                                      onChanged: (value) async {
+                                        stream.add(true);
 
-                                soundSwitch = value;
-                                AppStorage().write(musicSwitchKey, value.toString());
-                                log("changed music value $value");
+                                        soundSwitch = value;
+                                        setState(() {});
 
-                                setState(() {});
+                                        await player.play().then((value) =>
+                                            player.seek(Duration.zero));
 
-                                if (value) {
-                                  await MyApp.playPlayer(context);
-                                } else {
-                                  await MyApp.stopPlayer(context);
-                                }
+                                        AppStorage().write(
+                                            musicSwitchKey, value.toString());
+                                        log("changed music value $value");
+                                        setPlayer(value);
+
+                                        await Future.delayed(
+                                            Duration(seconds: 1));
+
+                                        stream.add(false);
+                                      }),
+                                );
                               }),
                         ),
                       ),
@@ -178,8 +210,13 @@ class _AccountPageState extends State<AccountPage> {
                             activeColor: const Color(0xFF00FFFF),
                             value: tfaSwitch,
                             onChanged: (value) => setState(() {
-                              GetIt.I<MusicManager>().smallKeyWeaponPlayer.play().then((value) async {
-                                await GetIt.I<MusicManager>().smallKeyWeaponPlayer.seek(Duration(seconds: 0));
+                              GetIt.I<MusicManager>()
+                                  .smallKeyWeaponPlayer
+                                  .play()
+                                  .then((value) async {
+                                await GetIt.I<MusicManager>()
+                                    .smallKeyWeaponPlayer
+                                    .seek(Duration(seconds: 0));
                               });
 
                               tfaSwitch = value;
@@ -196,8 +233,13 @@ class _AccountPageState extends State<AccountPage> {
                           "Terms of Use",
                           IconButton(
                             onPressed: () async {
-                              await GetIt.I<MusicManager>().smallKeyLightningPlayer.play().then((value) async {
-                                await GetIt.I<MusicManager>().smallKeyLightningPlayer.seek(Duration(seconds: 0));
+                              await GetIt.I<MusicManager>()
+                                  .smallKeyLightningPlayer
+                                  .play()
+                                  .then((value) async {
+                                await GetIt.I<MusicManager>()
+                                    .smallKeyLightningPlayer
+                                    .seek(Duration(seconds: 0));
                               });
                             }, //TODO
                             icon: const Icon(
@@ -214,8 +256,13 @@ class _AccountPageState extends State<AccountPage> {
                           "Privacy Policy",
                           IconButton(
                             onPressed: () async {
-                              await GetIt.I<MusicManager>().smallKeyLightningPlayer.play().then((value) async {
-                                await GetIt.I<MusicManager>().smallKeyLightningPlayer.seek(Duration(seconds: 0));
+                              await GetIt.I<MusicManager>()
+                                  .smallKeyLightningPlayer
+                                  .play()
+                                  .then((value) async {
+                                await GetIt.I<MusicManager>()
+                                    .smallKeyLightningPlayer
+                                    .seek(Duration(seconds: 0));
                               });
                             }, //TODO
                             icon: const Icon(
@@ -266,7 +313,9 @@ class _AccountPageState extends State<AccountPage> {
                         child: PresButton(
                           player: GetIt.I<MusicManager>().keyBackSignCloseX,
                           onTap: () {
-                            showConfirm(context, 'Are you sure you want to get out?', () async {
+                            showConfirm(
+                                context, 'Are you sure you want to get out?',
+                                () async {
                               await AppStorage().remove('jwt');
                               await AppStorage().remove('user');
                               if (mounted) {

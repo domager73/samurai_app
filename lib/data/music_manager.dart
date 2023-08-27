@@ -89,7 +89,7 @@ class MusicManager {
 
 
 
-  Future<void> disposeMusicAssets() async {
+  Future<void> stopMusicAssets() async {
     await loadingPlayer.dispose();
 
     await menuSettingsSignWaterPlayer.dispose();

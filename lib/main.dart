@@ -46,7 +46,7 @@ class MyApp extends StatefulWidget {
 
   static Future<void> playPlayer(BuildContext context) async {
     _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
-    await state?.initMusic();
+    await state?.initBackgroundMusic();
   }
 
   @override
@@ -77,7 +77,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         print("app in resumed");
         break;
       case AppLifecycleState.inactive:
-        print("app in inactive");
+        await player.pause();
         break;
       case AppLifecycleState.paused:
         await player.pause();
@@ -106,38 +106,41 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   }
 
   Future<void> initMusic() async {
-    player = AudioPlayer();
-    await GetIt.I<MusicManager>().registerMusicAssets();
-
     List<AudioPlayer> players = GetIt.I<MusicManager>().players;
 
     for (var player in players) {
-      await player.setVolume(0)
-      .then((value) async=> await player.play())
-      .then((value) async=> await player.setSpeed(1000000000.0))
-      .then((value) async=> await player.stop())
-      .then((value) async=> await player.setSpeed(1))
-      .then((value) async=> await player.setVolume(1));
+      await player
+          .setVolume(0)
+          .then((value) async => await player.setSpeed(1000000000.0))
+          .then((value) async => await player.play())
+          .then((value) async => await player.stop())
+          .then((value) async => await player.setSpeed(1))
+          .then((value) async => await player.setVolume(1));
       // .then((value) async=>await player.seek(Duration.zero));
       log('done');
     }
+  }
 
-    // await player.setAsset(MusicAssets.mainLoop1);
-    // await player.play();
-    // await player.playerStateStream.listen((event) async {
-    //   print(event.processingState);
+  Future<void> initBackgroundMusic() async{
+    player = AudioPlayer();
+    await GetIt.I<MusicManager>().registerMusicAssets();
 
-    //   switch (event.processingState) {
-    //     case ProcessingState.completed:
-    //       await player.setAsset(MusicAssets.mainLoop2);
-    //       await player.play();
-    //   }
-    // });
+    await player.setAsset(MusicAssets.mainLoop1);
+    await player.play();
+    await player.playerStateStream.listen((event) async {
+      print(event.processingState);
+
+      switch (event.processingState) {
+        case ProcessingState.completed:
+          await player.setAsset(MusicAssets.mainLoop2);
+          await player.play();
+      }
+    });
   }
 
   Future<void> stopPlayer() async {
-    await player.stop();
-    await GetIt.I<MusicManager>().disposeMusicAssets();
+    await player.dispose();
+    await GetIt.I<MusicManager>().stopMusicAssets();
   }
 
   @override
@@ -165,7 +168,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         '/settings': (context) => const SettingsPage(),
         '/seed': (context) => const SeedPage(),
         '/enterSeed': (context) => const EnterSeedPage(),
-        '/viewWebChronic': (context) => const ViewWebPage(url: 'https://samurai-versus.io/chronicles'),
+        '/viewWebChronic': (context) =>
+            const ViewWebPage(url: 'https://samurai-versus.io/chronicles'),
       },
     );
   }
