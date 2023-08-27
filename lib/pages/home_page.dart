@@ -678,6 +678,16 @@ class _HomePageState extends State<HomePage> {
                     selectedPage = id;
                   });
                   updateBalances();
+
+                  await GetIt.I<MusicManager>()
+                      .screenChangePlayer
+                      .play()
+                      .then((value) async {
+                    await GetIt.I<MusicManager>()
+                        .screenChangePlayer
+                        .seek(Duration(seconds: 0));
+                  });
+
                 },
                 borderRadius: BorderRadius.circular(100),
                 child: Opacity(
