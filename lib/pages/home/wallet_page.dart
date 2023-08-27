@@ -60,7 +60,7 @@ class _WalletPageState extends State<WalletPage> with SingleTickerProviderStateM
         if (0.09 < value && 0.2 > value) {
           if (flag == 0) {
             flag = 1;
-            log("value $value, page $page, oldPage $oldPage");
+            log("value $value, page $page, oldPage $oldPage ->");
 
             await GetIt.I<MusicManager>().swipeForwPlayer.play().then((value) async => await GetIt.I<MusicManager>().swipeForwPlayer.seek(Duration(seconds: 0)));
           }
@@ -71,7 +71,7 @@ class _WalletPageState extends State<WalletPage> with SingleTickerProviderStateM
         if (0.91 > value && 0.79 < value) {
           if (flag == 0) {
             flag = 1;
-            log("value $value, page $page, oldPage $oldPage");
+            log("value $value, page $page, oldPage $oldPage <-");
 
             await GetIt.I<MusicManager>().swipeBackPlayer.play().then((value) async {
               await GetIt.I<MusicManager>().swipeBackPlayer.seek(Duration(seconds: 0));
@@ -102,6 +102,7 @@ class _WalletPageState extends State<WalletPage> with SingleTickerProviderStateM
     GetIt.I<MusicManager>().screenChangePlayer.play().then((value) async {
       await GetIt.I<MusicManager>().screenChangePlayer.seek(Duration(seconds: 0));
     });
+    // log("wallet page");
   }
 
   @override

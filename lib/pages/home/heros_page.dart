@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:samurai_app/components/blinking_time.dart';
 import 'package:samurai_app/data/music_manager.dart';
 
@@ -32,6 +33,8 @@ class HerosPage extends StatefulWidget {
 class _HerosPageState extends State<HerosPage> with SingleTickerProviderStateMixin {
   late final TabController _tabController;
 
+  int lastPage = 0;
+
   late Map<String, dynamic> info;
   Dp? water;
   Dp? fire;
@@ -44,30 +47,30 @@ class _HerosPageState extends State<HerosPage> with SingleTickerProviderStateMix
     _tabController = TabController(length: 3, vsync: this);
     int flag = 0;
     int oldPage = 0;
-
     _tabController.animation!.addListener(() async {
       double value = _tabController.animation!.value % 1;
       int page = _tabController.animation!.value ~/ 1;
 
       if (oldPage <= page) {
-        if (0.0 < value && 0.5 > value) {
+        if (0.09 < value && 0.2 > value) {
           if (flag == 0) {
             flag = 1;
-            log("value $value, page $page, oldPage $oldPage");
+            log("value $value, page $page, oldPage $oldPage ->");
 
-            await GetIt.I<MusicManager>().swipeForwPlayer.play().then((value) async {}).then((value) async => await GetIt.I<MusicManager>().swipeForwPlayer.seek(Duration(seconds: 0)));
+            await GetIt.I<MusicManager>().swipeForwPlayer.play().then((value) async => await GetIt.I<MusicManager>().swipeForwPlayer.seek(Duration(seconds: 0)));
           }
         } else {
           flag = 0;
         }
       } else {
-        if (1 > value && 0.51 < value) {
+        if (0.91 > value && 0.79 < value) {
           if (flag == 0) {
             flag = 1;
-            log("value $value, page $page, oldPage $oldPage");
+            log("value $value, page $page, oldPage $oldPage <-");
 
-            await GetIt.I<MusicManager>().swipeBackPlayer.play().then((value) async {}).then((value) async => await GetIt.I<MusicManager>().swipeBackPlayer.seek(Duration(seconds: 0)));
-
+            await GetIt.I<MusicManager>().swipeBackPlayer.play().then((value) async {
+              await GetIt.I<MusicManager>().swipeBackPlayer.seek(Duration(seconds: 0));
+            });
           }
         } else {
           flag = 0;
@@ -134,6 +137,20 @@ class _HerosPageState extends State<HerosPage> with SingleTickerProviderStateMix
           padding: EdgeInsets.only(top: width * 0.04, bottom: width * 0.07, left: width * 0.12, right: width * 0.12),
           child: TabBar(
             onTap: (newPage) async {
+              if (lastPage < newPage) {
+                print(lastPage);
+                await GetIt.I<MusicManager>().swipeForwPlayer.play().then((value) async {
+                  await GetIt.I<MusicManager>().swipeForwPlayer.seek(Duration(seconds: 0));
+                });
+              } else {
+                print(lastPage);
+                await GetIt.I<MusicManager>().swipeBackPlayer.play().then((value) async {
+                  await GetIt.I<MusicManager>().swipeBackPlayer.seek(Duration(seconds: 0));
+                });
+              }
+              setState(() {
+                lastPage = newPage;
+              });
             },
             controller: _tabController,
             tabs: const [

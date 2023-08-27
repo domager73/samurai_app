@@ -51,7 +51,15 @@ class _SettingsPageState extends State<SettingsPage> {
                 Row(
                   children: [
                     PresButton(
-                      onTap: () => Navigator.of(context).pop(),
+                      onTap: () async {
+                        Navigator.of(context).pop();
+
+                        // await Future.delayed(Duration(milliseconds: 50));
+
+                        GetIt.I<MusicManager>().screenChangePlayer.play().then((value) async {
+                          await GetIt.I<MusicManager>().screenChangePlayer.seek(Duration(seconds: 0));
+                        });
+                      },
                       params: {'width': width},
                       child: backBtn,
                       player: GetIt.I<MusicManager>().keyBackSignCloseX,
