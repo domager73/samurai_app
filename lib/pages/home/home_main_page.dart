@@ -369,7 +369,9 @@ class _HomeMainPageState extends State<HomeMainPage> {
                                 showConfirm(context, 'Are you sure you want to buy samurai?', () {
                                   Navigator.pop(context);
                                   showSpinner(context);
-                                  Rest.sendMintSamurai(_currentSliderValue.toInt(), craftSwitch == 0 ? "WATER_SAMURAI_BSC" : "FIRE_SAMURAI_BSC").then((value) {
+                                  Rest.sendMintSamurai(
+                                    _currentSliderValue.toInt(), craftSwitch == 0 ? "WATER_SAMURAI_BSC" : "FIRE_SAMURAI_BSC", useDpMint: false)
+                                    .then((value) {
                                     hideSpinner(context);
                                     AppStorage().updateUserWallet().then((_) {
                                       setState(() {});
@@ -379,7 +381,8 @@ class _HomeMainPageState extends State<HomeMainPage> {
                                       print(e);
                                     }
                                     hideSpinner(context);
-                                  });
+                                  }
+                                  );
                                 }, price: '${_currentSliderValue * 0.02} BNB');
                               },
                               shadowType: 1,
