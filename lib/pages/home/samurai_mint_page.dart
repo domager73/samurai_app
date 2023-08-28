@@ -260,6 +260,8 @@ class _SamuraiMintPageState extends State<SamuraiMintPage>
 
                                     hideSpinner(context);
                                     Navigator.pop(context);
+
+                                    setState(() {});
                                   });
                                 },
                                 params: {'width': width},

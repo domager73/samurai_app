@@ -63,7 +63,7 @@ class AppStorage {
       'typeToken': 'WATER_SAMURAI_BSC',
       'nameToken': 'BA',
       'gasName': 'BNB',
-      'tokenId': 1,
+      'tokenId': 0,
       'icon': 'assets/nft_bnb.svg',
       'logo_b': 'assets/nft_bnb.svg',
       'nameHero': 'Water',
