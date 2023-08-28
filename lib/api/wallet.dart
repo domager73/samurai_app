@@ -15,9 +15,9 @@ class WalletAPI {
   static const tokenAdresGenesisFireSamyrai =
       '0x285c7e1eac419deab8791e600140acf4708c5607';
   static const tokenAdresBarbarianBlade =
-      '0x084E459706F9Ce57c6D45255Dc96a871D5C8787C';
+      '0x68f8804EF00A85911e9b52dDb2a6f9C5913BaC86';
   static const tokenAdresBarbarianAxe =
-      '0xf95AEbf0e3b41cfa4e87A02e98a35509103a83e4';
+      '0x68f8804EF00A85911e9b52dDb2a6f9C5913BaC86';
 
   //static const rootWalletAddress = '0x2D423710BaD0e41883C3Ad379b4365ac4a97DE92';
   static const rootWalletAddressBnb =
