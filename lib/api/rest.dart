@@ -346,12 +346,16 @@ class Rest {
     return true;
   }
 
-  static Future<Map<String, dynamic>?> sendMintSamurai(int amount, String type) async {
+  static Future<Map<String, dynamic>?> sendMintSamurai(int amount, String type, {required bool useDpMint}) async {
     String? jwt = AppStorage().read('jwt');
     try {
       final data = await dio.post(
         '$serverIp/api/users/samurai/mint',
-        data: {'samurai_type': type, 'amount': amount},
+        data: {
+          'samurai_type': type,
+          'amount': amount,
+          'useDpMint': useDpMint
+          },
         options: Options(
           headers: {
             'Authorization': 'Bearer $jwt',
