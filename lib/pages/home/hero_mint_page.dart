@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
@@ -24,8 +26,7 @@ class HeroMintPage extends StatefulWidget {
   State<HeroMintPage> createState() => _HeroMintPageState();
 }
 
-class _HeroMintPageState extends State<HeroMintPage>
-    with SingleTickerProviderStateMixin {
+class _HeroMintPageState extends State<HeroMintPage> with SingleTickerProviderStateMixin {
   List _masks = [
     {'name': 'Hatamoto', 'RYO': 4000, 'CLC': 0, 'XP': 120},
     {'name': 'Daimyo', 'RYO': 20000, 'CLC': 0, 'XP': 600},
@@ -37,27 +38,33 @@ class _HeroMintPageState extends State<HeroMintPage>
   double? fireSamuraiXp = 0;
   double? waterSamuraiXp = 0;
 
-  void updateXp() {
-    getSamuraiInfo().then((value) => setState(() {
-          fireSamuraiXp = value['fire_samurai_xp'] * 1.0;
-          waterSamuraiXp = value['water_samurai_xp'] * 1.0;
-        }));
+  void updateXp() async {
+    final resp = await getSamuraiInfo();
+
+    log(resp.toString());
+
+    setState(() {
+      fireSamuraiXp = resp['fire_samurai_xp'] * 1.0;
+      waterSamuraiXp = resp['water_samurai_xp'] * 1.0;
+    });
+
+     log("$fireSamuraiXp $waterSamuraiXp");
   }
 
   @override
   void initState() {
-    super.initState();
-
-    user = Map.from(
-        AppStorage().box.get('user', defaultValue: <String, dynamic>{}));
+    user = Map.from(AppStorage().box.get('user', defaultValue: <String, dynamic>{}));
+    log("------------");
+    log(user.toString());
+    log("------------");
 
     updateXp();
 
     GetIt.I<MusicManager>().screenChangePlayer.play().then((value) async {
-      await GetIt.I<MusicManager>()
-          .screenChangePlayer
-          .seek(Duration(seconds: 0));
+      await GetIt.I<MusicManager>().screenChangePlayer.seek(Duration(seconds: 0));
     });
+
+    super.initState();
   }
 
   Future<Map<String, dynamic>> getSamuraiInfo() async {
@@ -113,49 +120,33 @@ class _HeroMintPageState extends State<HeroMintPage>
               child: Stack(children: [
                 Padding(
                     padding: EdgeInsets.only(top: width * 0.012),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text('XP: ',
-                              style: GoogleFonts.spaceMono(
-                                fontWeight: FontWeight.w700,
-                                fontSize: width * 0.03,
-                                color: widget.craftSwitch == 0
-                                    ? const Color(0xFF00FFFF)
-                                    : const Color(0xFFFF0049),
-                              )),
-                          Text(
-                              ((widget.craftSwitch == 0
-                                          ? waterSamuraiXp
-                                          : fireSamuraiXp) ??
-                                      0.0)
-                                  .toStringAsFixed(0),
-                              style: GoogleFonts.spaceMono(
-                                fontWeight: FontWeight.w700,
-                                fontSize: width * 0.03,
-                                color: Colors.white,
-                              )),
-                        ])),
+                    child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                      Text('XP: ',
+                          style: GoogleFonts.spaceMono(
+                            fontWeight: FontWeight.w700,
+                            fontSize: width * 0.03,
+                            color: widget.craftSwitch == 0 ? const Color(0xFF00FFFF) : const Color(0xFFFF0049),
+                          )),
+                      Text(((widget.craftSwitch == 0 ? waterSamuraiXp : fireSamuraiXp) ?? 0.0).toStringAsFixed(0),
+                          style: GoogleFonts.spaceMono(
+                            fontWeight: FontWeight.w700,
+                            fontSize: width * 0.03,
+                            color: Colors.white,
+                          )),
+                    ])),
                 SvgPicture.asset(
                   'assets/pages/homepage/mint/dp_border.svg',
                   fit: BoxFit.fitWidth,
                   width: width - width * 0.6,
                 )
               ]))),
-      Container(
-          width: width,
-          height: height - height * 0.39,
-          padding: EdgeInsets.only(top: width * 0.04),
-          child: HerosPageTab(wigetChild: getMintMasks(context, width, height)))
+      Container(width: width, height: height - height * 0.39, padding: EdgeInsets.only(top: width * 0.04), child: HerosPageTab(wigetChild: getMintMasks(context, width, height)))
     ]);
   }
 
   Widget getMintMasks(BuildContext context, double width, double height) {
     final wgts = _masks.map((e) {
-      return Padding(
-          padding: EdgeInsets.only(
-              bottom: width * 0.04, left: width * 0.05, right: width * 0.04),
-          child: maskWidget(e, context, width, height));
+      return Padding(padding: EdgeInsets.only(bottom: width * 0.04, left: width * 0.05, right: width * 0.04), child: maskWidget(e, context, width, height));
     }).toList();
     return Column(children: [
       ...wgts,
@@ -176,120 +167,102 @@ class _HeroMintPageState extends State<HeroMintPage>
           )),
       SizedBox(
           width: width - width * 0.25,
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Image.asset(
-                    'assets/pages/homepage/mint/${e['name'].toString().toLowerCase()}_mask_${widget.craftSwitch == 0 ? 'water' : 'fire'}.png',
-                    fit: BoxFit.contain,
-                    width: width * 0.3),
-                Container(
-                    width: width * 0.3,
-                    padding: EdgeInsets.only(top: width * 0.035),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            e['name'].toString(),
-                            maxLines: 1,
+          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Image.asset('assets/pages/homepage/mint/${e['name'].toString().toLowerCase()}_mask_${widget.craftSwitch == 0 ? 'water' : 'fire'}.png', fit: BoxFit.contain, width: width * 0.3),
+            Container(
+                width: width * 0.3,
+                padding: EdgeInsets.only(top: width * 0.035),
+                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Text(
+                    e['name'].toString(),
+                    maxLines: 1,
+                    style: GoogleFonts.spaceMono(
+                      fontSize: width * 0.045,
+                      fontWeight: FontWeight.w700,
+                      color: e['name'] == 'Hatamoto'
+                          ? const Color(0xFF00E417)
+                          : e['name'] == 'Daimyo'
+                              ? const Color(0xFF2589FF)
+                              : const Color(0xFFFF0049),
+                    ),
+                  ),
+                  Padding(
+                      padding: EdgeInsets.only(top: width * 0.01),
+                      child: Row(children: [
+                        Text('RYO: ',
                             style: GoogleFonts.spaceMono(
-                              fontSize: width * 0.045,
-                              fontWeight: FontWeight.w700,
-                              color: e['name'] == 'Hatamoto'
-                                  ? const Color(0xFF00E417)
-                                  : e['name'] == 'Daimyo'
-                                      ? const Color(0xFF2589FF)
-                                      : const Color(0xFFFF0049),
-                            ),
-                          ),
-                          Padding(
-                              padding: EdgeInsets.only(top: width * 0.01),
-                              child: Row(children: [
-                                Text('RYO: ',
-                                    style: GoogleFonts.spaceMono(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: width * 0.026,
-                                      color: Colors.white,
-                                    )),
-                                Text(e['RYO'].toString(),
-                                    style: GoogleFonts.spaceMono(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: width * 0.026,
-                                      color: Colors.white,
-                                    ))
-                              ])),
-                          Padding(
-                              padding: EdgeInsets.only(top: width * 0.01),
-                              child: Row(children: [
-                                Text('CLC: ',
-                                    style: GoogleFonts.spaceMono(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: width * 0.026,
-                                      color: Colors.white,
-                                    )),
-                                Text(e['CLC'].toString(),
-                                    style: GoogleFonts.spaceMono(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: width * 0.026,
-                                      color: Colors.white,
-                                    ))
-                              ])),
-                          Padding(
-                              padding: EdgeInsets.only(top: width * 0.01),
-                              child: Row(children: [
-                                Text('XP:  ',
-                                    style: GoogleFonts.spaceMono(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: width * 0.026,
-                                      color: Colors.white,
-                                    )),
-                                Text(e['XP'].toString(),
-                                    style: GoogleFonts.spaceMono(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: width * 0.026,
-                                      color: Colors.white,
-                                    ))
-                              ])),
-                        ])),
-                Padding(
-                    padding: EdgeInsets.only(top: width * 0.06),
-                    child: PresButton(
-                        player: GetIt.I<MusicManager>().smallKeyWeaponPlayer,
-                        onTap: () {
-                          showConfirm(
-                              context, 'Do you really want to make a hero?',
-                              () async {
-                            String heroType =
-                                e['name'].toString().toUpperCase();
+                              fontWeight: FontWeight.w400,
+                              fontSize: width * 0.026,
+                              color: Colors.white,
+                            )),
+                        Text(e['RYO'].toString(),
+                            style: GoogleFonts.spaceMono(
+                              fontWeight: FontWeight.w400,
+                              fontSize: width * 0.026,
+                              color: Colors.white,
+                            ))
+                      ])),
+                  Padding(
+                      padding: EdgeInsets.only(top: width * 0.01),
+                      child: Row(children: [
+                        Text('CLC: ',
+                            style: GoogleFonts.spaceMono(
+                              fontWeight: FontWeight.w400,
+                              fontSize: width * 0.026,
+                              color: Colors.white,
+                            )),
+                        Text(e['CLC'].toString(),
+                            style: GoogleFonts.spaceMono(
+                              fontWeight: FontWeight.w400,
+                              fontSize: width * 0.026,
+                              color: Colors.white,
+                            ))
+                      ])),
+                  Padding(
+                      padding: EdgeInsets.only(top: width * 0.01),
+                      child: Row(children: [
+                        Text('XP:  ',
+                            style: GoogleFonts.spaceMono(
+                              fontWeight: FontWeight.w400,
+                              fontSize: width * 0.026,
+                              color: Colors.white,
+                            )),
+                        Text(e['XP'].toString(),
+                            style: GoogleFonts.spaceMono(
+                              fontWeight: FontWeight.w400,
+                              fontSize: width * 0.026,
+                              color: Colors.white,
+                            ))
+                      ])),
+                ])),
+            Padding(
+                padding: EdgeInsets.only(top: width * 0.06),
+                child: PresButton(
+                    player: GetIt.I<MusicManager>().smallKeyWeaponPlayer,
+                    onTap: () {
+                      showConfirm(context, 'Do you really want to make a hero?', () async {
+                        String heroType = e['name'].toString().toUpperCase();
 
-                            showSpinner(context);
+                        showSpinner(context);
 
-                            await Rest.mintUserHero(
-                              widget.craftSwitch == 0
-                                  ? SamuraiType.WATER
-                                  : SamuraiType.FIRE,
-                              heroType,
-                            );
+                        await Rest.mintUserHero(
+                          widget.craftSwitch == 0 ? SamuraiType.WATER : SamuraiType.FIRE,
+                          heroType,
+                        );
 
-                            updateXp();
+                        updateXp();
 
-                            if (context.mounted) {
-                              hideSpinner(context);
-                            }
+                        if (context.mounted) {
+                          hideSpinner(context);
+                        }
 
-                            Navigator.pop(context);
-                          });
-                        },
-                        disabled: ((widget.craftSwitch == 0
-                                        ? waterSamuraiXp
-                                        : fireSamuraiXp) ??
-                                    0.0) <
-                                e['XP'] &&
-                            user['ryo'] < 4000,
-                        params: {'width': width},
-                        child: mintBtn))
-              ]))
+                        Navigator.pop(context);
+                      });
+                    },
+                    disabled: ((widget.craftSwitch == 0 ? waterSamuraiXp : fireSamuraiXp) ?? 0.0) < e['XP'] || user['ryo_balance'] < 4000,
+                    params: {'width': width},
+                    child: mintBtn))
+          ]))
     ]);
   }
 }
