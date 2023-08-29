@@ -20,7 +20,6 @@ import 'package:samurai_app/pages/pin_code_page.dart';
 import '../components/anim_button.dart';
 import '../components/bg.dart';
 import '../components/show_error.dart';
-import '../utils/enums.dart';
 import 'home/account_page.dart';
 import 'home/hero_mint_page.dart';
 import 'home/heros_page.dart';
@@ -993,15 +992,15 @@ class _HomePageState extends State<HomePage> {
   Widget switchWaterFire(
       double width, double height, int valueSwitch, Function onSwitch) {
     return Container(
-      width: width - width * 0.05,
-      padding: EdgeInsets.only(left: 25 / 880 * height),
+      padding: EdgeInsets.only(left: width * 0.05, right: width * 0.05),
       child: Stack(
         children: [
           SvgPicture.asset(
             valueSwitch == 0
                 ? 'assets/pages/homepage/craft/water.svg'
                 : 'assets/pages/homepage/craft/fire.svg',
-            fit: BoxFit.fitWidth,
+            width: width * 0.9,
+            height: 125 / 880 * (height - height * 0.10),
           ),
           Row(
             children: [
@@ -1021,8 +1020,9 @@ class _HomePageState extends State<HomePage> {
                           .seek(Duration(seconds: 0));
                     });
                   },
-                  child: SizedBox(
-                    height: 45.73 / 880 * (height - height * 0.10),
+                  child: Container(
+                    height: 100 / 880 * (height - height * 0.10),
+                    width: width * 0.475,
                   ),
                 ),
               ),
@@ -1042,8 +1042,9 @@ class _HomePageState extends State<HomePage> {
                           .seek(Duration(seconds: 0));
                     });
                   },
-                  child: SizedBox(
-                    height: 45.73 / 880 * (height - height * 0.10),
+                  child: Container(
+                    height: 100 / 880 * (height - height * 0.10),
+                    width: width * 0.475,
                   ),
                 ),
               ),
