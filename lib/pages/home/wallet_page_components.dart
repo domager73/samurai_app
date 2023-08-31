@@ -6,6 +6,7 @@ import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:samurai_app/components/pop_up_spinner.dart';
 import 'package:samurai_app/data/music_manager.dart';
+import 'package:samurai_app/utils/fonts.dart';
 import 'package:samurai_app/widgets/custom_swap_border.dart';
 import 'package:trust_wallet_core_lib/trust_wallet_core_lib.dart';
 import '../../api/rest.dart';
@@ -332,168 +333,139 @@ class WalletPageComponents {
             onTap: () {
               FocusScope.of(context).requestFocus(FocusNode());
             },
-            child: SizedBox(
-              width: width,
-              height: height * 0.55,
-              child: Stack(
-                children: [
-                  ClipRRect(
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(32),
-                      topRight: Radius.circular(32),
-                    ),
-                    child: SizedBox(
-                      width: width,
-                      height: height * 0.55,
-                      child: Image.asset(
+            child: Container(
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(34)),
+                image: DecorationImage(
+                  image: AssetImage(
                         'assets/modal_bottom_sheet_bg.png',
-                        fit: BoxFit.fill,
                       ),
-                    ),
-                  ),
-                  InkWell(
-                    overlayColor: MaterialStateProperty.all(
-                      Colors.transparent,
-                    ),
-                    onTap: () => FocusScope.of(context).unfocus(),
-                    child: Padding(
-                      padding: const EdgeInsets.all(28),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              PresButton(
-                                onTap: () async {
-                                  await GetIt.I<MusicManager>().popupDownSybMenuPlayer.play().then((value) async {
-                                    await GetIt.I<MusicManager>().popupDownSybMenuPlayer.seek(Duration(seconds: 0));
-                                  });
+                      fit: BoxFit.cover
+                      )
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(28),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        PresButton(
+                          onTap: () async {
+                            await GetIt.I<MusicManager>().popupDownSybMenuPlayer.play().then((value) async {
+                              await GetIt.I<MusicManager>().popupDownSybMenuPlayer.seek(Duration(seconds: 0));
+                            });
 
-                                  Navigator.of(context).pop();
-                                },
-                                params: {'width': width},
-                                child: backBtn,
-                                player: GetIt.I<MusicManager>().keyBackSignCloseX,
-                              ),
-                              Expanded(
-                                child: FittedBox(
-                                  fit: BoxFit.fitWidth,
-                                  child: Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: width * 0.1),
-                                    child: Center(
-                                      child: Text(
-                                        "to game",
-                                        style: TextStyle(
-                                          fontFamily: 'AmazObitaemOstrovItalic',
-                                          fontSize: 37 / 844 * height,
-                                          color: Colors.white,
-                                        ),
-                                        maxLines: 1,
-                                      ),
-                                    ),
-                                  ),
+                            Navigator.of(context).pop();
+                          },
+                          params: {'width': width},
+                          child: backBtn,
+                          player: GetIt.I<MusicManager>().keyBackSignCloseX,
+                        ),
+                        Expanded(
+                          child: FittedBox(
+                            fit: BoxFit.fitWidth,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: width * 0.1),
+                              child: Center(
+                                child: Text(
+                                  "to game",
+                                  style: AppTypography.amazLabelMedium.copyWith(color: Colors.white)
                                 ),
                               ),
-                              SizedBox(
-                                height: width * 0.12,
-                                width: width * 0.12,
-                              ),
-                            ],
+                            ),
                           ),
-                          MediaQuery.of(context).viewInsets.bottom == 0 ? const Spacer(flex: 17) : Container(),
-                          MediaQuery.of(context).viewInsets.bottom == 0
-                              ? Expanded(
-                                  flex: 85,
-                                  child: SvgPicture.asset(
-                                    iconPath,
-                                    width: width * 0.4,
-                                    fit: BoxFit.fitHeight,
-                                  ),
-                                )
-                              : Container(),
-                          const Spacer(flex: 25),
-                          SamuraiTextField(
-                              screeenHeight: height,
-                              screeenWidth: width,
-                              hint: 'Amount',
-                              keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(RegExp(r'^[0-9]*')),
-                              ],
-                              controller: controller,
-                              onChanged: (_) => setState(() {}),
-                              allButton: () => setState(() {
-                                    controller.text = balance.toString();
-                                  })),
-                          const Spacer(flex: 15),
-                          SizedBox(
-                              width: width,
-                              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                                Text(
-                                  "Available: $balance $tokenName",
-                                  style: GoogleFonts.spaceMono(
-                                    fontSize: 13 / 844 * height,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                Text(
-                                  "Gas: ${gas.toStringAsFixed(9)} $gasName",
-                                  style: GoogleFonts.spaceMono(
-                                    fontSize: 13 / 844 * height,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ])),
-                          const Spacer(flex: 10),
-                          SizedBox(
-                            height: MediaQuery.of(context).viewInsets.bottom / 2,
-                          ),
-                          PresButton(
-                            onTap: () {
-                              if (controller.text.isEmpty) {
-                                return;
-                              }
-                              showSpinner(context);
-                              if (isbnb) {
-                                WalletAPI.transfer1155Bnb(wallet, tokenAdress, tokenId, int.tryParse(controller.text) ?? 0, null).then((_) {
-                                  hideSpinner(context);
-                                  Navigator.of(context).pop();
-                                }).catchError((e) {
-                                  if (kDebugMode) {
-                                    print(e);
-                                  }
-                                  hideSpinner(context);
-                                  showError(context, 'Insufficient funds').then((_) => Navigator.of(context).pop());
-                                });
-                              } else {
-                                /*WalletAPI.transferERC1155(
-                              wallet,
-                              tokenAdress,
-                              tokenId,
-                              int.tryParse(controller.text) ?? 0,
-                              null,
-                            ).then((_) {
-                              hideSpinner(context);
-                              Navigator.of(context).pop();
-                            }).catchError((e) {
-                              if (kDebugMode) {
-                                print(e);
-                              }
-                              hideSpinner(context);
-                              showError(context, 'Insufficient funds')
-                                  .then((_) => Navigator.of(context).pop());
-                            });*/
-                              }
-                            },
-                            disabled: (controller.text.isEmpty) || (double.tryParse(controller.text) ?? 0) <= 0 || (double.tryParse(controller.text) ?? 0) > balance,
-                            params: {'text': 'confirm', 'width': width, 'height': height},
-                            child: loginBtn,
-                          ),
-                        ],
-                      ),
+                        ),
+                        SizedBox(
+                          height: width * 0.12,
+                          width: width * 0.12,
+                        ),
+                      ],
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 17),
+                    SvgPicture.asset(
+                              iconPath,
+                              width: 90,
+                              fit: BoxFit.contain,
+                            ),
+                    const SizedBox(height: 25),
+                    SamuraiTextField(
+                        screeenHeight: height,
+                        screeenWidth: width,
+                        hint: 'Amount',
+                        keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(RegExp(r'^[0-9]*')),
+                        ],
+                        controller: controller,
+                        onChanged: (_) => setState(() {}),
+                        allButton: () => setState(() {
+                              controller.text = balance.toString();
+                            })),
+                    const SizedBox(height: 10,),
+                    SizedBox(
+                        width: width,
+                        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                          Text(
+                            "Available: $balance $tokenName",
+                            style: GoogleFonts.spaceMono(
+                              fontSize: 13,
+                              color: Colors.white,
+                            ),
+                          ),
+                          Text(
+                            "Gas: ${gas.toStringAsFixed(9)} $gasName",
+                            style: GoogleFonts.spaceMono(
+                              fontSize: 13,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ])),
+
+                    PresButton(
+                      onTap: () {
+                        if (controller.text.isEmpty) {
+                          return;
+                        }
+                        showSpinner(context);
+                        if (isbnb) {
+                          WalletAPI.transfer1155Bnb(wallet, tokenAdress, tokenId, int.tryParse(controller.text) ?? 0, null).then((_) {
+                            hideSpinner(context);
+                            Navigator.of(context).pop();
+                          }).catchError((e) {
+                            if (kDebugMode) {
+                              print(e);
+                            }
+                            hideSpinner(context);
+                            showError(context, 'Insufficient funds').then((_) => Navigator.of(context).pop());
+                          });
+                        } else {
+                          /*WalletAPI.transferERC1155(
+                        wallet,
+                        tokenAdress,
+                        tokenId,
+                        int.tryParse(controller.text) ?? 0,
+                        null,
+                      ).then((_) {
+                        hideSpinner(context);
+                        Navigator.of(context).pop();
+                      }).catchError((e) {
+                        if (kDebugMode) {
+                          print(e);
+                        }
+                        hideSpinner(context);
+                        showError(context, 'Insufficient funds')
+                            .then((_) => Navigator.of(context).pop());
+                      });*/
+                        }
+                      },
+                      disabled: (controller.text.isEmpty) || (double.tryParse(controller.text) ?? 0) <= 0 || (double.tryParse(controller.text) ?? 0) > balance,
+                      params: {'text': 'confirm', 'width': width, 'height': height},
+                      child: loginBtn,
+                    ),
+                  ],
+                ),
               ),
             )),
       ),

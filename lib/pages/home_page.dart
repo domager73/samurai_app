@@ -16,6 +16,7 @@ import 'package:samurai_app/pages/home/craft_page.dart';
 import 'package:samurai_app/pages/home/home_main_page.dart';
 import 'package:samurai_app/pages/home/wallet_page.dart';
 import 'package:samurai_app/pages/pin_code_page.dart';
+import 'package:samurai_app/utils/fonts.dart';
 
 import '../components/anim_button.dart';
 import '../components/bg.dart';
@@ -514,11 +515,7 @@ class _HomePageState extends State<HomePage> {
                             child: FittedBox(
                               child: Text(
                                 'receive',
-                                style: TextStyle(
-                                  fontFamily: 'AmazObitaemOstrovItalic',
-                                  fontSize: 37 / 844 * height,
-                                  color: Colors.white,
-                                ),
+                                style: AppTypography.amazLabelMedium.copyWith(color: Colors.white)
                               ),
                             ),
                           ),
@@ -559,34 +556,35 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   const Spacer(flex: 18),
-                  Expanded(
-                      flex: 16,
-                      child: FittedBox(
-                          fit: BoxFit.fitHeight,
-                          child: RichText(
-                              text: TextSpan(
-                            text: 'Your ',
+                  FittedBox(
+                      fit: BoxFit.fitHeight,
+                      child: RichText(
+                          text: TextSpan(
+                        text: 'Your ',
+                        style: GoogleFonts.spaceMono(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 13
+                        ),
+                        children: [
+                          TextSpan(
+                            text: 'BEP20 (BSC)',
+                            style: GoogleFonts.spaceMono(
+                              color: Colors.red,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 13
+                            ),
+                          ),
+                          TextSpan(
+                            text: ' Wallet Address:',
                             style: GoogleFonts.spaceMono(
                               color: Colors.white,
                               fontWeight: FontWeight.w400,
+                              fontSize: 13
                             ),
-                            children: [
-                              TextSpan(
-                                text: 'BEP20 (BSC)',
-                                style: GoogleFonts.spaceMono(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                              TextSpan(
-                                text: ' Wallet Address:',
-                                style: GoogleFonts.spaceMono(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ],
-                          )))),
+                          ),
+                        ],
+                      ))),
                   const Spacer(flex: 8),
                   FittedBox(
                     fit: BoxFit.fitWidth,
@@ -595,6 +593,7 @@ class _HomePageState extends State<HomePage> {
                       style: GoogleFonts.spaceMono(
                         color: Colors.white,
                         fontWeight: FontWeight.w700,
+                        fontSize: 13,
                       ),
                     ),
                   ),
@@ -608,8 +607,7 @@ class _HomePageState extends State<HomePage> {
                       ).then(
                         (_) {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              //shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(30.0))),
-                              //backgroundColor: const Color(0xFF0D1238),
+
                               backgroundColor: Colors.transparent,
                               padding: const EdgeInsets.only(top: 30),
                               content: Container(

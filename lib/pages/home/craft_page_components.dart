@@ -7,6 +7,7 @@ import 'package:samurai_app/components/show_error.dart';
 import 'package:samurai_app/components/storage.dart';
 import 'package:samurai_app/data/music_manager.dart';
 import 'package:samurai_app/pages/tfa_page.dart';
+import 'package:samurai_app/utils/fonts.dart';
 
 import '../../api/rest.dart';
 import '../../api/wallet.dart';
@@ -14,6 +15,7 @@ import '../../components/anim_button.dart';
 import '../../components/pop_up_spinner.dart';
 import '../../components/samurai_text_field.dart';
 import '../../components/show_confirm.dart';
+import '../../widgets/custom_popup.dart';
 
 class CraftPageComponents {
   static Future<void> openTransferModalPage({
@@ -445,23 +447,16 @@ class CraftPageComponents {
                                 child: Center(
                                   child: Text(
                                     'transfer',
-                                    style: TextStyle(
-                                      fontFamily: 'AmazObitaemOstrovItalic',
-                                      fontSize: 37 / 844 * height,
-                                      color: Colors.white,
-                                    ),
+                                    style: AppTypography.amazLabelMedium.copyWith(color: Colors.white),
                                   ),
                                 ),
                               ),
                               AnimButton(
                                 shadowType: 2,
-                                onTap: () => {
-                                  showError(
-                                      context,
-                                      switchMode == 0
+                                onTap: () {
+                                  showDialog(context: context, builder: ((context) => CustomPopup(text: switchMode == 0
                                           ? 'Army Samurai can participate in battles and accumulate XP. Free Samurai can be withdrawn to your wallet. Army Samurai must be at 100% health to transfer.'
-                                          : 'You can withdraw Free Samurai, after which they will available on your wallet',
-                                      type: 2)
+                                          : 'You can withdraw Free Samurai, after which they will available on your wallet',)));
                                 },
                                 child: SvgPicture.asset(
                                   'assets/pages/homepage/craft/info.svg',
@@ -492,13 +487,7 @@ class CraftPageComponents {
                                         controller.text = (mode == 'toArmy' ? balance : lockedBalance).toStringAsFixed(0);
                                       });
                                     })
-                                  : tabWithdraw(
-                                      context,
-                                      width,
-                                      height,
-                                      gas,
-                                      balanceWithdraw.toInt(),
-                                      modeWithdraw, (val) {
+                                  : tabWithdraw(context, width, height, gas, balanceWithdraw.toInt(), modeWithdraw, (val) {
                                       setState(() {
                                         modeWithdraw = val;
                                       });

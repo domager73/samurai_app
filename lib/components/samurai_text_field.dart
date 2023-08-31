@@ -93,6 +93,7 @@ class SamuraiTextField extends StatelessWidget {
           width: screeenWidth - screeenWidth * 0.14,
           height: (screeenWidth - screeenWidth * 0.14) * 0.21,
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const Spacer(
                 flex: 30,
@@ -142,14 +143,14 @@ class SamuraiTextField extends StatelessWidget {
                   decoration: InputDecoration.collapsed(
                     hintText: hint,
                     hintStyle: GoogleFonts.spaceMono(
-                      fontSize: screeenHeight * 0.02,
+                      fontSize: 16,
                       fontWeight: FontWeight.w400,
                       height: 1.5,
                       color: Colors.white.withOpacity(0.5),
                     ),
                   ),
                   style: GoogleFonts.spaceMono(
-                    fontSize: screeenHeight * 0.02,
+                    fontSize: 16,
                     fontWeight: FontWeight.w400,
                     height: 1.5,
                     color: Colors.white,
@@ -199,10 +200,11 @@ class SamuraiTextField extends StatelessWidget {
                     player: GetIt.I<MusicManager>().smallKeyRegAmountAllPlayer,
                     shadowType: 2,
                     onTap: () => allButton!(),
-                    child: Text('All',
+                    child: Text(
+                        'All',
                         style: GoogleFonts.spaceMono(
-                          fontSize: screeenHeight * 0.018,
-                          fontWeight: FontWeight.w700,
+                          fontSize: 13,
+                          fontWeight: FontWeight.w800,
                           color: const Color(0xFF00FFFF),
                         )),
                   ),
