@@ -61,7 +61,7 @@ class ButtonOkState extends State<ButtonOk> {
               height: 43.6,
               child: Text(
                 'OK',
-                style: AppTypography.amazReg.copyWith(color: AppColors.textDark, fontSize: 17),
+                style: AppTypography.amazObit17Dark,
               ),
             ),
           ),

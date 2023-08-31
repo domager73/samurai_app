@@ -513,10 +513,8 @@ class _HomePageState extends State<HomePage> {
                               EdgeInsets.symmetric(horizontal: width * 0.1),
                           child: Center(
                             child: FittedBox(
-                              child: Text(
-                                'receive',
-                                style: AppTypography.amazLabelMedium.copyWith(color: Colors.white)
-                              ),
+                              child: Text('receive',
+                                  style: AppTypography.amazLabelMedium),
                             ),
                           ),
                         ),
@@ -561,27 +559,16 @@ class _HomePageState extends State<HomePage> {
                       child: RichText(
                           text: TextSpan(
                         text: 'Your ',
-                        style: GoogleFonts.spaceMono(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 13
-                        ),
+                        style: AppTypography.spaceMonoW400,
                         children: [
                           TextSpan(
                             text: 'BEP20 (BSC)',
-                            style: GoogleFonts.spaceMono(
-                              color: Colors.red,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 13
-                            ),
+                            style: AppTypography.spaceMonoW400
+                                .copyWith(color: Colors.red),
                           ),
                           TextSpan(
                             text: ' Wallet Address:',
-                            style: GoogleFonts.spaceMono(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 13
-                            ),
+                            style: AppTypography.spaceMonoW400,
                           ),
                         ],
                       ))),
@@ -590,11 +577,7 @@ class _HomePageState extends State<HomePage> {
                     fit: BoxFit.fitWidth,
                     child: Text(
                       AppStorage().read('wallet_adress')!,
-                      style: GoogleFonts.spaceMono(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 13,
-                      ),
+                      style: AppTypography.spaceMonoW700,
                     ),
                   ),
                   const Spacer(flex: 18),
@@ -607,7 +590,6 @@ class _HomePageState extends State<HomePage> {
                       ).then(
                         (_) {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-
                               backgroundColor: Colors.transparent,
                               padding: const EdgeInsets.only(top: 30),
                               content: Container(
@@ -684,7 +666,6 @@ class _HomePageState extends State<HomePage> {
                         .screenChangePlayer
                         .seek(Duration(seconds: 0));
                   });
-
                 },
                 borderRadius: BorderRadius.circular(100),
                 child: Opacity(

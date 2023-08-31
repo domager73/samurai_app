@@ -447,7 +447,7 @@ class CraftPageComponents {
                                 child: Center(
                                   child: Text(
                                     'transfer',
-                                    style: AppTypography.amazLabelMedium.copyWith(color: Colors.white),
+                                    style: AppTypography.amazLabelMedium,
                                   ),
                                 ),
                               ),

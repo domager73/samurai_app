@@ -39,7 +39,7 @@ class _CustomPopupState extends State<CustomPopup> {
                 children: [
                   Text(
                     widget.text,
-                    style: AppTypography.SPReg.copyWith(color: Colors.white),
+                    style: AppTypography.spaseMono16,
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 17,),
