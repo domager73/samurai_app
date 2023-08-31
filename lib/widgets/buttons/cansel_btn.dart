@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:samurai_app/utils/colors.dart';
+import 'package:samurai_app/utils/fonts.dart';
 
 class ButtonCansel extends StatefulWidget {
   const ButtonCansel({super.key});
@@ -11,11 +13,18 @@ class _ButtonCanselState extends State<ButtonCansel> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.yellow,
-      child: CustomPaint(
-        painter: CanselButtonPainter(),
-        child: Text("cansel".toUpperCase())
-        ),
+
+      child: Stack(
+        children: [
+          Container(
+            color: Colors.yellow,
+            child: CustomPaint(
+              painter: CanselButtonPainter(),
+              child: Text("cansel".toUpperCase(), style: AppTypography.amazReg.copyWith(color: AppColors.textDark),)
+              ),
+          ),
+        ],
+      ),
     );
   }
 }
