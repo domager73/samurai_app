@@ -3,6 +3,7 @@ import 'package:samurai_app/utils/fonts.dart';
 import 'package:samurai_app/utils/gradients.dart';
 import 'package:samurai_app/widgets/buttons/cansel_btn.dart';
 import 'package:samurai_app/widgets/buttons/ok_btn.dart';
+import 'package:samurai_app/widgets/buttons/yes_btn.dart';
 
 class CustomPopup extends StatefulWidget {
   final String text;
@@ -42,12 +43,24 @@ class _CustomPopupState extends State<CustomPopup> {
                     style: AppTypography.spaseMono16,
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: 17,),
-                  ButtonOk()
+                  SizedBox(
+                    height: 17,
+                  ),
+                  // ButtonOk()
+                  buildPopupActionRow()
                 ],
               ),
             ),
           )),
+    );
+  }
+
+  Widget buildPopupActionRow() {
+    return const Stack(
+      children: [
+        ButtonYes(),
+        ButtonCansel()
+      ],
     );
   }
 }
@@ -90,13 +103,13 @@ class PopupPainter extends CustomPainter {
     path_2.lineTo(size.width * 0.4775294, size.height * 0.9235123);
     path_2.lineTo(size.width * 0.4771000, size.height * 0.9244136);
     path_2.lineTo(size.width * 0.4516353, size.height * 0.9775802);
-    // 
+    //
     path_2.lineTo(size.width * 0.001470588, size.height * 0.9775802);
     path_2.lineTo(size.width * 0.001470612, size.height * 0.05981216);
     path_2.lineTo(size.width * 0.03676471, size.height * 0.05981216);
     path_2.lineTo(size.width * 0.6088235, size.height * 0.05981216);
     path_2.lineTo(size.width * 0.6094676, size.height * 0.05981216);
-    path_2.lineTo(size.width * 0.6099029, size.height * 0.05882154 );
+    path_2.lineTo(size.width * 0.6099029, size.height * 0.05882154);
     path_2.lineTo(size.width * 0.6344676, size.height * 0.003086420);
     path_2.close();
 
