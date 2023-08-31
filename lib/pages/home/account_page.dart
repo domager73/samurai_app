@@ -10,6 +10,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:samurai_app/components/storage.dart';
 import 'package:samurai_app/pages/home/account_page_components.dart';
 import 'package:samurai_app/utils/enums.dart';
+import 'package:samurai_app/utils/fonts.dart';
 
 import '../../api/rest.dart';
 import '../../components/anim_button.dart';
@@ -44,7 +45,6 @@ class _AccountPageState extends State<AccountPage> {
     googleAuthenticatorSwitch = false; //TODO
     emailAuthenticatorSwitch = false; //TODO
     soundSwitch = bool.parse(AppStorage().read(musicSwitchKey)!);
-    print(bool.parse(AppStorage().read(musicSwitchKey)!));
     final useTfa = AppStorage().read('use-tfa');
     tfaSwitch = useTfa != null && useTfa == '1';
 
@@ -100,11 +100,7 @@ class _AccountPageState extends State<AccountPage> {
                     children: [
                       Text(
                         'ACCOUNT',
-                        style: TextStyle(
-                          fontFamily: 'AmazObitaemOstrovItalic',
-                          color: Colors.white,
-                          fontSize: 38 / 960 * height,
-                        ),
+                        style: AppTypography.amazObitW400White.copyWith(fontSize: 36),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 12),
@@ -123,11 +119,7 @@ class _AccountPageState extends State<AccountPage> {
                                   children: [
                                     Text(
                                       temp['email'] ?? '',
-                                      style: GoogleFonts.spaceMono(
-                                        fontWeight: FontWeight.w700,
-                                        color: Colors.white,
-                                        fontSize: 16 / 960 * height,
-                                      ),
+                                      style: AppTypography.spaseMono16.copyWith(fontWeight: FontWeight.w700)
                                     ),
                                     Padding(
                                       padding:

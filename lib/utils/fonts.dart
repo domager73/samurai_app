@@ -16,12 +16,12 @@ class AppTypography {
   static TextStyle amazObit17Dark = _amazObit.copyWith(
       fontWeight: FontWeight.w400, color: AppColors.textDark, fontSize: 17);
 
-  static TextStyle amazLabelMedium =
+  static TextStyle amazObitW400White =
       amazObit17Dark.copyWith(fontSize: 34, color: Colors.white);
 
-  static TextStyle spaceMonoW400 = GoogleFonts.spaceMono(
+  static TextStyle spaceMonoW400 = _spaceMono.copyWith(
       color: Colors.white, fontWeight: FontWeight.w400, fontSize: 15);
 
-  static TextStyle spaceMonoW700 = GoogleFonts.spaceMono(
+  static TextStyle spaceMonoW700 = _spaceMono.copyWith(
       color: Colors.white, fontWeight: FontWeight.w700, fontSize: 15);
 }

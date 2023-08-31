@@ -5,6 +5,7 @@ import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:samurai_app/components/pop_up_spinner.dart';
 import 'package:samurai_app/components/show_confirm.dart';
+import 'package:samurai_app/utils/fonts.dart';
 
 import '../../api/rest.dart';
 import '../../components/anim_button.dart';
@@ -91,11 +92,7 @@ class _SamuraiMintPageState extends State<SamuraiMintPage>
                 child: FittedBox(
                     child: Text(
                   'samurai mint',
-                  style: TextStyle(
-                    fontFamily: 'AmazObitaemOstrovItalic',
-                    fontSize: 37 / 844 * height,
-                    color: Colors.white,
-                  ),
+                  style: AppTypography.amazObitW400White.copyWith(fontSize: 40),
                   maxLines: 1,
                 )),
               ),

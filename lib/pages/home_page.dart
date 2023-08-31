@@ -514,7 +514,7 @@ class _HomePageState extends State<HomePage> {
                           child: Center(
                             child: FittedBox(
                               child: Text('receive',
-                                  style: AppTypography.amazLabelMedium),
+                                  style: AppTypography.amazObitW400White),
                             ),
                           ),
                         ),

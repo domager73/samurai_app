@@ -371,7 +371,7 @@ class WalletPageComponents {
                               child: Center(
                                 child: Text(
                                   "to game",
-                                  style: AppTypography.amazLabelMedium
+                                  style: AppTypography.amazObitW400White
                                 ),
                               ),
                             ),

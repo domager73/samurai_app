@@ -447,7 +447,7 @@ class CraftPageComponents {
                                 child: Center(
                                   child: Text(
                                     'transfer',
-                                    style: AppTypography.amazLabelMedium,
+                                    style: AppTypography.amazObitW400White,
                                   ),
                                 ),
                               ),
