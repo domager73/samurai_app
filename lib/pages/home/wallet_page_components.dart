@@ -371,7 +371,7 @@ class WalletPageComponents {
                               child: Center(
                                 child: Text(
                                   "to game",
-                                  style: AppTypography.amazLabelMedium.copyWith(color: Colors.white)
+                                  style: AppTypography.amazLabelMedium
                                 ),
                               ),
                             ),
