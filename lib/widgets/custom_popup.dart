@@ -15,6 +15,13 @@ class CustomPopup extends StatefulWidget {
 }
 
 class _CustomPopupState extends State<CustomPopup> {
+  static bool isReversed = false;
+
+  // @override
+  // void dispose(){
+  //   super.dispose();
+  // }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
@@ -41,7 +48,7 @@ class _CustomPopupState extends State<CustomPopup> {
                   Text(
                     widget.text,
                     style: AppTypography.spaseMono16,
-                    textAlign: TextAlign.center,
+                    textAlign: TextAlign.start,
                   ),
                   SizedBox(
                     height: 17,
@@ -56,11 +63,33 @@ class _CustomPopupState extends State<CustomPopup> {
   }
 
   Widget buildPopupActionRow() {
-    return const Stack(
-      children: [
-        ButtonYes(),
-        ButtonCansel()
-      ],
+    List<Widget> buttonList = [
+      Align(
+          alignment: Alignment.centerLeft,
+          child: ButtonCansel(
+            onTap: () {
+              setState(() {
+                isReversed = false;
+              });
+            },
+          )),
+      Align(
+          alignment: Alignment.bottomRight,
+          child: ButtonYes(
+            onTap: () {
+              setState(() {
+                isReversed = true;
+              });
+            },
+          )),
+    ];
+
+    return Container(
+      width: 290,
+      height: 42,
+      child: Stack(
+        children: !isReversed ? buttonList.reversed.toList() : buttonList,
+      ),
     );
   }
 }

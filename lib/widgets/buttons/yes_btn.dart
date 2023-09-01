@@ -1,37 +1,81 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:samurai_app/utils/colors.dart';
 import 'package:samurai_app/utils/fonts.dart';
+import 'package:samurai_app/utils/global_constants.dart';
 
 class ButtonYes extends StatefulWidget {
-  const ButtonYes({super.key});
+  final Function onTap;
+
+  const ButtonYes({super.key, required this.onTap});
 
   @override
   State<ButtonYes> createState() => _ButtonYesState();
 }
 
 class _ButtonYesState extends State<ButtonYes> {
+  bool isTapped = false;
+
+  void _onTap() async {
+    setState(() {
+      isTapped = true;
+    });
+    await Future.delayed(GlobalConstants.animDuration, () {
+      Navigator.pop(context);
+    });
+    setState(() {
+      isTapped = false;
+    });
+
+    widget.onTap();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          // TODO background
-          Container(
-            child: CustomPaint(
-              painter: ButtonYesPainter(),
+    return GestureDetector(
+      onTap: _onTap,
+      child: AnimatedContainer(
+        duration: GlobalConstants.animDuration,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            ClipRect(
               child: Container(
                 width: 156,
-                height: 42,
+                height: 38.2 + 20,
                 alignment: Alignment.center,
-                child: Text(
-                  "yes".toUpperCase(),
-                  style: AppTypography.amazReg.copyWith(color: AppColors.textDark),
+                child: Visibility(
+                  visible: isTapped,
+                  child: CustomPaint(
+                    painter: ButtonYesPainter(),
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                      child: Container(
+                        width: 156,
+                        height: 38.2,
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ),
-          )
-        ],
+            Container(
+              child: CustomPaint(
+                painter: ButtonYesPainter(),
+                child: Container(
+                  width: 156,
+                  height: 38.2,
+                  alignment: Alignment.center,
+                  child: Text(
+                    "yes".toUpperCase(),
+                    style: AppTypography.amazObit17Dark.copyWith(color: AppColors.textDark),
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
