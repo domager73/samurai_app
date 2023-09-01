@@ -24,8 +24,11 @@ class _ButtonCanselState extends State<ButtonCansel> {
       isTapped = true;
     });
 
-    await Future.delayed(GlobalConstants.animDuration).then((value) {
-      if (mounted) Navigator.pop(context);
+    await Future.delayed(GlobalConstants.animDuration, () {
+      setState(() {
+        isTapped = false;
+      });
+      // Navigator.pop(context);
     });
   }
 
@@ -43,8 +46,7 @@ class _ButtonCanselState extends State<ButtonCansel> {
                 height: 38.2,
                 child: Text(
                   "cansel".toUpperCase(),
-                  style: AppTypography.amazObit17Dark
-                      .copyWith(color: Colors.white),
+                  style: AppTypography.amazObit17Dark.copyWith(color: Colors.white),
                 ))),
       ),
     );
@@ -72,8 +74,7 @@ class CanselButtonPainter extends CustomPainter {
     path_0.lineTo(size.width * 0.6987179, size.height * 0.04651930);
     path_0.close();
 
-    Paint paint_0_fill = Paint()
-      ..style = PaintingStyle.fill;
+    Paint paint_0_fill = Paint()..style = PaintingStyle.fill;
     paint_0_fill.color = Color(0xff00FFFF).withOpacity(1.0);
     canvas.drawPath(path_0, paint_0_fill);
 
@@ -85,8 +86,7 @@ class CanselButtonPainter extends CustomPainter {
     path_1.lineTo(size.width * 0.8557692, size.height * 0.04651930);
     path_1.close();
 
-    Paint paint_1_fill = Paint()
-      ..style = PaintingStyle.fill;
+    Paint paint_1_fill = Paint()..style = PaintingStyle.fill;
     paint_1_fill.color = Color(0xff00FFFF).withOpacity(1.0);
     canvas.drawPath(path_1, paint_1_fill);
 
@@ -104,16 +104,14 @@ class CanselButtonPainter extends CustomPainter {
     path_2.lineTo(size.width * 0.3633519, size.height * 0.08666419);
     path_2.close();
 
-    Paint paint_2_fill = Paint()
-      ..style = PaintingStyle.fill;
+    Paint paint_2_fill = Paint()..style = PaintingStyle.fill;
     paint_2_fill.color = Colors.transparent;
 
     canvas.drawPath(path_2, paint_2_fill);
 
     Path path_3 = getCanselButtonPath(size);
 
-    Paint paint_3_fill = Paint()
-      ..style = PaintingStyle.fill;
+    Paint paint_3_fill = Paint()..style = PaintingStyle.fill;
     paint_3_fill.color = Colors.white.withOpacity(1.0);
     canvas.drawPath(path_3, paint_3_fill);
   }

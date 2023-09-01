@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:samurai_app/api/rest.dart';
 import 'package:samurai_app/components/samurai_text_field.dart';
 import 'package:samurai_app/components/storage.dart';
+import 'package:samurai_app/widgets/popups/custom_popup.dart';
 
 import '../components/anim_button.dart';
 import '../components/bg.dart';
@@ -41,16 +42,18 @@ class _LoginPageState extends State<LoginPage> {
       showSpinner(context);
       Rest.checkCode(email, code).then((data) {
         final useTfa = AppStorage().read('use-tfa');
-        AppStorage()
-            .write('jwt', data['jwt'])
-            .then((_) => AppStorage().updateUserWallet().then((_) {
-                  hideSpinner(context);
-                  Navigator.of(context).pushReplacementNamed('/home');
-                }));
+        AppStorage().write('jwt', data['jwt']).then((_) => AppStorage().updateUserWallet().then((_) {
+              hideSpinner(context);
+              Navigator.of(context).pushReplacementNamed('/home');
+            }));
       }).catchError((e) {
         hideSpinner(context);
         debugPrint(e.toString());
-        showError(context, 'Wrong code');
+
+        showDialog(
+          context: context,
+          builder: (context) => const CustomPopup(text: 'Wrong code', isError: true),
+        );
       });
     } else {
       if (!isAgree) {
@@ -115,8 +118,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(
-                        top: 28.0, left: width * 0.03, right: width * 0.03),
+                    padding: EdgeInsets.only(top: 28.0, left: width * 0.03, right: width * 0.03),
                     child: SamuraiTextField(
                       screeenHeight: height,
                       screeenWidth: width,
@@ -127,8 +129,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(
-                        top: 16.0, left: width * 0.03, right: width * 0.03),
+                    padding: EdgeInsets.only(top: 16.0, left: width * 0.03, right: width * 0.03),
                     child: SamuraiTextField(
                       screeenHeight: height,
                       screeenWidth: width,
@@ -174,8 +175,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(
-                        top: 12, left: width * 0.03, right: width * 0.03),
+                    padding: EdgeInsets.only(top: 12, left: width * 0.03, right: width * 0.03),
                     child: Row(
                       children: [
                         Container(
@@ -186,20 +186,10 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           child: Checkbox(
                             value: isAgree,
-                            onChanged: (value) async{
-                              GetIt.I<
-                                  MusicManager>()
-                                  .smallKeyWeaponPlayer
-                                  .play()
-                                  .then(
-                                      (value) async {
-                                    await GetIt.I<
-                                        MusicManager>()
-                                        .smallKeyWeaponPlayer
-                                        .seek(Duration(
-                                        seconds:
-                                        0));
-                                  });
+                            onChanged: (value) async {
+                              GetIt.I<MusicManager>().smallKeyWeaponPlayer.play().then((value) async {
+                                await GetIt.I<MusicManager>().smallKeyWeaponPlayer.seek(Duration(seconds: 0));
+                              });
 
                               setState(() {
                                 errorTerms = false;
@@ -210,8 +200,7 @@ class _LoginPageState extends State<LoginPage> {
                               errorTerms ? Colors.red : Colors.transparent,
                             ),
                             checkColor: const Color(0xFF00FFFF),
-                            materialTapTargetSize:
-                                MaterialTapTargetSize.shrinkWrap,
+                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           ),
                         ),
                         FittedBox(
@@ -283,11 +272,7 @@ class _LoginPageState extends State<LoginPage> {
                     padding: const EdgeInsets.only(top: 8, bottom: 28),
                     child: PresButton(
                       onTap: login,
-                      params: {
-                        'text': 'login/sign up',
-                        'width': width,
-                        'height': height
-                      },
+                      params: {'text': 'login/sign up', 'width': width, 'height': height},
                       child: loginBtn,
                     ),
                   ),
@@ -300,6 +285,5 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  double getTopPadding(double height, double keyboard) =>
-      height - keyboard < 28 ? 28 : height - keyboard;
+  double getTopPadding(double height, double keyboard) => height - keyboard < 28 ? 28 : height - keyboard;
 }

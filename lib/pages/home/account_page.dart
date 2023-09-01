@@ -12,6 +12,7 @@ import 'package:samurai_app/pages/home/account_page_components.dart';
 import 'package:samurai_app/utils/enums.dart';
 import 'package:samurai_app/utils/fonts.dart';
 import 'package:samurai_app/widgets/buttons/custom_painter_button.dart';
+import 'package:samurai_app/widgets/popups/custom_choose_popup.dart';
 
 import '../../api/rest.dart';
 import '../../components/anim_button.dart';
@@ -299,18 +300,23 @@ class _AccountPageState extends State<AccountPage> {
                         child: PresButton(
                           player: GetIt.I<MusicManager>().keyBackSignCloseX,
                           onTap: () {
-                            showConfirm(
-                                context, 'Are you sure you want to get out?',
-                                () async {
-                              await AppStorage().remove('jwt');
-                              await AppStorage().remove('user');
-                              if (mounted) {
-                                Navigator.of(context).pushNamedAndRemoveUntil(
-                                  '/login',
-                                  (route) => false,
-                                );
-                              }
-                            });
+                            showDialog(
+                                context: context,
+                                builder: (context) => CustomChoosePopup(
+                                    acceptFunction: () async {
+                                      await AppStorage().remove('jwt');
+                                      await AppStorage().remove('user');
+                                      if (mounted) {
+                                        Navigator.of(context).pushNamedAndRemoveUntil(
+                                          '/login',
+                                          (route) => false,
+                                        );
+                                      }
+                                    },
+                                    canselFunction: () {
+                                      Navigator.pop(context);
+                                    },
+                                    text: "Are you sure you want to get out?"));
                           },
                           params: {'width': width, 'height': height},
                           child: logoutBtn,

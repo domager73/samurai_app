@@ -9,6 +9,7 @@ import 'package:samurai_app/api/rest.dart';
 import 'package:samurai_app/components/pop_up_spinner.dart';
 import 'package:samurai_app/components/samurai_text_field.dart';
 import 'package:samurai_app/components/storage.dart';
+import 'package:samurai_app/widgets/popups/custom_popup.dart';
 
 import '../components/anim_button.dart';
 import '../components/bg.dart';
@@ -47,7 +48,10 @@ class _TfaPageState extends State<TfaPage> {
       }).catchError((e) {
         hideSpinner(context);
         debugPrint(e.toString());
-        showError(context, 'Wrong code');
+          showDialog(
+          context: context,
+          builder: (context) => const CustomPopup(text: 'Wrong code', isError: true),
+        );
       });
     }
   }

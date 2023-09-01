@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:samurai_app/components/storage.dart';
 import 'package:samurai_app/data/music_manager.dart';
+import 'package:samurai_app/widgets/popups/custom_popup.dart';
 
 import '../components/show_error.dart';
 
@@ -312,7 +313,10 @@ class _PinCodePageState extends State<PinCodePage> {
             pinCode = '';
             isConfirmationStep = false;
           });
-          await showError(context, 'Codes do not match, please try again');
+          await showDialog(
+          context: context,
+          builder: (context) => const CustomPopup(text: 'Codes do not match, please try again.', isError: true),
+        );
         }
       } else {
         setState(() {

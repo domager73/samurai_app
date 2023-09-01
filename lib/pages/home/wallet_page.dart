@@ -10,6 +10,7 @@ import 'package:samurai_app/components/show_error.dart';
 import 'package:samurai_app/components/storage.dart';
 import 'package:samurai_app/data/music_manager.dart';
 import 'package:samurai_app/pages/home/wallet_page_components.dart';
+import 'package:samurai_app/widgets/popups/custom_popup.dart';
 import 'package:trust_wallet_core_lib/trust_wallet_core_lib.dart';
 
 import '../../api/rest.dart';
@@ -314,7 +315,10 @@ class _WalletPageState extends State<WalletPage> with SingleTickerProviderStateM
                             hideSpinner(context);
 
                             print(1);
-                            showError(context, 'You don`t have gas', type: 2);
+                            showDialog(
+                              context: context,
+                              builder: (context) => const CustomPopup(text: 'You don`t have gas', isError: true),
+                            );
                             return;
                           }
 

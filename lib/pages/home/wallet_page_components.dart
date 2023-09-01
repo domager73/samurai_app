@@ -8,6 +8,7 @@ import 'package:samurai_app/components/pop_up_spinner.dart';
 import 'package:samurai_app/data/music_manager.dart';
 import 'package:samurai_app/utils/fonts.dart';
 import 'package:samurai_app/widgets/custom_swap_border.dart';
+import 'package:samurai_app/widgets/popups/custom_popup.dart';
 import 'package:trust_wallet_core_lib/trust_wallet_core_lib.dart';
 import '../../api/rest.dart';
 import '../../api/wallet.dart';
@@ -32,7 +33,11 @@ class WalletPageComponents {
           Navigator.of(context).pop();
         }).catchError((e) {
           hideSpinner(context);
-          showError(context, 'Insufficient funds').then((_) => Navigator.of(context).pop());
+          // showError(context, 'Insufficient funds').then((_) => Navigator.of(context).pop());
+          showDialog(
+            context: context,
+            builder: (context) => const CustomPopup(text: 'Insufficient funds', isError: true),
+          );
         });
       } else if (mode == 'inChain') {
         Rest.transfer(
@@ -45,7 +50,11 @@ class WalletPageComponents {
           Navigator.of(context).pop();
         }).catchError((e) {
           hideSpinner(context);
-          showError(context, 'Insufficient funds').then((_) => Navigator.of(context).pop());
+          // showError(context, 'Insufficient funds').then((_) => Navigator.of(context).pop());
+          showDialog(
+            context: context,
+            builder: (context) => const CustomPopup(text: 'Insufficient funds', isError: true),
+          );
         });
       }
     } else if (token == 'BNB') {
@@ -59,7 +68,11 @@ class WalletPageComponents {
           Navigator.of(context).pop();
         }).catchError((e) {
           hideSpinner(context);
-          showError(context, 'Insufficient funds').then((_) => Navigator.of(context).pop());
+          // showError(context, 'Insufficient funds').then((_) => Navigator.of(context).pop());
+          showDialog(
+            context: context,
+            builder: (context) => const CustomPopup(text: 'Insufficient funds', isError: true),
+          );
         });
       } else if (mode == 'inChain') {
         Rest.transfer(
@@ -72,11 +85,19 @@ class WalletPageComponents {
           Navigator.of(context).pop();
         }).catchError((e) {
           hideSpinner(context);
-          showError(context, 'Insufficient funds').then((_) => Navigator.of(context).pop());
+          // showError(context, 'Insufficient funds').then((_) => Navigator.of(context).pop());
+          showDialog(
+            context: context,
+            builder: (context) => const CustomPopup(text: 'Insufficient funds', isError: true),
+          );
         });
       } else {
         hideSpinner(context);
-        showError(context, 'Token error').then((_) => Navigator.of(context).pop());
+        // showError(context, 'Token error').then((_) => Navigator.of(context).pop());
+        showDialog(
+          context: context,
+          builder: (context) => const CustomPopup(text: 'Token error', isError: true),
+        );
       }
     }
   }
@@ -151,7 +172,10 @@ class WalletPageComponents {
                         AnimButton(
                           shadowType: 2,
                           onTap: () async {
-                            showError(context, 'Send your tokens TO GAME to use them in the game. Send your tokens TO WALLET to use them outside of the game.', type: 2);
+                            showDialog(
+                              context: context,
+                              builder: (context) => const CustomPopup(text: 'Send your tokens TO GAME to use them in the game. Send your tokens TO WALLET to use them outside of the game.', isError: false),
+                            );
                           },
                           child: SvgPicture.asset(
                             'assets/pages/homepage/craft/info.svg',
@@ -335,14 +359,12 @@ class WalletPageComponents {
             },
             child: Container(
               decoration: const BoxDecoration(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(34)),
-                image: DecorationImage(
-                  image: AssetImage(
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(34)),
+                  image: DecorationImage(
+                      image: AssetImage(
                         'assets/modal_bottom_sheet_bg.png',
                       ),
-                      fit: BoxFit.cover
-                      )
-              ),
+                      fit: BoxFit.cover)),
               child: Padding(
                 padding: const EdgeInsets.all(28),
                 child: Column(
@@ -369,10 +391,7 @@ class WalletPageComponents {
                             child: Padding(
                               padding: EdgeInsets.symmetric(horizontal: width * 0.1),
                               child: Center(
-                                child: Text(
-                                  "to game",
-                                  style: AppTypography.amazObitW400White
-                                ),
+                                child: Text("to game", style: AppTypography.amazObitW400White),
                               ),
                             ),
                           ),
@@ -385,10 +404,10 @@ class WalletPageComponents {
                     ),
                     const SizedBox(height: 17),
                     SvgPicture.asset(
-                              iconPath,
-                              width: 90,
-                              fit: BoxFit.contain,
-                            ),
+                      iconPath,
+                      width: 90,
+                      fit: BoxFit.contain,
+                    ),
                     const SizedBox(height: 25),
                     SamuraiTextField(
                         screeenHeight: height,
@@ -403,7 +422,9 @@ class WalletPageComponents {
                         allButton: () => setState(() {
                               controller.text = balance.toString();
                             })),
-                    const SizedBox(height: 10,),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     SizedBox(
                         width: width,
                         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -422,7 +443,6 @@ class WalletPageComponents {
                             ),
                           ),
                         ])),
-
                     PresButton(
                       onTap: () {
                         if (controller.text.isEmpty) {
@@ -438,27 +458,13 @@ class WalletPageComponents {
                               print(e);
                             }
                             hideSpinner(context);
-                            showError(context, 'Insufficient funds').then((_) => Navigator.of(context).pop());
+                            // showError(context, 'Insufficient funds').then((_) => Navigator.of(context).pop());
+                            showDialog(
+                              context: context,
+                              builder: (context) => const CustomPopup(text: 'Insufficient funds', isError: true),
+                            );
                           });
-                        } else {
-                          /*WalletAPI.transferERC1155(
-                        wallet,
-                        tokenAdress,
-                        tokenId,
-                        int.tryParse(controller.text) ?? 0,
-                        null,
-                      ).then((_) {
-                        hideSpinner(context);
-                        Navigator.of(context).pop();
-                      }).catchError((e) {
-                        if (kDebugMode) {
-                          print(e);
-                        }
-                        hideSpinner(context);
-                        showError(context, 'Insufficient funds')
-                            .then((_) => Navigator.of(context).pop());
-                      });*/
-                        }
+                        } else {}
                       },
                       disabled: (controller.text.isEmpty) || (double.tryParse(controller.text) ?? 0) <= 0 || (double.tryParse(controller.text) ?? 0) > balance,
                       params: {'text': 'confirm', 'width': width, 'height': height},
@@ -609,7 +615,11 @@ class WalletPageComponents {
                                 Navigator.of(context).pop();
                               }).catchError((e) {
                                 hideSpinner(context);
-                                showError(context, 'Insufficient funds').then((_) => Navigator.of(context).pop());
+                                // showError(context, 'Insufficient funds').then((_) => Navigator.of(context).pop());
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => const CustomPopup(text: 'Insufficient funds', isError: true),
+                                );
                               });
                             } else if (tokenName.toUpperCase() == 'BNB') {
                               WalletAPI.transferBNB(
@@ -621,7 +631,11 @@ class WalletPageComponents {
                                 Navigator.of(context).pop();
                               }).catchError((e) {
                                 hideSpinner(context);
-                                showError(context, 'Insufficient funds').then((_) => Navigator.of(context).pop());
+                                // showError(context, 'Insufficient funds').then((_) => Navigator.of(context).pop());
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => const CustomPopup(text: 'Insufficient funds', isError: true),
+                                );
                               });
                             } else if (tokenName.toUpperCase() == 'BB' || tokenName.toLowerCase() == 'BA' || tokenName.toLowerCase() == 'GWS' || tokenName.toLowerCase() == 'GFS') {
                               WalletAPI.transfer1155Bnb(wallet, tokenAdress, tokenId!, int.tryParse(amountController.text) ?? 0, adressController.text).then((_) {
@@ -629,7 +643,11 @@ class WalletPageComponents {
                                 Navigator.of(context).pop();
                               }).catchError((e) {
                                 hideSpinner(context);
-                                showError(context, 'Insufficient funds').then((_) => Navigator.of(context).pop());
+                                // showError(context, 'Insufficient funds').then((_) => Navigator.of(context).pop());
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => const CustomPopup(text: 'Insufficient funds', isError: true),
+                                );
                               });
                             }
                           },

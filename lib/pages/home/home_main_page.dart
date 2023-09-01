@@ -7,7 +7,8 @@ import 'package:flutter_xlider/flutter_xlider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:samurai_app/components/pop_up_spinner.dart';
 import 'package:samurai_app/components/show_confirm.dart';
-import 'package:samurai_app/utils/fonts.dart';
+import 'package:samurai_app/widgets/popups/custom_choose_popup.dart';
+import 'package:samurai_app/widgets/popups/popup_buy_samurai.dart';
 
 import '../../api/rest.dart';
 import '../../components/anim_button.dart';
@@ -98,45 +99,44 @@ class _HomeMainPageState extends State<HomeMainPage> {
 
   Widget sliderCount(double width) {
     return Padding(
-        padding: EdgeInsets.only(
-            top: width * 0.03, left: width * 0.065, right: width * 0.06),
-        child: FlutterSlider(
-          values: [_currentSliderValue],
-          max: 10,
-          min: 1,
-          handler: FlutterSliderHandler(
-              child: const SizedBox(height: 1.0),
-              decoration: const BoxDecoration(
-                  color: Colors.transparent,
-                  image: DecorationImage(
-                      image:
-                          AssetImage('assets/pages/homepage/btn_range.png')))),
-          handlerAnimation: const FlutterSliderHandlerAnimation(scale: 1.0),
-          trackBar: FlutterSliderTrackBar(
-            activeTrackBarHeight: width * 0.011,
-            inactiveTrackBarHeight: width * 0.011,
-            activeTrackBar: const BoxDecoration(color: Color(0xFF00FFFF)),
-            inactiveTrackBar: const BoxDecoration(color: Color(0x6600FFFF)),
+      padding: EdgeInsets.only(top: width * 0.03, left: width * 0.065, right: width * 0.06),
+      child: FlutterSlider(
+        values: [_currentSliderValue],
+        max: 10,
+        min: 1,
+        handler: FlutterSliderHandler(
+          child: const SizedBox(height: 1.0),
+          decoration: const BoxDecoration(
+            color: Colors.transparent,
+            image: DecorationImage(image: AssetImage('assets/pages/homepage/btn_range.png'))
+          )
+        ),
+        handlerAnimation: const FlutterSliderHandlerAnimation(scale: 1.0),
+        trackBar: FlutterSliderTrackBar(
+          activeTrackBarHeight: width * 0.011,
+          inactiveTrackBarHeight: width * 0.011,
+          activeTrackBar: const BoxDecoration(color: Color(0xFF00FFFF)),
+          inactiveTrackBar: const BoxDecoration(color: Color(0x6600FFFF)),
+        ),
+        tooltip: FlutterSliderTooltip(
+          format: (_) => _currentSliderValue.toStringAsFixed(0),
+          textStyle: GoogleFonts.spaceMono(
+            fontWeight: FontWeight.w700,
+            fontSize: width * 0.036,
+            color: const Color(0xFF00FFFF),
           ),
-          tooltip: FlutterSliderTooltip(
-              format: (_) => _currentSliderValue.toStringAsFixed(0),
-              textStyle: GoogleFonts.spaceMono(
-                fontWeight: FontWeight.w700,
-                fontSize: width * 0.036,
-                color: const Color(0xFF00FFFF),
-              ),
-              boxStyle: const FlutterSliderTooltipBox(
-                  decoration: BoxDecoration(color: Colors.transparent)),
-              disableAnimation: true,
-              alwaysShowTooltip: true,
-              positionOffset: FlutterSliderTooltipPositionOffset(
-                  top: width * 0.068, left: width * 0.02)),
-          onDragging: (handlerIndex, lowerValue, upperValue) {
-            _currentSliderValue = lowerValue;
-            //_upperValue = upperValue;
-            setState(() {});
-          },
-        ));
+          boxStyle: const FlutterSliderTooltipBox(decoration: BoxDecoration(color: Colors.transparent)),
+          disableAnimation: true,
+          alwaysShowTooltip: true,
+          positionOffset: FlutterSliderTooltipPositionOffset(top: width * 0.068, left: width * 0.02)
+        ),
+        onDragging: (handlerIndex, lowerValue, upperValue) {
+          _currentSliderValue = lowerValue;
+          //_upperValue = upperValue;
+          setState(() {});
+        },
+      )
+    );
   }
 
   @override
@@ -259,15 +259,10 @@ class _HomeMainPageState extends State<HomeMainPage> {
                                         )
                                       : Container(
                                           alignment: Alignment.centerLeft,
-                                          padding: EdgeInsets.only(
-                                              left: width * 0.163),
+                                          padding: EdgeInsets.only(left: width * 0.163),
                                           child: Text(
                                             "WATER",
-                                            style: TextStyle(
-                                                fontSize: 20 / 844 * height,
-                                                fontFamily:
-                                                    'AmazObitaemOstrovItalic',
-                                                color: const Color(0xFF00FFFF)),
+                                            style: TextStyle(fontSize: 20 / 844 * height, fontFamily: 'AmazObitaemOstrovItalic', color: const Color(0xFF00FFFF)),
                                             textAlign: TextAlign.center,
                                           )))),
                           SizedBox(
@@ -286,15 +281,10 @@ class _HomeMainPageState extends State<HomeMainPage> {
                                   child: craftSwitch == 0
                                       ? Container(
                                           alignment: Alignment.centerLeft,
-                                          padding: EdgeInsets.only(
-                                              left: width * 0.13),
+                                          padding: EdgeInsets.only(left: width * 0.13),
                                           child: Text(
                                             "FIRE",
-                                            style: TextStyle(
-                                                fontSize: 20 / 844 * height,
-                                                fontFamily:
-                                                    'AmazObitaemOstrovItalic',
-                                                color: const Color(0xFF00FFFF)),
+                                            style: TextStyle(fontSize: 20 / 844 * height, fontFamily: 'AmazObitaemOstrovItalic', color: const Color(0xFF00FFFF)),
                                             textAlign: TextAlign.center,
                                           ))
                                       : SvgPicture.asset(
@@ -303,81 +293,68 @@ class _HomeMainPageState extends State<HomeMainPage> {
                                         )))
                         ]),
                       ),
-                      Container(
-                          width: width,
-                          height: width * 0.2,
-                          margin: EdgeInsets.only(top: 0.075 * height),
-                          child: sliderCount(width)),
+                      Container(width: width, height: width * 0.2, margin: EdgeInsets.only(top: 0.075 * height), child: sliderCount(width)),
                       Container(
                           width: width,
                           height: width * 0.55,
                           margin: EdgeInsets.only(top: 0.1 * height),
                           child: Padding(
-                              padding: EdgeInsets.only(
-                                  left: 0.06 * width, right: 0.06 * width),
-                              child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(children: [
-                                      Text(
-                                        "PRICE: ",
-                                        style: GoogleFonts.spaceMono(
-                                          fontWeight: FontWeight.w700,
-                                          color: const Color(0xFF00FFFF),
-                                          fontSize: 16 / 844 * height,
-                                        ),
+                              padding: EdgeInsets.only(left: 0.06 * width, right: 0.06 * width),
+                              child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                                Row(children: [
+                                  Text(
+                                    "PRICE: ",
+                                    style: GoogleFonts.spaceMono(
+                                      fontWeight: FontWeight.w700,
+                                      color: const Color(0xFF00FFFF),
+                                      fontSize: 16 / 844 * height,
+                                    ),
+                                  ),
+                                  Text(
+                                    '${_currentSliderValue * 0.02} BNB',
+                                    style: GoogleFonts.spaceMono(
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.white,
+                                      fontSize: 16 / 844 * height,
+                                    ),
+                                  )
+                                ]),
+                                SizedBox(
+                                    width: width * 0.44,
+                                    height: width * 0.15,
+                                    child: AnimButton(
+                                      onTap: () {
+                                        showDialog(
+                                            context: context,
+                                            builder: (ctx) => PopupBuySamurai(
+                                                price: (_currentSliderValue * 0.02).toString(),
+                                                acceptFunction: () async {
+                                                  Navigator.of(ctx).pop();
+                                                  showSpinner(context);
+                                                  Rest.sendMintSamurai(_currentSliderValue.toInt(), craftSwitch == 0 ? "WATER_SAMURAI_BSC" : "FIRE_SAMURAI_BSC", useDpMint: false).then((value) {
+                                                    hideSpinner(context);
+                                                    AppStorage().updateUserWallet().then((_) {
+                                                      setState(() {});
+                                                    });
+                                                  }).catchError((e) {
+                                                    if (kDebugMode) {
+                                                      print(e);
+                                                    }
+                                                    // hideSpinner(context);
+                                                  });
+                                                },
+                                                canselFunction: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                text: "Are you sure you want to buy samurai?"));
+                                      },
+                                      shadowType: 1,
+                                      child: SvgPicture.asset(
+                                        'assets/pages/homepage/btn_buy_samurai_${craftSwitch == 0 ? 'w' : 'f'}.svg',
+                                        fit: BoxFit.fitWidth,
                                       ),
-                                      Text(
-                                        '${_currentSliderValue * 0.02} BNB',
-                                        style: GoogleFonts.spaceMono(
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.white,
-                                          fontSize: 16 / 844 * height,
-                                        ),
-                                      )
-                                    ]),
-                                    SizedBox(
-                                        width: width * 0.44,
-                                        height: width * 0.15,
-                                        child: AnimButton(
-                                          onTap: () {
-                                            showConfirm(context,
-                                                'Are you sure you want to buy samurai?',
-                                                () {
-                                              Navigator.pop(context);
-                                              showSpinner(context);
-                                              Rest.sendMintSamurai(
-                                                      _currentSliderValue
-                                                          .toInt(),
-                                                      craftSwitch == 0
-                                                          ? "WATER_SAMURAI_BSC"
-                                                          : "FIRE_SAMURAI_BSC",
-                                                      useDpMint: false)
-                                                  .then((value) {
-                                                hideSpinner(context);
-                                                AppStorage()
-                                                    .updateUserWallet()
-                                                    .then((_) {
-                                                  setState(() {});
-                                                });
-                                              }).catchError((e) {
-                                                if (kDebugMode) {
-                                                  print(e);
-                                                }
-                                                hideSpinner(context);
-                                              });
-                                            },
-                                                price:
-                                                    '${_currentSliderValue * 0.02} BNB');
-                                          },
-                                          shadowType: 1,
-                                          child: SvgPicture.asset(
-                                            'assets/pages/homepage/btn_buy_samurai_${craftSwitch == 0 ? 'w' : 'f'}.svg',
-                                            fit: BoxFit.fitWidth,
-                                          ),
-                                        ))
-                                  ])))
+                                    ))
+                              ])))
                     ]))
               ],
             ),
