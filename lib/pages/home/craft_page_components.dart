@@ -454,7 +454,9 @@ class CraftPageComponents {
                               AnimButton(
                                 shadowType: 2,
                                 onTap: () {
-                                  showDialog(context: context, builder: ((context) => CustomPopup(text: switchMode == 0
+                                  showDialog(context: context, builder: ((context) => CustomPopup(
+                                    isError: false,
+                                    text: switchMode == 0
                                           ? 'Army Samurai can participate in battles and accumulate XP. Free Samurai can be withdrawn to your wallet. Army Samurai must be at 100% health to transfer.'
                                           : 'You can withdraw Free Samurai, after which they will available on your wallet',)));
                                 },

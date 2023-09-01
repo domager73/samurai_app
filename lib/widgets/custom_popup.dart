@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:samurai_app/utils/colors.dart';
 import 'package:samurai_app/utils/fonts.dart';
 import 'package:samurai_app/utils/gradients.dart';
 import 'package:samurai_app/widgets/buttons/cansel_btn.dart';
@@ -8,38 +9,17 @@ import 'package:samurai_app/widgets/buttons/yes_btn.dart';
 class CustomPopup extends StatefulWidget {
   final String text;
 
-  const CustomPopup({super.key, required this.text});
+  final bool isError;
+
+  const CustomPopup({super.key, required this.text, required this.isError, });
 
   @override
   State<CustomPopup> createState() => _CustomPopupState();
 }
 
 class _CustomPopupState extends State<CustomPopup> {
-  bool isReversed = false;
-
   @override
   Widget build(BuildContext context) {
-    List<Widget> buttonList = [
-      Align(
-          alignment: Alignment.centerLeft,
-          child: ButtonCansel(
-            onTap: () async {
-              setState(() {
-                isReversed = true;
-              });
-            },
-          )),
-      Align(
-          alignment: Alignment.bottomRight,
-          child: ButtonYes(
-            onTap: () async {
-              setState(() {
-                isReversed = false;
-              });
-            },
-          )),
-    ];
-
     final size = MediaQuery.sizeOf(context);
 
     return Dialog(
@@ -63,23 +43,42 @@ class _CustomPopupState extends State<CustomPopup> {
                 children: [
                   Text(
                     widget.text,
-                    style: AppTypography.spaseMono16,
+                    style: AppTypography.spaseMono16.copyWith(color: widget.isError ? AppColors.textRed : Colors.white),
                     textAlign: TextAlign.start,
                   ),
                   const SizedBox(
                     height: 17,
                   ),
-                  SizedBox(
-                    width: 290,
-                    height: 42,
-                    child: Stack(
-                      children: buttonList,
-                    ),
-                  )
+                  
                 ],
               ),
             ),
           )),
+    );
+  }
+
+  Widget buildActionButtonsRow() {
+    return SizedBox(
+      width: 288,
+      height: 40,
+      child: Stack(
+        children: [
+          Align(
+              alignment: Alignment.topLeft,
+              child: ButtonCansel(
+                onTap: () async {
+                  setState(() {
+                    Navigator.pop(context);
+                  });
+                },
+              )),
+          Align(
+              alignment: Alignment.bottomRight,
+              child: ButtonYes(
+                onTap: () async {},
+              )),
+        ],
+      ),
     );
   }
 }
@@ -139,8 +138,7 @@ class PopupPainter extends CustomPainter {
     canvas.drawPath(path_2, paint_2_stroke);
 
     Paint paint_2_fill = Paint()..style = PaintingStyle.fill;
-    paint_2_fill.shader = AppGradients.popupBack.createShader(
-        Rect.fromPoints(const Offset(0, 0), Offset(size.width, size.height)));
+    paint_2_fill.shader = AppGradients.popupBack.createShader(Rect.fromPoints(const Offset(0, 0), Offset(size.width, size.height)));
     ;
     canvas.drawPath(path_2, paint_2_fill);
   }
