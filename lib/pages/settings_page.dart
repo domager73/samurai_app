@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:samurai_app/data/music_manager.dart';
+import 'package:samurai_app/widgets/popups/custom_choose_popup.dart';
 
 import '../components/anim_button.dart';
 import '../components/show_confirm.dart';
@@ -97,11 +98,17 @@ class _SettingsPageState extends State<SettingsPage> {
                     await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.play().then((value) async {
                       await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.seek(Duration(seconds: 0));
                     });
-
-                    showConfirm(context, 'Anyone who knows your wallet\'s seed phrase will be able to access it. Make sure no one sees your screen now!', () {
-                      Navigator.pop(context);
-                      Navigator.of(context).pushNamed('/seed');
-                    });
+                    showDialog(
+                        context: context,
+                        builder: (context) => CustomChoosePopup(
+                            acceptFunction: () {
+                              Navigator.pop(context);
+                              Navigator.of(context).pushNamed('/seed');
+                            },
+                            canselFunction: () {
+                              Navigator.pop(context);
+                            },
+                            text: "Anyone who knows your wallet\'s seed phrase will be able to access it. Make sure no one sees your screen now!"));
                   },
                 ),
                 separator(width),

@@ -10,6 +10,7 @@ import 'package:samurai_app/components/show_confirm.dart';
 import 'package:samurai_app/components/storage.dart';
 import 'package:samurai_app/pages/home/craft_page_components.dart';
 import 'package:samurai_app/utils/enums.dart';
+import 'package:samurai_app/widgets/popups/custom_choose_popup.dart';
 
 import '../../api/rest.dart';
 import '../../components/anim_button.dart';
@@ -240,24 +241,31 @@ class _HeroMintPageState extends State<HeroMintPage> with SingleTickerProviderSt
                 child: PresButton(
                     player: GetIt.I<MusicManager>().smallKeyWeaponPlayer,
                     onTap: () {
-                      showConfirm(context, 'Do you really want to make a hero?', () async {
-                        String heroType = e['name'].toString().toUpperCase();
+                       showDialog(
+                          context: context,
+                          builder: (context) => CustomChoosePopup(
+                              acceptFunction: () async {
+                                String heroType = e['name'].toString().toUpperCase();
 
-                        showSpinner(context);
+                                showSpinner(context);
 
-                        await Rest.mintUserHero(
-                          widget.craftSwitch == 0 ? SamuraiType.WATER : SamuraiType.FIRE,
-                          heroType,
-                        );
+                                await Rest.mintUserHero(
+                                  widget.craftSwitch == 0 ? SamuraiType.WATER : SamuraiType.FIRE,
+                                  heroType,
+                                );
 
-                        updateXp();
+                                updateXp();
 
-                        if (context.mounted) {
-                          hideSpinner(context);
-                        }
+                                if (context.mounted) {
+                                  hideSpinner(context);
+                                }
 
-                        Navigator.pop(context);
-                      });
+                                Navigator.pop(context);
+                              },
+                              canselFunction: () {
+                                Navigator.pop(context);
+                              },
+                              text: "Do you really want to make a hero?")); 
                     },
                     disabled: ((widget.craftSwitch == 0 ? waterSamuraiXp : fireSamuraiXp) ?? 0.0) < e['XP'] || user['ryo_balance'] < 4000,
                     params: {'width': width},

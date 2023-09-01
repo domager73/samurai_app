@@ -24,8 +24,10 @@ class _ButtonYesState extends State<ButtonYes> {
       isTapped = true;
     });
 
-    await Future.delayed(GlobalConstants.animDuration).then((value) {
-      if (mounted) Navigator.pop(context);
+    await Future.delayed(GlobalConstants.animDuration, () {
+      setState(() {
+        isTapped = false;
+      });
     });
   }
 
@@ -43,8 +45,7 @@ class _ButtonYesState extends State<ButtonYes> {
             alignment: Alignment.center,
             child: Text(
               "yes".toUpperCase(),
-              style: AppTypography.amazObit17Dark
-                  .copyWith(color: AppColors.textDark),
+              style: AppTypography.amazObit17Dark.copyWith(color: AppColors.textDark),
             ),
           ),
         ),

@@ -215,7 +215,11 @@ class CraftPageComponents {
                         }
                       } catch (e) {
                         hideSpinner(context);
-                        await showError(context, 'Insufficient funds');
+
+                        await showDialog(
+                          context: context,
+                          builder: (context) => const CustomPopup(text: 'Insufficient funds', isError: true),
+                        );
                       }
                       if (context.mounted) {
                         Navigator.of(context).pop();
@@ -246,7 +250,10 @@ class CraftPageComponents {
         }
       } catch (e) {
         hideSpinner(context);
-        await showError(context, 'Insufficient funds. Deposit some BNB to your crypto wallet.');
+        await showDialog(
+          context: context,
+          builder: (context) => const CustomPopup(text: 'Insufficient funds. Deposit some BNB to your crypto wallet.', isError: true),
+        );
       }
       if (context.mounted) {
         Navigator.of(context).pop();
@@ -455,11 +462,14 @@ class CraftPageComponents {
                               AnimButton(
                                 shadowType: 2,
                                 onTap: () {
-                                  showDialog(context: context, builder: ((context) => CustomPopup(
-                                    isError: false,
-                                    text: switchMode == 0
-                                          ? 'Army Samurai can participate in battles and accumulate XP. Free Samurai can be withdrawn to your wallet. Army Samurai must be at 100% health to transfer.'
-                                          : 'You can withdraw Free Samurai, after which they will available on your wallet',)));
+                                  showDialog(
+                                      context: context,
+                                      builder: ((context) => CustomPopup(
+                                            isError: false,
+                                            text: switchMode == 0
+                                                ? 'Army Samurai can participate in battles and accumulate XP. Free Samurai can be withdrawn to your wallet. Army Samurai must be at 100% health to transfer.'
+                                                : 'You can withdraw Free Samurai, after which they will available on your wallet',
+                                          )));
                                 },
                                 child: SvgPicture.asset(
                                   'assets/pages/homepage/craft/info.svg',
@@ -568,7 +578,12 @@ class CraftPageComponents {
                           AnimButton(
                             shadowType: 2,
                             onTap: () async {
-                              showError(context, 'You will not be able to participate in battles when the health of your Army drops to 0%. You can heal the Army or add new Samurai to the Army to replenish the health bar.', type: 2);
+                              showDialog(
+                                  context: context,
+                                  builder: (context) => const CustomPopup(
+                                        isError: false,
+                                        text: 'You will not be able to participate in battles when the health of your Army drops to 0%. You can heal the Army or add new Samurai to the Army to replenish the health bar.',
+                                      ));
                             },
                             child: SvgPicture.asset(
                               'assets/pages/homepage/craft/info.svg',
@@ -609,9 +624,16 @@ class CraftPageComponents {
                       const Spacer(flex: 12),
                       PresButton(
                         onTap: () {
-                          showConfirm(context, 'Are you sure you want to spend RYO to heal your army?', () {
-                            Navigator.of(context).popUntil((route) => route.isFirst);
-                          });
+                          showDialog(
+                              context: context,
+                              builder: (context) => CustomChoosePopup(
+                                  acceptFunction: () {
+                                    Navigator.of(context).popUntil((route) => route.isFirst);
+                                  },
+                                  canselFunction: () {
+                                    Navigator.pop(context);
+                                  },
+                                  text: "Are you sure you want to spend RYO to heal your army?"));
                         },
                         disabled: true,
                         params: {

@@ -72,25 +72,6 @@ class _EnterSeedPageState extends State<EnterSeedPage> {
         arguments: PinCodePageType.create,
       );
     }
-    /*} catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-      hideSpinner(context);
-      await showError(context, 'Wallet is already in use');
-      try {
-        await AppStorage().remove(
-          'wallet_adress',
-        );
-        await AppStorage().remove(
-          'wallet_mnemonic',
-        );
-      } catch (_) {
-        if (mounted) {
-          Navigator.of(context).pop();
-        }
-      }
-    }*/
   }
 
   @override

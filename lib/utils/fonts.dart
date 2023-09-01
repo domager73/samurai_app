@@ -23,5 +23,12 @@ class AppTypography {
       color: Colors.white, fontWeight: FontWeight.w400, fontSize: 15);
 
   static TextStyle spaceMonoW700 = _spaceMono.copyWith(
-      color: Colors.white, fontWeight: FontWeight.w700, fontSize: 15);
+      color: Colors.white, fontWeight: FontWeight.w700, fontSize: 15, letterSpacing: 1);
+
+  static TextStyle spaceMono13Sky = _spaceMono.copyWith(
+    color: AppColors.textSky,
+    fontSize: 15,
+    fontWeight: FontWeight.w700,
+    letterSpacing: 1
+  );
 }

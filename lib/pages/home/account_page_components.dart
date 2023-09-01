@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:samurai_app/widgets/popups/custom_popup.dart';
 
 import '../../api/rest.dart';
 import '../../components/anim_button.dart';
@@ -37,10 +38,8 @@ class AccountPageComponents {
                       topLeft: Radius.circular(32),
                       topRight: Radius.circular(32),
                     ),
-                    image: DecorationImage(
-                        image: modalBottomsheetBg, fit: BoxFit.fill)),
-                padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).viewInsets.bottom),
+                    image: DecorationImage(image: modalBottomsheetBg, fit: BoxFit.fill)),
+                padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(28.0, 28.0, 28.0, 0.0),
                   // content padding
@@ -52,14 +51,9 @@ class AccountPageComponents {
                         children: [
                           PresButton(
                             player: GetIt.I<MusicManager>().keyBackSignCloseX,
-                            onTap: () async{
-                              await GetIt.I<MusicManager>()
-                                  .popupDownSybMenuPlayer
-                                  .play()
-                                  .then((value) async {
-                                await GetIt.I<MusicManager>()
-                                    .popupDownSybMenuPlayer
-                                    .seek(Duration(seconds: 0));
+                            onTap: () async {
+                              await GetIt.I<MusicManager>().popupDownSybMenuPlayer.play().then((value) async {
+                                await GetIt.I<MusicManager>().popupDownSybMenuPlayer.seek(Duration(seconds: 0));
                               });
 
                               Navigator.of(context).pop();
@@ -92,8 +86,7 @@ class AccountPageComponents {
                         ],
                       ),
                       Padding(
-                          padding:
-                              const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                          padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
                           child: Text(
                             "ENTER NEW E-MAIL",
                             style: GoogleFonts.spaceMono(
@@ -117,8 +110,7 @@ class AccountPageComponents {
                             ),
                           )),
                       Padding(
-                          padding: const EdgeInsets.only(
-                              top: 16.0, left: 10.0, right: 10.0),
+                          padding: const EdgeInsets.only(top: 16.0, left: 10.0, right: 10.0),
                           child: SamuraiTextField(
                               screeenHeight: height,
                               screeenWidth: width,
@@ -152,8 +144,7 @@ class AccountPageComponents {
                                 }
                               })),
                       Padding(
-                          padding: const EdgeInsets.only(
-                              top: 16.0, left: 10.0, right: 10.0),
+                          padding: const EdgeInsets.only(top: 16.0, left: 10.0, right: 10.0),
                           child: SamuraiTextField(
                             screeenHeight: height,
                             screeenWidth: width,
@@ -164,16 +155,12 @@ class AccountPageComponents {
                             }),
                           )),
                       Padding(
-                          padding: const EdgeInsets.only(
-                              top: 10.0, left: 10.0, right: 10.0, bottom: 10.0),
+                          padding: const EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0, bottom: 10.0),
                           child: PresButton(
                             onTap: () async {
-                              if (email.isNotEmpty &&
-                                  code.isNotEmpty &&
-                                  newcode.isNotEmpty) {
+                              if (email.isNotEmpty && code.isNotEmpty && newcode.isNotEmpty) {
                                 showSpinner(context);
-                                Rest.checkNewEmailCode(email, code, newcode)
-                                    .then((_) {
+                                Rest.checkNewEmailCode(email, code, newcode).then((_) {
                                   AppStorage().updateUserWallet().then((_) {
                                     hideSpinner(context);
                                     Navigator.of(context).pop();
@@ -185,19 +172,16 @@ class AccountPageComponents {
                                   if (kDebugMode) {
                                     print(e);
                                   }
-                                  showError(context, 'Wrong code')
-                                      .then((_) => Navigator.of(context).pop());
+
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) => const CustomPopup(text: 'Wrong code', isError: true),
+                                  );
                                 });
                               }
                             },
-                            disabled: !(email.isNotEmpty &&
-                                code.isNotEmpty &&
-                                newcode.isNotEmpty),
-                            params: {
-                              'text': 'confirm',
-                              'width': width,
-                              'height': height
-                            },
+                            disabled: !(email.isNotEmpty && code.isNotEmpty && newcode.isNotEmpty),
+                            params: {'text': 'confirm', 'width': width, 'height': height},
                             child: loginBtn,
                           )),
                     ],

@@ -7,6 +7,8 @@ import 'package:flutter_xlider/flutter_xlider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:samurai_app/components/pop_up_spinner.dart';
 import 'package:samurai_app/components/show_confirm.dart';
+import 'package:samurai_app/widgets/popups/custom_choose_popup.dart';
+import 'package:samurai_app/widgets/popups/popup_buy_samurai.dart';
 
 import '../../api/rest.dart';
 import '../../components/anim_button.dart';
@@ -88,9 +90,7 @@ class _HomeMainPageState extends State<HomeMainPage> {
     }
 
     daysController = FixedExtentScrollController(initialItem: -diff.inDays);
-    hoursController = FixedExtentScrollController(
-        initialItem: -(diff.inHours - diff.inDays * 24)
-    );
+    hoursController = FixedExtentScrollController(initialItem: -(diff.inHours - diff.inDays * 24));
     if (context.mounted) {
       setState(() {});
     }
@@ -98,44 +98,36 @@ class _HomeMainPageState extends State<HomeMainPage> {
 
   Widget sliderCount(double width) {
     return Padding(
-      padding: EdgeInsets.only(top: width * 0.03, left: width * 0.065, right: width * 0.06),
-      child: FlutterSlider(
-        values: [_currentSliderValue],
-        max: 10,
-        min: 1,
-        handler: FlutterSliderHandler(
-          child: const SizedBox(height: 1.0),
-          decoration: const BoxDecoration(
-            color: Colors.transparent,
-            image: DecorationImage(image: AssetImage('assets/pages/homepage/btn_range.png'))
-          )
-        ),
-        handlerAnimation: const FlutterSliderHandlerAnimation(scale: 1.0),
-        trackBar: FlutterSliderTrackBar(
-          activeTrackBarHeight: width * 0.011,
-          inactiveTrackBarHeight: width * 0.011,
-          activeTrackBar: const BoxDecoration(color: Color(0xFF00FFFF)),
-          inactiveTrackBar: const BoxDecoration(color: Color(0x6600FFFF)),
-        ),
-        tooltip: FlutterSliderTooltip(
-          format: (_) => _currentSliderValue.toStringAsFixed(0),
-          textStyle: GoogleFonts.spaceMono(
-            fontWeight: FontWeight.w700,
-            fontSize: width * 0.036,
-            color: const Color(0xFF00FFFF),
+        padding: EdgeInsets.only(top: width * 0.03, left: width * 0.065, right: width * 0.06),
+        child: FlutterSlider(
+          values: [_currentSliderValue],
+          max: 10,
+          min: 1,
+          handler: FlutterSliderHandler(child: const SizedBox(height: 1.0), decoration: const BoxDecoration(color: Colors.transparent, image: DecorationImage(image: AssetImage('assets/pages/homepage/btn_range.png')))),
+          handlerAnimation: const FlutterSliderHandlerAnimation(scale: 1.0),
+          trackBar: FlutterSliderTrackBar(
+            activeTrackBarHeight: width * 0.011,
+            inactiveTrackBarHeight: width * 0.011,
+            activeTrackBar: const BoxDecoration(color: Color(0xFF00FFFF)),
+            inactiveTrackBar: const BoxDecoration(color: Color(0x6600FFFF)),
           ),
-          boxStyle: const FlutterSliderTooltipBox(decoration: BoxDecoration(color: Colors.transparent)),
-          disableAnimation: true,
-          alwaysShowTooltip: true,
-          positionOffset: FlutterSliderTooltipPositionOffset(top: width * 0.068, left: width * 0.02)
-        ),
-        onDragging: (handlerIndex, lowerValue, upperValue) {
-          _currentSliderValue = lowerValue;
-          //_upperValue = upperValue;
-          setState(() {});
-        },
-      )
-    );
+          tooltip: FlutterSliderTooltip(
+              format: (_) => _currentSliderValue.toStringAsFixed(0),
+              textStyle: GoogleFonts.spaceMono(
+                fontWeight: FontWeight.w700,
+                fontSize: width * 0.036,
+                color: const Color(0xFF00FFFF),
+              ),
+              boxStyle: const FlutterSliderTooltipBox(decoration: BoxDecoration(color: Colors.transparent)),
+              disableAnimation: true,
+              alwaysShowTooltip: true,
+              positionOffset: FlutterSliderTooltipPositionOffset(top: width * 0.068, left: width * 0.02)),
+          onDragging: (handlerIndex, lowerValue, upperValue) {
+            _currentSliderValue = lowerValue;
+            //_upperValue = upperValue;
+            setState(() {});
+          },
+        ));
   }
 
   @override
@@ -143,7 +135,10 @@ class _HomeMainPageState extends State<HomeMainPage> {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 
+    final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Colors.transparent,
       body: RawScrollbar(
         radius: const Radius.circular(36),
@@ -169,28 +164,28 @@ class _HomeMainPageState extends State<HomeMainPage> {
                 Padding(
                     padding: EdgeInsets.only(left: 0.07 * width, right: 0.08 * width, top: 0.02 * height),
                     child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, crossAxisAlignment: CrossAxisAlignment.start, children: [
-                      Padding(padding: EdgeInsets.only(top: width * 0.033), child: SvgPicture.asset(
-                        'assets/pages/homepage/craft/info.svg',
-                        height: width * 0.11,
-                        width: width * 0.11,
-                      )),
+                      Padding(
+                          padding: EdgeInsets.only(top: width * 0.033),
+                          child: SvgPicture.asset(
+                            'assets/pages/homepage/craft/info.svg',
+                            height: width * 0.11,
+                            width: width * 0.11,
+                          )),
                       Container(
-                        padding: EdgeInsets.only(top: 0.01 * height),
-                        alignment: Alignment.topCenter,
-                        width: width - width * 0.30,
-                        child: Text(
-                          "UNTIL THE END OF THE ALPHA MINT LEFT:".toUpperCase(),
-                          style: GoogleFonts.spaceMono(
-                            fontSize: 14 / 844 * height,
-                            fontWeight: FontWeight.w700,
-                            color: const Color(0xFF00FFFF),
-                          ),
-                          softWrap: true,
-                          textAlign: TextAlign.center,
-                        )
-                      )
-                    ])
-                ),
+                          padding: EdgeInsets.only(top: 0.01 * height),
+                          alignment: Alignment.topCenter,
+                          width: width - width * 0.30,
+                          child: Text(
+                            "UNTIL THE END OF THE ALPHA MINT LEFT:".toUpperCase(),
+                            style: GoogleFonts.spaceMono(
+                              fontSize: 14 / 844 * height,
+                              fontWeight: FontWeight.w700,
+                              color: const Color(0xFF00FFFF),
+                            ),
+                            softWrap: true,
+                            textAlign: TextAlign.center,
+                          ))
+                    ])),
                 SizedBox(height: 5 / 844 * height),
                 SizedBox(
                   height: 166 / 354 * (width - width * 0.14),
@@ -207,10 +202,7 @@ class _HomeMainPageState extends State<HomeMainPage> {
                             const Spacer(
                               flex: 30,
                             ),
-                            Expanded(
-                              flex: 62,
-                              child: clockWheel(width, days, daysPrev, daysNext)
-                            ),
+                            Expanded(flex: 62, child: clockWheel(width, days, daysPrev, daysNext)),
                             const Spacer(
                               flex: 8,
                             ),
@@ -218,10 +210,7 @@ class _HomeMainPageState extends State<HomeMainPage> {
                             const Spacer(
                               flex: 33,
                             ),
-                            Expanded(
-                              flex: 57,
-                                child: clockWheel(width, hours, hoursPrev, hoursNext)
-                            ),
+                            Expanded(flex: 57, child: clockWheel(width, hours, hoursPrev, hoursNext)),
                             const Spacer(
                               flex: 10,
                             ),
@@ -239,164 +228,147 @@ class _HomeMainPageState extends State<HomeMainPage> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 0.04 * height),
-                  child: Text(
-                    "BUY samurai for your army:".toUpperCase(),
-                    style: GoogleFonts.spaceMono(
-                      fontSize: 14 / 844 * height,
-                      fontWeight: FontWeight.w700,
-                      color: const Color(0xFF00FFFF),
-                    ),
-                    textAlign: TextAlign.center,
-                  )
-                ),
+                    padding: EdgeInsets.only(top: 0.04 * height),
+                    child: Text(
+                      "BUY samurai for your army:".toUpperCase(),
+                      style: GoogleFonts.spaceMono(
+                        fontSize: 14 / 844 * height,
+                        fontWeight: FontWeight.w700,
+                        color: const Color(0xFF00FFFF),
+                      ),
+                      textAlign: TextAlign.center,
+                    )),
                 Container(
-                  width: width,
-                  height: width * 0.6,
-                  margin: EdgeInsets.only(top: 0.02 * height),
-                  child: Stack(children: [
-                    SvgPicture.asset(
-                      'assets/pages/homepage/bg_mint.svg',
-                      alignment: Alignment.topCenter,
-                      fit: BoxFit.fitWidth,
-                    ),
-                    SizedBox(
-                      width: width,
-                      height: width * 0.145,
-                      child: Row(children: [
-                        SizedBox(
-                          width: width * (craftSwitch == 0 ? 0.56 : 0.442),
-                          height: width * 0.145,
-                          child: InkWell(
-                            overlayColor: MaterialStateProperty.all(
-                              Colors.transparent,
-                            ),
-                            onTap: () {
-                              widget.switchSamuraiType(0);
-                              setState(() {
-                                craftSwitch = 0;
-                              });
-                            },
-                            child: craftSwitch == 0 ? SvgPicture.asset(
-                              'assets/pages/homepage/tab_mint_water.svg',
-                              fit: BoxFit.fitWidth,
-                            ) : Container(
-                              alignment: Alignment.centerLeft,
-                              padding: EdgeInsets.only(left: width * 0.163),
-                              child: Text(
-                                "WATER",
-                                style: TextStyle(
-                                  fontSize: 20 / 844 * height,
-                                  fontFamily: 'AmazObitaemOstrovItalic',
-                                  color: const Color(0xFF00FFFF)
-                                ),
-                                textAlign: TextAlign.center,
-                              )
-                            )
-                          )
-                        ),
-                        SizedBox(
-                          width: width * (craftSwitch == 0 ? 0.40 : 0.555),
-                          height: width * 0.145,
-                          child: InkWell(
-                            overlayColor: MaterialStateProperty.all(
-                              Colors.transparent,
-                            ),
-                            onTap: () {
-                              widget.switchSamuraiType(1);
-                              setState(() {
-                                craftSwitch = 1;
-                              });
-                            },
-                            child: craftSwitch == 0
-                              ? Container(
-                                  alignment: Alignment.centerLeft,
-                                  padding: EdgeInsets.only(left: width * 0.13),
-                                  child: Text(
-                                    "FIRE",
-                                    style: TextStyle(
-                                      fontSize: 20 / 844 * height,
-                                      fontFamily: 'AmazObitaemOstrovItalic',
-                                      color: const Color(0xFF00FFFF)
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  )
-                                )
-                              : SvgPicture.asset(
-                              'assets/pages/homepage/tab_mint_fire.svg',
-                              fit: BoxFit.fitWidth,
-                            )
-                          )
-                        )
-                      ]),
-                    ),
-                    Container(
-                      width: width,
-                      height: width * 0.2,
-                      margin: EdgeInsets.only(top: 0.075 * height),
-                      child: sliderCount(width)
-                    ),
-                    Container(
-                      width: width,
-                      height: width * 0.55,
-                      margin: EdgeInsets.only(top: 0.1 * height),
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 0.06 * width, right: 0.06 * width),
-                        child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                          Row(children: [
-                            Text(
-                              "PRICE: ",
-                              style: GoogleFonts.spaceMono(
-                                fontWeight: FontWeight.w700,
-                                color: const Color(0xFF00FFFF),
-                                fontSize: 16 / 844 * height,
-                              ),
-                            ),
-                            Text(
-                              '${_currentSliderValue * 0.02} BNB',
-                              style: GoogleFonts.spaceMono(
-                                fontWeight: FontWeight.w700,
-                                color: Colors.white,
-                                fontSize: 16 / 844 * height,
-                              ),
-                            )
-                          ]),
+                    width: width,
+                    height: width * 0.6,
+                    margin: EdgeInsets.only(top: 0.02 * height),
+                    child: Stack(children: [
+                      SvgPicture.asset(
+                        'assets/pages/homepage/bg_mint.svg',
+                        alignment: Alignment.topCenter,
+                        fit: BoxFit.fitWidth,
+                      ),
+                      SizedBox(
+                        width: width,
+                        height: width * 0.145,
+                        child: Row(children: [
                           SizedBox(
-                            width: width * 0.44,
-                            height: width * 0.15,
-                            child: AnimButton(
-                              onTap: () {
-                                showConfirm(context, 'Are you sure you want to buy samurai?', () {
-                                  Navigator.pop(context);
-                                  showSpinner(context);
-                                  Rest.sendMintSamurai(
-                                    _currentSliderValue.toInt(), craftSwitch == 0 ? "WATER_SAMURAI_BSC" : "FIRE_SAMURAI_BSC", useDpMint: false)
-                                    .then((value) {
-                                    hideSpinner(context);
-                                    AppStorage().updateUserWallet().then((_) {
-                                      setState(() {});
+                              width: width * (craftSwitch == 0 ? 0.56 : 0.442),
+                              height: width * 0.145,
+                              child: InkWell(
+                                  overlayColor: MaterialStateProperty.all(
+                                    Colors.transparent,
+                                  ),
+                                  onTap: () {
+                                    widget.switchSamuraiType(0);
+                                    setState(() {
+                                      craftSwitch = 0;
                                     });
-                                  }).catchError((e) {
-                                    if (kDebugMode) {
-                                      print(e);
-                                    }
-                                    hideSpinner(context);
-                                  }
-                                  );
-                                }, price: '${_currentSliderValue * 0.02} BNB');
-                              },
-                              shadowType: 1,
-                              child: SvgPicture.asset(
-                                'assets/pages/homepage/btn_buy_samurai_${craftSwitch == 0 ? 'w' : 'f'}.svg',
-                                fit: BoxFit.fitWidth,
-                              ),
-                            )
-                          )
-                        ])
-                      )
-                    )
-                  ])
-                )
+                                  },
+                                  child: craftSwitch == 0
+                                      ? SvgPicture.asset(
+                                          'assets/pages/homepage/tab_mint_water.svg',
+                                          fit: BoxFit.fitWidth,
+                                        )
+                                      : Container(
+                                          alignment: Alignment.centerLeft,
+                                          padding: EdgeInsets.only(left: width * 0.163),
+                                          child: Text(
+                                            "WATER",
+                                            style: TextStyle(fontSize: 20 / 844 * height, fontFamily: 'AmazObitaemOstrovItalic', color: const Color(0xFF00FFFF)),
+                                            textAlign: TextAlign.center,
+                                          )))),
+                          SizedBox(
+                              width: width * (craftSwitch == 0 ? 0.40 : 0.555),
+                              height: width * 0.145,
+                              child: InkWell(
+                                  overlayColor: MaterialStateProperty.all(
+                                    Colors.transparent,
+                                  ),
+                                  onTap: () {
+                                    widget.switchSamuraiType(1);
+                                    setState(() {
+                                      craftSwitch = 1;
+                                    });
+                                  },
+                                  child: craftSwitch == 0
+                                      ? Container(
+                                          alignment: Alignment.centerLeft,
+                                          padding: EdgeInsets.only(left: width * 0.13),
+                                          child: Text(
+                                            "FIRE",
+                                            style: TextStyle(fontSize: 20 / 844 * height, fontFamily: 'AmazObitaemOstrovItalic', color: const Color(0xFF00FFFF)),
+                                            textAlign: TextAlign.center,
+                                          ))
+                                      : SvgPicture.asset(
+                                          'assets/pages/homepage/tab_mint_fire.svg',
+                                          fit: BoxFit.fitWidth,
+                                        )))
+                        ]),
+                      ),
+                      Container(width: width, height: width * 0.2, margin: EdgeInsets.only(top: 0.075 * height), child: sliderCount(width)),
+                      Container(
+                          width: width,
+                          height: width * 0.55,
+                          margin: EdgeInsets.only(top: 0.1 * height),
+                          child: Padding(
+                              padding: EdgeInsets.only(left: 0.06 * width, right: 0.06 * width),
+                              child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                                Row(children: [
+                                  Text(
+                                    "PRICE: ",
+                                    style: GoogleFonts.spaceMono(
+                                      fontWeight: FontWeight.w700,
+                                      color: const Color(0xFF00FFFF),
+                                      fontSize: 16 / 844 * height,
+                                    ),
+                                  ),
+                                  Text(
+                                    '${_currentSliderValue * 0.02} BNB',
+                                    style: GoogleFonts.spaceMono(
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.white,
+                                      fontSize: 16 / 844 * height,
+                                    ),
+                                  )
+                                ]),
+                                SizedBox(
+                                    width: width * 0.44,
+                                    height: width * 0.15,
+                                    child: AnimButton(
+                                      onTap: () {
+                                        showDialog(
+                                            context: context,
+                                            builder: (ctx) => PopupBuySamurai(
+                                                price: (_currentSliderValue * 0.02).toString(),
+                                                acceptFunction: () async {
+                                                  Navigator.of(ctx).pop();
+                                                  showSpinner(context);
+                                                  Rest.sendMintSamurai(_currentSliderValue.toInt(), craftSwitch == 0 ? "WATER_SAMURAI_BSC" : "FIRE_SAMURAI_BSC", useDpMint: false).then((value) {
+                                                    hideSpinner(context);
+                                                    AppStorage().updateUserWallet().then((_) {
+                                                      setState(() {});
+                                                    });
+                                                  }).catchError((e) {
+                                                    if (kDebugMode) {
+                                                      print(e);
+                                                    }
+                                                    // hideSpinner(context);
+                                                  });
+                                                },
+                                                canselFunction: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                text: "Are you sure you want to buy samurai?"));
+                                      },
+                                      shadowType: 1,
+                                      child: SvgPicture.asset(
+                                        'assets/pages/homepage/btn_buy_samurai_${craftSwitch == 0 ? 'w' : 'f'}.svg',
+                                        fit: BoxFit.fitWidth,
+                                      ),
+                                    ))
+                              ])))
+                    ]))
               ],
             ),
           ),
@@ -407,49 +379,46 @@ class _HomeMainPageState extends State<HomeMainPage> {
 
   Widget clockWheel(double width, int days, int daysPrev, int daysNext) {
     return SizedBox(
-      height: 120 / 354 * (width - width * 0.14),
-      child: Stack(children: [
-        Positioned(
-          top: -30 / 354 * (width - width * 0.14),
-          child: SizedBox(
-            height: 60 / 354 * (width - width * 0.14),
-            child: Text(
-              daysPrev.toString().padLeft(2, '0'),
-              style: GoogleFonts.spaceMono(
-                fontWeight: FontWeight.w700,
-                color: Colors.white.withOpacity(0.15),
-                fontSize: 50 / 354 * (width - width * 0.14),
+        height: 120 / 354 * (width - width * 0.14),
+        child: Stack(children: [
+          Positioned(
+              top: -30 / 354 * (width - width * 0.14),
+              child: SizedBox(
+                  height: 60 / 354 * (width - width * 0.14),
+                  child: Text(
+                    daysPrev.toString().padLeft(2, '0'),
+                    style: GoogleFonts.spaceMono(
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white.withOpacity(0.15),
+                      fontSize: 50 / 354 * (width - width * 0.14),
+                    ),
+                    overflow: TextOverflow.clip,
+                  ))),
+          Container(
+              padding: EdgeInsets.only(
+                top: 10 / 354 * (width - width * 0.14),
               ),
-              overflow: TextOverflow.clip,
-            )
-          )
-        ),
-        Container(
-          padding: EdgeInsets.only(top: 10 / 354 * (width - width * 0.14),),
-          height: 80 / 354 * (width - width * 0.14),
-          child: Text(
-            days.toString().padLeft(2, '0'),
-            style: GoogleFonts.spaceMono(
-              fontWeight: FontWeight.w700,
-              color: Colors.white,
-              fontSize: 50 / 354 * (width - width * 0.14),
-            )
-          )
-        ),
-        Container(
-          padding: EdgeInsets.only(top: 50 / 354 * (width - width * 0.14),),
-          height: 120 / 354 * (width - width * 0.14),
-          child: Text(
-            daysNext.toString().padLeft(2, '0'),
-            style: GoogleFonts.spaceMono(
-              fontWeight: FontWeight.w700,
-              color: Colors.white.withOpacity(0.15),
-              fontSize: 50 / 354 * (width - width * 0.14),
-            ),
-            overflow: TextOverflow.clip,
-          )
-        ),
-      ])
-    );
+              height: 80 / 354 * (width - width * 0.14),
+              child: Text(days.toString().padLeft(2, '0'),
+                  style: GoogleFonts.spaceMono(
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                    fontSize: 50 / 354 * (width - width * 0.14),
+                  ))),
+          Container(
+              padding: EdgeInsets.only(
+                top: 50 / 354 * (width - width * 0.14),
+              ),
+              height: 120 / 354 * (width - width * 0.14),
+              child: Text(
+                daysNext.toString().padLeft(2, '0'),
+                style: GoogleFonts.spaceMono(
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white.withOpacity(0.15),
+                  fontSize: 50 / 354 * (width - width * 0.14),
+                ),
+                overflow: TextOverflow.clip,
+              )),
+        ]));
   }
 }
