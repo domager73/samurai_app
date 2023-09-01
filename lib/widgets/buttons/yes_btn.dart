@@ -18,17 +18,15 @@ class _ButtonYesState extends State<ButtonYes> {
   bool isTapped = false;
 
   void _onTap() async {
+    widget.onTap();
+
     setState(() {
       isTapped = true;
     });
-    await Future.delayed(GlobalConstants.animDuration, () {
-      Navigator.pop(context);
-    });
-    setState(() {
-      isTapped = false;
-    });
 
-    widget.onTap();
+    await Future.delayed(GlobalConstants.animDuration);
+
+    Navigator.pop(context);
   }
 
   @override
@@ -69,7 +67,8 @@ class _ButtonYesState extends State<ButtonYes> {
                   alignment: Alignment.center,
                   child: Text(
                     "yes".toUpperCase(),
-                    style: AppTypography.amazObit17Dark.copyWith(color: AppColors.textDark),
+                    style: AppTypography.amazObit17Dark
+                        .copyWith(color: AppColors.textDark),
                   ),
                 ),
               ),

@@ -17,11 +17,6 @@ class CustomPopup extends StatefulWidget {
 class _CustomPopupState extends State<CustomPopup> {
   static bool isReversed = false;
 
-  // @override
-  // void dispose(){
-  //   super.dispose();
-  // }
-
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
@@ -69,7 +64,7 @@ class _CustomPopupState extends State<CustomPopup> {
           child: ButtonCansel(
             onTap: () {
               setState(() {
-                isReversed = false;
+                isReversed = true;
               });
             },
           )),
@@ -78,7 +73,7 @@ class _CustomPopupState extends State<CustomPopup> {
           child: ButtonYes(
             onTap: () {
               setState(() {
-                isReversed = true;
+                isReversed = false;
               });
             },
           )),

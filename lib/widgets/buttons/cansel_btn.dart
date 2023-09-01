@@ -18,17 +18,15 @@ class _ButtonCanselState extends State<ButtonCansel> {
   bool isTapped = false;
 
   void _onTap() async {
+    widget.onTap();
+
     setState(() {
       isTapped = true;
     });
-    await Future.delayed(GlobalConstants.animDuration, () {
-      Navigator.pop(context);
-    });
-    setState(() {
-      isTapped = false;
-    });
 
-    widget.onTap();
+    await Future.delayed(GlobalConstants.animDuration);
+
+    Navigator.pop(context);
   }
 
   @override
@@ -70,7 +68,8 @@ class _ButtonCanselState extends State<ButtonCansel> {
                       height: 38.2,
                       child: Text(
                         "cansel".toUpperCase(),
-                        style: AppTypography.amazObit17Dark.copyWith(color: Colors.white),
+                        style: AppTypography.amazObit17Dark
+                            .copyWith(color: Colors.white),
                       ))),
             ),
           ],
