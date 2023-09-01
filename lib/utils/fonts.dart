@@ -44,7 +44,7 @@ class AppTypography {
       color: Colors.white, fontWeight: FontWeight.w700, fontSize: 15, letterSpacing: 1);
 
   static TextStyle spaceMono13Sky = _spaceMono.copyWith(
-    color: AppColors.textSky,
+    color: AppColors.textBlue,
     fontSize: 15,
     fontWeight: FontWeight.w700,
     letterSpacing: 1

@@ -63,7 +63,7 @@ class _CustomPopupState extends State<CustomPopup> {
                       player: null,
                       onTap: () {
                         Navigator.pop(context);
-                      })
+                      }, style: AppTypography.amazObit17Dark,)
                 ],
               ),
             ),

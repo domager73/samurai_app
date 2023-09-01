@@ -5,15 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_xlider/flutter_xlider.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:samurai_app/api/rest.dart';
+import 'package:samurai_app/components/anim_button.dart';
+import 'package:samurai_app/components/blinking_separator.dart';
 import 'package:samurai_app/components/pop_up_spinner.dart';
-import 'package:samurai_app/components/show_confirm.dart';
-import 'package:samurai_app/widgets/popups/custom_choose_popup.dart';
+import 'package:samurai_app/components/storage.dart';
+import 'package:samurai_app/utils/fonts.dart';
 import 'package:samurai_app/widgets/popups/popup_buy_samurai.dart';
-
-import '../../api/rest.dart';
-import '../../components/anim_button.dart';
-import '../../components/blinking_separator.dart';
-import '../../components/storage.dart';
 
 class HomeMainPage extends StatefulWidget {
   const HomeMainPage({
