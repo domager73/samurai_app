@@ -205,7 +205,7 @@ class _HomeMainPageState extends State<HomeMainPage> {
                     children: [
                       Container(
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             clockWheel(width, days, daysPrev, daysNext),
                             const BlinkingSeparator(),
