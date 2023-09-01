@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:samurai_app/utils/fonts.dart';
 import 'package:samurai_app/utils/gradients.dart';
 import 'package:samurai_app/widgets/buttons/cansel_btn.dart';
-import 'package:samurai_app/widgets/buttons/ok_btn.dart';
 import 'package:samurai_app/widgets/buttons/yes_btn.dart';
 
 class CustomPopup extends StatefulWidget {
