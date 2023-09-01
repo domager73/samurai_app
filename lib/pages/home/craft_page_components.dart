@@ -8,6 +8,7 @@ import 'package:samurai_app/components/storage.dart';
 import 'package:samurai_app/data/music_manager.dart';
 import 'package:samurai_app/pages/tfa_page.dart';
 import 'package:samurai_app/utils/fonts.dart';
+import 'package:samurai_app/widgets/popups/custom_choose_popup.dart';
 
 import '../../api/rest.dart';
 import '../../api/wallet.dart';
@@ -15,7 +16,7 @@ import '../../components/anim_button.dart';
 import '../../components/pop_up_spinner.dart';
 import '../../components/samurai_text_field.dart';
 import '../../components/show_confirm.dart';
-import '../../widgets/custom_popup.dart';
+import '../../widgets/popups/custom_popup.dart';
 
 class CraftPageComponents {
   static Future<void> openTransferModalPage({
