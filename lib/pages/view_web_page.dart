@@ -89,7 +89,7 @@ class _ViewWebPageState extends State<ViewWebPage> {
           margin: EdgeInsets.only(top: width * 0.00, left: width * 0.02),
           child: PresButton(
             onTap: () => Navigator.of(context).pop(),
-            params: {'width': width},
+            params: {'width': width * 0.9},
             child: backBtn,
             player: GetIt.I<MusicManager>().keyBackSignCloseX,
           ))

@@ -12,6 +12,7 @@ class CustomPainterButton extends StatefulWidget {
   final String text;
   final AudioPlayer player;
   final Function onTap;
+  final TextStyle style;
 
   const CustomPainterButton(
       {super.key,
@@ -20,7 +21,8 @@ class CustomPainterButton extends StatefulWidget {
       required this.width,
       required this.text,
       required this.player,
-      required this.onTap});
+      required this.onTap,
+      required this.style});
 
   @override
   State<CustomPainterButton> createState() => _CustomPainterButtonState();
@@ -73,8 +75,8 @@ class _CustomPainterButtonState extends State<CustomPainterButton> {
               width: widget.width,
               height: widget.height,
               child: Text(
-                'OK',
-                style: AppTypography.amazObit17Dark,
+                widget.text,
+                style: widget.style,
               ),
             ),
           ),

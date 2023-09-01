@@ -21,11 +21,14 @@ class AccountPageComponents {
     required double height,
   }) async {
     Timer _timer;
-    int? timerValue;
+    Timer _timer2;
+    int? timerValueOld;
+    int? timerValueNew;
     bool isAgree = false;
-    String email = '';
-    String code = '';
-    String newcode = '';
+
+    TextEditingController newEmailController = TextEditingController();
+    TextEditingController newEmailCodeController = TextEditingController();
+    TextEditingController oldEmailCodeController = TextEditingController();
 
     showModalBottomSheet(
         context: context,
@@ -52,7 +55,7 @@ class AccountPageComponents {
                         children: [
                           PresButton(
                             player: GetIt.I<MusicManager>().keyBackSignCloseX,
-                            onTap: () async{
+                            onTap: () async {
                               await GetIt.I<MusicManager>()
                                   .popupDownSybMenuPlayer
                                   .play()
@@ -106,15 +109,11 @@ class AccountPageComponents {
                       Padding(
                           padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                           child: SamuraiTextField(
+                            controller: newEmailController,
                             screeenHeight: height,
                             screeenWidth: width,
                             hint: "New Email address",
                             keyboardType: TextInputType.emailAddress,
-                            onChanged: (value) => setState(
-                              () {
-                                email = value;
-                              },
-                            ),
                           )),
                       Padding(
                           padding: const EdgeInsets.only(
@@ -122,27 +121,56 @@ class AccountPageComponents {
                           child: SamuraiTextField(
                               screeenHeight: height,
                               screeenWidth: width,
-                              hint: "Old email verification code",
+                              controller: oldEmailCodeController,
+                              hint: "Old email code",
                               keyboardType: TextInputType.number,
-                              onChanged: (value) => setState(() {
-                                    code = value;
-                                  }),
                               buttonWithTimerEnabled: true,
-                              timerValue: timerValue,
+                              timerValue: timerValueOld,
                               onTapTimerButton: () {
-                                if (email.isNotEmpty) {
-                                  Rest.changeEmail(email);
+                                Rest.changeEmail(oldEmailCodeController.text);
+                                setState(() {
+                                  timerValueOld = 60;
+                                });
+                                _timer = Timer.periodic(
+                                  const Duration(seconds: 1),
+                                  (timer) {
+                                    setState(() {
+                                      timerValueOld = timerValueOld! - 1;
+                                      if (timerValueOld == 0) {
+                                        setState(() {
+                                          timerValueOld = null;
+                                          timer.cancel();
+                                        });
+                                      }
+                                    });
+                                  },
+                                );
+                              })),
+                      Padding(
+                          padding: const EdgeInsets.only(
+                              top: 16.0, left: 10.0, right: 10.0),
+                          child: SamuraiTextField(
+                              screeenHeight: height,
+                              screeenWidth: width,
+                              controller: newEmailCodeController,
+                              hint: "New email code",
+                              keyboardType: TextInputType.number,
+                              buttonWithTimerEnabled: true,
+                              timerValue: timerValueNew,
+                              onTapTimerButton: () {
+                                if (newEmailController.text.length >= 5) {
+                                  Rest.changeEmail(newEmailController.text);
                                   setState(() {
-                                    timerValue = 60;
+                                    timerValueNew = 60;
                                   });
-                                  _timer = Timer.periodic(
+                                  _timer2 = Timer.periodic(
                                     const Duration(seconds: 1),
                                     (timer) {
                                       setState(() {
-                                        timerValue = timerValue! - 1;
-                                        if (timerValue == 0) {
+                                        timerValueNew = timerValueNew! - 1;
+                                        if (timerValueNew == 0) {
                                           setState(() {
-                                            timerValue = null;
+                                            timerValueNew = null;
                                             timer.cancel();
                                           });
                                         }
@@ -153,46 +181,33 @@ class AccountPageComponents {
                               })),
                       Padding(
                           padding: const EdgeInsets.only(
-                              top: 16.0, left: 10.0, right: 10.0),
-                          child: SamuraiTextField(
-                            screeenHeight: height,
-                            screeenWidth: width,
-                            hint: "New Email verification code",
-                            keyboardType: TextInputType.number,
-                            onChanged: (value) => setState(() {
-                              newcode = value;
-                            }),
-                          )),
-                      Padding(
-                          padding: const EdgeInsets.only(
                               top: 10.0, left: 10.0, right: 10.0, bottom: 10.0),
                           child: PresButton(
                             onTap: () async {
-                              if (email.isNotEmpty &&
-                                  code.isNotEmpty &&
-                                  newcode.isNotEmpty) {
-                                showSpinner(context);
-                                Rest.checkNewEmailCode(email, code, newcode)
-                                    .then((_) {
-                                  AppStorage().updateUserWallet().then((_) {
-                                    hideSpinner(context);
-                                    Navigator.of(context).pop();
-                                  }).catchError((e) {
-                                    hideSpinner(context);
-                                  });
+                              showSpinner(context);
+                              Rest.checkNewEmailCode(
+                                      newEmailController.text,
+                                      oldEmailCodeController.text,
+                                      newEmailCodeController.text)
+                                  .then((_) {
+                                AppStorage().updateUserWallet().then((_) {
+                                  hideSpinner(context);
+                                  Navigator.of(context).pop();
                                 }).catchError((e) {
                                   hideSpinner(context);
-                                  if (kDebugMode) {
-                                    print(e);
-                                  }
-                                  showError(context, 'Wrong code')
-                                      .then((_) => Navigator.of(context).pop());
                                 });
-                              }
+                              }).catchError((e) {
+                                hideSpinner(context);
+                                if (kDebugMode) {
+                                  print(e);
+                                }
+                                showError(context, 'Wrong code')
+                                    .then((_) => Navigator.of(context).pop());
+                              });
                             },
-                            disabled: !(email.isNotEmpty &&
-                                code.isNotEmpty &&
-                                newcode.isNotEmpty),
+                            disabled: !(newEmailController.text.isNotEmpty &&
+                                oldEmailCodeController.text.isNotEmpty &&
+                                newEmailCodeController.text.isNotEmpty),
                             params: {
                               'text': 'confirm',
                               'width': width,

@@ -18,7 +18,6 @@ class _BlinkingSeparatorState extends State<BlinkingSeparator>
   void initState() {
     super.initState();
 
-    // Start the periodic timer which rebuilds our widget
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
         _opacity = _opacity == 1 ? 0 : 1;
