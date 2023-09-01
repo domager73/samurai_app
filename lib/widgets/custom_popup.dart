@@ -15,10 +15,31 @@ class CustomPopup extends StatefulWidget {
 }
 
 class _CustomPopupState extends State<CustomPopup> {
-  static bool isReversed = false;
+  bool isReversed = false;
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> buttonList = [
+      Align(
+          alignment: Alignment.centerLeft,
+          child: ButtonCansel(
+            onTap: () async {
+              setState(() {
+                isReversed = true;
+              });
+            },
+          )),
+      Align(
+          alignment: Alignment.bottomRight,
+          child: ButtonYes(
+            onTap: () async {
+              setState(() {
+                isReversed = false;
+              });
+            },
+          )),
+    ];
+
     final size = MediaQuery.sizeOf(context);
 
     return Dialog(
@@ -45,46 +66,20 @@ class _CustomPopupState extends State<CustomPopup> {
                     style: AppTypography.spaseMono16,
                     textAlign: TextAlign.start,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 17,
                   ),
-                  // ButtonOk()
-                  buildPopupActionRow()
+                  SizedBox(
+                    width: 290,
+                    height: 42,
+                    child: Stack(
+                      children: buttonList,
+                    ),
+                  )
                 ],
               ),
             ),
           )),
-    );
-  }
-
-  Widget buildPopupActionRow() {
-    List<Widget> buttonList = [
-      Align(
-          alignment: Alignment.centerLeft,
-          child: ButtonCansel(
-            onTap: () {
-              setState(() {
-                isReversed = true;
-              });
-            },
-          )),
-      Align(
-          alignment: Alignment.bottomRight,
-          child: ButtonYes(
-            onTap: () {
-              setState(() {
-                isReversed = false;
-              });
-            },
-          )),
-    ];
-
-    return Container(
-      width: 290,
-      height: 42,
-      child: Stack(
-        children: !isReversed ? buttonList.reversed.toList() : buttonList,
-      ),
     );
   }
 }
@@ -101,7 +96,7 @@ class PopupPainter extends CustomPainter {
     path_0.close();
 
     Paint paint_0_fill = Paint()..style = PaintingStyle.fill;
-    paint_0_fill.color = Color(0xffFF0049).withOpacity(1.0);
+    paint_0_fill.color = const Color(0xffFF0049).withOpacity(1.0);
     canvas.drawPath(path_0, paint_0_fill);
 
     Path path_1 = Path();
@@ -115,7 +110,7 @@ class PopupPainter extends CustomPainter {
     canvas.drawPath(path_1, paint_1_stroke);
 
     Paint paint_1_fill = Paint()..style = PaintingStyle.fill;
-    paint_1_fill.color = Color(0xff000000).withOpacity(1.0);
+    paint_1_fill.color = const Color(0xff000000).withOpacity(1.0);
     canvas.drawPath(path_1, paint_1_fill);
 
     Path path_2 = Path();
@@ -140,11 +135,12 @@ class PopupPainter extends CustomPainter {
     Paint paint_2_stroke = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2;
-    paint_2_stroke.color = Color(0xff00FFFF).withOpacity(1.0);
+    paint_2_stroke.color = const Color(0xff00FFFF).withOpacity(1.0);
     canvas.drawPath(path_2, paint_2_stroke);
 
     Paint paint_2_fill = Paint()..style = PaintingStyle.fill;
-    paint_2_fill.shader = AppGradients.popupBack.createShader(Rect.fromPoints(Offset(0, 0), Offset(size.width, size.height)));
+    paint_2_fill.shader = AppGradients.popupBack.createShader(
+        Rect.fromPoints(const Offset(0, 0), Offset(size.width, size.height)));
     ;
     canvas.drawPath(path_2, paint_2_fill);
   }

@@ -24,9 +24,9 @@ class _ButtonCanselState extends State<ButtonCansel> {
       isTapped = true;
     });
 
-    await Future.delayed(GlobalConstants.animDuration);
-
-    Navigator.pop(context);
+    await Future.delayed(GlobalConstants.animDuration).then((value) {
+      if (mounted) Navigator.pop(context);
+    });
   }
 
   @override
@@ -35,45 +35,17 @@ class _ButtonCanselState extends State<ButtonCansel> {
       onTap: _onTap,
       child: AnimatedContainer(
         duration: GlobalConstants.animDuration,
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            ClipRect(
-              child: Container(
-                color: Colors.transparent,
-                width: 155 + 20,
-                height: 38.2 + 20,
+        child: CustomPaint(
+            painter: CanselButtonPainter(),
+            child: Container(
                 alignment: Alignment.center,
-                child: Visibility(
-                  visible: isTapped,
-                  child: CustomPaint(
-                    painter: CanselButtonPainter(),
-                    child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                      child: Container(
-                        width: 155,
-                        height: 38.2,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Container(
-              child: CustomPaint(
-                  painter: CanselButtonPainter(),
-                  child: Container(
-                      alignment: Alignment.center,
-                      width: 155,
-                      height: 38.2,
-                      child: Text(
-                        "cansel".toUpperCase(),
-                        style: AppTypography.amazObit17Dark
-                            .copyWith(color: Colors.white),
-                      ))),
-            ),
-          ],
-        ),
+                width: 155,
+                height: 38.2,
+                child: Text(
+                  "cansel".toUpperCase(),
+                  style: AppTypography.amazObit17Dark
+                      .copyWith(color: Colors.white),
+                ))),
       ),
     );
   }
@@ -100,7 +72,8 @@ class CanselButtonPainter extends CustomPainter {
     path_0.lineTo(size.width * 0.6987179, size.height * 0.04651930);
     path_0.close();
 
-    Paint paint_0_fill = Paint()..style = PaintingStyle.fill;
+    Paint paint_0_fill = Paint()
+      ..style = PaintingStyle.fill;
     paint_0_fill.color = Color(0xff00FFFF).withOpacity(1.0);
     canvas.drawPath(path_0, paint_0_fill);
 
@@ -112,7 +85,8 @@ class CanselButtonPainter extends CustomPainter {
     path_1.lineTo(size.width * 0.8557692, size.height * 0.04651930);
     path_1.close();
 
-    Paint paint_1_fill = Paint()..style = PaintingStyle.fill;
+    Paint paint_1_fill = Paint()
+      ..style = PaintingStyle.fill;
     paint_1_fill.color = Color(0xff00FFFF).withOpacity(1.0);
     canvas.drawPath(path_1, paint_1_fill);
 
@@ -130,14 +104,16 @@ class CanselButtonPainter extends CustomPainter {
     path_2.lineTo(size.width * 0.3633519, size.height * 0.08666419);
     path_2.close();
 
-    Paint paint_2_fill = Paint()..style = PaintingStyle.fill;
+    Paint paint_2_fill = Paint()
+      ..style = PaintingStyle.fill;
     paint_2_fill.color = Colors.transparent;
 
     canvas.drawPath(path_2, paint_2_fill);
 
     Path path_3 = getCanselButtonPath(size);
 
-    Paint paint_3_fill = Paint()..style = PaintingStyle.fill;
+    Paint paint_3_fill = Paint()
+      ..style = PaintingStyle.fill;
     paint_3_fill.color = Colors.white.withOpacity(1.0);
     canvas.drawPath(path_3, paint_3_fill);
   }

@@ -24,9 +24,9 @@ class _ButtonYesState extends State<ButtonYes> {
       isTapped = true;
     });
 
-    await Future.delayed(GlobalConstants.animDuration);
-
-    Navigator.pop(context);
+    await Future.delayed(GlobalConstants.animDuration).then((value) {
+      if (mounted) Navigator.pop(context);
+    });
   }
 
   @override
@@ -35,45 +35,18 @@ class _ButtonYesState extends State<ButtonYes> {
       onTap: _onTap,
       child: AnimatedContainer(
         duration: GlobalConstants.animDuration,
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            ClipRect(
-              child: Container(
-                width: 156,
-                height: 38.2 + 20,
-                alignment: Alignment.center,
-                child: Visibility(
-                  visible: isTapped,
-                  child: CustomPaint(
-                    painter: ButtonYesPainter(),
-                    child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                      child: Container(
-                        width: 156,
-                        height: 38.2,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+        child: CustomPaint(
+          painter: ButtonYesPainter(),
+          child: Container(
+            width: 156,
+            height: 38.2,
+            alignment: Alignment.center,
+            child: Text(
+              "yes".toUpperCase(),
+              style: AppTypography.amazObit17Dark
+                  .copyWith(color: AppColors.textDark),
             ),
-            Container(
-              child: CustomPaint(
-                painter: ButtonYesPainter(),
-                child: Container(
-                  width: 156,
-                  height: 38.2,
-                  alignment: Alignment.center,
-                  child: Text(
-                    "yes".toUpperCase(),
-                    style: AppTypography.amazObit17Dark
-                        .copyWith(color: AppColors.textDark),
-                  ),
-                ),
-              ),
-            )
-          ],
+          ),
         ),
       ),
     );
