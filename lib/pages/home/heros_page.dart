@@ -9,6 +9,8 @@ import 'package:intl/intl.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:samurai_app/components/blinking_time.dart';
 import 'package:samurai_app/data/music_manager.dart';
+import 'package:samurai_app/utils/colors.dart';
+import 'package:samurai_app/utils/fonts.dart';
 import 'package:samurai_app/widgets/popups/custom_popup.dart';
 
 import '../../api/rest.dart';
@@ -58,7 +60,10 @@ class _HerosPageState extends State<HerosPage> with SingleTickerProviderStateMix
             flag = 1;
             log("value $value, page $page, oldPage $oldPage ->");
 
-            await GetIt.I<MusicManager>().swipeForwPlayer.play().then((value) async => await GetIt.I<MusicManager>().swipeForwPlayer.seek(Duration(seconds: 0)));
+            await GetIt.I<MusicManager>()
+                .swipeForwPlayer
+                .play()
+                .then((value) async => await GetIt.I<MusicManager>().swipeForwPlayer.seek(Duration(seconds: 0)));
           }
         } else {
           flag = 0;
@@ -159,7 +164,7 @@ class _HerosPageState extends State<HerosPage> with SingleTickerProviderStateMix
               Tab(text: 'STAKING'),
               Tab(text: 'MINT'),
             ],
-            labelStyle: GoogleFonts.spaceMono(fontSize: 14 / 880 * height, fontWeight: FontWeight.w700),
+            labelStyle: AppTypography.spaceMonoBold13,
             labelColor: Colors.white,
             unselectedLabelColor: const Color(0xFF00FFFF),
             indicatorColor: Colors.white,
@@ -173,7 +178,11 @@ class _HerosPageState extends State<HerosPage> with SingleTickerProviderStateMix
               future: loadInfo(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return TabBarView(controller: _tabController, children: [HerosPageTab(wigetChild: getActiveTab(context, width, height, info['heroes'])), HerosPageTab(wigetChild: getStakingTab(context, width, height, info['heroes'])), getMintTab(context, width, height)]);
+                  return TabBarView(controller: _tabController, children: [
+                    HerosPageTab(wigetChild: getActiveTab(context, width, height, info['heroes'])),
+                    HerosPageTab(wigetChild: getStakingTab(context, width, height, info['heroes'])),
+                    getMintTab(context, width, height)
+                  ]);
                 }
 
                 return Container();
@@ -184,7 +193,10 @@ class _HerosPageState extends State<HerosPage> with SingleTickerProviderStateMix
   Widget getActiveTab(BuildContext context, double width, double height, List<dynamic> heroes) {
     final wgts = heroes.map((e) {
       return e['status'] != 'STAKING' && ((widget.craftSwitch == 0 && e['clan'] == 'water') || (widget.craftSwitch == 1 && e['clan'] == 'fire'))
-          ? Container(padding: EdgeInsets.only(bottom: width * 0.04, left: width * 0.05, right: width * 0.04), width: width, child: heroBlock(e, context, width, height, btnsActive))
+          ? Container(
+              padding: EdgeInsets.only(bottom: width * 0.04, left: width * 0.05, right: width * 0.04),
+              width: width,
+              child: heroBlock(e, context, width, height, btnsActive))
           : const SizedBox();
     }).toList();
 
@@ -199,7 +211,10 @@ class _HerosPageState extends State<HerosPage> with SingleTickerProviderStateMix
   Widget getStakingTab(BuildContext context, double width, double height, List<dynamic> heroes) {
     final wgts = heroes.map((e) {
       return e['status'] == "STAKING" && ((widget.craftSwitch == 0 && e['clan'] == 'water') || (widget.craftSwitch == 1 && e['clan'] == 'fire'))
-          ? Container(padding: EdgeInsets.only(bottom: width * 0.04, left: width * 0.05, right: width * 0.04), width: width, child: heroBlock(e, context, width, height, btnsStack))
+          ? Container(
+              padding: EdgeInsets.only(bottom: width * 0.04, left: width * 0.05, right: width * 0.04),
+              width: width,
+              child: heroBlock(e, context, width, height, btnsStack))
           : const SizedBox();
     }).toList();
 
@@ -214,7 +229,9 @@ class _HerosPageState extends State<HerosPage> with SingleTickerProviderStateMix
   Widget getMintTab(BuildContext context, double width, double height) {
     return Column(children: [
       clameBlock(context, width),
-      Padding(padding: EdgeInsets.only(top: width * 0.04, left: width * 0.05, right: width * 0.04), child: progressBar(context, widget.craftSwitch == 0 ? water!.bar : fire!.bar, width)),
+      Padding(
+          padding: EdgeInsets.only(top: width * 0.04, left: width * 0.05, right: width * 0.04),
+          child: progressBar(context, widget.craftSwitch == 0 ? water!.bar : fire!.bar, width)),
       Padding(
         padding: EdgeInsets.only(top: width * 0.06),
         child: PresButton(
@@ -233,14 +250,20 @@ class _HerosPageState extends State<HerosPage> with SingleTickerProviderStateMix
 
   Widget heroBlock(Map e, BuildContext context, double width, double height, btnsWaiget) {
     return Stack(children: [
-      if (e['status'] == 'FIGHTING') Container(padding: EdgeInsets.only(top: width * 0.005), width: width - width * 0.68, child: SvgPicture.asset('assets/pages/homepage/heroes/in_battle.svg', fit: BoxFit.fitWidth)),
+      if (e['status'] == 'FIGHTING')
+        Container(
+            padding: EdgeInsets.only(top: width * 0.005),
+            width: width - width * 0.68,
+            child: SvgPicture.asset('assets/pages/homepage/heroes/in_battle.svg', fit: BoxFit.fitWidth)),
       SvgPicture.asset(
         'assets/pages/homepage/heroes/${e['type']}_border.svg',
         fit: BoxFit.fitWidth,
         width: width * 0.88,
       ),
       Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Padding(padding: EdgeInsets.only(top: width * 0.075, left: width * 0.015), child: Image.network(e['image'], fit: BoxFit.fitHeight, width: width * 0.26)),
+        Padding(
+            padding: EdgeInsets.only(top: width * 0.075, left: width * 0.015),
+            child: Image.network(e['image'], fit: BoxFit.fitHeight, width: width * 0.26)),
         Padding(
             padding: EdgeInsets.only(top: width * 0.08, left: width * 0.04),
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -328,7 +351,9 @@ class _HerosPageState extends State<HerosPage> with SingleTickerProviderStateMix
                   },
                   shadowType: 2,
                   child: SvgPicture.asset(
-                    e['status'] == 'FIGHTING' ? 'assets/pages/homepage/heroes/btn_to_wallet_dis.svg' : 'assets/pages/homepage/heroes/btn_to_wallet.svg',
+                    e['status'] == 'FIGHTING'
+                        ? 'assets/pages/homepage/heroes/btn_to_wallet_dis.svg'
+                        : 'assets/pages/homepage/heroes/btn_to_wallet.svg',
                     fit: BoxFit.fitWidth,
                   ))),
           AnimButton(
@@ -380,26 +405,13 @@ class _HerosPageState extends State<HerosPage> with SingleTickerProviderStateMix
                 padding: EdgeInsets.only(bottom: width * 0.055, left: width * 0.13),
                 child: BlinkingTime(
                   getTime: () => samuraiDpExpiresDate ?? '00:00',
-                  style: GoogleFonts.spaceMono(
-                    fontSize: width * 0.04,
-                    fontWeight: FontWeight.w700,
-                    color: const Color(0xFFFFFFFF),
-                  ),
+                  style: AppTypography.spaceMonoW700Blue16.copyWith(color: Colors.white),
                 ),
               ),
               Row(children: [
-                Text("DP/Day: ",
-                    style: GoogleFonts.spaceMono(
-                      fontSize: width * 0.034,
-                      fontWeight: FontWeight.w700,
-                      color: const Color(0xFF00FFFF),
-                    )),
+                Text("DP/Day: ", style: AppTypography.spaceMonoBold13.copyWith(color: AppColors.textBlue)),
                 Text("+${widget.craftSwitch == 0 ? water!.perDay : fire!.perDay} DP ",
-                    style: GoogleFonts.spaceMono(
-                      fontSize: width * 0.034,
-                      fontWeight: FontWeight.w700,
-                      color: const Color(0xFFFFFFFF),
-                    ))
+                    style: AppTypography.spaceMonoBold13.copyWith(color: Colors.white))
               ])
             ])),
         Padding(
@@ -439,12 +451,12 @@ class _HerosPageState extends State<HerosPage> with SingleTickerProviderStateMix
               ),
               Padding(
                   padding: EdgeInsets.only(top: width * 0.086, left: width * 0.23),
-                  child: Text("${(widget.craftSwitch == 0 ? water!.unclaimed : fire!.unclaimed) ?? 0} DP",
-                      style: GoogleFonts.spaceMono(
-                        fontWeight: FontWeight.w700,
-                        fontSize: width * 0.028,
-                        color: ((widget.craftSwitch == 0 ? water!.unclaimed : fire!.unclaimed) > 0) ? const Color(0xFF00FFFF) : Colors.grey,
-                      ))),
+                  child: Text(
+                    "${(widget.craftSwitch == 0 ? water!.unclaimed : fire!.unclaimed) ?? 0} DP",
+                    style: AppTypography.spaceMonoBold10.copyWith(
+                      color: ((widget.craftSwitch == 0 ? water!.unclaimed : fire!.unclaimed) > 0) ? const Color(0xFF00FFFF) : Colors.grey,
+                    ),
+                  )),
             ]))
       ])
     ]);
@@ -478,17 +490,10 @@ class _HerosPageState extends State<HerosPage> with SingleTickerProviderStateMix
           padding: EdgeInsets.only(top: width * 0.02),
           child: Row(children: [
             Text("DP earned: ",
-                style: GoogleFonts.spaceMono(
-                  fontSize: width * 0.038,
-                  fontWeight: FontWeight.w700,
-                  color: const Color(0xFF00FFFF),
-                )),
+                style: AppTypography.spaceMonoBold13
+                .copyWith(color: AppColors.textBlue)),
             Text('${(widget.craftSwitch == 0 ? water!.balance : fire!.balance).toStringAsFixed(0)}/${maxDp.round()}',
-                style: GoogleFonts.spaceMono(
-                  fontSize: width * 0.038,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
-                ))
+                style: AppTypography.spaceMonoBold13)
           ]))
     ]);
   }

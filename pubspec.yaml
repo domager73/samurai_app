@@ -63,6 +63,10 @@ flutter:
     - assets/pages/homepage/mint/
     - assets/pages/start/
     - assets/pages/dialog/
+    - assets/hero_mask/water/
+    - assets/hero_mask/fire/
+    - assets/hero_mask/
+
 
   fonts:
     - family: AmazObitaemOstrovItalic
