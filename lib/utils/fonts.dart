@@ -22,11 +22,27 @@ class AppTypography {
       fontSize: 19,
       letterSpacing: 3);
 
+  static TextStyle amazObit20Blue = _amazObit.copyWith(
+      color: AppColors.textBlue,
+      fontSize: 20,);
+
+  static TextStyle amazObitWhite = _amazObit.copyWith(
+      fontFamily: 'AmazObitaemOstrovItalic',
+      color: Colors.white,
+      height: 0.9,
+    );
+
   static TextStyle amazObitW400White =
       amazObit17Dark.copyWith(fontSize: 34, color: Colors.white);
 
   static TextStyle spaceMonoW400 = _spaceMono.copyWith(
       color: Colors.white, fontWeight: FontWeight.w400, fontSize: 15);
+
+  static TextStyle spaceMonoW700White17 = _spaceMono.copyWith(
+      fontWeight: FontWeight.w700,
+      color: Colors.white,
+      fontSize: 17,
+    );
 
   static TextStyle spaceMonoW700Blue16 = _spaceMono.copyWith(
     fontSize: 16,

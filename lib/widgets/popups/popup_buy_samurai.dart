@@ -9,14 +9,18 @@ import 'package:samurai_app/widgets/painters/painter_ok.dart';
 import 'package:samurai_app/widgets/painters/painter_popup.dart';
 
 class PopupBuySamurai extends StatefulWidget {
-  final String text;
-
   final String price;
+  final String amountSamurai;
 
   final Function acceptFunction;
   final Function canselFunction;
 
-  const PopupBuySamurai({super.key, required this.acceptFunction, required this.canselFunction, required this.text, required this.price});
+  const PopupBuySamurai(
+      {super.key,
+      required this.acceptFunction,
+      required this.canselFunction,
+      required this.price,
+      required this.amountSamurai});
 
   @override
   State<PopupBuySamurai> createState() => _PopupBuySamuraiState();
@@ -46,22 +50,28 @@ class _PopupBuySamuraiState extends State<PopupBuySamurai> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    widget.text,
-                    style: AppTypography.spaseMono16.copyWith(color: Colors.white),
-                    textAlign: TextAlign.start,
-                  ),
+                  RichText(
+                      textAlign: TextAlign.start,
+                      text:
+                          TextSpan(style: AppTypography.spaseMono16, children: [
+                        const TextSpan(text: 'Are you sure you want to buy'),
+                        TextSpan(
+                            text: ' ${widget.amountSamurai} ',
+                            style: AppTypography.spaseMono16
+                                .copyWith(color: AppColors.textBlue)),
+                            const TextSpan(text: 'Samurai?'),
+                      ])),
                   const SizedBox(
                     height: 14,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                    Text("price:".toUpperCase(), style: AppTypography.spaceMono13Sky),
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    Text("price:".toUpperCase(),
+                        style: AppTypography.spaceMono13Sky),
                     const SizedBox(
                       width: 13,
                     ),
-                    Text("${widget.price} BNB", style: AppTypography.spaceMonoW700)
+                    Text("${widget.price} BNB",
+                        style: AppTypography.spaceMonoW700)
                   ]),
                   const SizedBox(
                     height: 20,

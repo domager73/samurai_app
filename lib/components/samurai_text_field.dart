@@ -5,6 +5,11 @@ import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:samurai_app/components/anim_button.dart';
 import 'package:samurai_app/data/music_manager.dart';
+import 'package:samurai_app/widgets/buttons/custom_painter_button.dart';
+
+import '../utils/colors.dart';
+import '../utils/fonts.dart';
+import '../widgets/painters/button_send.dart';
 
 class SamuraiTextField extends StatelessWidget {
   const SamuraiTextField(
@@ -155,7 +160,7 @@ class SamuraiTextField extends StatelessWidget {
                     height: 1.5,
                     color: Colors.white,
                   ),
-                  cursorColor: const Color(0xFF00FFFF),
+                  cursorColor: AppColors.textBlue,
                   cursorRadius: const Radius.circular(5),
                 ),
               ),
@@ -169,25 +174,25 @@ class SamuraiTextField extends StatelessWidget {
                       Spacer(flex: timerValue == null ? 1 : 2),
                       timerValue == null
                           ? AnimButton(
-                              player: GetIt.I<MusicManager>()
-                                  .smallKeyWeaponPlayer,
-                              shadowType: 1,
-                              onTap: onTapTimerButton,
-                              child: SvgPicture.asset(
-                                'assets/text_field_send_button.svg',
-                                width:
-                                    (screeenWidth - screeenWidth * 0.14) * 0.2,
-                              ),
-                            )
+                        player: GetIt.I<MusicManager>()
+                            .smallKeyWeaponPlayer,
+                        shadowType: 1,
+                        onTap: onTapTimerButton,
+                        child: SvgPicture.asset(
+                          'assets/button_send.svg',
+                          width:
+                          (screeenWidth - screeenWidth * 0.14) * 0.2,
+                        ),
+                      )
                           : Text(
-                              timerValue!.toString(),
-                              style: TextStyle(
-                                fontFamily: 'AmazObitaemOstrovItalic',
-                                fontSize: screeenHeight * 0.02,
-                                height: 1.4,
-                                color: Colors.white,
-                              ),
-                            ),
+                        timerValue!.toString(),
+                        style: TextStyle(
+                          fontFamily: 'AmazObitaemOstrovItalic',
+                          fontSize: screeenHeight * 0.02,
+                          height: 1.4,
+                          color: Colors.white,
+                        ),
+                      ),
                       Spacer(flex: timerValue == null ? 2 : 3),
                     ])),
               if (allButton != null)
@@ -200,8 +205,7 @@ class SamuraiTextField extends StatelessWidget {
                     player: GetIt.I<MusicManager>().smallKeyRegAmountAllPlayer,
                     shadowType: 2,
                     onTap: () => allButton!(),
-                    child: Text(
-                        'All',
+                    child: Text('All',
                         style: GoogleFonts.spaceMono(
                           fontSize: 13,
                           fontWeight: FontWeight.w800,

@@ -113,7 +113,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     for (var player in players) {
       await player
           .setVolume(0)
-          .then((value) async => await player.setSpeed(1000000000.0))
+          .then((value) async => await player.setSpeed(10000000000000.0))
           .then((value) async => await player.play())
           .then((value) async => await player.stop())
           .then((value) async => await player.setSpeed(1))
