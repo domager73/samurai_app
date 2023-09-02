@@ -10,6 +10,9 @@ import 'package:samurai_app/components/show_confirm.dart';
 import 'package:samurai_app/components/storage.dart';
 import 'package:samurai_app/pages/home/craft_page_components.dart';
 import 'package:samurai_app/utils/enums.dart';
+import 'package:samurai_app/utils/fonts.dart';
+import 'package:samurai_app/widgets/painters/painter_hero_mint_border.dart';
+import 'package:samurai_app/widgets/painters/painter_xp_border.dart';
 import 'package:samurai_app/widgets/popups/custom_choose_popup.dart';
 
 import '../../api/rest.dart';
@@ -49,7 +52,7 @@ class _HeroMintPageState extends State<HeroMintPage> with SingleTickerProviderSt
       waterSamuraiXp = resp['water_samurai_xp'] * 1.0;
     });
 
-     log("$fireSamuraiXp $waterSamuraiXp");
+    log("$fireSamuraiXp $waterSamuraiXp");
   }
 
   @override
@@ -75,7 +78,7 @@ class _HeroMintPageState extends State<HeroMintPage> with SingleTickerProviderSt
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+    return Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -98,11 +101,7 @@ class _HeroMintPageState extends State<HeroMintPage> with SingleTickerProviderSt
               child: Center(
                 child: Text(
                   'hero mint',
-                  style: TextStyle(
-                    fontFamily: 'AmazObitaemOstrovItalic',
-                    fontSize: 37 / 844 * height,
-                    color: Colors.white,
-                  ),
+                  style: AppTypography.amazObitW400White,
                   maxLines: 1,
                 ),
               ),
@@ -114,163 +113,154 @@ class _HeroMintPageState extends State<HeroMintPage> with SingleTickerProviderSt
           ),
         ],
       ),
-      Align(
-          alignment: Alignment.center,
-          child: SizedBox(
-              width: width - width * 0.6,
-              child: Stack(children: [
-                Padding(
-                    padding: EdgeInsets.only(top: width * 0.012),
-                    child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                      Text('XP: ',
-                          style: GoogleFonts.spaceMono(
-                            fontWeight: FontWeight.w700,
-                            fontSize: width * 0.03,
-                            color: widget.craftSwitch == 0 ? const Color(0xFF00FFFF) : const Color(0xFFFF0049),
-                          )),
-                      Text(((widget.craftSwitch == 0 ? waterSamuraiXp : fireSamuraiXp) ?? 0.0).toStringAsFixed(0),
-                          style: GoogleFonts.spaceMono(
-                            fontWeight: FontWeight.w700,
-                            fontSize: width * 0.03,
-                            color: Colors.white,
-                          )),
-                    ])),
-                SvgPicture.asset(
-                  'assets/pages/homepage/mint/dp_border.svg',
-                  fit: BoxFit.fitWidth,
-                  width: width - width * 0.6,
-                )
-              ]))),
-      Container(width: width, height: height - height * 0.39, padding: EdgeInsets.only(top: width * 0.04), child: HerosPageTab(wigetChild: getMintMasks(context, width, height)))
+      Row(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, mainAxisSize: MainAxisSize.min, children: [
+        CustomPaint(
+            painter: XpBorderPainter(),
+            child: Container(
+                height: 47,
+                width: 200,
+                padding: EdgeInsets.only(bottom: 10, left: 20, right: 20),
+                alignment: Alignment.center,
+                child: FittedBox(
+                  child: RichText(
+                    text: TextSpan(children: [
+                      TextSpan(
+                        text: "XP: ",
+                        style: AppTypography.spaceMonoW700Red16,
+                      ),
+                      TextSpan(
+                          text: ((widget.craftSwitch == 0 ? waterSamuraiXp : fireSamuraiXp) ?? 0.0).toStringAsFixed(0),
+                          style: AppTypography.spaceMonoW700Red16.copyWith(color: Colors.white))
+                    ]),
+                  ),
+                ))),
+      ]),
+      Container(
+          width: width,
+          height: height - height * 0.39,
+          padding: EdgeInsets.only(top: width * 0.04),
+          child: HerosPageTab(wigetChild: getMintMasks(context, width, height)))
     ]);
   }
 
   Widget getMintMasks(BuildContext context, double width, double height) {
     final wgts = _masks.map((e) {
-      return Padding(padding: EdgeInsets.only(bottom: width * 0.04, left: width * 0.05, right: width * 0.04), child: maskWidget(e, context, width, height));
+      return maskWidget(e, context, width, height);
     }).toList();
-    return Column(children: [
-      ...wgts,
-      SizedBox(
-        height: height * 0.02,
-      )
-    ]);
+    return Column(
+        children: wgts +
+            [
+              SizedBox(
+                height: 50,
+              )
+            ]);
   }
 
   Widget maskWidget(e, BuildContext context, double width, double height) {
-    return Stack(children: [
-      Padding(
-          padding: EdgeInsets.only(top: width * 0.02),
-          child: SvgPicture.asset(
-            'assets/pages/homepage/mint/${e['name'].toString().toLowerCase()}_border.svg',
-            fit: BoxFit.fitWidth,
-            width: width - width * 0.12,
-          )),
-      SizedBox(
-          width: width - width * 0.25,
-          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Image.asset('assets/pages/homepage/mint/${e['name'].toString().toLowerCase()}_mask_${widget.craftSwitch == 0 ? 'water' : 'fire'}.png', fit: BoxFit.contain, width: width * 0.3),
-            Container(
-                width: width * 0.3,
-                padding: EdgeInsets.only(top: width * 0.035),
-                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Text(
-                    e['name'].toString(),
-                    maxLines: 1,
-                    style: GoogleFonts.spaceMono(
-                      fontSize: width * 0.045,
-                      fontWeight: FontWeight.w700,
-                      color: e['name'] == 'Hatamoto'
-                          ? const Color(0xFF00E417)
-                          : e['name'] == 'Daimyo'
-                              ? const Color(0xFF2589FF)
-                              : const Color(0xFFFF0049),
-                    ),
+    const double widthCoef = 0.872;
+
+    final Color _color = e['name'] == 'Hatamoto'
+        ? const Color(0xFF00E417)
+        : e['name'] == 'Daimyo'
+            ? const Color(0xFF2589FF)
+            : const Color(0xFFFF0049);
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 15),
+      child: CustomPaint(
+        painter: HeroMintBorderPainter(color: _color),
+        child: Container(
+            width: width * widthCoef,
+            height: 110,
+            child: Row(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+              Container(
+                constraints: BoxConstraints(maxHeight: 150, maxWidth: 150),
+                padding: e['name'].toString().toLowerCase() == 'hatamoto' ? EdgeInsets.only(bottom: 20) : EdgeInsets.zero,
+                child: Image.asset('assets/hero_mask/${widget.craftSwitch == 0 ? 'water' : 'fire'}/${e['name'].toString().toLowerCase()}.PNG',
+                    fit: BoxFit.contain, width: width * widthCoef * 0.34),
+              ),
+              //
+              Expanded(
+                child: Container(
+                  padding: EdgeInsets.only(top: 10, right: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                        FittedBox(
+                          child: Text(
+                            e['name'].toString(),
+                            maxLines: 1,
+                            style: AppTypography.spaceMonoBold20.copyWith(
+                              color: _color,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: Row(children: [
+                              Text('RYO: ', style: AppTypography.spaceMonoReg13White),
+                              Text(e['RYO'].toString(), style: AppTypography.spaceMonoReg13White)
+                            ])),
+                        Padding(
+                            padding: const EdgeInsets.only(top: 5),
+                            child: Row(children: [
+                              Text('CLC: ', style: AppTypography.spaceMonoReg13White),
+                              Text(e['CLC'].toString(), style: AppTypography.spaceMonoReg13White)
+                            ])),
+                        Padding(
+                            padding: const EdgeInsets.only(top: 5),
+                            child: Row(children: [
+                              Text('XP:  ', style: AppTypography.spaceMonoReg13White),
+                              Text(e['XP'].toString(), style: AppTypography.spaceMonoReg13White)
+                            ])),
+                      ])),
+                      //
+                      Container(
+                        width: width * widthCoef * 0.2,
+                        height: width * widthCoef * 0.2,
+                        constraints: BoxConstraints(maxHeight: 72, maxWidth: 72),
+                        child: PresButton(
+                            player: GetIt.I<MusicManager>().smallKeyWeaponPlayer,
+                            onTap: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) => CustomChoosePopup(
+                                      acceptFunction: () async {
+                                        String heroType = e['name'].toString().toUpperCase();
+
+                                        showSpinner(context);
+
+                                        await Rest.mintUserHero(
+                                          widget.craftSwitch == 0 ? SamuraiType.WATER : SamuraiType.FIRE,
+                                          heroType,
+                                        );
+
+                                        updateXp();
+
+                                        if (context.mounted) {
+                                          hideSpinner(context);
+                                        }
+
+                                        Navigator.pop(context);
+                                      },
+                                      canselFunction: () {
+                                        Navigator.pop(context);
+                                      },
+                                      text: "Do you really want to make a hero?"));
+                            },
+                            disabled: ((widget.craftSwitch == 0 ? waterSamuraiXp : fireSamuraiXp) ?? 0.0) < e['XP'] || user['ryo_balance'] < 4000,
+                            params: {'width': width},
+                            child: mintBtn),
+                      )
+                    ],
                   ),
-                  Padding(
-                      padding: EdgeInsets.only(top: width * 0.01),
-                      child: Row(children: [
-                        Text('RYO: ',
-                            style: GoogleFonts.spaceMono(
-                              fontWeight: FontWeight.w400,
-                              fontSize: width * 0.026,
-                              color: Colors.white,
-                            )),
-                        Text(e['RYO'].toString(),
-                            style: GoogleFonts.spaceMono(
-                              fontWeight: FontWeight.w400,
-                              fontSize: width * 0.026,
-                              color: Colors.white,
-                            ))
-                      ])),
-                  Padding(
-                      padding: EdgeInsets.only(top: width * 0.01),
-                      child: Row(children: [
-                        Text('CLC: ',
-                            style: GoogleFonts.spaceMono(
-                              fontWeight: FontWeight.w400,
-                              fontSize: width * 0.026,
-                              color: Colors.white,
-                            )),
-                        Text(e['CLC'].toString(),
-                            style: GoogleFonts.spaceMono(
-                              fontWeight: FontWeight.w400,
-                              fontSize: width * 0.026,
-                              color: Colors.white,
-                            ))
-                      ])),
-                  Padding(
-                      padding: EdgeInsets.only(top: width * 0.01),
-                      child: Row(children: [
-                        Text('XP:  ',
-                            style: GoogleFonts.spaceMono(
-                              fontWeight: FontWeight.w400,
-                              fontSize: width * 0.026,
-                              color: Colors.white,
-                            )),
-                        Text(e['XP'].toString(),
-                            style: GoogleFonts.spaceMono(
-                              fontWeight: FontWeight.w400,
-                              fontSize: width * 0.026,
-                              color: Colors.white,
-                            ))
-                      ])),
-                ])),
-            Padding(
-                padding: EdgeInsets.only(top: width * 0.06),
-                child: PresButton(
-                    player: GetIt.I<MusicManager>().smallKeyWeaponPlayer,
-                    onTap: () {
-                       showDialog(
-                          context: context,
-                          builder: (context) => CustomChoosePopup(
-                              acceptFunction: () async {
-                                String heroType = e['name'].toString().toUpperCase();
-
-                                showSpinner(context);
-
-                                await Rest.mintUserHero(
-                                  widget.craftSwitch == 0 ? SamuraiType.WATER : SamuraiType.FIRE,
-                                  heroType,
-                                );
-
-                                updateXp();
-
-                                if (context.mounted) {
-                                  hideSpinner(context);
-                                }
-
-                                Navigator.pop(context);
-                              },
-                              canselFunction: () {
-                                Navigator.pop(context);
-                              },
-                              text: "Do you really want to make a hero?")); 
-                    },
-                    disabled: ((widget.craftSwitch == 0 ? waterSamuraiXp : fireSamuraiXp) ?? 0.0) < e['XP'] || user['ryo_balance'] < 4000,
-                    params: {'width': width},
-                    child: mintBtn))
-          ]))
-    ]);
+                ),
+              )
+            ])),
+      ),
+    );
   }
 }

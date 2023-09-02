@@ -34,6 +34,12 @@ class AppTypography {
     color: AppColors.textBlue,
   );
 
+  static TextStyle spaceMonoW700Red16 = _spaceMono.copyWith(
+    fontSize: 16,
+    fontWeight: FontWeight.w700,
+    color: AppColors.textRed,
+  );
+
   static TextStyle spaceMonoW700WhiteOpacity = _spaceMono.copyWith(
     fontWeight: FontWeight.w700,
     color: Colors.white.withOpacity(0.15),
@@ -48,5 +54,28 @@ class AppTypography {
     fontSize: 15,
     fontWeight: FontWeight.w700,
     letterSpacing: 1
+  );
+
+  static TextStyle spaceMonoBold20 = _spaceMono.copyWith(
+    fontSize: 20,
+    fontWeight: FontWeight.w700,
+    height: 1,
+  );
+
+  static TextStyle spaceMonoReg13White = _spaceMono.copyWith(
+    fontSize: 13,
+    color: Colors.white,
+    fontWeight: FontWeight.w400,
+    height: 1,
+  );
+
+  static TextStyle spaceMonoBold13 = _spaceMono.copyWith(
+    fontSize: 13, fontWeight: FontWeight.w700,
+    color: Colors.white
+  );
+
+  static TextStyle spaceMonoBold10 = _spaceMono.copyWith(
+    fontSize: 10, fontWeight: FontWeight.w700,
+    color: Colors.white
   );
 }
