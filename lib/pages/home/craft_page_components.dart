@@ -12,6 +12,7 @@ import 'package:samurai_app/pages/tfa_page.dart';
 import 'package:samurai_app/utils/colors.dart';
 import 'package:samurai_app/utils/fonts.dart';
 import 'package:samurai_app/widgets/painters/painter_drop_list_border.dart';
+import 'package:samurai_app/widgets/painters/painter_transfer_samurai.dart';
 import 'package:samurai_app/widgets/popups/custom_choose_popup.dart';
 
 import '../../api/rest.dart';
@@ -21,7 +22,7 @@ import '../../components/pop_up_spinner.dart';
 import '../../components/samurai_text_field.dart';
 import '../../widgets/popups/custom_popup.dart';
 
-class CraftPageComponents extends StatefulBuilder{
+class CraftPageComponents {
   static Future<void> openTransferModalPage({
     required BuildContext context,
     required double width,
@@ -49,154 +50,113 @@ class CraftPageComponents extends StatefulBuilder{
               onTap: () async {
                 FocusScope.of(context).requestFocus(FocusNode());
               },
-              child: Wrap(
-                alignment: WrapAlignment.center,
-                crossAxisAlignment: WrapCrossAlignment.center,
+              child: Column(
                 children: <Widget>[
-                  Padding(
-                      padding: EdgeInsets.only(top: width * 0.0, bottom: width * 0.04, left: width * 0.02, right: width * 0.02),
-                      child: SizedBox(
-                        height: width * 0.37,
-                        child: Stack(
+                  CustomPaint(
+                    painter: TransferSamuraiPainter(),
+                    child: Container(
+                        padding: const EdgeInsets.only(top: 33, bottom: 33, right: 24, left: 24,),
+                        width: double.infinity,
+                        height: 146,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            SvgPicture.asset(
-                              'assets/pages/homepage/craft/transfer_border.svg',
-                              fit: BoxFit.fitWidth,
-                              width: width - width * 0.14,
-                            ),
-                            Padding(
-                                padding: EdgeInsets.only(top: width * 0.175, left: width * 0.04),
-                                child: SvgPicture.asset(
-                                  'assets/pages/homepage/craft/transfer_line.svg',
-                                  fit: BoxFit.fitWidth,
-                                  width: width - width * 0.54,
-                                )),
-                            Row(
-                              children: [
-                                const Spacer(flex: 8),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Spacer(flex: 20),
-                                    Expanded(
-                                        flex: 47,
-                                        child: Row(children: [
-                                          Text(
-                                            'FROM',
-                                            style: GoogleFonts.spaceMono(
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: width * 0.028,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                          Padding(
-                                              padding: EdgeInsets.only(left: width * 0.04),
-                                              child: FittedBox(
-                                                fit: BoxFit.fitHeight,
-                                                child: Text(
-                                                  mode == 'toArmy' ? 'FREE' : 'ARMY',
-                                                  style: GoogleFonts.spaceMono(
-                                                    fontWeight: FontWeight.w700,
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                              ))
-                                        ])),
-                                    const Spacer(flex: 30),
-                                    Expanded(
-                                      flex: 47,
-                                      child: Row(children: [
-                                        Text(
-                                          'TO  ',
+                            Expanded(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.end, children: [
+                                    SizedBox(
+                                      width: 40,
+                                      child: Text(
+                                        textAlign: TextAlign.start,
+                                        "from".toUpperCase(),
+                                        style: GoogleFonts.spaceMono(
+                                            fontWeight: FontWeight.w800, fontSize: 13, color: Colors.white, textStyle: TextStyle(height: 1)),
+                                      ),
+                                    ),
+                                    Text(
+                                      mode == 'toArmy' ? 'FREE' : 'ARMY',
+                                      textHeightBehavior: TextHeightBehavior(),
+                                      style: GoogleFonts.spaceMono(
+                                          fontWeight: FontWeight.w700, color: Colors.white, fontSize: 20, textStyle: TextStyle(height: 0.927)),
+                                      textAlign: TextAlign.start,
+                                    ),
+                                  ]),
+                                  Container(color: Colors.white.withOpacity(0.6), height: 1, margin: const EdgeInsets.only(top: 22, bottom: 16)),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      SizedBox(
+                                        width: 40,
+                                        child: Text(
+                                          "to".toUpperCase(),
                                           style: GoogleFonts.spaceMono(
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: width * 0.028,
-                                            color: Colors.white,
-                                          ),
+                                              fontWeight: FontWeight.w800, fontSize: 13, color: Colors.white, textStyle: TextStyle(height: 1)),
+                                          textAlign: TextAlign.start,
                                         ),
-                                        Padding(
-                                            padding: EdgeInsets.only(left: width * 0.04),
-                                            child: FittedBox(
-                                              fit: BoxFit.fitHeight,
-                                              child: Text(
-                                                mode == 'toArmy' ? 'ARMY' : 'FREE',
-                                                style: GoogleFonts.spaceMono(
-                                                  fontWeight: FontWeight.w700,
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                            ))
-                                      ]),
-                                    ),
-                                    const Spacer(flex: 28),
-                                  ],
-                                ),
-                                const Spacer(flex: 24),
-                                Expanded(
-                                  flex: 15,
-                                  child: AnimButton(
-                                    shadowType: 2,
-                                    player: GetIt.I<MusicManager>().okCanselTransPlayer,
-                                    onTap: () {
-                                      onShitchMode();
-                                    },
-                                    child: SvgPicture.asset(
-                                      'assets/swap_change_bt.svg',
-                                      fit: BoxFit.fitWidth,
-                                      height: height * 0.1,
-                                    ),
+                                      ),
+                                      Text(
+                                        textAlign: TextAlign.start,
+                                        mode == 'toArmy' ? 'ARMY' : 'FREE',
+                                        style: GoogleFonts.spaceMono(
+                                            fontWeight: FontWeight.w700, color: Colors.white, textStyle: TextStyle(height: 0.927), fontSize: 20),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                                const Spacer(flex: 6),
-                              ],
+                                ],
+                              ),
+                            ),
+                            const SizedBox(width: 25),
+                            AnimButton(
+                              shadowType: 2,
+                              player: GetIt.I<MusicManager>().okCanselTransPlayer,
+                              onTap: () {
+                                onShitchMode();
+                              },
+                              child: SvgPicture.asset(
+                                'assets/swap_change_bt.svg',
+                                fit: BoxFit.fitWidth,
+                                height: height * 0.1,
+                              ),
                             ),
                           ],
-                        ),
-                      )),
-                  Padding(
-                      padding: EdgeInsets.only(bottom: width * 0.04),
-                      child: SamuraiTextField(
-                          screeenHeight: height,
-                          screeenWidth: width,
-                          hint: 'Amount',
-                          keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
-                          inputFormatters: [
-                            FilteringTextInputFormatter.allow(RegExp(r'^[0-9]*')),
-                          ],
-                          controller: controller,
-                          onChanged: (_) {
-                            setState(() {});
-                          },
-                          allButton: () {
-                            onAllBtn();
-                          })),
-                  Padding(
-                      padding: EdgeInsets.only(bottom: width * 0.02),
-                      child: Row(children: [
-                        Text(
-                          "Available: ${mode == 'toArmy' ? balance : lockedBalance} ",
-                          style: GoogleFonts.spaceMono(
-                            fontSize: 13 / 844 * height,
-                            color: Colors.white,
-                          ),
-                        ),
-                        Text(
-                          mode == 'toArmy' ? 'Free' : 'Army',
-                          style: GoogleFonts.spaceMono(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 13 / 844 * height,
-                            color: Colors.white,
-                          ),
-                        ),
-                        Text(
-                          " Samurai",
-                          style: GoogleFonts.spaceMono(
-                            fontSize: 13 / 844 * height,
-                            color: Colors.white,
-                          ),
-                        ),
-                        const Spacer(),
-                      ])),
+                        )),
+                  ),
+                  const SizedBox(height: 30),
+                  SamuraiTextField(
+                      screeenHeight: height,
+                      screeenWidth: width,
+                      hint: 'Amount',
+                      keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(RegExp(r'^[0-9]*')),
+                      ],
+                      controller: controller,
+                      onChanged: (_) {
+                        setState(() {});
+                      },
+                      allButton: () {
+                        onAllBtn();
+                      }),
+                  Row(children: [
+                    Text(
+                      "Available: ${mode == 'toArmy' ? balance : lockedBalance} ",
+                      style: AppTypography.spaceMonoReg13White,
+                    ),
+                    Text(
+                      mode == 'toArmy' ? 'Free' : 'Army',
+                      style: AppTypography.spaceMonoBold13,
+                    ),
+                    Text(
+                      " Samurai",
+                      style: AppTypography.spaceMonoReg13White,
+                    ),
+                  ]),
+  const SizedBox(height: 10),
                   PresButton(
                     onTap: () async {
                       try {
@@ -274,7 +234,8 @@ class CraftPageComponents extends StatefulBuilder{
       return DropdownMenuItem(
           value: value.toUpperCase(),
           child: Container(
-              padding: EdgeInsets.only(left: size.width * 0.064, right: size.width * 0.064),
+              height: 53,
+              padding: EdgeInsets.only(left: size.width * 0.064, right: size.width * 0.064, top: 5, bottom: 5),
               alignment: Alignment.center,
               decoration: const BoxDecoration(
                 color: Colors.transparent,
@@ -319,13 +280,17 @@ class CraftPageComponents extends StatefulBuilder{
                     isExpanded: true,
                     alignment: Alignment.center,
                     dropdownStyleData: const DropdownStyleData(
+                        maxHeight: null,
                         padding: EdgeInsets.zero,
                         isOverButton: true,
                         elevation: 0,
                         decoration: BoxDecoration(
                             color: Colors.transparent, image: DecorationImage(fit: BoxFit.fill, image: AssetImage("assets/drop_bg.png")))),
                     buttonStyleData: ButtonStyleData(
-                      padding: const EdgeInsets.only(right: 0),
+                      padding: const EdgeInsets.only(
+                        right: 0,
+                      ),
+                      height: 53,
                       width: width * 0.58,
                     ),
                     iconStyleData: const IconStyleData(icon: Icon(Icons.expand_more_rounded, color: Colors.transparent, size: 0)),
@@ -344,6 +309,9 @@ class CraftPageComponents extends StatefulBuilder{
               ),
             ],
           ),
+          const SizedBox(
+            height: 31,
+          ),
           SamuraiTextField(
               screeenHeight: height,
               screeenWidth: width,
@@ -359,6 +327,9 @@ class CraftPageComponents extends StatefulBuilder{
               allButton: () {
                 onAllBtn();
               }),
+          const SizedBox(
+            height: 10,
+          ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -366,17 +337,14 @@ class CraftPageComponents extends StatefulBuilder{
                 modeWithdraw == 'GENESIS'
                     ? "Available: ${samuraiGenesisBalance} GENESIS SAMURAI"
                     : "Available: ${num.parse(balanceWithdraw.toStringAsFixed(0))} SAMURAI",
-                style: GoogleFonts.spaceMono(
-                  fontSize: 13 / 844 * height,
-                  color: Colors.white,
-                ),
+                style: AppTypography.spaceMonoReg13White,
+              ),
+              SizedBox(
+                height: 5,
               ),
               Text(
                 "Gas: ${gas.toStringAsFixed(9)} BNB",
-                style: GoogleFonts.spaceMono(
-                  fontSize: 13 / 844 * height,
-                  color: Colors.white,
-                ),
+                style: AppTypography.spaceMonoReg13White,
               ),
             ],
           ),
@@ -436,109 +404,114 @@ class CraftPageComponents extends StatefulBuilder{
     return showModalBottomSheet(
         context: context,
         isScrollControlled: true,
-        builder: (BuildContext context) => StatefulBuilder(
-            builder: (context, StateSetter setState) => Container(
-                decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(32),
-                      topRight: Radius.circular(32),
-                    ),
-                    image: DecorationImage(image: AssetImage('assets/modal_bottom_sheet_bg.png'), fit: BoxFit.fill)),
-                padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-                child: Padding(
-                    padding: const EdgeInsets.fromLTRB(18.0, 28.0, 18.0, 0.0), // content padding
-                    child: Wrap(alignment: WrapAlignment.center, crossAxisAlignment: WrapCrossAlignment.center, children: <Widget>[
-                      Padding(
-                          padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
-                          // content padding
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              PresButton(
-                                onTap: () async {
-                                  await GetIt.I<MusicManager>().popupDownSybMenuPlayer.play().then((value) async {
-                                    await GetIt.I<MusicManager>().popupDownSybMenuPlayer.seek(Duration(seconds: 0));
-                                  });
+        builder: (BuildContext context) => GestureDetector(
+              onTap: () {
+                FocusScope.of(context).unfocus();
+              },
+              child: StatefulBuilder(
+                  builder: (context, StateSetter setState) => Container(
+                      decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(32),
+                            topRight: Radius.circular(32),
+                          ),
+                          image: DecorationImage(image: AssetImage('assets/modal_bottom_sheet_bg.png'), fit: BoxFit.fill)),
+                      padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                      child: Padding(
+                          padding: const EdgeInsets.fromLTRB(18.0, 28.0, 18.0, 0.0), // content padding
+                          child: Wrap(alignment: WrapAlignment.center, crossAxisAlignment: WrapCrossAlignment.center, children: <Widget>[
+                            Padding(
+                                padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
+                                // content padding
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    PresButton(
+                                      onTap: () async {
+                                        await GetIt.I<MusicManager>().popupDownSybMenuPlayer.play().then((value) async {
+                                          await GetIt.I<MusicManager>().popupDownSybMenuPlayer.seek(Duration(seconds: 0));
+                                        });
 
-                                  Navigator.of(context).pop();
-                                },
-                                params: {'width': width},
-                                child: backBtn,
-                                player: GetIt.I<MusicManager>().keyBackSignCloseX,
-                              ),
-                              Expanded(
-                                child: Center(
-                                  child: Text(
-                                    'transfer',
-                                    style: AppTypography.amazObitW400White,
-                                  ),
-                                ),
-                              ),
-                              AnimButton(
-                                shadowType: 2,
-                                onTap: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: ((context) => CustomPopup(
-                                            isError: false,
-                                            text: switchMode == 0
-                                                ? 'Army Samurai can participate in battles and accumulate XP. Free Samurai can be withdrawn to your wallet. Army Samurai must be at 100% health to transfer.'
-                                                : 'You can withdraw Free Samurai, after which they will available on your wallet',
-                                          )));
-                                },
-                                child: SvgPicture.asset(
-                                  'assets/pages/homepage/craft/info.svg',
-                                  height: width * 0.12,
-                                  width: width * 0.12,
-                                ),
-                              )
-                            ],
-                          )),
-                      Padding(
-                          padding: EdgeInsets.only(top: width * 0.03, bottom: width * 0.03),
-                          child: switchType(width, switchMode, (mode) async {
-                            setState(() {
-                              switchMode = mode;
-                            });
-                          })),
-                      Padding(
-                          padding: EdgeInsets.only(top: width * 0.03, bottom: width * 0.03, left: width * 0.03, right: width * 0.03),
-                          child: SizedBox(
-                              // height: height * 0.5,
-                              child: switchMode == 0
-                                  ? tabIngame(context, width, height, samuraiTypeIngame, balance, lockedBalance, mode, () {
-                                      setState(() {
-                                        mode == 'toArmy' ? mode = 'toFree' : mode = 'toArmy';
-                                      });
-                                    }, () {
-                                      setState(() {
-                                        controller.text = (mode == 'toArmy' ? balance : lockedBalance).toStringAsFixed(0);
-                                      });
-                                    })
-                                  : tabWithdraw(
-                                      context,
-                                      width,
-                                      height,
-                                      gas,
-                                      balanceWithdraw.toInt(),
-                                      modeWithdraw,
-                                      (val) {
-                                        setState(() {
-                                          modeWithdraw = val;
-                                        });
+                                        Navigator.of(context).pop();
                                       },
-                                      () {
-                                        setState(() {
-                                          controllerWithdraw.text = (balanceWithdraw).toStringAsFixed(0);
-                                        });
+                                      params: {'width': width},
+                                      child: backBtn,
+                                      player: GetIt.I<MusicManager>().keyBackSignCloseX,
+                                    ),
+                                    Expanded(
+                                      child: Center(
+                                        child: Text(
+                                          'transfer',
+                                          style: AppTypography.amazObitW400White,
+                                        ),
+                                      ),
+                                    ),
+                                    AnimButton(
+                                      shadowType: 2,
+                                      onTap: () {
+                                        showDialog(
+                                            context: context,
+                                            builder: ((context) => CustomPopup(
+                                                  isError: false,
+                                                  text: switchMode == 0
+                                                      ? 'Army Samurai can participate in battles and accumulate XP. Free Samurai can be withdrawn to your wallet. Army Samurai must be at 100% health to transfer.'
+                                                      : 'You can withdraw Free Samurai, after which they will available on your wallet',
+                                                )));
                                       },
-                                      isActive,
-                                      () {
-                                        setState(() {
-                                          isActive = !isActive;
-                                        });
-                                      }))),
-                    ])))));
+                                      child: SvgPicture.asset(
+                                        'assets/pages/homepage/craft/info.svg',
+                                        height: width * 0.12,
+                                        width: width * 0.12,
+                                      ),
+                                    )
+                                  ],
+                                )),
+                            Padding(
+                                padding: EdgeInsets.only(top: width * 0.03, bottom: width * 0.03),
+                                child: switchType(width, switchMode, (mode) async {
+                                  setState(() {
+                                    switchMode = mode;
+                                  });
+                                })),
+                            Padding(
+                                padding: EdgeInsets.only(top: width * 0.03, bottom: width * 0.03, left: width * 0.03, right: width * 0.03),
+                                child: SizedBox(
+                                    // height: height * 0.5,
+                                    child: switchMode == 0
+                                        ? tabIngame(context, width, height, samuraiTypeIngame, balance, lockedBalance, mode, () {
+                                            setState(() {
+                                              mode == 'toArmy' ? mode = 'toFree' : mode = 'toArmy';
+                                            });
+                                          }, () {
+                                            setState(() {
+                                              controller.text = (mode == 'toArmy' ? balance : lockedBalance).toStringAsFixed(0);
+                                            });
+                                          })
+                                        : tabWithdraw(
+                                            context,
+                                            width,
+                                            height,
+                                            gas,
+                                            balanceWithdraw.toInt(),
+                                            modeWithdraw,
+                                            (val) {
+                                              setState(() {
+                                                modeWithdraw = val;
+                                              });
+                                            },
+                                            () {
+                                              setState(() {
+                                                controllerWithdraw.text = (balanceWithdraw).toStringAsFixed(0);
+                                              });
+                                            },
+                                            isActive,
+                                            () {
+                                              setState(() {
+                                                isActive = !isActive;
+                                              });
+                                            }))),
+                          ])))),
+            ));
   }
 
   static Future<void> openHealModalPage(
