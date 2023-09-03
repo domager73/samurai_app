@@ -29,8 +29,6 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage> {
-  final AudioPlayer player = AudioPlayer();
-
   late final ScrollController scrollController;
   late bool googleAuthenticatorSwitch;
   late bool emailAuthenticatorSwitch;
@@ -41,9 +39,6 @@ class _AccountPageState extends State<AccountPage> {
   @override
   void initState() {
     super.initState();
-
-    setSwitchAsset();
-
     scrollController = ScrollController();
     googleAuthenticatorSwitch = false; //TODO
     emailAuthenticatorSwitch = false; //TODO
@@ -58,17 +53,11 @@ class _AccountPageState extends State<AccountPage> {
     });
   }
 
-  Future<void> setSwitchAsset() async {
-    player.setAsset(MusicAssets.smallKeyWeaoponLighning);
-  }
-
   @override
   void dispose() {
     super.dispose();
     scrollController.dispose();
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -126,8 +115,10 @@ class _AccountPageState extends State<AccountPage> {
                                 children: [
                                   FittedBox(
                                     child: Text(temp['email'] ?? '',
-                                        style: AppTypography.spaseMono16.copyWith(
-                                            fontWeight: FontWeight.w700,)),
+                                        style:
+                                            AppTypography.spaseMono16.copyWith(
+                                          fontWeight: FontWeight.w700,
+                                        )),
                                   ),
                                   SizedBox(
                                     height: 5,
@@ -173,7 +164,6 @@ class _AccountPageState extends State<AccountPage> {
                                 return AbsorbPointer(
                                   absorbing: snapshot.data ?? false,
                                   child: Switch(
-                                      // here
                                       activeColor: const Color(0xFF00FFFF),
                                       value: soundSwitch,
                                       onChanged: (value) async {
@@ -182,8 +172,13 @@ class _AccountPageState extends State<AccountPage> {
                                         soundSwitch = value;
                                         setState(() {});
 
-                                        await player.play().then((value) =>
-                                            player.seek(Duration.zero));
+                                        await GetIt.I<MusicManager>()
+                                            .smallKeyWeaponPlayer
+                                            .play()
+                                            .then((value) =>
+                                                GetIt.I<MusicManager>()
+                                                    .smallKeyWeaponPlayer
+                                                    .seek(Duration.zero));
 
                                         AppStorage().write(
                                             musicSwitchKey, value.toString());
@@ -194,9 +189,7 @@ class _AccountPageState extends State<AccountPage> {
                                         await Future.delayed(
                                             Duration(milliseconds: 500));
 
-
                                         stream.add(false);
-
                                       }),
                                 );
                               }),
