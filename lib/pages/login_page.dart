@@ -235,7 +235,7 @@ class _LoginPageState extends State<LoginPage> {
                       height: 112,
                       painter: ButtonLoginPainter(),
                       text: 'login/sing up',
-                      player: null,
+                      player: GetIt.I<MusicManager>().menuSettingsSignWaterPlayer,
                       style: AppTypography.amazObit17Dark.copyWith(fontSize: 22),
                     ),
                   ),

@@ -1,9 +1,12 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:samurai_app/utils/colors.dart';
 import 'package:samurai_app/utils/fonts.dart';
 import 'package:samurai_app/utils/global_constants.dart';
+
+import '../../data/music_manager.dart';
 
 class ButtonYes extends StatefulWidget {
   final Function onTap;
@@ -19,6 +22,10 @@ class _ButtonYesState extends State<ButtonYes> {
 
   void _onTap() async {
     widget.onTap();
+
+    GetIt.I<MusicManager>().keyBackSignCloseX.play().then((value) async {
+      await GetIt.I<MusicManager>().keyBackSignCloseX.seek(Duration(seconds: 0));
+    });
 
     setState(() {
       isTapped = true;

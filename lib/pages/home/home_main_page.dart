@@ -4,11 +4,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_xlider/flutter_xlider.dart';
+import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:samurai_app/api/rest.dart';
 import 'package:samurai_app/components/blinking_separator.dart';
 import 'package:samurai_app/components/pop_up_spinner.dart';
 import 'package:samurai_app/components/storage.dart';
+import 'package:samurai_app/data/music_manager.dart';
 import 'package:samurai_app/utils/colors.dart';
 import 'package:samurai_app/utils/fonts.dart';
 import 'package:samurai_app/widgets/buttons/custom_painter_button.dart';
@@ -302,13 +304,11 @@ class _HomeMainPageState extends State<HomeMainPage> {
                                                 .spaceMonoW700White17
                                                 .copyWith(
                                                 color: AppColors.textBlue,
-                                                fontSize: width * 0.041
                                             )),
                                         Text(
                                             '${_currentSliderValue * 0.02} BNB',
                                             style: AppTypography
-                                                .spaceMonoW700White17.copyWith(
-                                                fontSize: width * 0.041))
+                                                .spaceMonoW700White17)
                                       ]),
                                       SizedBox(
                                           width: width * 0.44,
@@ -366,7 +366,8 @@ class _HomeMainPageState extends State<HomeMainPage> {
                                             height: width * 0.12,
                                             width: width * 0.42,
                                             text: 'buy samurai',
-                                            player: null,
+                                            player: GetIt.I<MusicManager>()
+                                                .menuSettingsSignWaterPlayer,
                                             style: AppTypography.amazObit17Dark
                                                 .copyWith(
                                                 fontSize: width * 0.051),

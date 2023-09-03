@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:samurai_app/components/pop_up_spinner.dart';
 import 'package:samurai_app/components/storage.dart';
 import 'package:samurai_app/pages/home/account_page_components.dart';
 import 'package:samurai_app/utils/enums.dart';
@@ -67,16 +68,22 @@ class _AccountPageState extends State<AccountPage> {
     scrollController.dispose();
   }
 
-  Future<void> setPlayer(bool value) async {
-    if (value) {
-      await MyApp.playPlayer(context);
-    } else {
-      await MyApp.stopPlayer(context);
-    }
-  }
+
 
   @override
   Widget build(BuildContext context) {
+    Future<void> setPlayer(bool value) async {
+      if (value) {
+        showSpinner(context);
+
+        await MyApp.playPlayer(context);
+
+        hideSpinner(context);
+      } else {
+        await MyApp.stopPlayer(context);
+      }
+    }
+
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return ValueListenableBuilder(
@@ -87,6 +94,7 @@ class _AccountPageState extends State<AccountPage> {
             defaultValue: <String, dynamic>{},
           );
           temp = Map.from(temp);
+
           return Scaffold(
             backgroundColor: Colors.transparent,
             body: RawScrollbar(
@@ -116,10 +124,14 @@ class _AccountPageState extends State<AccountPage> {
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Text(temp['email'] ?? '',
-                                      style: AppTypography.spaseMono16.copyWith(
-                                          fontWeight: FontWeight.w700)),
-                                  SizedBox(height: 5,),
+                                  FittedBox(
+                                    child: Text(temp['email'] ?? '',
+                                        style: AppTypography.spaseMono16.copyWith(
+                                            fontWeight: FontWeight.w700,)),
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
                                   CustomPainterButton(
                                     player: GetIt.I<MusicManager>()
                                         .keyBackSignCloseX,
@@ -130,8 +142,7 @@ class _AccountPageState extends State<AccountPage> {
                                           .then((value) =>
                                               GetIt.I<MusicManager>()
                                                   .popupSubmenuPlayer
-                                                  .seek(
-                                                      Duration(seconds: 0)));
+                                                  .seek(Duration(seconds: 0)));
                                       AccountPageComponents
                                           .openChangeEmailModalPage(
                                         context: context,
@@ -140,7 +151,7 @@ class _AccountPageState extends State<AccountPage> {
                                       );
                                     },
                                     painter: ChangeEmailPointer(),
-                                    height: 50,
+                                    height: 60,
                                     width: width * 0.5,
                                     text: 'Change',
                                     style: AppTypography.amazObit19Blue,
@@ -177,12 +188,15 @@ class _AccountPageState extends State<AccountPage> {
                                         AppStorage().write(
                                             musicSwitchKey, value.toString());
                                         log("changed music value $value");
-                                        setPlayer(value);
+
+                                        await setPlayer(value);
 
                                         await Future.delayed(
-                                            Duration(seconds: 1));
+                                            Duration(milliseconds: 500));
+
 
                                         stream.add(false);
+
                                       }),
                                 );
                               }),
@@ -307,7 +321,8 @@ class _AccountPageState extends State<AccountPage> {
                                       await AppStorage().remove('jwt');
                                       await AppStorage().remove('user');
                                       if (mounted) {
-                                        Navigator.of(context).pushNamedAndRemoveUntil(
+                                        Navigator.of(context)
+                                            .pushNamedAndRemoveUntil(
                                           '/login',
                                           (route) => false,
                                         );
@@ -322,7 +337,7 @@ class _AccountPageState extends State<AccountPage> {
                           child: logoutBtn,
                         ),
                       ),
-                      SizedBox(height: height * 0.03),
+                      SizedBox(height: height * 0.05),
                     ],
                   ),
                 ),

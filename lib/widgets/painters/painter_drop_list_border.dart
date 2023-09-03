@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:samurai_app/utils/gradients.dart';
 
 class DropDownListBorderPainter extends CustomPainter {
   @override

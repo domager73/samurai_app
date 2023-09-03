@@ -492,7 +492,7 @@ class _HerosPageState extends State<HerosPage>
                           getTime: () => samuraiDpExpiresDate ?? '00:00',
                           style: AppTypography.spaceMonoW700Blue16.copyWith(
                               color: Colors.white,
-                              fontSize: width > 450 ? 21 : 16
+                              fontSize: width > 500 ? 21 : 16
                           ),
                         ),
                       ),
@@ -565,7 +565,7 @@ class _HerosPageState extends State<HerosPage>
                         "${(widget.craftSwitch == 0 ? water!.unclaimed : fire!
                             .unclaimed) ?? 0} DP",
                         style: AppTypography.spaceMonoBold13.copyWith(
-                          fontSize: width > 450 ? 15 : 11,
+                          fontSize: width > 500 ? 15 : 11,
                           color: ((widget.craftSwitch == 0
                               ? water!.unclaimed
                               : fire!.unclaimed) >
@@ -610,7 +610,7 @@ class _HerosPageState extends State<HerosPage>
           child: Row(children: [
             Text("DP earned: ",
               style: AppTypography.spaceMonoBold13
-                  .copyWith(color: AppColors.textBlue, fontSize: width > 450 ? 16 : 13),),
+                  .copyWith(color: AppColors.textBlue, fontSize: width > 500 ? 16 : 13),),
             Text(
                 '${(widget.craftSwitch == 0 ? water!.balance : fire!.balance)
                     .toStringAsFixed(0)}/${maxDp.round()}',

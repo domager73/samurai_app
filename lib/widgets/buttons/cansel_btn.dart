@@ -1,6 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:samurai_app/data/music_manager.dart';
 import 'package:samurai_app/utils/colors.dart';
 import 'package:samurai_app/utils/fonts.dart';
 import 'package:samurai_app/utils/global_constants.dart';
@@ -20,6 +22,10 @@ class _ButtonCanselState extends State<ButtonCansel> {
   void _onTap() async {
     widget.onTap();
 
+    GetIt.I<MusicManager>().keyBackSignCloseX.play().then((value) async {
+      await GetIt.I<MusicManager>().keyBackSignCloseX.seek(Duration(seconds: 0));
+    });
+
     setState(() {
       isTapped = true;
     });
@@ -28,7 +34,6 @@ class _ButtonCanselState extends State<ButtonCansel> {
       setState(() {
         isTapped = false;
       });
-      // Navigator.pop(context);
     });
   }
 

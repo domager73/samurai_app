@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:samurai_app/utils/colors.dart';
 import 'package:samurai_app/utils/fonts.dart';
 import 'package:samurai_app/utils/gradients.dart';
@@ -7,6 +8,8 @@ import 'package:samurai_app/widgets/buttons/custom_painter_button.dart';
 import 'package:samurai_app/widgets/buttons/yes_btn.dart';
 import 'package:samurai_app/widgets/painters/painter_ok.dart';
 import 'package:samurai_app/widgets/painters/painter_popup.dart';
+
+import '../../data/music_manager.dart';
 
 class CustomPopup extends StatefulWidget {
   final String text;
@@ -60,7 +63,7 @@ class _CustomPopupState extends State<CustomPopup> {
                       height: 43.2,
                       width: 132,
                       text: "OK",
-                      player: null,
+                      player: GetIt.I<MusicManager>().keyBackSignCloseX,
                       onTap: () {
                         Navigator.pop(context);
                       }, style: AppTypography.amazObit17Dark,)

@@ -21,7 +21,6 @@ import 'package:samurai_app/widgets/popups/custom_popup.dart';
 
 import '../components/anim_button.dart';
 import '../components/bg.dart';
-import '../components/show_error.dart';
 import 'home/account_page.dart';
 import 'home/hero_mint_page.dart';
 import 'home/heros_page.dart';
@@ -787,16 +786,16 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Widget getCraftPage(double width, double heigth) {
+  Widget getCraftPage(double width, double height) {
     return Stack(
       children: [
         Padding(
-            padding: EdgeInsets.only(top: 43 / 340 * width),
+            padding: EdgeInsets.only(top: 100 / 880 * (height - height * 0.10)),
             child: SizedBox(
               width: width,
               child: CraftPage(craftSwitch: craftSwitch),
             )),
-        switchWaterFire(width, heigth, craftSwitch, (val) {
+        switchWaterFire(width, height, craftSwitch, (val) {
           AppStorage().write(craftSwitchKey, val.toString());
           setState(() {
             craftSwitch = val;

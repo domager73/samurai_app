@@ -33,23 +33,22 @@ class MusicManager {
   AudioPlayer keyBackSignCloseX = AudioPlayer();
 
   List<AudioPlayer> get players => [
-    loadingPlayer,
-    menuSettingsSignWaterPlayer, 
-    modalTextExplainPlayer,
-    numbersCodePlayer,
-    okCanselTransPlayer,
-    popupDownSybMenuPlayer,
-    popupSubmenuPlayer,
-    screenChangePlayer,
-    smallKeyLightningPlayer,
-    smallKeyRegAmountAllPlayer,
-    smallKeyWeaponPlayer,
-    swipeBackPlayer,
-    swipeForwPlayer,
-    zeroAmountNumberPlayer,
-    keyBackSignCloseX
-  ];
-
+        loadingPlayer,
+        menuSettingsSignWaterPlayer,
+        modalTextExplainPlayer,
+        numbersCodePlayer,
+        okCanselTransPlayer,
+        popupDownSybMenuPlayer,
+        popupSubmenuPlayer,
+        screenChangePlayer,
+        smallKeyLightningPlayer,
+        smallKeyRegAmountAllPlayer,
+        smallKeyWeaponPlayer,
+        swipeBackPlayer,
+        swipeForwPlayer,
+        zeroAmountNumberPlayer,
+        keyBackSignCloseX
+      ];
 
   Future<void> registerMusicAssets() async {
     loadingPlayer = AudioPlayer()..setAsset(MusicAssets.loading);
@@ -71,23 +70,24 @@ class MusicManager {
 
     screenChangePlayer = AudioPlayer()..setAsset(MusicAssets.screenChange);
 
-    smallKeyLightningPlayer = AudioPlayer()..setAsset(MusicAssets.smallKeyLightning);
+    smallKeyLightningPlayer = AudioPlayer()
+      ..setAsset(MusicAssets.smallKeyLightning);
 
-    smallKeyRegAmountAllPlayer = AudioPlayer()..setAsset(MusicAssets.smallkeyRegAmountAll);
+    smallKeyRegAmountAllPlayer = AudioPlayer()
+      ..setAsset(MusicAssets.smallkeyRegAmountAll);
 
-    smallKeyWeaponPlayer = AudioPlayer()..setAsset(MusicAssets.smallKeyWeaoponLighning);
+    smallKeyWeaponPlayer = AudioPlayer()
+      ..setAsset(MusicAssets.smallKeyWeaoponLighning);
 
     swipeBackPlayer = AudioPlayer()..setAsset(MusicAssets.swipeBackward);
 
     swipeForwPlayer = AudioPlayer()..setAsset(MusicAssets.swipeForw);
 
-    zeroAmountNumberPlayer = AudioPlayer()..setAsset(MusicAssets.zeroAmountNumber);
+    zeroAmountNumberPlayer = AudioPlayer()
+      ..setAsset(MusicAssets.zeroAmountNumber);
 
     keyBackSignCloseX = AudioPlayer()..setAsset(MusicAssets.keybackSignCloseX);
   }
-
-
-
 
   Future<void> stopMusicAssets() async {
     await loadingPlayer.dispose();

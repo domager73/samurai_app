@@ -46,7 +46,7 @@ class MyApp extends StatefulWidget {
 
   static Future<void> playPlayer(BuildContext context) async {
     _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
-    await state?.initBackgroundMusic();
+    await state?.initMusic();
   }
 
   @override
@@ -65,10 +65,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) async {
+  void doom(AppLifecycleState state) async {
     super.didChangeAppLifecycleState(state);
-
-    print(state);
 
     switch (state) {
       case AppLifecycleState.resumed:
@@ -106,14 +104,14 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   }
 
   Future<void> initMusic() async {
-    await initBackgroundMusic();
+    initBackgroundMusic();
 
     List<AudioPlayer> players = GetIt.I<MusicManager>().players;
 
     for (var player in players) {
       await player
           .setVolume(0)
-          .then((value) async => await player.setSpeed(10000000000000.0))
+          .then((value) async => await player.setSpeed(10000000000000000000000.0))
           .then((value) async => await player.play())
           .then((value) async => await player.stop())
           .then((value) async => await player.setSpeed(1))
@@ -127,23 +125,24 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     player = AudioPlayer();
     await GetIt.I<MusicManager>().registerMusicAssets();
 
-    // await player.setAsset(MusicAssets.mainLoop1);
-    // await player.play();
-    // await player.playerStateStream.listen((event) async {
-    //   print(event.processingState);
+    await player.setAsset(MusicAssets.mainLoop1);
+    await player.play();
+    await player.playerStateStream.listen((event) async {
+      print(event.processingState);
 
-    //   switch (event.processingState) {
-    //     case ProcessingState.completed:
-    //       await player.setAsset(MusicAssets.mainLoop2);
-    //       await player.play();
-    //   }
-    // });
+      switch (event.processingState) {
+        case ProcessingState.completed:
+          await player.setAsset(MusicAssets.mainLoop2);
+          await player.play();
+      }
+    });
   }
 
   Future<void> stopPlayer() async {
     await player.dispose();
     await GetIt.I<MusicManager>().stopMusicAssets();
   }
+
 
   @override
   Widget build(BuildContext context) {

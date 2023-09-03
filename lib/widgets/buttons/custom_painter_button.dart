@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:samurai_app/utils/fonts.dart';
 import 'package:samurai_app/utils/global_constants.dart';
@@ -35,6 +36,10 @@ class _CustomPainterButtonState extends State<CustomPainterButton> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
+        widget.player!.play().then((value) async {
+          await widget.player!.seek(Duration(seconds: 0));
+        });
+
         setState(() {
           isTapped = true;
         });
@@ -85,4 +90,3 @@ class _CustomPainterButtonState extends State<CustomPainterButton> {
     );
   }
 }
-
