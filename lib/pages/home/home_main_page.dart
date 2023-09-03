@@ -168,7 +168,8 @@ class _HomeMainPageState extends State<HomeMainPage> {
                 Text(
                   "TRAINING",
                   style: AppTypography.amazObitWhite.copyWith(
-                    fontSize: 44 / 844 * height,
+                    fontSize: 44,
+                    letterSpacing: 3
                   ),
                   textAlign: TextAlign.center,
                 ),
