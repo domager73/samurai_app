@@ -55,7 +55,12 @@ class CraftPageComponents {
                   CustomPaint(
                     painter: TransferSamuraiPainter(),
                     child: Container(
-                        padding: const EdgeInsets.only(top: 33, bottom: 33, right: 24, left: 24,),
+                        padding: const EdgeInsets.only(
+                          top: 33,
+                          bottom: 33,
+                          right: 24,
+                          left: 24,
+                        ),
                         width: double.infinity,
                         height: 146,
                         child: Row(
@@ -156,7 +161,7 @@ class CraftPageComponents {
                       style: AppTypography.spaceMonoReg13White,
                     ),
                   ]),
-  const SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   PresButton(
                     onTap: () async {
                       try {
@@ -274,6 +279,11 @@ class CraftPageComponents {
                 painter: DropDownListBorderPainter(),
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton2(
+                    onMenuStateChange: (state) async {
+                      await GetIt.I<MusicManager>().smallKeyRegAmountAllPlayer.play().then((value) async {
+                        await GetIt.I<MusicManager>().smallKeyRegAmountAllPlayer.seek(Duration(seconds: 0));
+                      });
+                    },
                     menuItemStyleData: MenuItemStyleData(
                       padding: EdgeInsets.zero,
                     ),
