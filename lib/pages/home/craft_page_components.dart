@@ -6,8 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:rxdart/rxdart.dart';
-import 'package:samurai_app/components/show_error.dart';
 import 'package:samurai_app/components/storage.dart';
 import 'package:samurai_app/data/music_manager.dart';
 import 'package:samurai_app/pages/tfa_page.dart';
@@ -21,10 +19,9 @@ import '../../api/wallet.dart';
 import '../../components/anim_button.dart';
 import '../../components/pop_up_spinner.dart';
 import '../../components/samurai_text_field.dart';
-import '../../components/show_confirm.dart';
 import '../../widgets/popups/custom_popup.dart';
 
-class CraftPageComponents {
+class CraftPageComponents extends StatefulBuilder{
   static Future<void> openTransferModalPage({
     required BuildContext context,
     required double width,
@@ -43,7 +40,7 @@ class CraftPageComponents {
     TextEditingController controller = TextEditingController();
     TextEditingController controllerWithdraw = TextEditingController();
     int switchMode = 0;
-    bool isActive = false;
+    bool isActive = true;
 
     Widget tabIngame(BuildContext context, double width, double height, String samuraiTypeIngame, int balance, lockedBalance, String mode,
         Function onShitchMode, Function onAllBtn) {
@@ -275,9 +272,6 @@ class CraftPageComponents {
       bool primaryCard = modeWithdraw.toUpperCase() == value.toUpperCase();
       log("$value $v");
       return DropdownMenuItem(
-          onTap: () {
-            tap();
-          },
           value: value.toUpperCase(),
           child: Container(
               padding: EdgeInsets.only(left: size.width * 0.064, right: size.width * 0.064),

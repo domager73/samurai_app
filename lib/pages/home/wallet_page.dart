@@ -397,7 +397,7 @@ class _WalletPageState extends State<WalletPage> with SingleTickerProviderStateM
                     Text(
                       heroName,
                       style: GoogleFonts.spaceMono(
-                        fontSize: height * 0.025,
+                        fontSize: 24,
                         fontWeight: FontWeight.w700,
                         color: Colors.white,
                       ),
@@ -450,21 +450,18 @@ class _WalletPageState extends State<WalletPage> with SingleTickerProviderStateM
                       onTap: () => toGame(),
                       child: SvgPicture.asset(
                         'assets/pages/homepage/samurai/to_game.svg',
-                        fit: BoxFit.fitWidth,
+                        width: width * 0.12,
                       ),
                     ),
                     SizedBox(
                       height: height * 0.017,
                     ),
                     AnimButton(
-                      //overlayColor: MaterialStateProperty.all(
-                      //Colors.transparent,
-                      //),
                       shadowType: 2,
                       onTap: () => transfer(),
                       child: SvgPicture.asset(
                         'assets/pages/homepage/samurai/transfer.svg',
-                        fit: BoxFit.fitWidth,
+                        width: width * 0.12,
                       ),
                     ),
                     SizedBox(
@@ -492,7 +489,7 @@ class _WalletPageState extends State<WalletPage> with SingleTickerProviderStateM
     Function transfer,
   ) {
     return Container(
-      height: width * 0.9 * 0.6,
+      height: width * 0.54,
       width: width * 0.9,
       margin: EdgeInsets.symmetric(
         horizontal: width * 0.05,
@@ -526,7 +523,7 @@ class _WalletPageState extends State<WalletPage> with SingleTickerProviderStateM
                     Text(
                       samuraiName,
                       style: GoogleFonts.spaceMono(
-                        fontSize: height * 0.025,
+                        fontSize: 22,
                         fontWeight: FontWeight.w700,
                         color: Colors.white,
                       ),
@@ -537,7 +534,7 @@ class _WalletPageState extends State<WalletPage> with SingleTickerProviderStateM
                         Text(
                           'Samurai',
                           style: GoogleFonts.spaceMono(
-                            fontSize: height * 0.025,
+                            fontSize: 22,
                             fontWeight: FontWeight.w700,
                             color: Colors.white,
                           ),
@@ -556,7 +553,7 @@ class _WalletPageState extends State<WalletPage> with SingleTickerProviderStateM
                       child: Text(
                         'AMOUNT:',
                         style: GoogleFonts.spaceMono(
-                          fontSize: height * 0.012,
+                          fontSize: 15,
                           fontWeight: FontWeight.w700,
                           color: const Color(0xFF00FFFF),
                         ),
@@ -582,28 +579,22 @@ class _WalletPageState extends State<WalletPage> with SingleTickerProviderStateM
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     AnimButton(
-                      //overlayColor: MaterialStateProperty.all(
-                      //Colors.transparent,
-                      //),
                       shadowType: 2,
                       onTap: () => toGame(),
                       child: SvgPicture.asset(
                         'assets/pages/homepage/samurai/to_game.svg',
-                        fit: BoxFit.fitWidth,
+                        width: width * 0.12,
                       ),
                     ),
                     SizedBox(
                       height: height * 0.017,
                     ),
                     AnimButton(
-                      //overlayColor: MaterialStateProperty.all(
-                      //Colors.transparent,
-                      //),
                       shadowType: 2,
                       onTap: () => transfer(),
                       child: SvgPicture.asset(
                         'assets/pages/homepage/samurai/transfer.svg',
-                        fit: BoxFit.fitWidth,
+                        width: width * 0.12,
                       ),
                     ),
                     SizedBox(

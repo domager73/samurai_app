@@ -33,15 +33,12 @@ class _BlinkingSeparatorState extends State<BlinkingSeparator>
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: AnimatedOpacity(
-        opacity: _opacity,
-        duration: const Duration(milliseconds: 500),
-        child: const Text(
-          ":",
-          style: TextStyle(fontSize: 40.0, fontWeight: FontWeight.w900),
-        ),
+    return AnimatedOpacity(
+      opacity: _opacity,
+      duration: const Duration(milliseconds: 500),
+      child: const Text(
+        ":",
+        style: TextStyle(fontSize: 40.0, fontWeight: FontWeight.w900),
       ),
     );
   }

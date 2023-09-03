@@ -76,20 +76,10 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const SizedBox(height: 50,),
-            Column(
-              children: [
-                SvgPicture.asset(
-                  'assets/pages/start/logo.svg',
-                  height: height * 0.15,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 12.0),
-                  child: SvgPicture.asset(
-                    'assets/pages/start/logo_text.svg',
-                    height: height * 0.1,
-                  ),
-                ),
-              ],
+            Image.asset(
+              'assets/pages/start/logo.png',
+              height: height * 0.27,
+              fit: BoxFit.fill,
             ),
             Column(
               children: [

@@ -250,11 +250,11 @@ class Rest {
     );
   }
 
-  static Future<bool?> checkNewEmailCode(String email, String code, String newcode) async {
+  static void changeMyEmail() async {
     String? jwt = AppStorage().read('jwt');
+
     final data = await dio.post(
-      '$serverIp/api/users/update/email/verify',
-      data: {'newEmail': email, 'authCodeNewEmail': int.parse(newcode), 'authCodeOldEmail': int.parse(code)},
+      '$serverIp/api/users/update/email/send',
       options: Options(
         headers: {
           'Authorization': 'Bearer $jwt',
@@ -262,7 +262,37 @@ class Rest {
         },
       ),
     );
-    return true;
+  }
+
+  static Future<String> checkNewEmailCode(String email, String code, String newcode) async {
+    String? jwt = AppStorage().read('jwt');
+    final Response data;
+
+    try {
+      data = await dio.post(
+        '$serverIp/api/users/update/email/verify',
+        data: {'newEmail': email, 'authCodeNewEmail': int.parse(newcode), 'authCodeOldEmail': int.parse(code)},
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $jwt',
+            'Content-Type': "application/json",
+          },
+        ),
+      );
+    } on DioException catch (e) {
+      print('------------------------');
+      print(e.response);
+      print('------------------------');
+
+      if(e.response.toString().contains("is already exist")){
+        return "is already registered. Please use unregistered email";
+      }
+      else{
+        return "Wrong code";
+      }
+    }
+
+    return 'true';
   }
 
   static Future<Map<String, dynamic>?> sendClameSamurai(String type) async {

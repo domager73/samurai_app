@@ -422,6 +422,7 @@ Widget loginBtn(BuildContext context, Map<String, dynamic> params, bool state,
             style: TextStyle(
               fontFamily: 'AmazObitaemOstrovItalic',
               fontSize: params['height'] * 0.025,
+              letterSpacing: 3,
               color: const Color(0xFF0D1238),
               height: 0.98,
             ),

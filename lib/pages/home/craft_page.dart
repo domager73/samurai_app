@@ -363,17 +363,12 @@ class _CraftPageState extends State<CraftPage> {
                                     const Spacer(
                                       flex: 15,
                                     ),
-                                    Expanded(
-                                      flex: 15,
-                                      child: FittedBox(
-                                        fit: BoxFit.fitHeight,
-                                        child: Text(
-                                          'HEAL',
-                                          style: GoogleFonts.spaceMono(
-                                            fontWeight: FontWeight.w700,
-                                            color: const Color(0xFF00FFFF),
-                                          ),
-                                        ),
+                                    Text(
+                                      'HEAL',
+                                      style: GoogleFonts.spaceMono(
+                                        fontSize: width * 0.03,
+                                        fontWeight: FontWeight.w700,
+                                        color: const Color(0xFF00FFFF),
                                       ),
                                     ),
                                     const Spacer(
@@ -384,6 +379,7 @@ class _CraftPageState extends State<CraftPage> {
                                         Text(
                                           "HEALTH: ",
                                           style: GoogleFonts.spaceMono(
+                                            fontSize: width * 0.035,
                                             fontWeight: FontWeight.w700,
                                             color: const Color(0xFF00FFFF),
                                           ),
@@ -391,6 +387,7 @@ class _CraftPageState extends State<CraftPage> {
                                         Text(
                                           "100%", //TODO VALUE
                                           style: GoogleFonts.spaceMono(
+                                            fontSize: width * 0.035,
                                             fontWeight: FontWeight.w700,
                                             color: Colors.white,
                                           ),
@@ -438,86 +435,68 @@ class _CraftPageState extends State<CraftPage> {
                           flex: 60,
                           child: Row(
                             children: [
-                              Expanded(
-                                flex: 90,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                      flex: 15,
-                                      child: FittedBox(
-                                        fit: BoxFit.fitHeight,
-                                        child: Text(
-                                          'TRANSFER TROOPS',
-                                          style: GoogleFonts.spaceMono(
-                                            fontWeight: FontWeight.w700,
-                                            color: const Color(0xFF00FFFF),
-                                          ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text(
+                                    'TRANSFER TROOPS',
+                                    style: GoogleFonts.spaceMono(
+                                      fontSize: width * 0.03,
+                                      fontWeight: FontWeight.w700,
+                                      color: const Color(0xFF00FFFF),
+                                    ),
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "ARMY: ",
+                                        style: GoogleFonts.spaceMono(
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: width * 0.035,
+                                          color: const Color(0xFF00FFFF),
                                         ),
                                       ),
-                                    ),
-                                    const Spacer(
-                                      flex: 10,
-                                    ),
-                                    Expanded(
-                                      flex: 20,
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                            "ARMY: ",
-                                            style: GoogleFonts.spaceMono(
-                                              fontWeight: FontWeight.w700,
-                                              color: const Color(0xFF00FFFF),
-                                            ),
-                                          ),
-                                          Text(
-                                            (widget.craftSwitch == 0
-                                                    ? lockedWaterSamuraiBalance
-                                                    : lockedFireSamuraiBalance)
-                                                .toString(),
-                                            style: GoogleFonts.spaceMono(
-                                              fontWeight: FontWeight.w700,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ],
+                                      Text(
+                                        (widget.craftSwitch == 0
+                                                ? lockedWaterSamuraiBalance
+                                                : lockedFireSamuraiBalance)
+                                            .toString(),
+                                        style: GoogleFonts.spaceMono(
+                                          fontSize: width * 0.035,
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.white,
+                                        ),
                                       ),
-                                    ),
-                                    const Spacer(
-                                      flex: 10,
-                                    ),
-                                    Expanded(
-                                      flex: 20,
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                            "FREE: ",
-                                            style: GoogleFonts.spaceMono(
-                                              fontWeight: FontWeight.w700,
-                                              color: const Color(0xFF00FFFF),
-                                            ),
-                                          ),
-                                          Text(
-                                            (widget.craftSwitch == 0
-                                                    ? waterSamuraiBalance
-                                                    : fireSamuraiBalance)
-                                                .toString(),
-                                            style: GoogleFonts.spaceMono(
-                                              fontWeight: FontWeight.w700,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ],
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "FREE: ",
+                                        style: GoogleFonts.spaceMono(
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: width * 0.035,
+                                          color: const Color(0xFF00FFFF),
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const Spacer(
-                                flex: 24,
+                                      Text(
+                                        (widget.craftSwitch == 0
+                                                ? waterSamuraiBalance
+                                                : fireSamuraiBalance)
+                                            .toString(),
+                                        style: GoogleFonts.spaceMono(
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: width * 0.035,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
                               Expanded(
-                                flex: 75,
+                                flex: 60,
                                 child: PresButton(
                                     onTap: () {
                                       GetIt.I<MusicManager>()

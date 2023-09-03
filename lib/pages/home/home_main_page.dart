@@ -114,7 +114,7 @@ class _HomeMainPageState extends State<HomeMainPage> {
                   color: Colors.transparent,
                   image: DecorationImage(
                       image:
-                          AssetImage('assets/pages/homepage/btn_range.png')))),
+                      AssetImage('assets/pages/homepage/btn_range.png')))),
           handlerAnimation: const FlutterSliderHandlerAnimation(scale: 1.0),
           trackBar: FlutterSliderTrackBar(
             activeTrackBarHeight: width * 0.011,
@@ -141,8 +141,14 @@ class _HomeMainPageState extends State<HomeMainPage> {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery
+        .of(context)
+        .size
+        .width;
+    final height = MediaQuery
+        .of(context)
+        .size
+        .height;
 
     return Scaffold(
       backgroundColor: Colors.transparent,
@@ -232,18 +238,21 @@ class _HomeMainPageState extends State<HomeMainPage> {
                                   },
                                   child: craftSwitch == 0
                                       ? SvgPicture.asset(
-                                          'assets/pages/homepage/tab_mint_water.svg',
-                                          fit: BoxFit.fitWidth,
-                                        )
+                                    'assets/pages/homepage/tab_mint_water.svg',
+                                    fit: BoxFit.fitWidth,
+                                  )
                                       : Container(
-                                          alignment: Alignment.centerLeft,
-                                          padding: EdgeInsets.only(
-                                              left: width * 0.163),
-                                          child: Text(
-                                            "WATER",
-                                            style: AppTypography.amazObit20Blue,
-                                            textAlign: TextAlign.center,
-                                          )))),
+                                      alignment: Alignment.centerLeft,
+                                      padding: EdgeInsets.only(
+                                          left: width * 0.163),
+                                      child: Text(
+                                        "WATER",
+                                        style: AppTypography.amazObit20Blue
+                                            .copyWith(
+                                            fontSize: width * 0.048
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      )))),
                           SizedBox(
                               width: width * (craftSwitch == 0 ? 0.40 : 0.555),
                               height: width * 0.145,
@@ -259,18 +268,21 @@ class _HomeMainPageState extends State<HomeMainPage> {
                                   },
                                   child: craftSwitch == 0
                                       ? Container(
-                                          alignment: Alignment.centerLeft,
-                                          padding: EdgeInsets.only(
-                                              left: width * 0.13),
-                                          child: Text(
-                                            "FIRE",
-                                            style: AppTypography.amazObit20Blue,
-                                            textAlign: TextAlign.center,
-                                          ))
+                                      alignment: Alignment.centerLeft,
+                                      padding: EdgeInsets.only(
+                                          left: width * 0.13),
+                                      child: Text(
+                                        "FIRE",
+                                        style: AppTypography.amazObit20Blue
+                                            .copyWith(
+                                            fontSize: width * 0.048
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ))
                                       : SvgPicture.asset(
-                                          'assets/pages/homepage/tab_mint_fire.svg',
-                                          fit: BoxFit.fitWidth,
-                                        )))
+                                    'assets/pages/homepage/tab_mint_fire.svg',
+                                    fit: BoxFit.fitWidth,
+                                  )))
                         ]),
                         Container(
                             width: width,
@@ -282,18 +294,21 @@ class _HomeMainPageState extends State<HomeMainPage> {
                                     left: 0.06 * width, right: 0.06 * width),
                                 child: Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                     children: [
                                       Row(children: [
                                         Text("PRICE: ",
                                             style: AppTypography
                                                 .spaceMonoW700White17
                                                 .copyWith(
-                                                    color: AppColors.textBlue)),
+                                                color: AppColors.textBlue,
+                                                fontSize: width * 0.041
+                                            )),
                                         Text(
                                             '${_currentSliderValue * 0.02} BNB',
                                             style: AppTypography
-                                                .spaceMonoW700White17)
+                                                .spaceMonoW700White17.copyWith(
+                                                fontSize: width * 0.041))
                                       ]),
                                       SizedBox(
                                           width: width * 0.44,
@@ -304,55 +319,57 @@ class _HomeMainPageState extends State<HomeMainPage> {
                                                   context: context,
                                                   builder: (ctx) =>
                                                       PopupBuySamurai(
-                                                        amountSamurai: _currentSliderValue.toStringAsFixed(0),
-                                                          price:
-                                                              (_currentSliderValue *
-                                                                      0.02)
-                                                                  .toString(),
-                                                          acceptFunction:
-                                                              () async {
-                                                            Navigator.of(ctx)
-                                                                .pop();
-                                                            showSpinner(
+                                                        amountSamurai: _currentSliderValue
+                                                            .toStringAsFixed(0),
+                                                        price:
+                                                        (_currentSliderValue *
+                                                            0.02)
+                                                            .toString(),
+                                                        acceptFunction:
+                                                            () async {
+                                                          Navigator.of(ctx)
+                                                              .pop();
+                                                          showSpinner(
+                                                              context);
+                                                          Rest.sendMintSamurai(
+                                                              _currentSliderValue
+                                                                  .toInt(),
+                                                              craftSwitch ==
+                                                                  0
+                                                                  ? "WATER_SAMURAI_BSC"
+                                                                  : "FIRE_SAMURAI_BSC",
+                                                              useDpMint:
+                                                              false)
+                                                              .then((value) {
+                                                            hideSpinner(
                                                                 context);
-                                                            Rest.sendMintSamurai(
-                                                                    _currentSliderValue
-                                                                        .toInt(),
-                                                                    craftSwitch ==
-                                                                            0
-                                                                        ? "WATER_SAMURAI_BSC"
-                                                                        : "FIRE_SAMURAI_BSC",
-                                                                    useDpMint:
-                                                                        false)
-                                                                .then((value) {
-                                                              hideSpinner(
-                                                                  context);
-                                                              AppStorage()
-                                                                  .updateUserWallet()
-                                                                  .then((_) {
-                                                                setState(() {});
-                                                              });
-                                                            }).catchError((e) {
-                                                              if (kDebugMode) {
-                                                                print(e);
-                                                              }
-                                                              // hideSpinner(context);
+                                                            AppStorage()
+                                                                .updateUserWallet()
+                                                                .then((_) {
+                                                              setState(() {});
                                                             });
-                                                          },
-                                                          canselFunction: () {
-                                                            Navigator.pop(
-                                                                context);
-                                                          },));
+                                                          }).catchError((e) {
+                                                            if (kDebugMode) {
+                                                              print(e);
+                                                            }
+                                                            // hideSpinner(context);
+                                                          });
+                                                        },
+                                                        canselFunction: () {
+                                                          Navigator.pop(
+                                                              context);
+                                                        },));
                                             },
                                             painter: craftSwitch == 1
                                                 ? ButtonBySamuraiRedPainter()
                                                 : ButtonBySamuraiBluePainter(),
-                                            height: 50,
-                                            width: 175,
+                                            height: width * 0.12,
+                                            width: width * 0.42,
                                             text: 'buy samurai',
                                             player: null,
                                             style: AppTypography.amazObit17Dark
-                                                .copyWith(fontSize: 20),
+                                                .copyWith(
+                                                fontSize: width * 0.051),
                                           ))
                                     ])))
                       ]),
@@ -371,8 +388,8 @@ class _HomeMainPageState extends State<HomeMainPage> {
       width: 160,
       decoration: const BoxDecoration(
           image: DecorationImage(
-        image: AssetImage('assets/pages/homepage/background_clock.png'),
-      )),
+            image: AssetImage('assets/pages/homepage/background_clock.png'),
+          )),
       child: Row(
         children: [
           const SizedBox(
