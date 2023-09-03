@@ -43,8 +43,16 @@ class CraftPageComponents {
     int switchMode = 0;
     bool isActive = true;
 
-    Widget tabIngame(BuildContext context, double width, double height, String samuraiTypeIngame, int balance, lockedBalance, String mode,
-        Function onShitchMode, Function onAllBtn) {
+    Widget tabIngame(
+        BuildContext context,
+        double width,
+        double height,
+        String samuraiTypeIngame,
+        int balance,
+        lockedBalance,
+        String mode,
+        Function onShitchMode,
+        Function onAllBtn) {
       return StatefulBuilder(
           builder: (context, StateSetter setState) => GestureDetector(
               onTap: () async {
@@ -72,25 +80,43 @@ class CraftPageComponents {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Row(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.end, children: [
-                                    SizedBox(
-                                      width: 40,
-                                      child: Text(
-                                        textAlign: TextAlign.start,
-                                        "from".toUpperCase(),
-                                        style: GoogleFonts.spaceMono(
-                                            fontWeight: FontWeight.w800, fontSize: 13, color: Colors.white, textStyle: TextStyle(height: 1)),
-                                      ),
-                                    ),
-                                    Text(
-                                      mode == 'toArmy' ? 'FREE' : 'ARMY',
-                                      textHeightBehavior: TextHeightBehavior(),
-                                      style: GoogleFonts.spaceMono(
-                                          fontWeight: FontWeight.w700, color: Colors.white, fontSize: 20, textStyle: TextStyle(height: 0.927)),
-                                      textAlign: TextAlign.start,
-                                    ),
-                                  ]),
-                                  Container(color: Colors.white.withOpacity(0.6), height: 1, margin: const EdgeInsets.only(top: 22, bottom: 16)),
+                                  Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        SizedBox(
+                                          width: 40,
+                                          child: Text(
+                                            textAlign: TextAlign.start,
+                                            "from".toUpperCase(),
+                                            style: GoogleFonts.spaceMono(
+                                                fontWeight: FontWeight.w800,
+                                                fontSize: 13,
+                                                color: Colors.white,
+                                                textStyle:
+                                                    TextStyle(height: 1)),
+                                          ),
+                                        ),
+                                        Text(
+                                          mode == 'toArmy' ? 'FREE' : 'ARMY',
+                                          textHeightBehavior:
+                                              TextHeightBehavior(),
+                                          style: GoogleFonts.spaceMono(
+                                              fontWeight: FontWeight.w700,
+                                              color: Colors.white,
+                                              fontSize: 20,
+                                              textStyle:
+                                                  TextStyle(height: 0.927)),
+                                          textAlign: TextAlign.start,
+                                        ),
+                                      ]),
+                                  Container(
+                                      color: Colors.white.withOpacity(0.6),
+                                      height: 1,
+                                      margin: const EdgeInsets.only(
+                                          top: 22, bottom: 16)),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment: CrossAxisAlignment.end,
@@ -100,7 +126,10 @@ class CraftPageComponents {
                                         child: Text(
                                           "to".toUpperCase(),
                                           style: GoogleFonts.spaceMono(
-                                              fontWeight: FontWeight.w800, fontSize: 13, color: Colors.white, textStyle: TextStyle(height: 1)),
+                                              fontWeight: FontWeight.w800,
+                                              fontSize: 13,
+                                              color: Colors.white,
+                                              textStyle: TextStyle(height: 1)),
                                           textAlign: TextAlign.start,
                                         ),
                                       ),
@@ -108,7 +137,10 @@ class CraftPageComponents {
                                         textAlign: TextAlign.start,
                                         mode == 'toArmy' ? 'ARMY' : 'FREE',
                                         style: GoogleFonts.spaceMono(
-                                            fontWeight: FontWeight.w700, color: Colors.white, textStyle: TextStyle(height: 0.927), fontSize: 20),
+                                            fontWeight: FontWeight.w700,
+                                            color: Colors.white,
+                                            textStyle: TextStyle(height: 0.927),
+                                            fontSize: 20),
                                       ),
                                     ],
                                   ),
@@ -118,7 +150,8 @@ class CraftPageComponents {
                             const SizedBox(width: 25),
                             AnimButton(
                               shadowType: 2,
-                              player: GetIt.I<MusicManager>().okCanselTransPlayer,
+                              player:
+                                  GetIt.I<MusicManager>().okCanselTransPlayer,
                               onTap: () {
                                 onShitchMode();
                               },
@@ -136,7 +169,8 @@ class CraftPageComponents {
                       screeenHeight: height,
                       screeenWidth: width,
                       hint: 'Amount',
-                      keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
+                      keyboardType: const TextInputType.numberWithOptions(
+                          signed: false, decimal: false),
                       inputFormatters: [
                         FilteringTextInputFormatter.allow(RegExp(r'^[0-9]*')),
                       ],
@@ -188,7 +222,8 @@ class CraftPageComponents {
 
                         await showDialog(
                           context: context,
-                          builder: (context) => const CustomPopup(text: 'Insufficient funds', isError: true),
+                          builder: (context) => const CustomPopup(
+                              text: 'Insufficient funds', isError: true),
                         );
                       }
                       if (context.mounted) {
@@ -197,8 +232,13 @@ class CraftPageComponents {
                     },
                     disabled: controller.text.isEmpty ||
                         (int.tryParse(controller.text) ?? 0) <= 0 ||
-                        (int.tryParse(controller.text) ?? 0) > (mode == 'toArmy' ? balance : lockedBalance),
-                    params: {'text': 'confirm', 'width': width, 'height': height},
+                        (int.tryParse(controller.text) ?? 0) >
+                            (mode == 'toArmy' ? balance : lockedBalance),
+                    params: {
+                      'text': 'confirm',
+                      'width': width,
+                      'height': height
+                    },
                     child: loginBtn,
                   ),
                 ],
@@ -224,7 +264,10 @@ class CraftPageComponents {
         hideSpinner(context);
         await showDialog(
           context: context,
-          builder: (context) => const CustomPopup(text: 'Insufficient funds. Deposit some BNB to your crypto wallet.', isError: true),
+          builder: (context) => const CustomPopup(
+              text:
+                  'Insufficient funds. Deposit some BNB to your crypto wallet.',
+              isError: true),
         );
       }
       if (context.mounted) {
@@ -232,7 +275,8 @@ class CraftPageComponents {
       }
     }
 
-    DropdownMenuItem buildDropDownItem(String value, String modeWithdraw, BuildContext context, bool v, Function tap) {
+    DropdownMenuItem buildDropDownItem(String value, String modeWithdraw,
+        BuildContext context, bool v, Function tap) {
       Size size = MediaQuery.sizeOf(context);
       bool primaryCard = modeWithdraw.toUpperCase() == value.toUpperCase();
       log("$value $v");
@@ -240,7 +284,11 @@ class CraftPageComponents {
           value: value.toUpperCase(),
           child: Container(
               height: 53,
-              padding: EdgeInsets.only(left: size.width * 0.064, right: size.width * 0.064, top: 5, bottom: 5),
+              padding: EdgeInsets.only(
+                  left: size.width * 0.064,
+                  right: size.width * 0.064,
+                  top: 5,
+                  bottom: 5),
               alignment: Alignment.center,
               decoration: const BoxDecoration(
                 color: Colors.transparent,
@@ -253,21 +301,36 @@ class CraftPageComponents {
                   ),
                   Text(
                     value.toUpperCase(),
-                    style: AppTypography.spaceMonoW700Blue16.copyWith(color: primaryCard ? AppColors.textBlue : Colors.white),
+                    style: AppTypography.spaceMonoW700Blue16.copyWith(
+                        color: primaryCard ? AppColors.textBlue : Colors.white),
                   ),
                   primaryCard
-                      ? Transform.rotate(angle: v ? 3.14 : 0, child: Icon(Icons.expand_less_rounded, size: 40, color: AppColors.textBlue))
+                      ? Transform.rotate(
+                          angle: v ? 3.14 : 0,
+                          child: Icon(Icons.expand_less_rounded,
+                              size: 40, color: AppColors.textBlue))
                       : SizedBox(width: 40)
                 ],
               )));
     }
 
-    Widget tabWithdraw(BuildContext context, double width, double height, double gas, int balanceWithdraw, String mode, Function(String) onShitchMode,
-        Function onAllBtn, bool isActive, Function changeActive) {
+    Widget tabWithdraw(
+        BuildContext context,
+        double width,
+        double height,
+        double gas,
+        int balanceWithdraw,
+        String mode,
+        Function(String) onShitchMode,
+        Function onAllBtn,
+        bool isActive,
+        Function changeActive) {
       return StatefulBuilder(builder: (context, StateSetter setState) {
         var dropList = [
-          buildDropDownItem("regular", modeWithdraw, context, isActive, changeActive),
-          buildDropDownItem("genesis", modeWithdraw, context, isActive, changeActive),
+          buildDropDownItem(
+              "regular", modeWithdraw, context, isActive, changeActive),
+          buildDropDownItem(
+              "genesis", modeWithdraw, context, isActive, changeActive),
         ];
 
         return Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
@@ -295,7 +358,10 @@ class CraftPageComponents {
                         isOverButton: true,
                         elevation: 0,
                         decoration: BoxDecoration(
-                            color: Colors.transparent, image: DecorationImage(fit: BoxFit.fill, image: AssetImage("assets/drop_bg.png")))),
+                            color: Colors.transparent,
+                            image: DecorationImage(
+                                fit: BoxFit.fill,
+                                image: AssetImage("assets/drop_bg.png")))),
                     buttonStyleData: ButtonStyleData(
                       padding: const EdgeInsets.only(
                         right: 0,
@@ -303,9 +369,13 @@ class CraftPageComponents {
                       height: 53,
                       width: width * 0.58,
                     ),
-                    iconStyleData: const IconStyleData(icon: Icon(Icons.expand_more_rounded, color: Colors.transparent, size: 0)),
+                    iconStyleData: const IconStyleData(
+                        icon: Icon(Icons.expand_more_rounded,
+                            color: Colors.transparent, size: 0)),
                     value: mode,
-                    items: modeWithdraw == 'REGULAR' ? dropList : dropList.reversed.toList(),
+                    items: modeWithdraw == 'REGULAR'
+                        ? dropList
+                        : dropList.reversed.toList(),
                     onChanged: (value) {
                       onShitchMode(value!);
                     },
@@ -326,7 +396,8 @@ class CraftPageComponents {
               screeenHeight: height,
               screeenWidth: width,
               hint: 'Quantity',
-              keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
+              keyboardType: const TextInputType.numberWithOptions(
+                  signed: false, decimal: false),
               inputFormatters: [
                 FilteringTextInputFormatter.allow(RegExp(r'^[0-9]*')),
               ],
@@ -362,7 +433,9 @@ class CraftPageComponents {
             onTap: () {
               final useTfa = AppStorage().read('use-tfa');
               if (useTfa != null && useTfa == '1') {
-                Navigator.push(context, MaterialPageRoute(builder: (_) => const TfaPage())).then((res) {
+                Navigator.push(context,
+                        MaterialPageRoute(builder: (_) => const TfaPage()))
+                    .then((res) {
                   if (res) {
                     transferSamurai();
                   }
@@ -387,8 +460,13 @@ class CraftPageComponents {
             width: width * (switchMode == 0 ? 0.45 : 0.53),
             child: InkWell(
                 onTap: () async {
-                  await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.play().then((value) async {
-                    await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.seek(Duration(seconds: 0));
+                  await GetIt.I<MusicManager>()
+                      .menuSettingsSignWaterPlayer
+                      .play()
+                      .then((value) async {
+                    await GetIt.I<MusicManager>()
+                        .menuSettingsSignWaterPlayer
+                        .seek(Duration(seconds: 0));
                   });
                   onSwitch(0);
                 },
@@ -397,17 +475,26 @@ class CraftPageComponents {
                   fit: BoxFit.fitWidth,
                 ))),
         Padding(
-            padding: EdgeInsets.only(left: width * 0.34, top: width * (switchMode == 0 ? 0.004 : 0.009)),
+            padding: EdgeInsets.only(
+                left: width * 0.34,
+                top: width * (switchMode == 0 ? 0.004 : 0.009)),
             child: SizedBox(
                 width: width * (switchMode == 0 ? 0.483 : 0.46),
                 child: InkWell(
                     onTap: () async {
-                      await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.play().then((value) async {
-                        await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.seek(Duration(seconds: 0));
+                      await GetIt.I<MusicManager>()
+                          .menuSettingsSignWaterPlayer
+                          .play()
+                          .then((value) async {
+                        await GetIt.I<MusicManager>()
+                            .menuSettingsSignWaterPlayer
+                            .seek(Duration(seconds: 0));
                       });
                       onSwitch(1);
                     },
-                    child: SvgPicture.asset('assets/pages/homepage/craft/withdraw_$switchMode.svg', fit: BoxFit.fitWidth))))
+                    child: SvgPicture.asset(
+                        'assets/pages/homepage/craft/withdraw_$switchMode.svg',
+                        fit: BoxFit.fitWidth))))
       ]);
     }
 
@@ -425,107 +512,159 @@ class CraftPageComponents {
                             topLeft: Radius.circular(32),
                             topRight: Radius.circular(32),
                           ),
-                          image: DecorationImage(image: AssetImage('assets/modal_bottom_sheet_bg.png'), fit: BoxFit.fill)),
-                      padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                          image: DecorationImage(
+                              image: AssetImage(
+                                  'assets/modal_bottom_sheet_bg.png'),
+                              fit: BoxFit.fill)),
+                      padding: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).viewInsets.bottom),
                       child: Padding(
-                          padding: const EdgeInsets.fromLTRB(18.0, 28.0, 18.0, 0.0), // content padding
-                          child: Wrap(alignment: WrapAlignment.center, crossAxisAlignment: WrapCrossAlignment.center, children: <Widget>[
-                            Padding(
-                                padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
-                                // content padding
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    PresButton(
-                                      onTap: () async {
-                                        await GetIt.I<MusicManager>().popupDownSybMenuPlayer.play().then((value) async {
-                                          await GetIt.I<MusicManager>().popupDownSybMenuPlayer.seek(Duration(seconds: 0));
-                                        });
+                          padding: const EdgeInsets.fromLTRB(
+                              18.0, 28.0, 18.0, 0.0), // content padding
+                          child: Wrap(
+                              alignment: WrapAlignment.center,
+                              crossAxisAlignment: WrapCrossAlignment.center,
+                              children: <Widget>[
+                                Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        10.0, 0.0, 10.0, 0.0),
+                                    // content padding
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        PresButton(
+                                          onTap: () async {
+                                            await GetIt.I<MusicManager>()
+                                                .popupDownSybMenuPlayer
+                                                .play()
+                                                .then((value) async {
+                                              await GetIt.I<MusicManager>()
+                                                  .popupDownSybMenuPlayer
+                                                  .seek(Duration(seconds: 0));
+                                            });
 
-                                        Navigator.of(context).pop();
-                                      },
-                                      params: {'width': width},
-                                      child: backBtn,
-                                      player: GetIt.I<MusicManager>().keyBackSignCloseX,
-                                    ),
-                                    Expanded(
-                                      child: Center(
-                                        child: Text(
-                                          'transfer',
-                                          style: AppTypography.amazObitW400White,
+                                            Navigator.of(context).pop();
+                                          },
+                                          params: {'width': width},
+                                          child: backBtn,
+                                          player: GetIt.I<MusicManager>()
+                                              .keyBackSignCloseX,
                                         ),
-                                      ),
-                                    ),
-                                    AnimButton(
-                                      shadowType: 2,
-                                      onTap: () {
-                                        showDialog(
-                                            context: context,
-                                            builder: ((context) => CustomPopup(
-                                                  isError: false,
-                                                  text: switchMode == 0
-                                                      ? 'Army Samurai can participate in battles and accumulate XP. Free Samurai can be withdrawn to your wallet. Army Samurai must be at 100% health to transfer.'
-                                                      : 'You can withdraw Free Samurai, after which they will available on your wallet',
-                                                )));
-                                      },
-                                      child: SvgPicture.asset(
-                                        'assets/pages/homepage/craft/info.svg',
-                                        height: width * 0.12,
-                                        width: width * 0.12,
-                                      ),
-                                    )
-                                  ],
-                                )),
-                            Padding(
-                                padding: EdgeInsets.only(top: width * 0.03, bottom: width * 0.03),
-                                child: switchType(width, switchMode, (mode) async {
-                                  setState(() {
-                                    switchMode = mode;
-                                  });
-                                })),
-                            Padding(
-                                padding: EdgeInsets.only(top: width * 0.03, bottom: width * 0.03, left: width * 0.03, right: width * 0.03),
-                                child: SizedBox(
-                                    // height: height * 0.5,
-                                    child: switchMode == 0
-                                        ? tabIngame(context, width, height, samuraiTypeIngame, balance, lockedBalance, mode, () {
-                                            setState(() {
-                                              mode == 'toArmy' ? mode = 'toFree' : mode = 'toArmy';
-                                            });
-                                          }, () {
-                                            setState(() {
-                                              controller.text = (mode == 'toArmy' ? balance : lockedBalance).toStringAsFixed(0);
-                                            });
-                                          })
-                                        : tabWithdraw(
-                                            context,
-                                            width,
-                                            height,
-                                            gas,
-                                            balanceWithdraw.toInt(),
-                                            modeWithdraw,
-                                            (val) {
-                                              setState(() {
-                                                modeWithdraw = val;
-                                              });
-                                            },
-                                            () {
-                                              setState(() {
-                                                controllerWithdraw.text = (balanceWithdraw).toStringAsFixed(0);
-                                              });
-                                            },
-                                            isActive,
-                                            () {
-                                              setState(() {
-                                                isActive = !isActive;
-                                              });
-                                            }))),
-                          ])))),
-            ));
+                                        Expanded(
+                                          child: Center(
+                                            child: Text(
+                                              'transfer',
+                                              style: AppTypography
+                                                  .amazObitW400White,
+                                            ),
+                                          ),
+                                        ),
+                                        AnimButton(
+                                          shadowType: 2,
+                                          onTap: () {
+                                            showDialog(
+                                                context: context,
+                                                builder: ((context) =>
+                                                    CustomPopup(
+                                                      isError: false,
+                                                      text: switchMode == 0
+                                                          ? 'Army Samurai can participate in battles and accumulate XP. Free Samurai can be withdrawn to your wallet. Army Samurai must be at 100% health to transfer.'
+                                                          : 'You can withdraw Free Samurai, after which they will available on your wallet',
+                                                    )));
+                                          },
+                                          child: SvgPicture.asset(
+                                            'assets/pages/homepage/craft/info.svg',
+                                            height: width * 0.12,
+                                            width: width * 0.12,
+                                          ),
+                                        )
+                                      ],
+                                    )),
+                                Padding(
+                                    padding: EdgeInsets.only(
+                                        top: width * 0.03,
+                                        bottom: width * 0.03),
+                                    child: switchType(width, switchMode,
+                                        (mode) async {
+                                      setState(() {
+                                        switchMode = mode;
+                                      });
+                                    })),
+                                Padding(
+                                    padding: EdgeInsets.only(
+                                        top: width * 0.03,
+                                        bottom: width * 0.03,
+                                        left: width * 0.03,
+                                        right: width * 0.03),
+                                    child: SizedBox(
+                                        // height: height * 0.5,
+                                        child: switchMode == 0
+                                            ? tabIngame(
+                                                context,
+                                                width,
+                                                height,
+                                                samuraiTypeIngame,
+                                                balance,
+                                                lockedBalance,
+                                                mode, () {
+                                                setState(() {
+                                                  mode == 'toArmy'
+                                                      ? mode = 'toFree'
+                                                      : mode = 'toArmy';
+                                                });
+                                              }, () {
+                                                setState(() {
+                                                  controller.text =
+                                                      (mode == 'toArmy'
+                                                              ? balance
+                                                              : lockedBalance)
+                                                          .toStringAsFixed(0);
+                                                });
+                                              })
+                                            : tabWithdraw(
+                                                context,
+                                                width,
+                                                height,
+                                                gas,
+                                                balanceWithdraw.toInt(),
+                                                modeWithdraw,
+                                                (val) {
+                                                  setState(() {
+                                                    modeWithdraw = val;
+                                                  });
+                                                },
+                                                () {
+                                                  setState(() {
+                                                    controllerWithdraw.text =
+                                                        (balanceWithdraw)
+                                                            .toStringAsFixed(0);
+                                                  });
+                                                },
+                                                isActive,
+                                                () {
+                                                  setState(() {
+                                                    isActive = !isActive;
+                                                  });
+                                                }))),
+                              ])))),
+            )).whenComplete(() async {
+      await GetIt.I<MusicManager>()
+          .popupDownSybMenuPlayer
+          .play()
+          .then((value) async {
+        await GetIt.I<MusicManager>()
+            .popupDownSybMenuPlayer
+            .seek(const Duration(seconds: 0));
+      });
+    });
   }
 
   static Future<void> openHealModalPage(
-      {required BuildContext context, required double width, required double height, required int switchMode}) async {
+      {required BuildContext context,
+      required double width,
+      required double height,
+      required int switchMode}) async {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -546,8 +685,13 @@ class CraftPageComponents {
                 children: [
                   PresButton(
                     onTap: () async {
-                      await GetIt.I<MusicManager>().popupDownSybMenuPlayer.play().then((value) async {
-                        await GetIt.I<MusicManager>().popupDownSybMenuPlayer.seek(Duration(seconds: 0));
+                      await GetIt.I<MusicManager>()
+                          .popupDownSybMenuPlayer
+                          .play()
+                          .then((value) async {
+                        await GetIt.I<MusicManager>()
+                            .popupDownSybMenuPlayer
+                            .seek(Duration(seconds: 0));
                       });
 
                       Navigator.of(context).pop();
@@ -596,12 +740,15 @@ class CraftPageComponents {
               ),
               const SizedBox(height: 12),
 
-              Text("HEALTH: 100%", style: AppTypography.spaceMonoBold13.copyWith(color: AppColors.textBlue)), //TODO value
+              Text("HEALTH: 100%",
+                  style: AppTypography.spaceMonoBold13
+                      .copyWith(color: AppColors.textBlue)), //TODO value
               const SizedBox(height: 21),
 
               Text(
                 "CURE ALL THE SAMURAI IN\nTHE ARMY?",
-                style: AppTypography.spaceMonoW700Blue16.copyWith(color: Colors.white),
+                style: AppTypography.spaceMonoW700Blue16
+                    .copyWith(color: Colors.white),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 8),
@@ -611,12 +758,14 @@ class CraftPageComponents {
                       context: context,
                       builder: (context) => CustomChoosePopup(
                           acceptFunction: () {
-                            Navigator.of(context).popUntil((route) => route.isFirst);
+                            Navigator.of(context)
+                                .popUntil((route) => route.isFirst);
                           },
                           canselFunction: () {
                             Navigator.pop(context);
                           },
-                          text: "Are you sure you want to spend RYO to heal your army?"));
+                          text:
+                              "Are you sure you want to spend RYO to heal your army?"));
                 },
                 disabled: true,
                 params: {
@@ -631,20 +780,37 @@ class CraftPageComponents {
           ),
         ),
       ),
-    );
+    ).whenComplete(() async {
+      await GetIt.I<MusicManager>()
+          .popupDownSybMenuPlayer
+          .play()
+          .then((value) async {
+        await GetIt.I<MusicManager>()
+            .popupDownSybMenuPlayer
+            .seek(const Duration(seconds: 0));
+      });
+    });
   }
 
   static Future<void> openSwitchDialog(
-      {required BuildContext context, required double width, required double height, required Function(int) onSwitch, required int valSwitch}) async {
+      {required BuildContext context,
+      required double width,
+      required double height,
+      required Function(int) onSwitch,
+      required int valSwitch}) async {
     showDialog(
         context: context,
         builder: (BuildContext context) => StatefulBuilder(
             builder: (context, StateSetter setState) => Dialog(
-                insetPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+                insetPadding:
+                    const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
                 elevation: 0,
                 backgroundColor: Colors.red,
                 child: Padding(
-                    padding: EdgeInsets.only(top: width * 0.28, left: width * 0.1, right: width * 0.445),
+                    padding: EdgeInsets.only(
+                        top: width * 0.28,
+                        left: width * 0.1,
+                        right: width * 0.445),
                     child: Stack(children: <Widget>[
                       Padding(
                           padding: EdgeInsets.only(top: width * 0.09),
@@ -658,9 +824,13 @@ class CraftPageComponents {
                             onSwitch(valSwitch == 0 ? 0 : 1);
                             Navigator.of(context).pop();
                           },
-                          child: Text(valSwitch == 0 ? 'GENESIS' : 'REGULAR', style: AppTypography.spaceMonoW700Blue16)),
+                          child: Text(valSwitch == 0 ? 'GENESIS' : 'REGULAR',
+                              style: AppTypography.spaceMonoW700Blue16)),
                       Padding(
-                          padding: EdgeInsets.only(top: width * 0.195, left: width * 0.02, right: width * 0.02),
+                          padding: EdgeInsets.only(
+                              top: width * 0.195,
+                              left: width * 0.02,
+                              right: width * 0.02),
                           child: SvgPicture.asset(
                             'assets/pages/homepage/craft/transfer_line.svg',
                             fit: BoxFit.fitWidth,
@@ -671,8 +841,18 @@ class CraftPageComponents {
                             onSwitch(valSwitch == 1 ? 0 : 1);
                             Navigator.of(context).pop();
                           },
-                          child:
-                              Text(valSwitch == 1 ? 'GENESIS' : 'REGULAR', style: AppTypography.spaceMonoW700Blue16.copyWith(color: Colors.white))),
-                    ])))));
+                          child: Text(valSwitch == 1 ? 'GENESIS' : 'REGULAR',
+                              style: AppTypography.spaceMonoW700Blue16
+                                  .copyWith(color: Colors.white))),
+                    ]))))).whenComplete(() async {
+      await GetIt.I<MusicManager>()
+          .popupDownSybMenuPlayer
+          .play()
+          .then((value) async {
+        await GetIt.I<MusicManager>()
+            .popupDownSybMenuPlayer
+            .seek(const Duration(seconds: 0));
+      });
+    });
   }
 }

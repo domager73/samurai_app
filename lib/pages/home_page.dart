@@ -544,7 +544,16 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-    );
+    ).whenComplete(() async {
+      await GetIt.I<MusicManager>()
+          .popupDownSybMenuPlayer
+          .play()
+          .then((value) async {
+        await GetIt.I<MusicManager>()
+            .popupDownSybMenuPlayer
+            .seek(Duration(seconds: 0));
+      });
+    });
   }
 
   Widget bottomNavigButton(Widget child, double height, int id) {
