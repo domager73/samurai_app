@@ -813,11 +813,10 @@ class _HomePageState extends State<HomePage> {
         const Spacer(flex: 1),
         Text(
           'Forge',
-          style: TextStyle(
-            fontFamily: 'AmazObitaemOstrovItalic',
-            fontSize: height * 0.05,
-            color: Colors.white,
-          ),
+          style: AppTypography.amazObitWhite.copyWith(
+                    fontSize: 44,
+                    letterSpacing: 3
+                  ),
         ),
         const SizedBox(
           height: 20,
@@ -842,11 +841,10 @@ class _HomePageState extends State<HomePage> {
         const Spacer(flex: 1),
         Text(
           'Storage',
-          style: TextStyle(
-            fontFamily: 'AmazObitaemOstrovItalic',
-            fontSize: height * 0.05,
-            color: Colors.white,
-          ),
+          style: AppTypography.amazObitWhite.copyWith(
+                    fontSize: 44,
+                    letterSpacing: 3
+                  ),
         ),
         const SizedBox(
           height: 20,

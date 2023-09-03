@@ -236,7 +236,7 @@ class _LoginPageState extends State<LoginPage> {
                       painter: ButtonLoginPainter(),
                       text: 'login/sing up',
                       player: null,
-                      style: AppTypography.amazObit17Dark.copyWith(fontSize: 22),
+                      style: AppTypography.amazObit17Dark.copyWith(fontSize: 22, letterSpacing: 3),
                     ),
                   ),
                 ],
