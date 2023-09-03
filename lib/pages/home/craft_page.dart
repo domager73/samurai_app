@@ -422,6 +422,7 @@ class _CraftPageState extends State<CraftPage> {
                                         context: context,
                                         width: width,
                                         height: height,
+                                        switchMode: widget.craftSwitch
                                       );
                                     },
                                     params: const {},

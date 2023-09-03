@@ -1,13 +1,19 @@
+import 'dart:developer';
+
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:samurai_app/components/show_error.dart';
 import 'package:samurai_app/components/storage.dart';
 import 'package:samurai_app/data/music_manager.dart';
 import 'package:samurai_app/pages/tfa_page.dart';
+import 'package:samurai_app/utils/colors.dart';
 import 'package:samurai_app/utils/fonts.dart';
+import 'package:samurai_app/widgets/painters/painter_drop_list_border.dart';
 import 'package:samurai_app/widgets/popups/custom_choose_popup.dart';
 
 import '../../api/rest.dart';
@@ -37,8 +43,10 @@ class CraftPageComponents {
     TextEditingController controller = TextEditingController();
     TextEditingController controllerWithdraw = TextEditingController();
     int switchMode = 0;
+    bool isActive = false;
 
-    Widget tabIngame(BuildContext context, double width, double height, String samuraiTypeIngame, int balance, lockedBalance, String mode, Function onShitchMode, Function onAllBtn) {
+    Widget tabIngame(BuildContext context, double width, double height, String samuraiTypeIngame, int balance, lockedBalance, String mode,
+        Function onShitchMode, Function onAllBtn) {
       return StatefulBuilder(
           builder: (context, StateSetter setState) => GestureDetector(
               onTap: () async {
@@ -225,7 +233,9 @@ class CraftPageComponents {
                         Navigator.of(context).pop();
                       }
                     },
-                    disabled: controller.text.isEmpty || (int.tryParse(controller.text) ?? 0) <= 0 || (int.tryParse(controller.text) ?? 0) > (mode == 'toArmy' ? balance : lockedBalance),
+                    disabled: controller.text.isEmpty ||
+                        (int.tryParse(controller.text) ?? 0) <= 0 ||
+                        (int.tryParse(controller.text) ?? 0) > (mode == 'toArmy' ? balance : lockedBalance),
                     params: {'text': 'confirm', 'width': width, 'height': height},
                     child: loginBtn,
                   ),
@@ -260,132 +270,143 @@ class CraftPageComponents {
       }
     }
 
-    Widget tabWithdraw(BuildContext context, double width, double height, double gas, int balanceWithdraw, String mode, Function(String) onShitchMode, Function onAllBtn) {
-      return StatefulBuilder(
-          builder: (context, StateSetter setState) => Wrap(alignment: WrapAlignment.center, crossAxisAlignment: WrapCrossAlignment.center, children: <Widget>[
-                Padding(
-                    padding: EdgeInsets.only(top: width * 0.0, bottom: width * 0.04, left: width * 0.02, right: width * 0.02),
-                    child: SizedBox(
-                      height: width * 0.37,
-                      child: Stack(
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                  flex: 30,
-                                  child: SizedBox(
-                                      height: width * 0.2,
-                                      child: AnimButton(
-                                          player: GetIt.I<MusicManager>().smallKeyRegAmountAllPlayer,
-                                          shadowType: 1,
-                                          onTap: () {
-                                            CraftPageComponents.openSwitchDialog(
-                                                context: context,
-                                                width: width,
-                                                height: height,
-                                                onSwitch: (val) async {
-                                                  await GetIt.I<MusicManager>().smallKeyRegAmountAllPlayer.play().then((value) async {
-                                                    await GetIt.I<MusicManager>().smallKeyRegAmountAllPlayer.seek(Duration(seconds: 0));
-                                                  });
+    DropdownMenuItem buildDropDownItem(String value, String modeWithdraw, BuildContext context, bool v, Function tap) {
+      Size size = MediaQuery.sizeOf(context);
+      bool primaryCard = modeWithdraw.toUpperCase() == value.toUpperCase();
+      log("$value $v");
+      return DropdownMenuItem(
+          onTap: () {
+            tap();
+          },
+          value: value.toUpperCase(),
+          child: Container(
+              padding: EdgeInsets.only(left: size.width * 0.064, right: size.width * 0.064),
+              alignment: Alignment.center,
+              decoration: const BoxDecoration(
+                color: Colors.transparent,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                    width: 1,
+                  ),
+                  Text(
+                    value.toUpperCase(),
+                    style: AppTypography.spaceMonoW700Blue16.copyWith(color: primaryCard ? AppColors.textBlue : Colors.white),
+                  ),
+                  primaryCard
+                      ? Transform.rotate(angle: v ? 3.14 : 0, child: Icon(Icons.expand_less_rounded, size: 40, color: AppColors.textBlue))
+                      : SizedBox(width: 40)
+                ],
+              )));
+    }
 
-                                                  if (val == 1) {
-                                                    onShitchMode('REGULAR');
-                                                  } else {
-                                                    onShitchMode('GENESIS');
-                                                  }
-                                                },
-                                                valSwitch: mode == 'REGULAR' ? 1 : 0);
-                                          },
-                                          child: Stack(children: [
-                                            Padding(
-                                                padding: EdgeInsets.only(left: width * 0.0, top: width * 0.05),
-                                                child: Image.asset(
-                                                  'assets/pages/homepage/craft/btn_sel.png',
-                                                  fit: BoxFit.fitHeight,
-                                                  height: width * 0.105,
-                                                )),
-                                            Padding(
-                                              padding: EdgeInsets.only(left: width * 0.12, top: width * 0.07),
-                                              child: Text(mode,
-                                                  style: GoogleFonts.spaceMono(
-                                                    fontSize: width * 0.036,
-                                                    fontWeight: FontWeight.w700,
-                                                    color: const Color(0xFF00FFFF),
-                                                  )),
-                                            )
-                                          ])))),
-                              const Spacer(flex: 6),
-                              Expanded(
-                                flex: 15,
-                                child: SvgPicture.asset(
-                                  'assets/nft_bnb.svg',
-                                  fit: BoxFit.fitWidth,
-                                  height: height * 0.2,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    )),
-                Padding(
-                    padding: EdgeInsets.only(bottom: width * 0.04),
-                    child: SamuraiTextField(
-                        screeenHeight: height,
-                        screeenWidth: width,
-                        hint: 'Quantity',
-                        keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
-                        inputFormatters: [
-                          FilteringTextInputFormatter.allow(RegExp(r'^[0-9]*')),
-                        ],
-                        controller: controllerWithdraw,
-                        onChanged: (_) {
-                          setState(() {});
-                        },
-                        allButton: () {
-                          onAllBtn();
-                        })),
-                Container(
-                    width: width,
-                    padding: EdgeInsets.only(bottom: width * 0.02),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          modeWithdraw == 'GENESIS' ? "Available: ${samuraiGenesisBalance} GENESIS SAMURAI" : "Available: ${num.parse(balanceWithdraw.toStringAsFixed(0))} SAMURAI",
-                          // HERE
-                          style: GoogleFonts.spaceMono(
-                            fontSize: 13 / 844 * height,
-                            color: Colors.white,
-                          ),
-                        ),
-                        Text(
-                          "Gas: ${gas.toStringAsFixed(9)} BNB",
-                          style: GoogleFonts.spaceMono(
-                            fontSize: 13 / 844 * height,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    )),
-                PresButton(
-                  onTap: () {
-                    final useTfa = AppStorage().read('use-tfa');
-                    if (useTfa != null && useTfa == '1') {
-                      Navigator.push(context, MaterialPageRoute(builder: (_) => const TfaPage())).then((res) {
-                        if (res) {
-                          transferSamurai();
-                        }
-                      });
-                    } else {
-                      transferSamurai();
-                    }
-                  },
-                  disabled: controllerWithdraw.text.isEmpty || (int.tryParse(controllerWithdraw.text) ?? 0) <= 0 || (int.tryParse(controllerWithdraw.text) ?? 0) > balanceWithdraw,
-                  params: {'text': 'confirm', 'width': width, 'height': height},
-                  child: loginBtn,
+    Widget tabWithdraw(BuildContext context, double width, double height, double gas, int balanceWithdraw, String mode, Function(String) onShitchMode,
+        Function onAllBtn, bool isActive, Function changeActive) {
+      return StatefulBuilder(builder: (context, StateSetter setState) {
+        var dropList = [
+          buildDropDownItem("regular", modeWithdraw, context, isActive, changeActive),
+          buildDropDownItem("genesis", modeWithdraw, context, isActive, changeActive),
+        ];
+
+        return Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              CustomPaint(
+                painter: DropDownListBorderPainter(),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton2(
+                    menuItemStyleData: MenuItemStyleData(
+                      padding: EdgeInsets.zero,
+                    ),
+                    isExpanded: true,
+                    alignment: Alignment.center,
+                    dropdownStyleData: const DropdownStyleData(
+                        padding: EdgeInsets.zero,
+                        isOverButton: true,
+                        elevation: 0,
+                        decoration: BoxDecoration(
+                            color: Colors.transparent, image: DecorationImage(fit: BoxFit.fill, image: AssetImage("assets/drop_bg.png")))),
+                    buttonStyleData: ButtonStyleData(
+                      padding: const EdgeInsets.only(right: 0),
+                      width: width * 0.58,
+                    ),
+                    iconStyleData: const IconStyleData(icon: Icon(Icons.expand_more_rounded, color: Colors.transparent, size: 0)),
+                    value: mode,
+                    items: modeWithdraw == 'REGULAR' ? dropList : dropList.reversed.toList(),
+                    onChanged: (value) {
+                      onShitchMode(value!);
+                    },
+                  ),
                 ),
-              ]));
+              ),
+              SvgPicture.asset(
+                'assets/nft_bnb.svg',
+                fit: BoxFit.fitWidth,
+                width: width * 0.225,
+              ),
+            ],
+          ),
+          SamuraiTextField(
+              screeenHeight: height,
+              screeenWidth: width,
+              hint: 'Quantity',
+              keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(r'^[0-9]*')),
+              ],
+              controller: controllerWithdraw,
+              onChanged: (_) {
+                setState(() {});
+              },
+              allButton: () {
+                onAllBtn();
+              }),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                modeWithdraw == 'GENESIS'
+                    ? "Available: ${samuraiGenesisBalance} GENESIS SAMURAI"
+                    : "Available: ${num.parse(balanceWithdraw.toStringAsFixed(0))} SAMURAI",
+                style: GoogleFonts.spaceMono(
+                  fontSize: 13 / 844 * height,
+                  color: Colors.white,
+                ),
+              ),
+              Text(
+                "Gas: ${gas.toStringAsFixed(9)} BNB",
+                style: GoogleFonts.spaceMono(
+                  fontSize: 13 / 844 * height,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+          PresButton(
+            onTap: () {
+              final useTfa = AppStorage().read('use-tfa');
+              if (useTfa != null && useTfa == '1') {
+                Navigator.push(context, MaterialPageRoute(builder: (_) => const TfaPage())).then((res) {
+                  if (res) {
+                    transferSamurai();
+                  }
+                });
+              } else {
+                transferSamurai();
+              }
+            },
+            disabled: controllerWithdraw.text.isEmpty ||
+                (int.tryParse(controllerWithdraw.text) ?? 0) <= 0 ||
+                (int.tryParse(controllerWithdraw.text) ?? 0) > balanceWithdraw,
+            params: {'text': 'confirm', 'width': width, 'height': height},
+            child: loginBtn,
+          ),
+        ]);
+      });
     }
 
     Widget switchType(double width, int switchMode, Function onSwitch) {
@@ -489,7 +510,7 @@ class CraftPageComponents {
                       Padding(
                           padding: EdgeInsets.only(top: width * 0.03, bottom: width * 0.03, left: width * 0.03, right: width * 0.03),
                           child: SizedBox(
-                              height: height * 0.5,
+                              // height: height * 0.5,
                               child: switchMode == 0
                                   ? tabIngame(context, width, height, samuraiTypeIngame, balance, lockedBalance, mode, () {
                                       setState(() {
@@ -500,153 +521,134 @@ class CraftPageComponents {
                                         controller.text = (mode == 'toArmy' ? balance : lockedBalance).toStringAsFixed(0);
                                       });
                                     })
-                                  : tabWithdraw(context, width, height, gas, balanceWithdraw.toInt(), modeWithdraw, (val) {
-                                      setState(() {
-                                        modeWithdraw = val;
-                                      });
-                                    }, () {
-                                      setState(() {
-                                        controllerWithdraw.text = (balanceWithdraw).toStringAsFixed(0);
-                                      });
-                                    }))),
+                                  : tabWithdraw(
+                                      context,
+                                      width,
+                                      height,
+                                      gas,
+                                      balanceWithdraw.toInt(),
+                                      modeWithdraw,
+                                      (val) {
+                                        setState(() {
+                                          modeWithdraw = val;
+                                        });
+                                      },
+                                      () {
+                                        setState(() {
+                                          controllerWithdraw.text = (balanceWithdraw).toStringAsFixed(0);
+                                        });
+                                      },
+                                      isActive,
+                                      () {
+                                        setState(() {
+                                          isActive = !isActive;
+                                        });
+                                      }))),
                     ])))));
   }
 
-  static Future<void> openHealModalPage({
-    required BuildContext context,
-    required double width,
-    required double height,
-  }) async {
+  static Future<void> openHealModalPage(
+      {required BuildContext context, required double width, required double height, required int switchMode}) async {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       builder: (BuildContext context) => StatefulBuilder(
-        builder: (context, StateSetter setState) => SizedBox(
-          width: width,
-          height: height * 0.55,
-          child: Stack(
-            children: [
-              ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(32),
-                  topRight: Radius.circular(32),
-                ),
-                child: SizedBox(
-                  width: width,
-                  height: height * 0.55,
-                  child: Image.asset(
+        builder: (context, StateSetter setState) => Container(
+          padding: const EdgeInsets.all(28),
+          decoration: const BoxDecoration(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(34)),
+              image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: AssetImage(
                     'assets/modal_bottom_sheet_bg.png',
-                    fit: BoxFit.fill,
+                  ))),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                children: [
+                  PresButton(
+                    onTap: () async {
+                      await GetIt.I<MusicManager>().popupDownSybMenuPlayer.play().then((value) async {
+                        await GetIt.I<MusicManager>().popupDownSybMenuPlayer.seek(Duration(seconds: 0));
+                      });
+
+                      Navigator.of(context).pop();
+                    },
+                    params: {'width': width},
+                    child: backBtn,
+                    player: GetIt.I<MusicManager>().keyBackSignCloseX,
                   ),
+                  Expanded(
+                    child: Center(
+                      child: Text(
+                        'heal',
+                        style: AppTypography.amazObitW400White,
+                      ),
+                    ),
+                  ),
+                  AnimButton(
+                    shadowType: 2,
+                    onTap: () async {
+                      showDialog(
+                          context: context,
+                          builder: (context) => const CustomPopup(
+                                isError: false,
+                                text:
+                                    'You will not be able to participate in battles when the health of your Army drops to 0%. You can heal the Army or add new Samurai to the Army to replenish the health bar.',
+                              ));
+                    },
+                    child: SvgPicture.asset(
+                      'assets/pages/homepage/craft/info.svg',
+                      height: width * 0.12,
+                      width: width * 0.12,
+                    ),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 10),
+
+              Container(
+                constraints: const BoxConstraints(maxWidth: 150),
+                child: SvgPicture.asset(
+                  'assets/heart_${switchMode == 0 ? "water" : "fire"}.svg',
+                  width: width * 0.185,
+                  fit: BoxFit.fitHeight,
                 ),
               ),
-              InkWell(
-                overlayColor: MaterialStateProperty.all(
-                  Colors.transparent,
-                ),
-                onTap: () => FocusScope.of(context).unfocus(),
-                child: Padding(
-                  padding: const EdgeInsets.all(28),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          PresButton(
-                            onTap: () async {
-                              await GetIt.I<MusicManager>().popupDownSybMenuPlayer.play().then((value) async {
-                                await GetIt.I<MusicManager>().popupDownSybMenuPlayer.seek(Duration(seconds: 0));
-                              });
+              const SizedBox(height: 12),
 
-                              Navigator.of(context).pop();
-                            },
-                            params: {'width': width},
-                            child: backBtn,
-                            player: GetIt.I<MusicManager>().keyBackSignCloseX,
-                          ),
-                          Expanded(
-                            child: Center(
-                              child: Text(
-                                'heal',
-                                style: TextStyle(
-                                  fontFamily: 'AmazObitaemOstrovItalic',
-                                  fontSize: 37 / 844 * height,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                          AnimButton(
-                            shadowType: 2,
-                            onTap: () async {
-                              showDialog(
-                                  context: context,
-                                  builder: (context) => const CustomPopup(
-                                        isError: false,
-                                        text: 'You will not be able to participate in battles when the health of your Army drops to 0%. You can heal the Army or add new Samurai to the Army to replenish the health bar.',
-                                      ));
-                            },
-                            child: SvgPicture.asset(
-                              'assets/pages/homepage/craft/info.svg',
-                              height: width * 0.12,
-                              width: width * 0.12,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const Spacer(flex: 23),
-                      Expanded(
-                        flex: 67,
-                        child: SvgPicture.asset(
-                          'assets/heart.svg',
-                          width: width * 0.5,
-                          fit: BoxFit.fitHeight,
-                        ),
-                      ),
-                      const Spacer(flex: 12),
-                      Text(
-                        "HEALTH: 100%",
-                        style: GoogleFonts.spaceMono(
-                          fontSize: 13 / 844 * height,
-                          fontWeight: FontWeight.w700,
-                          color: const Color(0xFF00FFFF),
-                        ),
-                      ), //TODO value
-                      const Spacer(flex: 21),
-                      Text(
-                        "CURE ALL THE SAMURAI IN\nTHE ARMY?",
-                        style: GoogleFonts.spaceMono(
-                          fontSize: 16 / 844 * height,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      const Spacer(flex: 12),
-                      PresButton(
-                        onTap: () {
-                          showDialog(
-                              context: context,
-                              builder: (context) => CustomChoosePopup(
-                                  acceptFunction: () {
-                                    Navigator.of(context).popUntil((route) => route.isFirst);
-                                  },
-                                  canselFunction: () {
-                                    Navigator.pop(context);
-                                  },
-                                  text: "Are you sure you want to spend RYO to heal your army?"));
-                        },
-                        disabled: true,
-                        params: {
-                          'text': 'treat for 0 RYO',
-                          //TODO: Формула следующая: восстановление 0,1 XP стоит 0,4 RYO за каждого Самурая в армии. Восстановить XP можно только до 100%.
-                          'width': width,
-                          'height': height
-                        },
-                        child: loginBtn,
-                      ),
-                    ],
-                  ),
-                ),
+              Text("HEALTH: 100%", style: AppTypography.spaceMonoBold13.copyWith(color: AppColors.textBlue)), //TODO value
+              const SizedBox(height: 21),
+
+              Text(
+                "CURE ALL THE SAMURAI IN\nTHE ARMY?",
+                style: AppTypography.spaceMonoW700Blue16.copyWith(color: Colors.white),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 8),
+              PresButton(
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) => CustomChoosePopup(
+                          acceptFunction: () {
+                            Navigator.of(context).popUntil((route) => route.isFirst);
+                          },
+                          canselFunction: () {
+                            Navigator.pop(context);
+                          },
+                          text: "Are you sure you want to spend RYO to heal your army?"));
+                },
+                disabled: true,
+                params: {
+                  'text': 'treat for 0 RYO',
+                  //TODO: Формула следующая: восстановление 0,1 XP стоит 0,4 RYO за каждого Самурая в армии. Восстановить XP можно только до 100%.
+                  'width': width,
+                  'height': height
+                },
+                child: loginBtn,
               ),
             ],
           ),
@@ -655,14 +657,15 @@ class CraftPageComponents {
     );
   }
 
-  static Future<void> openSwitchDialog({required BuildContext context, required double width, required double height, required Function(int) onSwitch, required int valSwitch}) async {
+  static Future<void> openSwitchDialog(
+      {required BuildContext context, required double width, required double height, required Function(int) onSwitch, required int valSwitch}) async {
     showDialog(
         context: context,
         builder: (BuildContext context) => StatefulBuilder(
             builder: (context, StateSetter setState) => Dialog(
                 insetPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
                 elevation: 0,
-                backgroundColor: Colors.transparent,
+                backgroundColor: Colors.red,
                 child: Padding(
                     padding: EdgeInsets.only(top: width * 0.28, left: width * 0.1, right: width * 0.445),
                     child: Stack(children: <Widget>[
@@ -673,19 +676,12 @@ class CraftPageComponents {
                             fit: BoxFit.fitWidth,
                             width: width - width * 0.09,
                           )),
-                      Padding(
-                          padding: EdgeInsets.only(top: width * 0.075, left: width * 0.088, right: width * 0.02),
-                          child: TextButton(
-                              onPressed: () {
-                                onSwitch(valSwitch == 0 ? 0 : 1);
-                                Navigator.of(context).pop();
-                              },
-                              child: Text(valSwitch == 0 ? 'GENESIS' : 'REGULAR',
-                                  style: GoogleFonts.spaceMono(
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: width * 0.036,
-                                    color: const Color(0xFF00FFFF),
-                                  )))),
+                      TextButton(
+                          onPressed: () {
+                            onSwitch(valSwitch == 0 ? 0 : 1);
+                            Navigator.of(context).pop();
+                          },
+                          child: Text(valSwitch == 0 ? 'GENESIS' : 'REGULAR', style: AppTypography.spaceMonoW700Blue16)),
                       Padding(
                           padding: EdgeInsets.only(top: width * 0.195, left: width * 0.02, right: width * 0.02),
                           child: SvgPicture.asset(
@@ -693,19 +689,13 @@ class CraftPageComponents {
                             fit: BoxFit.fitWidth,
                             width: width - width * 0.54,
                           )),
-                      Padding(
-                          padding: EdgeInsets.only(top: width * 0.19, left: width * 0.088, right: width * 0.02),
-                          child: TextButton(
-                              onPressed: () {
-                                onSwitch(valSwitch == 1 ? 0 : 1);
-                                Navigator.of(context).pop();
-                              },
-                              child: Text(valSwitch == 1 ? 'GENESIS' : 'REGULAR',
-                                  style: GoogleFonts.spaceMono(
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: width * 0.036,
-                                    color: Colors.white,
-                                  )))),
+                      TextButton(
+                          onPressed: () {
+                            onSwitch(valSwitch == 1 ? 0 : 1);
+                            Navigator.of(context).pop();
+                          },
+                          child:
+                              Text(valSwitch == 1 ? 'GENESIS' : 'REGULAR', style: AppTypography.spaceMonoW700Blue16.copyWith(color: Colors.white))),
                     ])))));
   }
 }

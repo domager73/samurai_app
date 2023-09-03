@@ -57,7 +57,7 @@ class PopupPainter extends CustomPainter {
 
     Paint paint_2_fill = Paint()..style = PaintingStyle.fill;
     paint_2_fill.shader = AppGradients.popupBack.createShader(Rect.fromPoints(const Offset(0, 0), Offset(size.width, size.height)));
-    ;
+    
     canvas.drawPath(path_2, paint_2_fill);
   }
 
