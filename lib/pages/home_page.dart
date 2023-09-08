@@ -818,7 +818,7 @@ class _HomePageState extends State<HomePage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        const Spacer(flex: 1),
+        SizedBox(height: 50 / 844 * height),
         Text(
           'Forge',
           style: AppTypography.amazObitWhite.copyWith(
@@ -837,7 +837,6 @@ class _HomePageState extends State<HomePage> {
             color: const Color(0xFF00FFFF),
           ),
         ),
-        const Spacer(flex: 13),
       ],
     );
   }
@@ -846,7 +845,7 @@ class _HomePageState extends State<HomePage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        const Spacer(flex: 1),
+        SizedBox(height: 50 / 844 * height),
         Text(
           'Storage',
           style: AppTypography.amazObitWhite.copyWith(
@@ -865,7 +864,6 @@ class _HomePageState extends State<HomePage> {
             color: const Color(0xFF00FFFF),
           ),
         ),
-        const Spacer(flex: 13),
       ],
     );
   }

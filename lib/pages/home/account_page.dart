@@ -51,7 +51,7 @@ class _AccountPageState extends State<AccountPage> {
     GetIt.I<MusicManager>().screenChangePlayer.play().then((value) async {
       await GetIt.I<MusicManager>()
           .screenChangePlayer
-          .seek(Duration(seconds: 0));
+          .seek(const Duration(seconds: 0));
     });
   }
 
@@ -122,7 +122,7 @@ class _AccountPageState extends State<AccountPage> {
                                           fontWeight: FontWeight.w700,
                                         )),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 5,
                                   ),
                                   CustomPainterButton(
@@ -135,7 +135,7 @@ class _AccountPageState extends State<AccountPage> {
                                           .then((value) =>
                                               GetIt.I<MusicManager>()
                                                   .popupSubmenuPlayer
-                                                  .seek(Duration(seconds: 0)));
+                                                  .seek(const Duration(seconds: 0)));
                                       AccountPageComponents
                                           .openChangeEmailModalPage(
                                         context: context,
@@ -146,7 +146,7 @@ class _AccountPageState extends State<AccountPage> {
                                     painter: ChangeEmailPointer(),
                                     height: 60,
                                     width: width * 0.5,
-                                    textPadding: EdgeInsets.only(bottom: 10),
+                                    textPadding: const EdgeInsets.only(bottom: 10),
                                     text: 'Change',
                                     style: AppTypography.amazObit19Blue,
                                   ),
@@ -190,7 +190,7 @@ class _AccountPageState extends State<AccountPage> {
                                         await setPlayer(value);
 
                                         await Future.delayed(
-                                            Duration(milliseconds: 500));
+                                            const Duration(milliseconds: 500));
 
                                         stream.add(false);
                                       }),
@@ -213,7 +213,7 @@ class _AccountPageState extends State<AccountPage> {
                                   .then((value) async {
                                 await GetIt.I<MusicManager>()
                                     .smallKeyWeaponPlayer
-                                    .seek(Duration(seconds: 0));
+                                    .seek(const Duration(seconds: 0));
                               });
 
                               tfaSwitch = value;
@@ -236,7 +236,7 @@ class _AccountPageState extends State<AccountPage> {
                                   .then((value) async {
                                 await GetIt.I<MusicManager>()
                                     .smallKeyLightningPlayer
-                                    .seek(Duration(seconds: 0));
+                                    .seek(const Duration(seconds: 0));
                               });
                             }, //TODO
                             icon: const Icon(
@@ -259,7 +259,7 @@ class _AccountPageState extends State<AccountPage> {
                                   .then((value) async {
                                 await GetIt.I<MusicManager>()
                                     .smallKeyLightningPlayer
-                                    .seek(Duration(seconds: 0));
+                                    .seek(const Duration(seconds: 0));
                               });
                             }, //TODO
                             icon: const Icon(
