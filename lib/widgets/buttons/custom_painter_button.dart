@@ -14,6 +14,7 @@ class CustomPainterButton extends StatefulWidget {
   final AudioPlayer? player;
   final Function onTap;
   final TextStyle style;
+  final EdgeInsets textPadding;
 
   const CustomPainterButton(
       {super.key,
@@ -23,7 +24,8 @@ class CustomPainterButton extends StatefulWidget {
       required this.text,
       required this.player,
       required this.onTap,
-      required this.style});
+      required this.style,
+      this.textPadding = const EdgeInsets.only(bottom: 5)});
 
   @override
   State<CustomPainterButton> createState() => _CustomPainterButtonState();
@@ -75,7 +77,7 @@ class _CustomPainterButtonState extends State<CustomPainterButton> {
           CustomPaint(
             painter: widget.painter,
             child: Container(
-              padding: EdgeInsets.only(bottom: 5),
+              padding: widget.textPadding,
               alignment: Alignment.center,
               width: widget.width,
               height: widget.height,

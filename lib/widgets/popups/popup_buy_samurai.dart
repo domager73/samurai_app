@@ -92,7 +92,7 @@ class _PopupBuySamuraiState extends State<PopupBuySamurai> {
         children: [
           Align(
               alignment: Alignment.topLeft,
-              child: ButtonCansel(
+              child: ButtonCancel(
                 onTap: () async {
                   widget.canselFunction();
                 },

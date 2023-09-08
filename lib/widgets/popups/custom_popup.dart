@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:samurai_app/utils/colors.dart';
 import 'package:samurai_app/utils/fonts.dart';
-import 'package:samurai_app/utils/gradients.dart';
-import 'package:samurai_app/widgets/buttons/cansel_btn.dart';
 import 'package:samurai_app/widgets/buttons/custom_painter_button.dart';
-import 'package:samurai_app/widgets/buttons/yes_btn.dart';
 import 'package:samurai_app/widgets/painters/painter_ok.dart';
 import 'package:samurai_app/widgets/painters/painter_popup.dart';
 

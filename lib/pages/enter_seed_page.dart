@@ -12,6 +12,7 @@ import '../components/anim_button.dart';
 import '../components/pop_up_spinner.dart';
 import '../components/storage.dart';
 import '../data/music_manager.dart';
+import '../widgets/popups/custom_popup.dart';
 
 class EnterSeedPage extends StatefulWidget {
   const EnterSeedPage({super.key});
@@ -21,7 +22,6 @@ class EnterSeedPage extends StatefulWidget {
 }
 
 class _EnterSeedPageState extends State<EnterSeedPage> {
-
   final textController = TextEditingController();
 
   @override
@@ -36,7 +36,6 @@ class _EnterSeedPageState extends State<EnterSeedPage> {
   }
 
   Future<void> enterSeed(BuildContext context) async {
-    showSpinner(context);
     try {
       HDWallet wallet = HDWallet.createWithMnemonic(textController.text);
       String walletAddres = wallet.getAddressForCoin(
@@ -56,21 +55,24 @@ class _EnterSeedPageState extends State<EnterSeedPage> {
         'wallet_mnemonic',
         wallet.mnemonic(),
       );
+
       await Rest.updateWalletAddress(walletAddres);
     } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
+      await showDialog(
+          context: context,
+          builder: (context) => CustomPopup(
+                text:
+                    'No such wallet has been found. Check if the seed phrase is correct',
+                isError: true,
+              ));
+      return;
     }
-    if (mounted) {
-      hideSpinner(context);
-      AppStorage().updateUserWallet();
-      Navigator.pushReplacementNamed(
-        context,
-        '/pin',
-        arguments: PinCodePageType.create,
-      );
-    }
+    AppStorage().updateUserWallet();
+    Navigator.pushReplacementNamed(
+      context,
+      '/pin',
+      arguments: PinCodePageType.create,
+    );
   }
 
   @override
@@ -191,7 +193,11 @@ class _EnterSeedPageState extends State<EnterSeedPage> {
                     SizedBox(height: 24 / 844 * height),
                     PresButton(
                       onTap: () => enterSeed(context),
-                      params: {'text': 'confirm', 'width': width, 'height': height},
+                      params: {
+                        'text': 'confirm',
+                        'width': width,
+                        'height': height
+                      },
                       child: loginBtn,
                     ),
                   ],

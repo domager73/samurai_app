@@ -1,13 +1,17 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:samurai_app/components/storage.dart';
 import 'package:samurai_app/data/music_manager.dart';
 import 'package:samurai_app/widgets/popups/custom_popup.dart';
+import 'package:trust_wallet_core_lib/trust_wallet_core_ffi.dart';
+import 'package:trust_wallet_core_lib/trust_wallet_core_lib.dart';
 
-import '../components/show_error.dart';
+import '../api/rest.dart';
+import '../components/pop_up_spinner.dart';
 
-enum PinCodePageType { create, confirm, enter }
+enum PinCodePageType { create, confirm, enter, createNewWalletAndPinCode }
 
 class PinCodePage extends StatefulWidget {
   const PinCodePage({super.key});
@@ -303,6 +307,7 @@ class _PinCodePageState extends State<PinCodePage> {
       if (isConfirmationStep) {
         if (pinCode == firstAttempt) {
           await AppStorage().write('pin', pinCode);
+
           Navigator.of(context).pushNamedAndRemoveUntil(
             '/home',
             (route) => false,
@@ -340,8 +345,6 @@ class _PinCodePageState extends State<PinCodePage> {
         ScaffoldMessenger.of(context).clearSnackBars();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            //shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(30.0))),
-            //backgroundColor: const Color(0xFF0D1238),
             backgroundColor: Colors.transparent,
             padding: const EdgeInsets.only(top: 30),
             content: Container(
@@ -355,6 +358,53 @@ class _PinCodePageState extends State<PinCodePage> {
                 child: Text('Invalid code'.toUpperCase(), style: TextStyle(fontSize: 0.021 * height, fontWeight: FontWeight.w700, color: const Color(0xFFFF0049)))),
           ),
         );
+      }
+    } else if(ModalRoute.of(context)!.settings.arguments == PinCodePageType.createNewWalletAndPinCode){
+      if (isConfirmationStep) {
+        showSpinner(context);
+        try {
+          HDWallet wallet = HDWallet();
+          String walletAddres = wallet.getAddressForCoin(
+            TWCoinType.TWCoinTypePolygon,
+          );
+          debugPrint(
+            wallet.getAddressForCoin(TWCoinType.TWCoinTypePolygon),
+          );
+          await AppStorage().write(
+            'wallet_adress',
+            walletAddres,
+          );
+          debugPrint(
+            wallet.mnemonic(),
+          );
+          await AppStorage().write(
+            'wallet_mnemonic',
+            wallet.mnemonic(),
+          );
+          await Rest.updateWalletAddress(walletAddres);
+        } catch (e) {
+          if (kDebugMode) {
+            print(e);
+          }
+        }
+        if (mounted) {
+          hideSpinner(context);
+        }
+        
+        AppStorage().updateUserWallet();
+        await AppStorage().write('pin', pinCode);
+        
+        Navigator.of(context).pushNamedAndRemoveUntil(
+          '/home',
+              (route) => false,
+          arguments: 'wallet',
+        );
+      }else{
+        setState(() {
+          isConfirmationStep = true;
+          firstAttempt = pinCode;
+          pinCode = '';
+        });
       }
     }
   }

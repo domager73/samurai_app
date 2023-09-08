@@ -7,23 +7,23 @@ import 'package:samurai_app/utils/colors.dart';
 import 'package:samurai_app/utils/fonts.dart';
 import 'package:samurai_app/utils/global_constants.dart';
 
-class ButtonCansel extends StatefulWidget {
+class ButtonCancel extends StatefulWidget {
   final Function onTap;
 
-  const ButtonCansel({super.key, required this.onTap});
+  const ButtonCancel({super.key, required this.onTap});
 
   @override
-  State<ButtonCansel> createState() => _ButtonCanselState();
+  State<ButtonCancel> createState() => _ButtonCancelState();
 }
 
-class _ButtonCanselState extends State<ButtonCansel> {
+class _ButtonCancelState extends State<ButtonCancel> {
   bool isTapped = false;
 
   void _onTap() async {
     widget.onTap();
 
     GetIt.I<MusicManager>().keyBackSignCloseX.play().then((value) async {
-      await GetIt.I<MusicManager>().keyBackSignCloseX.seek(Duration(seconds: 0));
+      await GetIt.I<MusicManager>().keyBackSignCloseX.seek(const Duration(seconds: 0));
     });
 
     setState(() {
@@ -50,7 +50,7 @@ class _ButtonCanselState extends State<ButtonCansel> {
                 width: 155,
                 height: 38.2,
                 child: Text(
-                  "cansel".toUpperCase(),
+                  "cancel".toUpperCase(),
                   style: AppTypography.amazObit17Dark.copyWith(color: Colors.white),
                 ))),
       ),
@@ -80,7 +80,7 @@ class CanselButtonPainter extends CustomPainter {
     path_0.close();
 
     Paint paint_0_fill = Paint()..style = PaintingStyle.fill;
-    paint_0_fill.color = Color(0xff00FFFF).withOpacity(1.0);
+    paint_0_fill.color = const Color(0xff00FFFF).withOpacity(1.0);
     canvas.drawPath(path_0, paint_0_fill);
 
     Path path_1 = Path();
@@ -92,7 +92,7 @@ class CanselButtonPainter extends CustomPainter {
     path_1.close();
 
     Paint paint_1_fill = Paint()..style = PaintingStyle.fill;
-    paint_1_fill.color = Color(0xff00FFFF).withOpacity(1.0);
+    paint_1_fill.color = const Color(0xff00FFFF).withOpacity(1.0);
     canvas.drawPath(path_1, paint_1_fill);
 
     Path path_2 = Path();

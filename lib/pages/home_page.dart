@@ -267,7 +267,7 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                     Padding(
                                         padding: EdgeInsets.only(left: 10 / 390 * width, right: 20 / 390 * width),
-                                        child: Text(double.parse(user?['bnb_balance'].toString() ?? '0.0').toStringAsFixed(5),
+                                        child: Text(double.parse(user?['bnb_balance'] != null ? user!['bnb_balance'].toString() : '0.0').toStringAsFixed(5),
                                             style: GoogleFonts.spaceMono(
                                               fontSize: 16 / 844 * height,
                                               color: Colors.white,
