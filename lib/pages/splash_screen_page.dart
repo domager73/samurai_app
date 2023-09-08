@@ -1,10 +1,7 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hive/hive.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:samurai_app/components/storage.dart';
-import 'package:samurai_app/pages/pin_code_page.dart';
 
 import '../components/bg.dart';
 
@@ -16,50 +13,41 @@ class SplashScreenPage extends StatefulWidget {
 }
 
 class _SplashScreenPageState extends State<SplashScreenPage> {
-  bool toggle = false;
+  String state = "";
+
+  void loadUserData() async {
+    String? jwt = AppStorage().read('jwt');
+    if (jwt == null) {
+      state = 'l';
+    } else {
+      final res = await AppStorage().fetchUser();
+      if (!res) {
+        if (mounted) {
+          state = 'l';
+        }
+      } else {
+        await AppStorage().updateUserWallet();
+        if (mounted) {
+          state = 'h';
+        }
+      }
+    }
+    setState(() {});
+  }
 
   @override
   void initState() {
+    loadUserData();
+
     super.initState();
-    String? jwt = AppStorage().read('jwt');
-
-    Future.delayed(const Duration(milliseconds: 1), () {toggle = !toggle;});
-
-    if (jwt == null) {
-      Timer(
-        const Duration(seconds: 4),
-        () {
-          Navigator.pushReplacementNamed(context, '/login');
-        },
-      );
-    } else {
-      Timer(
-        const Duration(seconds: 4),
-        () {
-          Future.delayed(Duration.zero).then(
-            (value) async {
-              final res = await AppStorage().fetchUser();
-              if (!res) {
-                if (mounted) {
-                  Navigator.pushReplacementNamed(context, '/login');
-                }
-              } else {
-                await AppStorage().updateUserWallet();
-                if (mounted) {
-                  Navigator.pushReplacementNamed(context, '/home');
-                }
-              }
-            },
-          );
-        },
-      );
-    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
+    final height = MediaQuery
+        .of(context)
+        .size
+        .height;
     precacheImage(backgroundLogin, context);
     return Scaffold(
       backgroundColor: const Color(0xFF020A38),
@@ -67,15 +55,14 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
         width: double.infinity,
         height: double.infinity,
         decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: backgroundLogin,
-            fit: BoxFit.fitHeight
-          )
-        ),
+            image:
+            DecorationImage(image: backgroundLogin, fit: BoxFit.fitHeight)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const SizedBox(height: 50,),
+            const SizedBox(
+              height: 50,
+            ),
             Image.asset(
               'assets/pages/start/logo.png',
               height: height * 0.27,
@@ -83,42 +70,39 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
             ),
             Column(
               children: [
-                Container(
-                  width: width * 0.9,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.black38),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      AnimatedContainer(
-                        decoration: BoxDecoration(
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Colors.white10,
-                              spreadRadius: 5,
-                              blurRadius: 5,
-                            ),
-                          ],
-                            borderRadius: BorderRadius.circular(10),
-                            gradient: const LinearGradient(colors: [
-                              Color(0xff0AF5F8),
-                              Color(0xffBE4178),
-                            ])),
-                        height: 10,
-                        duration: const Duration(seconds: 3),
-                        width: toggle ? width * 0.9 : 0,
-                      ),
-                    ],
-                  ),
+                LinearPercentIndicator(
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width,
+                  backgroundColor: Colors.black38,
+                  barRadius: const Radius.circular(10),
+                  animation: true,
+                  lineHeight: 10,
+                  linearGradient: const LinearGradient(colors: [
+                    Color(0xff0AF5F8),
+                    Color(0xffBE4178),
+                  ]),
+                  animationDuration: 5000,
+                  percent: 1,
+                  linearStrokeCap: LinearStrokeCap.round,
+                  onAnimationEnd: () {
+                    if (state == 'h'){
+                      Navigator.pushReplacementNamed(context, '/home');
+                      return;
+                    }
+
+                    Navigator.pushReplacementNamed(context, '/login');
+                  },
                 ),
-                const SizedBox(height: 50,),
+                const SizedBox(
+                  height: 50,
+                ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 50.0),
-                  child: Image.asset(
-                    'assets/pages/start/clc_logo.png',
-                    scale: 8.0
-                  ),
+                  child: Image.asset('assets/pages/start/clc_logo.png',
+                      scale: 8.0),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 16.0),
