@@ -366,7 +366,7 @@ class _CraftPageState extends State<CraftPage> {
                                     Text(
                                       'HEAL',
                                       style: GoogleFonts.spaceMono(
-                                        fontSize: width * 0.03,
+                                        fontSize: 9,
                                         fontWeight: FontWeight.w700,
                                         color: const Color(0xFF00FFFF),
                                       ),
@@ -442,11 +442,12 @@ class _CraftPageState extends State<CraftPage> {
                                   Text(
                                     'TRANSFER TROOPS',
                                     style: GoogleFonts.spaceMono(
-                                      fontSize: width * 0.03,
+                                      fontSize: 9,
                                       fontWeight: FontWeight.w700,
                                       color: const Color(0xFF00FFFF),
                                     ),
                                   ),
+                                  const SizedBox(height: 8,),
                                   Row(
                                     children: [
                                       Text(
@@ -470,6 +471,7 @@ class _CraftPageState extends State<CraftPage> {
                                       ),
                                     ],
                                   ),
+                                  const SizedBox(height: 8,),
                                   Row(
                                     children: [
                                       Text(
