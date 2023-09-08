@@ -550,21 +550,25 @@ class _WalletPageState extends State<WalletPage> with SingleTickerProviderStateM
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0),
-                      child: Text(
-                        'AMOUNT:',
-                        style: GoogleFonts.spaceMono(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w700,
-                          color: const Color(0xFF00FFFF),
+                      child: FittedBox(
+                        child: Text(
+                          'AMOUNT:',
+                          style: GoogleFonts.spaceMono(
+                            fontSize: height * 0.015,
+                            fontWeight: FontWeight.w700,
+                            color: const Color(0xFF00FFFF),
+                          ),
                         ),
                       ),
                     ),
-                    Text(
-                      amount.toString(),
-                      style: GoogleFonts.spaceMono(
-                        fontSize: height * 0.018,
-                        fontWeight: FontWeight.w700,
-                        color: const Color(0xFF00FFFF),
+                    FittedBox(
+                      child: Text(
+                        amount.toString(),
+                        style: GoogleFonts.spaceMono(
+                          fontSize: height * 0.015,
+                          fontWeight: FontWeight.w700,
+                          color: const Color(0xFF00FFFF),
+                        ),
                       ),
                     ),
                     SizedBox(

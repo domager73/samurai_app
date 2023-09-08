@@ -61,7 +61,7 @@ class AppStorage {
       'address': WalletAPI.tokenAdresBarbarianBlade,
       'type': 'BNB',
       'typeToken': 'WATER_SAMURAI_BSC',
-      'nameToken': 'BA',
+      'nameToken': 'Water Samurai',
       'gasName': 'BNB',
       'tokenId': 0,
       'icon': 'assets/nft_bnb.svg',
@@ -76,7 +76,7 @@ class AppStorage {
       'address': WalletAPI.tokenAdresBarbarianAxe,
       'type': 'BNB',
       'typeToken': 'FIRE_SAMURAI_BSC',
-      'nameToken': 'BB',
+      'nameToken': 'Fire Samurai',
       'gasName': 'BNB',
       'tokenId': 1,
       'icon': 'assets/nft_bnb.svg',
@@ -236,9 +236,6 @@ class AppStorage {
 
       userData.addAll({'gasBnb': await WalletAPI.gasPriceBnb()});
     }
-    // if (kDebugMode) {
-    //   print(userData);
-    // }
     await box.put('user', userData);
   }
 

@@ -49,60 +49,35 @@ class _CreateWalletState extends State<CreateWallet> {
               children: [
                 Row(children: [
                   Padding(
-                    padding: EdgeInsets.only(top: height * 0.06, left: height * 0.02),
-                    child: PresButton(
-                      player: GetIt.I<MusicManager>().keyBackSignCloseX,
-                      onTap: () => Navigator.pushReplacementNamed(
-                        context,
-                        '/home',
-                      ),
-                      params: {'width': width},
-                      child: backBtn,
-                    )
-                  ),
+                      padding: EdgeInsets.only(
+                          top: height * 0.06, left: height * 0.02),
+                      child: PresButton(
+                        player: GetIt.I<MusicManager>().keyBackSignCloseX,
+                        onTap: () => Navigator.pushReplacementNamed(
+                          context,
+                          '/home',
+                        ),
+                        params: {'width': width},
+                        child: backBtn,
+                      )),
                 ]),
                 const Spacer(
                   flex: 10,
                 ),
                 PresButton(
-                  onTap: () async {
-                    showSpinner(context);
-                    try {
-                      HDWallet wallet = HDWallet();
-                      String walletAddres = wallet.getAddressForCoin(
-                        TWCoinType.TWCoinTypePolygon,
-                      );
-                      debugPrint(
-                        wallet.getAddressForCoin(TWCoinType.TWCoinTypePolygon),
-                      );
-                      await AppStorage().write(
-                        'wallet_adress',
-                        walletAddres,
-                      );
-                      debugPrint(
-                        wallet.mnemonic(),
-                      );
-                      await AppStorage().write(
-                        'wallet_mnemonic',
-                        wallet.mnemonic(),
-                      );
-                      await Rest.updateWalletAddress(walletAddres);
-                    } catch (e) {
-                      if (kDebugMode) {
-                        print(e);
-                      }
-                    }
-                    if (mounted) {
-                      hideSpinner(context);
-                      AppStorage().updateUserWallet();
-                      Navigator.pushReplacementNamed(
-                        context,
-                        '/pin',
-                        arguments: PinCodePageType.create,
-                      );
-                    }
+                  onTap: () {
+                    AppStorage().updateUserWallet();
+                    Navigator.pushReplacementNamed(
+                      context,
+                      '/pin',
+                      arguments: PinCodePageType.createNewWalletAndPinCode,
+                    );
                   },
-                  params: {'text': 'create wallet', 'width': width, 'height': height},
+                  params: {
+                    'text': 'create wallet',
+                    'width': width,
+                    'height': height
+                  },
                   child: loginBtn,
                 ),
                 Expanded(
@@ -121,7 +96,11 @@ class _CreateWalletState extends State<CreateWallet> {
                 ),
                 PresButton(
                   onTap: () => Navigator.of(context).pushNamed('/enterSeed'),
-                  params: {'text': 'enter seed', 'width': width, 'height': height},
+                  params: {
+                    'text': 'enter seed',
+                    'width': width,
+                    'height': height
+                  },
                   child: loginBtn,
                 ),
                 const Spacer(

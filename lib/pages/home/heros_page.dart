@@ -254,7 +254,7 @@ class _HerosPageState extends State<HerosPage>
     return Column(children: [
       ...wgts,
       SizedBox(
-        height: height * 0.02,
+        height: height * 0.1,
       )
     ]);
   }
@@ -278,7 +278,7 @@ class _HerosPageState extends State<HerosPage>
     return Column(children: [
       ...wgts,
       SizedBox(
-        height: height * 0.02,
+        height: height * 0.1,
       )
     ]);
   }

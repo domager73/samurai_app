@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:samurai_app/data/music_manager.dart';
 import 'package:samurai_app/widgets/popups/custom_choose_popup.dart';
 
+import '../api/rest.dart';
 import '../components/anim_button.dart';
 import '../components/show_confirm.dart';
 import '../components/storage.dart';
@@ -57,8 +58,13 @@ class _SettingsPageState extends State<SettingsPage> {
 
                         // await Future.delayed(Duration(milliseconds: 50));
 
-                        GetIt.I<MusicManager>().screenChangePlayer.play().then((value) async {
-                          await GetIt.I<MusicManager>().screenChangePlayer.seek(Duration(seconds: 0));
+                        GetIt.I<MusicManager>()
+                            .screenChangePlayer
+                            .play()
+                            .then((value) async {
+                          await GetIt.I<MusicManager>()
+                              .screenChangePlayer
+                              .seek(Duration(seconds: 0));
                         });
                       },
                       params: {'width': width},
@@ -95,8 +101,13 @@ class _SettingsPageState extends State<SettingsPage> {
                   width,
                   'SEED PHRASE',
                   onTap: () async {
-                    await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.play().then((value) async {
-                      await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.seek(Duration(seconds: 0));
+                    await GetIt.I<MusicManager>()
+                        .menuSettingsSignWaterPlayer
+                        .play()
+                        .then((value) async {
+                      await GetIt.I<MusicManager>()
+                          .menuSettingsSignWaterPlayer
+                          .seek(Duration(seconds: 0));
                     });
                     showDialog(
                         context: context,
@@ -108,13 +119,20 @@ class _SettingsPageState extends State<SettingsPage> {
                             canselFunction: () {
                               Navigator.pop(context);
                             },
-                            text: "Anyone who knows your wallet\'s seed phrase will be able to access it. Make sure no one sees your screen now!"));
+                            text:
+                                "Anyone who knows your wallet\'s seed phrase will be able to access it. Make sure no one sees your screen now!"));
                   },
                 ),
                 separator(width),
-                settingsButton(height, width, 'TRANSACTION HISTORY', isActive: false, onTap: () async {
-                  await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.play().then((value) async {
-                    await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.seek(Duration(seconds: 0));
+                settingsButton(height, width, 'TRANSACTION HISTORY',
+                    isActive: false, onTap: () async {
+                  await GetIt.I<MusicManager>()
+                      .menuSettingsSignWaterPlayer
+                      .play()
+                      .then((value) async {
+                    await GetIt.I<MusicManager>()
+                        .menuSettingsSignWaterPlayer
+                        .seek(Duration(seconds: 0));
                   });
                 }),
                 separator(width),
@@ -123,20 +141,37 @@ class _SettingsPageState extends State<SettingsPage> {
                   width,
                   'SIGN OUT',
                   onTap: () async {
-                    await GetIt.I<MusicManager>().keyBackSignCloseX.play().then((value) async {
-                      await GetIt.I<MusicManager>().keyBackSignCloseX.seek(Duration(seconds: 0));
-                    });
+                    showDialog(
+                        context: context,
+                        builder: (context) => CustomChoosePopup(
+                              acceptFunction: () async {
+                                await GetIt.I<MusicManager>()
+                                    .keyBackSignCloseX
+                                    .play()
+                                    .then((value) async {
+                                  await GetIt.I<MusicManager>()
+                                      .keyBackSignCloseX
+                                      .seek(Duration(seconds: 0));
+                                });
 
-                    await AppStorage().remove('pin');
-                    await AppStorage().remove('wallet_adress');
-                    await AppStorage().remove('wallet_mnemonic');
-                    await AppStorage().remove('user');
-                    if (mounted) {
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                        '/createWallet',
-                        (route) => false,
-                      );
-                    }
+                                await Rest.updateWalletAddress('');
+
+                                await AppStorage().remove('pin');
+                                await AppStorage().remove('wallet_adress');
+                                await AppStorage().remove('wallet_mnemonic');
+                                await AppStorage().remove('user');
+                                if (mounted) {
+                                  Navigator.of(context).pushNamedAndRemoveUntil(
+                                    '/createWallet',
+                                    (route) => false,
+                                  );
+                                }
+                              },
+                              canselFunction: () {
+                                Navigator.pop(context);
+                              },
+                              text: 'Do you want to sign out the wallet?',
+                            ));
                   },
                 ),
                 const Spacer(flex: 500),
@@ -174,7 +209,9 @@ class _SettingsPageState extends State<SettingsPage> {
                 fontSize: 20 / 844 * height,
                 height: 1.5,
                 fontWeight: FontWeight.w700,
-                color: isActive ? const Color(0xFF00FFFF) : const Color(0xFF9D9D9D).withOpacity(0.3),
+                color: isActive
+                    ? const Color(0xFF00FFFF)
+                    : const Color(0xFF9D9D9D).withOpacity(0.3),
               ),
             ),
           ),

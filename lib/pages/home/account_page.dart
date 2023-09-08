@@ -20,6 +20,8 @@ import '../../components/anim_button.dart';
 import '../../components/show_confirm.dart';
 import '../../data/music_manager.dart';
 import '../../main.dart';
+import '../../widgets/painters/account_border.dart';
+import '../../widgets/painters/button_change_email.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -49,7 +51,7 @@ class _AccountPageState extends State<AccountPage> {
     GetIt.I<MusicManager>().screenChangePlayer.play().then((value) async {
       await GetIt.I<MusicManager>()
           .screenChangePlayer
-          .seek(Duration(seconds: 0));
+          .seek(const Duration(seconds: 0));
     });
   }
 
@@ -120,7 +122,7 @@ class _AccountPageState extends State<AccountPage> {
                                           fontWeight: FontWeight.w700,
                                         )),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 5,
                                   ),
                                   CustomPainterButton(
@@ -133,7 +135,7 @@ class _AccountPageState extends State<AccountPage> {
                                           .then((value) =>
                                               GetIt.I<MusicManager>()
                                                   .popupSubmenuPlayer
-                                                  .seek(Duration(seconds: 0)));
+                                                  .seek(const Duration(seconds: 0)));
                                       AccountPageComponents
                                           .openChangeEmailModalPage(
                                         context: context,
@@ -144,6 +146,7 @@ class _AccountPageState extends State<AccountPage> {
                                     painter: ChangeEmailPointer(),
                                     height: 60,
                                     width: width * 0.5,
+                                    textPadding: const EdgeInsets.only(bottom: 10),
                                     text: 'Change',
                                     style: AppTypography.amazObit19Blue,
                                   ),
@@ -187,7 +190,7 @@ class _AccountPageState extends State<AccountPage> {
                                         await setPlayer(value);
 
                                         await Future.delayed(
-                                            Duration(milliseconds: 500));
+                                            const Duration(milliseconds: 500));
 
                                         stream.add(false);
                                       }),
@@ -210,7 +213,7 @@ class _AccountPageState extends State<AccountPage> {
                                   .then((value) async {
                                 await GetIt.I<MusicManager>()
                                     .smallKeyWeaponPlayer
-                                    .seek(Duration(seconds: 0));
+                                    .seek(const Duration(seconds: 0));
                               });
 
                               tfaSwitch = value;
@@ -233,7 +236,7 @@ class _AccountPageState extends State<AccountPage> {
                                   .then((value) async {
                                 await GetIt.I<MusicManager>()
                                     .smallKeyLightningPlayer
-                                    .seek(Duration(seconds: 0));
+                                    .seek(const Duration(seconds: 0));
                               });
                             }, //TODO
                             icon: const Icon(
@@ -256,7 +259,7 @@ class _AccountPageState extends State<AccountPage> {
                                   .then((value) async {
                                 await GetIt.I<MusicManager>()
                                     .smallKeyLightningPlayer
-                                    .seek(Duration(seconds: 0));
+                                    .seek(const Duration(seconds: 0));
                               });
                             }, //TODO
                             icon: const Icon(
@@ -414,119 +417,5 @@ class _AccountPageState extends State<AccountPage> {
         ),
       ),
     );
-  }
-}
-
-class AccountBorderPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    Path path_0 = Path();
-    path_0.moveTo(size.width * 0.002924006, size.height * 0.2630035);
-    path_0.lineTo(size.width * 0.002923977, size.height * 0.9962028);
-    path_0.lineTo(size.width * 0.2947193, size.height * 0.9962028);
-    path_0.lineTo(size.width * 0.3144444, size.height * 0.9417552);
-    path_0.lineTo(size.width * 0.9501550, size.height * 0.9417552);
-    path_0.lineTo(size.width * 0.9970760, size.height * 0.8002028);
-    path_0.lineTo(size.width * 0.9970760, size.height * 0.008923916);
-    path_0.lineTo(size.width * 0.6964854, size.height * 0.008923916);
-    path_0.lineTo(size.width * 0.6803538, size.height * 0.05248035);
-    path_0.lineTo(size.width * 0.07477281, size.height * 0.05248035);
-    path_0.lineTo(size.width * 0.002924006, size.height * 0.2630035);
-    path_0.close();
-
-    Paint paint_0_stroke = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 2;
-    paint_0_stroke.color = Colors.white.withOpacity(1.0);
-    canvas.drawPath(path_0, paint_0_stroke);
-
-    Path path_1 = Path();
-    path_1.moveTo(size.width * 0.5438596, size.height * 0.008924056);
-    path_1.lineTo(size.width * 0.07309942, size.height * 0.008923916);
-
-    Paint paint_1_stroke = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 2;
-    paint_1_stroke.color = Colors.white.withOpacity(1.0);
-    canvas.drawPath(path_1, paint_1_stroke);
-
-    Path path_2 = Path();
-    path_2.moveTo(size.width * 0.9502924, size.height * 0.9889441);
-    path_2.lineTo(size.width * 0.4415205, size.height * 0.9889441);
-
-    Paint paint_2_stroke = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 2;
-    paint_2_stroke.color = Colors.white.withOpacity(1.0);
-    canvas.drawPath(path_2, paint_2_stroke);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
-  }
-}
-
-class ChangeEmailPointer extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    Path path_0 = Path();
-    path_0.moveTo(size.width * 0.7301980, size.height * 0.9380020);
-    path_0.lineTo(size.width * 0.2735827, size.height * 0.9380020);
-
-    Paint paint_0_stroke = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = size.width * 0.005940594;
-    paint_0_stroke.color = Colors.white.withOpacity(1.0);
-    canvas.drawPath(path_0, paint_0_stroke);
-
-    Path path_1 = Path();
-    path_1.moveTo(size.width * 0.2500000, size.height * 0.7924720);
-    path_1.lineTo(size.width * 0.2485866, size.height * 0.7924720);
-    path_1.lineTo(size.width * 0.2478683, size.height * 0.7973900);
-    path_1.lineTo(size.width * 0.2364564, size.height * 0.8755200);
-    path_1.lineTo(size.width * 0.002475248, size.height * 0.8755200);
-    path_1.lineTo(size.width * 0.002475248, size.height * 0.5796920);
-    path_1.lineTo(size.width * 0.1305094, size.height * 0.02352060);
-    path_1.lineTo(size.width * 0.9975248, size.height * 0.02352060);
-    path_1.lineTo(size.width * 0.9975248, size.height * 0.4198940);
-    path_1.lineTo(size.width * 0.9058960, size.height * 0.7924720);
-    path_1.lineTo(size.width * 0.2500000, size.height * 0.7924720);
-    path_1.close();
-
-    Paint paint_1_stroke = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 2;
-    paint_1_stroke.color = Color(0xff00FFFF).withOpacity(1.0);
-    canvas.drawPath(path_1, paint_1_stroke);
-
-    Path path_2 = Path();
-    path_2.moveTo(size.width * 0.8286782, size.height * 0.9809880);
-    path_2.lineTo(size.width * 0.8445050, size.height * 0.8855220);
-    path_2.lineTo(size.width * 0.9014109, size.height * 0.8855220);
-    path_2.lineTo(size.width * 0.8871832, size.height * 0.9809880);
-    path_2.lineTo(size.width * 0.8286782, size.height * 0.9809880);
-    path_2.close();
-
-    Paint paint_2_fill = Paint()..style = PaintingStyle.fill;
-    paint_2_fill.color = Color(0xffFF0049).withOpacity(1.0);
-    canvas.drawPath(path_2, paint_2_fill);
-
-    Path path_3 = Path();
-    path_3.moveTo(size.width * 0.7475248, size.height * 0.9809880);
-    path_3.lineTo(size.width * 0.7633515, size.height * 0.8855220);
-    path_3.lineTo(size.width * 0.8202574, size.height * 0.8855220);
-    path_3.lineTo(size.width * 0.8060347, size.height * 0.9809880);
-    path_3.lineTo(size.width * 0.7475248, size.height * 0.9809880);
-    path_3.close();
-
-    Paint paint_3_fill = Paint()..style = PaintingStyle.fill;
-    paint_3_fill.color = Color(0xffFF0049).withOpacity(1.0);
-    canvas.drawPath(path_3, paint_3_fill);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
   }
 }

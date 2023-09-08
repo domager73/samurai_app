@@ -203,7 +203,7 @@ class AccountPageComponents {
                                     request) {
                                   hideSpinner(context);
                                   showError(context,
-                                          '${newEmailController.text} ${request}')
+                                          '\'${newEmailController.text}\' ${request}')
                                       .then((_) => Navigator.of(context).pop());
                                 } else {
                                   hideSpinner(context);
