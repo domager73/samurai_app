@@ -23,19 +23,19 @@ import '../../components/samurai_text_field.dart';
 import '../../widgets/popups/custom_popup.dart';
 
 class CraftPageComponents {
-  static Future<void> openTransferModalPage({
-    required BuildContext context,
-    required double width,
-    required double height,
-    required String samuraiTypeIngame,
-    required int balance,
-    required int lockedBalance,
-    required double gas,
-    required double balanceWithdraw,
-    required String samuraiTypeRegular,
-    required String samuraiTypeGenesis,
-    required int samuraiGenesisBalance,
-  }) async {
+  static Future<void> openTransferModalPage(
+      {required BuildContext context,
+      required double width,
+      required double height,
+      required String samuraiTypeIngame,
+      required int balance,
+      required int lockedBalance,
+      required double gas,
+      required double balanceWithdraw,
+      required String samuraiTypeRegular,
+      required String samuraiTypeGenesis,
+      required int samuraiGenesisBalance,
+      required int elementStatus}) async {
     String mode = 'toFree';
     String modeWithdraw = 'REGULAR';
     TextEditingController controller = TextEditingController();
@@ -52,7 +52,8 @@ class CraftPageComponents {
         lockedBalance,
         String mode,
         Function onShitchMode,
-        Function onAllBtn) {
+        Function onAllBtn,
+        int tabActiveWf) {
       return StatefulBuilder(
           builder: (context, StateSetter setState) => GestureDetector(
               onTap: () async {
@@ -153,10 +154,13 @@ class CraftPageComponents {
                               player:
                                   GetIt.I<MusicManager>().okCanselTransPlayer,
                               onTap: () {
+                                log(switchMode.toString());
                                 onShitchMode();
                               },
                               child: SvgPicture.asset(
-                                'assets/swap_change_bt.svg',
+                                tabActiveWf == 0
+                                    ? 'assets/swap_change_bt.svg'
+                                    : 'assets/pages/homepage/craft/change_fire.svg',
                                 fit: BoxFit.fitWidth,
                                 height: height * 0.1,
                               ),
@@ -343,8 +347,13 @@ class CraftPageComponents {
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton2(
                     onMenuStateChange: (state) async {
-                      await GetIt.I<MusicManager>().smallKeyRegAmountAllPlayer.play().then((value) async {
-                        await GetIt.I<MusicManager>().smallKeyRegAmountAllPlayer.seek(Duration(seconds: 0));
+                      await GetIt.I<MusicManager>()
+                          .smallKeyRegAmountAllPlayer
+                          .play()
+                          .then((value) async {
+                        await GetIt.I<MusicManager>()
+                            .smallKeyRegAmountAllPlayer
+                            .seek(Duration(seconds: 0));
                       });
                     },
                     menuItemStyleData: MenuItemStyleData(
@@ -414,12 +423,19 @@ class CraftPageComponents {
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(
-                modeWithdraw == 'GENESIS'
-                    ? "Available: ${samuraiGenesisBalance} GENESIS SAMURAI"
-                    : "Available: ${num.parse(balanceWithdraw.toStringAsFixed(0))} SAMURAI",
-                style: AppTypography.spaceMonoReg13White,
-              ),
+              RichText(
+                  text: TextSpan(children: [
+                TextSpan(
+                  style: AppTypography.spaceMonoReg13White,
+                    text:
+                        "Available: ${modeWithdraw == 'GENESIS' ? samuraiGenesisBalance : num.parse(balanceWithdraw.toStringAsFixed(0))} "),
+                TextSpan(
+                    text: modeWithdraw == 'GENESIS' ? "Genesis" : "Regular", style: AppTypography.spaceMonoReg13White.copyWith(fontWeight: FontWeight.w800),),
+                TextSpan(
+                  style: AppTypography.spaceMonoReg13White,
+                    text:
+                        " Samurai"),
+              ])),
               SizedBox(
                 height: 5,
               ),
@@ -598,7 +614,6 @@ class CraftPageComponents {
                                         left: width * 0.03,
                                         right: width * 0.03),
                                     child: SizedBox(
-                                        // height: height * 0.5,
                                         child: switchMode == 0
                                             ? tabIngame(
                                                 context,
@@ -621,7 +636,7 @@ class CraftPageComponents {
                                                               : lockedBalance)
                                                           .toStringAsFixed(0);
                                                 });
-                                              })
+                                              }, elementStatus)
                                             : tabWithdraw(
                                                 context,
                                                 width,

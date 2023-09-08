@@ -507,6 +507,7 @@ class _CraftPageState extends State<CraftPage> {
                                                   .popupSubmenuPlayer
                                                   .seek(Duration(seconds: 0)));
                                       CraftPageComponents.openTransferModalPage(
+                                              elementStatus: widget.craftSwitch,
                                               context: context,
                                               width: width,
                                               height: height,
@@ -545,7 +546,8 @@ class _CraftPageState extends State<CraftPage> {
                                     params: const {},
                                     child: widget.craftSwitch == 0
                                         ? waterChangeBtn
-                                        : fireChangeBtn),
+                                        : fireChangeBtn,
+                                    ),
                               ),
                             ],
                           ),
