@@ -159,6 +159,12 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         primarySwatch: Colors.cyan,
         splashFactory: InkRipple.splashFactory,
       ),
+      builder: (context, child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+          child: child!,
+        );
+      },
       initialRoute: '/splash',
       routes: {
         '/home': (context) => const HomePage(),
