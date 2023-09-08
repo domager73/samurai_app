@@ -10,6 +10,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:samurai_app/data/music_manager.dart';
 import 'package:samurai_app/pages/home/craft_page_components.dart';
 import 'package:samurai_app/widgets/custom_snackbar.dart';
+import 'package:samurai_app/widgets/painters/samurai_heal_border.dart';
+import 'package:samurai_app/widgets/painters/samurai_trans_border.dart';
 
 import '../../api/rest.dart';
 import '../../components/anim_button.dart';
@@ -141,37 +143,31 @@ class _CraftPageState extends State<CraftPage> {
               controller: scrollController,
               child: Column(
                 children: [
-                  Stack(children: [
-                    Padding(
-                        padding: EdgeInsets.only(
-                            left: width * 0.05, right: width * 0.05),
-                        child: getBackgroundBorder(width)),
-                    ValueListenableBuilder(
-                        valueListenable: AppStorage().box.listenable(),
-                        builder: (context, box, widget) {
-                          final temp = box.get(
-                            'user',
-                            defaultValue: <String, dynamic>{},
-                          );
-                          Map<String, dynamic>? user;
-                          if (temp != <String, dynamic>{}) {
-                            user = Map.from(temp);
-                          }
-                          return Padding(
-                              padding: EdgeInsets.only(
-                                  left: width * 0.04, right: width * 0.04),
-                              child: Row(children: [
-                                getCharacter(width),
-                                getStats(width, height, user)
-                              ]));
-                        }),
-                    Padding(
-                        padding: EdgeInsets.only(
-                            top: width * 0.78,
-                            left: width * 0.01,
-                            right: width * 0.01),
-                        child: clameBlock(context, width)),
-                  ]),
+                  ValueListenableBuilder(
+                      valueListenable: AppStorage().box.listenable(),
+                      builder: (context, box, widget) {
+                        final temp = box.get(
+                          'user',
+                          defaultValue: <String, dynamic>{},
+                        );
+                        Map<String, dynamic>? user;
+                        if (temp != <String, dynamic>{}) {
+                          user = Map.from(temp);
+                        }
+                        return Container(
+                          width: MediaQuery.sizeOf(context).width,
+                          padding: EdgeInsets.only(right: 23),
+                          child: Stack(children: [
+                            Align(
+                                alignment: Alignment.centerRight,
+                                child: Container(
+                                    child: getStats(width, height, user))),
+                            Align(
+                                alignment: Alignment.topLeft,
+                                child: getCharacter(width)),
+                          ]),
+                        );
+                      }),
                   Padding(
                       padding: EdgeInsets.only(
                         top: width * 0.05,
@@ -200,7 +196,7 @@ class _CraftPageState extends State<CraftPage> {
     return Stack(children: [
       Padding(
           padding: EdgeInsets.only(
-              top: width * 0.02, left: width * 0.054, right: width * 0.044),
+              top: width * 0.02, left: width * 0.054),
           child: SvgPicture.asset(
             'assets/pages/homepage/craft/clame_border.svg',
             fit: BoxFit.fitWidth,
@@ -245,7 +241,7 @@ class _CraftPageState extends State<CraftPage> {
                     ])),
             Padding(
                 padding: EdgeInsets.only(
-                    top: width * 0.087, right: width - width * 0.9),
+                    top: width * 0.087,right: 18),
                 child: Stack(children: [
                   AnimButton(
                       player: GetIt.I<MusicManager>().zeroAmountNumberPlayer,
@@ -327,257 +323,213 @@ class _CraftPageState extends State<CraftPage> {
   }
 
   Widget getStats(double width, double height, user) {
-    return Expanded(
-      flex: 202,
-      child: SizedBox(
-        height: 280 / 340 * width,
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            const Spacer(
-              flex: 52,
-            ),
-            Expanded(
-              flex: 176,
-              child: Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SizedBox(height: 50,),
+        CustomPaint(
+          painter: SamuraiHealBorderPainter(),
+          child: Container(
+            width: width * 0.746,
+            padding: EdgeInsets.only(
+                top: 13, right: 16, bottom: 19, left: width * 0.746 * 0.3436),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Spacer(
-                    flex: 5,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'HEAL',
+                        style: GoogleFonts.spaceMono(
+                          fontSize: 9,
+                          fontWeight: FontWeight.w700,
+                          color: const Color(0xFF00FFFF),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            "HEALTH: ",
+                            style: GoogleFonts.spaceMono(
+                              fontSize: width * 0.035,
+                              fontWeight: FontWeight.w700,
+                              color: const Color(0xFF00FFFF),
+                            ),
+                          ),
+                          Text(
+                            "100%", //TODO VALUE
+                            style: GoogleFonts.spaceMono(
+                              fontSize: width * 0.035,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                  Expanded(
-                    flex: 180,
-                    child: Column(
-                      children: [
-                        const Spacer(
-                          flex: 5,
-                        ),
-                        Expanded(
-                            flex: 60,
-                            child: Row(children: [
-                              Expanded(
-                                flex: 100,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    const Spacer(
-                                      flex: 15,
-                                    ),
-                                    Text(
-                                      'HEAL',
-                                      style: GoogleFonts.spaceMono(
-                                        fontSize: 9,
-                                        fontWeight: FontWeight.w700,
-                                        color: const Color(0xFF00FFFF),
-                                      ),
-                                    ),
-                                    const Spacer(
-                                      flex: 10,
-                                    ),
-                                    Row(
-                                      children: [
-                                        Text(
-                                          "HEALTH: ",
-                                          style: GoogleFonts.spaceMono(
-                                            fontSize: width * 0.035,
-                                            fontWeight: FontWeight.w700,
-                                            color: const Color(0xFF00FFFF),
-                                          ),
-                                        ),
-                                        Text(
-                                          "100%", //TODO VALUE
-                                          style: GoogleFonts.spaceMono(
-                                            fontSize: width * 0.035,
-                                            fontWeight: FontWeight.w700,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const Spacer(
-                                      flex: 8,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const Spacer(
-                                flex: 10,
-                              ),
-                              Expanded(
-                                flex: 55,
-                                child: PresButton(
-                                    onTap: () async{
-                                      await GetIt.I<MusicManager>()
-                                          .popupSubmenuPlayer
-                                          .play()
-                                          .then((value) =>
-                                              GetIt.I<MusicManager>()
-                                                  .popupSubmenuPlayer
-                                                  .seek(Duration(seconds: 0)));
+                  Container(
+                    width: 65,
+                    child: PresButton(
+                        onTap: () async {
+                          await GetIt.I<MusicManager>()
+                              .popupSubmenuPlayer
+                              .play()
+                              .then((value) => GetIt.I<MusicManager>()
+                                  .popupSubmenuPlayer
+                                  .seek(Duration(seconds: 0)));
 
-                                      CraftPageComponents.openHealModalPage(
-                                        context: context,
-                                        width: width,
-                                        height: height,
-                                        switchMode: widget.craftSwitch
-                                      );
-                                    },
-                                    params: const {},
-                                    child: widget.craftSwitch == 0
-                                        ? waterHeartBtn
-                                        : fireHeartBtn),
-                              ),
-                            ])),
-                        const Spacer(
-                          flex: 40,
-                        ),
-                        Expanded(
-                          flex: 60,
-                          child: Row(
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Text(
-                                    'TRANSFER TROOPS',
-                                    style: GoogleFonts.spaceMono(
-                                      fontSize: 9,
-                                      fontWeight: FontWeight.w700,
-                                      color: const Color(0xFF00FFFF),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 8,),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        "ARMY: ",
-                                        style: GoogleFonts.spaceMono(
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: width * 0.035,
-                                          color: const Color(0xFF00FFFF),
-                                        ),
-                                      ),
-                                      Text(
-                                        (widget.craftSwitch == 0
-                                                ? lockedWaterSamuraiBalance
-                                                : lockedFireSamuraiBalance)
-                                            .toString(),
-                                        style: GoogleFonts.spaceMono(
-                                          fontSize: width * 0.035,
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 8,),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        "FREE: ",
-                                        style: GoogleFonts.spaceMono(
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: width * 0.035,
-                                          color: const Color(0xFF00FFFF),
-                                        ),
-                                      ),
-                                      Text(
-                                        (widget.craftSwitch == 0
-                                                ? waterSamuraiBalance
-                                                : fireSamuraiBalance)
-                                            .toString(),
-                                        style: GoogleFonts.spaceMono(
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: width * 0.035,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              Expanded(
-                                flex: 60,
-                                child: PresButton(
-                                    onTap: () {
-                                      GetIt.I<MusicManager>()
-                                          .popupSubmenuPlayer
-                                          .play()
-                                          .then((value) =>
-                                              GetIt.I<MusicManager>()
-                                                  .popupSubmenuPlayer
-                                                  .seek(Duration(seconds: 0)));
-                                      CraftPageComponents.openTransferModalPage(
-                                              elementStatus: widget.craftSwitch,
-                                              context: context,
-                                              width: width,
-                                              height: height,
-                                              samuraiTypeIngame:
-                                                  widget.craftSwitch == 0
-                                                      ? "WATER_SAMURAI_MATIC"
-                                                      : "FIRE_SAMURAI_MATIC",
-                                              balance: widget.craftSwitch == 0
-                                                  ? waterSamuraiBalance
-                                                  : fireSamuraiBalance,
-                                              lockedBalance: widget.craftSwitch == 0
-                                                  ? lockedWaterSamuraiBalance
-                                                  : lockedFireSamuraiBalance,
-                                              gas: user?['gasBnb'] ?? 0.0,
-                                              balanceWithdraw:
-                                                  (widget.craftSwitch == 0
-                                                          ? waterSamuraiBalance
-                                                          : fireSamuraiBalance)
-                                                      .toDouble(),
-                                              samuraiTypeRegular:
-                                                  widget.craftSwitch == 0
-                                                      ? "WATER_SAMURAI_BSC"
-                                                      : "FIRE_SAMURAI_BSC",
-                                              samuraiTypeGenesis: widget
-                                                          .craftSwitch ==
-                                                      0
-                                                  ? "WATER_SAMURAI_GENESIS_BSC"
-                                                  : "FIRE_SAMURAI_GENESIS_BSC",
-                                              samuraiGenesisBalance: widget
-                                                          .craftSwitch ==
-                                                      0
-                                                  ? waterSamuraiGenesisBalance
-                                                  : fireSamuraiGenesisBalance)
-                                          .then((_) => loadInfo());
-                                    },
-                                    params: const {},
-                                    child: widget.craftSwitch == 0
-                                        ? waterChangeBtn
-                                        : fireChangeBtn,
-                                    ),
-                              ),
-                            ],
+                          CraftPageComponents.openHealModalPage(
+                              context: context,
+                              width: width,
+                              height: height,
+                              switchMode: widget.craftSwitch);
+                        },
+                        params: const {},
+                        child: widget.craftSwitch == 0
+                            ? waterHeartBtn
+                            : fireHeartBtn),
+                  ),
+                ]),
+          ),
+        ),
+        const SizedBox(
+          height: 5,
+        ),
+        CustomPaint(
+          painter: SamuraiTransferBorderPainter(),
+          child: Container(
+            padding: EdgeInsets.only(right: 16, left: width * 0.746 * 0.3436),
+            width: width * 0.746,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(
+                      'TRANSFER TROOPS',
+                      style: GoogleFonts.spaceMono(
+                        fontSize: 9,
+                        fontWeight: FontWeight.w700,
+                        color: const Color(0xFF00FFFF),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "ARMY: ",
+                          style: GoogleFonts.spaceMono(
+                            fontWeight: FontWeight.w700,
+                            fontSize: width * 0.035,
+                            color: const Color(0xFF00FFFF),
                           ),
                         ),
-                        const Spacer(
-                          flex: 10,
+                        Text(
+                          (widget.craftSwitch == 0
+                                  ? lockedWaterSamuraiBalance
+                                  : lockedFireSamuraiBalance)
+                              .toString(),
+                          style: GoogleFonts.spaceMono(
+                            fontSize: width * 0.035,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white,
+                          ),
                         ),
                       ],
                     ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "FREE: ",
+                          style: GoogleFonts.spaceMono(
+                            fontWeight: FontWeight.w700,
+                            fontSize: width * 0.035,
+                            color: const Color(0xFF00FFFF),
+                          ),
+                        ),
+                        Text(
+                          (widget.craftSwitch == 0
+                                  ? waterSamuraiBalance
+                                  : fireSamuraiBalance)
+                              .toString(),
+                          style: GoogleFonts.spaceMono(
+                            fontWeight: FontWeight.w700,
+                            fontSize: width * 0.035,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                Container(
+                  width: 65,
+                  padding: const EdgeInsets.only(top: 25, bottom: 25),
+                  child: PresButton(
+                    onTap: () {
+                      GetIt.I<MusicManager>().popupSubmenuPlayer.play().then(
+                          (value) => GetIt.I<MusicManager>()
+                              .popupSubmenuPlayer
+                              .seek(Duration(seconds: 0)));
+                      CraftPageComponents.openTransferModalPage(
+                              elementStatus: widget.craftSwitch,
+                              context: context,
+                              width: width,
+                              height: height,
+                              samuraiTypeIngame: widget.craftSwitch == 0
+                                  ? "WATER_SAMURAI_MATIC"
+                                  : "FIRE_SAMURAI_MATIC",
+                              balance: widget.craftSwitch == 0
+                                  ? waterSamuraiBalance
+                                  : fireSamuraiBalance,
+                              lockedBalance: widget.craftSwitch == 0
+                                  ? lockedWaterSamuraiBalance
+                                  : lockedFireSamuraiBalance,
+                              gas: user?['gasBnb'] ?? 0.0,
+                              balanceWithdraw: (widget.craftSwitch == 0
+                                      ? waterSamuraiBalance
+                                      : fireSamuraiBalance)
+                                  .toDouble(),
+                              samuraiTypeRegular: widget.craftSwitch == 0
+                                  ? "WATER_SAMURAI_BSC"
+                                  : "FIRE_SAMURAI_BSC",
+                              samuraiTypeGenesis: widget.craftSwitch == 0
+                                  ? "WATER_SAMURAI_GENESIS_BSC"
+                                  : "FIRE_SAMURAI_GENESIS_BSC",
+                              samuraiGenesisBalance: widget.craftSwitch == 0
+                                  ? waterSamuraiGenesisBalance
+                                  : fireSamuraiGenesisBalance)
+                          .then((_) => loadInfo());
+                    },
+                    params: const {},
+                    child: widget.craftSwitch == 0
+                        ? waterChangeBtn
+                        : fireChangeBtn,
                   ),
-                  const Spacer(
-                    flex: 5,
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-            const Spacer(
-              flex: 2,
-            ),
-            const Spacer(
-              flex: 44,
-            ),
-            const Spacer(
-              flex: 6,
-            ),
-          ],
+          ),
         ),
-      ),
+        Padding(
+            padding: EdgeInsets.only(left: width * 0.01, top: 30),
+            child: clameBlock(context, width)),
+      ],
     );
   }
 
@@ -737,7 +689,13 @@ class _CraftPageState extends State<CraftPage> {
 
   bool isDisabledClame() {
     if (waterSamuraiXpExpiresDate != null && fireSamuraiXpExpiresDate != null) {
-      return ((widget.craftSwitch == 0 ? waterSamuraiUnclaimedXp : fireSamuraiUnclaimedXp) <= 0 || (widget.craftSwitch == 0 ? waterSamuraiXpExpiresDate!.compareTo(DateTime.now()) > 0 : fireSamuraiXpExpiresDate!.compareTo(DateTime.now()) > 0)
+      return ((widget.craftSwitch == 0
+                      ? waterSamuraiUnclaimedXp
+                      : fireSamuraiUnclaimedXp) <=
+                  0 ||
+              (widget.craftSwitch == 0
+                  ? waterSamuraiXpExpiresDate!.compareTo(DateTime.now()) > 0
+                  : fireSamuraiXpExpiresDate!.compareTo(DateTime.now()) > 0)
           // ||
           // (widget.craftSwitch == 0 ? waterSamuraiXp : fireSamuraiXp) >= maxXP
           );
