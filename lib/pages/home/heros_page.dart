@@ -541,11 +541,8 @@ class _HerosPageState extends State<HerosPage>
                         loadInfo().then((value) => setState(() {}));
                       }).catchError((_) {});
                     },
-                    disabled: !((widget.craftSwitch == 0
-                        ? water!.unclaimed
-                        : fire!.unclaimed) >
-                        0),
-                    shadowType: 1,
+                    disabled: false,
+                    shadowType: 0,
                     child: SvgPicture.asset(
                         ((widget.craftSwitch == 0
                             ? water!.unclaimed
