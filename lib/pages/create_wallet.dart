@@ -67,7 +67,7 @@ class _CreateWalletState extends State<CreateWallet> {
                 PresButton(
                   onTap: () {
                     AppStorage().updateUserWallet();
-                    Navigator.pushReplacementNamed(
+                    Navigator.pushNamed(
                       context,
                       '/pin',
                       arguments: PinCodePageType.createNewWalletAndPinCode,
