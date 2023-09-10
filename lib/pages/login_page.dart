@@ -173,8 +173,8 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           child: Checkbox(
                             side: MaterialStateBorderSide.resolveWith(
-                                (states) =>
-                                    BorderSide(width:0 , color: Colors.transparent)),
+                                (states) => BorderSide(
+                                    width: 0, color: Colors.transparent)),
                             value: isAgree,
                             onChanged: (value) async {
                               GetIt.I<MusicManager>()

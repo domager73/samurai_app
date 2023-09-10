@@ -9,6 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:samurai_app/data/music_manager.dart';
 import 'package:samurai_app/pages/home/craft_page_components.dart';
+import 'package:samurai_app/utils/gradients.dart';
 import 'package:samurai_app/widgets/custom_snackbar.dart';
 import 'package:samurai_app/widgets/painters/samurai_heal_border.dart';
 import 'package:samurai_app/widgets/painters/samurai_trans_border.dart';
@@ -375,6 +376,9 @@ class _CraftPageState extends State<CraftPage> {
                     ],
                   ),
                   Container(
+                    decoration: BoxDecoration(
+                      gradient: AppGradients.buttonBack
+                    ),
                     width: 65,
                     child: PresButton(
                         onTap: () async {
@@ -407,6 +411,7 @@ class _CraftPageState extends State<CraftPage> {
           child: Container(
             padding: EdgeInsets.only(right: 16, left: width * 0.746 * 0.3436),
             width: width * 0.746,
+            
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -479,6 +484,9 @@ class _CraftPageState extends State<CraftPage> {
                 ),
                 Container(
                   width: 65,
+                  decoration: BoxDecoration(
+                      gradient: AppGradients.buttonBack
+                    ),
                   padding: const EdgeInsets.only(top: 25, bottom: 25),
                   child: PresButton(
                     onTap: () {
