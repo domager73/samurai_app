@@ -10,4 +10,6 @@ abstract class AppColors {
   static const textRed = Color(0xFFFF0049);
 
   static const textBlue = Color(0xff00FFFF);
+
+  static const shadowBlack = Color(0x7F0D1238);
 }

@@ -196,8 +196,7 @@ class _CraftPageState extends State<CraftPage> {
   Widget clameBlock(BuildContext context, double width) {
     return Stack(children: [
       Padding(
-          padding: EdgeInsets.only(
-              top: width * 0.02, left: width * 0.054),
+          padding: EdgeInsets.only(top: width * 0.02, left: width * 0.054),
           child: SvgPicture.asset(
             'assets/pages/homepage/craft/clame_border.svg',
             fit: BoxFit.fitWidth,
@@ -241,8 +240,7 @@ class _CraftPageState extends State<CraftPage> {
                       ])
                     ])),
             Padding(
-                padding: EdgeInsets.only(
-                    top: width * 0.087,right: 18),
+                padding: EdgeInsets.only(top: width * 0.087, right: 18),
                 child: Stack(children: [
                   AnimButton(
                       player: GetIt.I<MusicManager>().zeroAmountNumberPlayer,
@@ -328,7 +326,9 @@ class _CraftPageState extends State<CraftPage> {
       crossAxisAlignment: CrossAxisAlignment.end,
       mainAxisSize: MainAxisSize.min,
       children: [
-        const SizedBox(height: 50,),
+        const SizedBox(
+          height: 50,
+        ),
         CustomPaint(
           painter: SamuraiHealBorderPainter(),
           child: Container(
@@ -375,7 +375,9 @@ class _CraftPageState extends State<CraftPage> {
                       ),
                     ],
                   ),
-                  SizedBox(
+                  Container(
+                    decoration:
+                        BoxDecoration(gradient: AppGradients.buttonBack),
                     width: 65,
                     child: PresButton(
                         onTap: () async {
@@ -408,7 +410,6 @@ class _CraftPageState extends State<CraftPage> {
           child: Container(
             padding: EdgeInsets.only(right: 16, left: width * 0.746 * 0.3436),
             width: width * 0.746,
-            
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -480,6 +481,7 @@ class _CraftPageState extends State<CraftPage> {
                   ],
                 ),
                 Container(
+                  decoration: BoxDecoration(gradient: AppGradients.buttonBack),
                   width: 65,
                   padding: const EdgeInsets.only(top: 25, bottom: 25),
                   child: PresButton(

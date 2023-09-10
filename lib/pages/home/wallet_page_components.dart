@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:samurai_app/components/pop_up_spinner.dart';
 import 'package:samurai_app/data/music_manager.dart';
 import 'package:samurai_app/utils/fonts.dart';
+import 'package:samurai_app/utils/gradients.dart';
 import 'package:samurai_app/widgets/custom_swap_border.dart';
 import 'package:samurai_app/widgets/popups/custom_popup.dart';
 import 'package:trust_wallet_core_lib/trust_wallet_core_lib.dart';
@@ -306,8 +307,10 @@ class WalletPageComponents {
                                   ],
                                 ),
                               ),
-                              SizedBox(
+                              Container(
                                 width: width * 0.25,
+                                decoration: BoxDecoration(
+                                    gradient: AppGradients.buttonBack),
                                 child: AnimButton(
                                   player: GetIt.I<MusicManager>()
                                       .okCanselTransPlayer,
