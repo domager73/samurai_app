@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_xlider/flutter_xlider.dart';
 import 'package:get_it/get_it.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:samurai_app/api/rest.dart';
 import 'package:samurai_app/components/blinking_separator.dart';
 import 'package:samurai_app/components/pop_up_spinner.dart';

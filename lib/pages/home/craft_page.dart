@@ -296,7 +296,7 @@ class _CraftPageState extends State<CraftPage> {
                         });
                       },
                       disabled: isDisabledClame(),
-                      shadowType: 1,
+                      shadowType: 0,
                       child: SvgPicture.asset(
                           !isDisabledClame()
                               ? 'assets/pages/homepage/craft/btn_clame_${widget.craftSwitch == 0 ? 'water' : 'fire'}.svg'
