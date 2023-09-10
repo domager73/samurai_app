@@ -13,7 +13,6 @@ import 'package:samurai_app/widgets/popups/custom_popup.dart';
 
 import '../components/anim_button.dart';
 import '../components/bg.dart';
-import '../components/show_error.dart';
 import '../data/music_manager.dart';
 
 class TfaPage extends StatefulWidget {

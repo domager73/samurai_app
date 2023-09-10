@@ -3,13 +3,13 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:samurai_app/widgets/popups/custom_popup.dart';
 
 import '../../api/rest.dart';
 import '../../components/anim_button.dart';
 import '../../components/bg.dart';
 import '../../components/pop_up_spinner.dart';
 import '../../components/samurai_text_field.dart';
-import '../../components/show_error.dart';
 import '../../components/storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:samurai_app/data/music_manager.dart';
@@ -202,12 +202,23 @@ class AccountPageComponents {
                                 } else if ('is already registered. Please use unregistered email' ==
                                     request) {
                                   hideSpinner(context);
-                                  showError(context,
-                                          '\'${newEmailController.text}\' ${request}')
+                                  showDialog(
+                                          context: context,
+                                          builder: (context) => CustomPopup(
+                                                text:
+                                                    '\'${newEmailController.text}\' ${request}',
+                                                isError: true,
+                                              ))
                                       .then((_) => Navigator.of(context).pop());
                                 } else {
                                   hideSpinner(context);
-                                  showError(context, request)
+                                  showDialog(
+                                          context: context,
+                                          builder: (context) => CustomPopup(
+                                                text:
+                                                    request,
+                                                isError: true,
+                                              ))
                                       .then((_) => Navigator.of(context).pop());
                                 }
                               },

@@ -16,7 +16,6 @@ import '../../components/anim_button.dart';
 import '../../components/bg.dart';
 import '../../components/comma_formatter.dart';
 import '../../components/samurai_text_field.dart';
-import '../../components/show_error.dart';
 import '../../components/storage.dart';
 import '../tfa_page.dart';
 

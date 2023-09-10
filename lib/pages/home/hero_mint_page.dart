@@ -6,7 +6,6 @@ import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart';
-import 'package:samurai_app/components/show_confirm.dart';
 import 'package:samurai_app/components/storage.dart';
 import 'package:samurai_app/pages/home/craft_page_components.dart';
 import 'package:samurai_app/utils/enums.dart';
