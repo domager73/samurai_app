@@ -10,7 +10,6 @@ const fireSamuraiImg = AssetImage('assets/pages/homepage/samurai/fire_samurai.pn
 const modalBottomsheetBg = AssetImage('assets/modal_bottom_sheet_bg.png');
 const backgroundLogin = AssetImage('assets/pages/start/background.jpg');
 const backgroundLoginOpacity = AssetImage('assets/pages/start/background_opacity.png');
-const backgroundDialog = AssetImage('assets/pages/dialog/bg_dialog.png');
 const heroMintWaterBg = AssetImage('assets/pages/homepage/mint/bg_hero_mint_water.jpg');
 const heroMintFireBg = AssetImage('assets/pages/homepage/mint/bg_hero_mint_fire.jpg');
 
@@ -25,7 +24,6 @@ void precacheImages(BuildContext context) {
   precacheImage(modalBottomsheetBg, context);
   precacheImage(backgroundLogin, context);
   precacheImage(backgroundLoginOpacity, context);
-  precacheImage(backgroundDialog, context);
   precacheImage(heroMintWaterBg, context);
   precacheImage(heroMintFireBg, context);
 }

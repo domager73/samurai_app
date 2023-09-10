@@ -6,7 +6,6 @@ import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:samurai_app/components/pop_up_spinner.dart';
-import 'package:samurai_app/components/show_error.dart';
 import 'package:samurai_app/components/storage.dart';
 import 'package:samurai_app/data/music_manager.dart';
 import 'package:samurai_app/pages/home/wallet_page_components.dart';
