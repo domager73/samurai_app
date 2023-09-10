@@ -9,7 +9,7 @@ abstract class AppGradients {
   );
 
   static RadialGradient buttonBack = const RadialGradient(
-    colors: [Colors.black, Colors.transparent],
+    colors: [Color(0x7F0D1238), Colors.transparent],
     radius: 0.5,
   );
 }

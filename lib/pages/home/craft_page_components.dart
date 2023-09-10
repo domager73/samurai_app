@@ -11,6 +11,7 @@ import 'package:samurai_app/data/music_manager.dart';
 import 'package:samurai_app/pages/tfa_page.dart';
 import 'package:samurai_app/utils/colors.dart';
 import 'package:samurai_app/utils/fonts.dart';
+import 'package:samurai_app/utils/gradients.dart';
 import 'package:samurai_app/widgets/painters/painter_drop_list_border.dart';
 import 'package:samurai_app/widgets/painters/painter_transfer_samurai.dart';
 import 'package:samurai_app/widgets/popups/custom_choose_popup.dart';
@@ -150,20 +151,24 @@ class CraftPageComponents {
                               ),
                             ),
                             const SizedBox(width: 25),
-                            AnimButton(
-                              shadowType: 2,
-                              player:
-                                  GetIt.I<MusicManager>().okCanselTransPlayer,
-                              onTap: () {
-                                log(switchMode.toString());
-                                onShitchMode();
-                              },
-                              child: SvgPicture.asset(
-                                tabActiveWf == 0
-                                    ? 'assets/swap_change_bt.svg'
-                                    : 'assets/pages/homepage/craft/change_fire.svg',
-                                fit: BoxFit.fitWidth,
-                                height: height * 0.1,
+                            Container(
+                              decoration: BoxDecoration(
+                                  gradient: AppGradients.buttonBack),
+                              child: AnimButton(
+                                shadowType: 2,
+                                player:
+                                    GetIt.I<MusicManager>().okCanselTransPlayer,
+                                onTap: () {
+                                  log(switchMode.toString());
+                                  onShitchMode();
+                                },
+                                child: SvgPicture.asset(
+                                  tabActiveWf == 0
+                                      ? 'assets/swap_change_bt.svg'
+                                      : 'assets/pages/homepage/craft/change_fire.svg',
+                                  fit: BoxFit.fitWidth,
+                                  height: height * 0.1,
+                                ),
                               ),
                             ),
                           ],
@@ -427,15 +432,16 @@ class CraftPageComponents {
               RichText(
                   text: TextSpan(children: [
                 TextSpan(
-                  style: AppTypography.spaceMonoReg13White,
+                    style: AppTypography.spaceMonoReg13White,
                     text:
                         "Available: ${modeWithdraw == 'GENESIS' ? samuraiGenesisBalance : num.parse(balanceWithdraw.toStringAsFixed(0))} "),
                 TextSpan(
-                    text: modeWithdraw == 'GENESIS' ? "Genesis" : "Regular", style: AppTypography.spaceMonoReg13White.copyWith(fontWeight: FontWeight.w800),),
+                  text: modeWithdraw == 'GENESIS' ? "Genesis" : "Regular",
+                  style: AppTypography.spaceMonoReg13White
+                      .copyWith(fontWeight: FontWeight.w800),
+                ),
                 TextSpan(
-                  style: AppTypography.spaceMonoReg13White,
-                    text:
-                        " Samurai"),
+                    style: AppTypography.spaceMonoReg13White, text: " Samurai"),
               ])),
               SizedBox(
                 height: 5,

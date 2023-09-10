@@ -9,13 +9,14 @@ import 'package:samurai_app/components/pop_up_spinner.dart';
 import 'package:samurai_app/components/storage.dart';
 import 'package:samurai_app/data/music_manager.dart';
 import 'package:samurai_app/pages/home/wallet_page_components.dart';
+import 'package:samurai_app/utils/colors.dart';
+import 'package:samurai_app/utils/gradients.dart';
 import 'package:samurai_app/widgets/popups/custom_popup.dart';
 import 'package:trust_wallet_core_lib/trust_wallet_core_lib.dart';
 
 import '../../api/rest.dart';
 import '../../api/wallet.dart';
 import '../../components/anim_button.dart';
-import '../../utils/gradients.dart';
 
 class WalletPage extends StatefulWidget {
   const WalletPage({super.key});
@@ -878,12 +879,20 @@ class _WalletPageState extends State<WalletPage>
               ),
             ),
           ),
-          AnimButton(
-            player: GetIt.I<MusicManager>().menuSettingsSignWaterPlayer,
-            onTap: () => onSwapTap(),
-            child: SvgPicture.asset(
-              'assets/pages/homepage/refresh.svg',
-              fit: BoxFit.fitHeight,
+          Container(
+            decoration: BoxDecoration(
+                gradient: RadialGradient(radius: 0.5, colors: [
+              Colors.black.withOpacity(0.35),
+              Colors.transparent
+            ])),
+            padding: EdgeInsets.symmetric(vertical: height * 0.007),
+            child: AnimButton(
+              player: GetIt.I<MusicManager>().menuSettingsSignWaterPlayer,
+              onTap: () => onSwapTap(),
+              child: SvgPicture.asset(
+                'assets/pages/homepage/refresh.svg',
+                fit: BoxFit.fitHeight,
+              ),
             ),
           ),
           Expanded(
@@ -902,7 +911,9 @@ class _WalletPageState extends State<WalletPage>
               ),
             ),
           ),
-          Padding(
+          Container(
+            decoration: BoxDecoration(
+                gradient: AppGradients.buttonBack),
             padding: EdgeInsets.symmetric(vertical: height * 0.007),
             child: AnimButton(
               player: GetIt.I<MusicManager>().menuSettingsSignWaterPlayer,

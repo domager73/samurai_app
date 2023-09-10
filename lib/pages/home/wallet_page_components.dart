@@ -17,7 +17,6 @@ import '../../components/bg.dart';
 import '../../components/comma_formatter.dart';
 import '../../components/samurai_text_field.dart';
 import '../../components/storage.dart';
-import '../../utils/gradients.dart';
 import '../tfa_page.dart';
 
 class WalletPageComponents {
@@ -317,8 +316,10 @@ class WalletPageComponents {
                                   ],
                                 ),
                               ),
-                              SizedBox(
+                              Container(
                                 width: width * 0.25,
+                                decoration: BoxDecoration(
+                                    gradient: AppGradients.buttonBack),
                                 child: AnimButton(
                                   player: GetIt.I<MusicManager>()
                                       .okCanselTransPlayer,
