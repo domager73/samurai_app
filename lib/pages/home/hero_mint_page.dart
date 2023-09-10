@@ -138,7 +138,7 @@ class _HeroMintPageState extends State<HeroMintPage> with SingleTickerProviderSt
           width: width,
           height: height - height * 0.39,
           padding: EdgeInsets.only(top: width * 0.04),
-          child: HerosPageTab(wigetChild: getMintMasks(context, width, height)))
+          child: HeroesPageTab(wigetChild: getMintMasks(context, width, height)))
     ]);
   }
 

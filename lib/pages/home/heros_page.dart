@@ -19,19 +19,20 @@ import '../../components/anim_button.dart';
 import '../../components/pop_up_spinner.dart';
 import '../../components/storage.dart';
 import '../../models/dp.dart';
-import '../../widgets/custom_snackbar.dart';
+import '../../utils/gradients.dart';
+import '../../widgets/snackbar/custom_snackbar.dart';
 import 'hero_page_components.dart';
 
-class HerosPage extends StatefulWidget {
-  const HerosPage({super.key, required this.craftSwitch});
+class HeroesPage extends StatefulWidget {
+  const HeroesPage({super.key, required this.craftSwitch});
 
   final int craftSwitch;
 
   @override
-  State<HerosPage> createState() => _HerosPageState();
+  State<HeroesPage> createState() => _HeroesPageState();
 }
 
-class _HerosPageState extends State<HerosPage>
+class _HeroesPageState extends State<HeroesPage>
     with SingleTickerProviderStateMixin {
   late final TabController _tabController;
 
@@ -59,14 +60,8 @@ class _HerosPageState extends State<HerosPage>
             flag = 1;
             log("value $value, page $page, oldPage $oldPage ->");
 
-            await GetIt
-                .I<MusicManager>()
-                .swipeForwPlayer
-                .play()
-                .then(
-                    (value) async =>
-                await GetIt
-                    .I<MusicManager>()
+            await GetIt.I<MusicManager>().swipeForwPlayer.play().then(
+                (value) async => await GetIt.I<MusicManager>()
                     .swipeForwPlayer
                     .seek(Duration(seconds: 0)));
           }
@@ -79,13 +74,11 @@ class _HerosPageState extends State<HerosPage>
             flag = 1;
             log("value $value, page $page, oldPage $oldPage <-");
 
-            await GetIt
-                .I<MusicManager>()
+            await GetIt.I<MusicManager>()
                 .swipeBackPlayer
                 .play()
                 .then((value) async {
-              await GetIt
-                  .I<MusicManager>()
+              await GetIt.I<MusicManager>()
                   .swipeBackPlayer
                   .seek(Duration(seconds: 0));
             });
@@ -153,14 +146,8 @@ class _HerosPageState extends State<HerosPage>
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery
-        .of(context)
-        .size
-        .width;
-    final height = MediaQuery
-        .of(context)
-        .size
-        .height;
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
     return Column(children: [
       Padding(
           padding: EdgeInsets.only(
@@ -172,25 +159,21 @@ class _HerosPageState extends State<HerosPage>
             onTap: (newPage) async {
               if (lastPage < newPage) {
                 print(lastPage);
-                await GetIt
-                    .I<MusicManager>()
+                await GetIt.I<MusicManager>()
                     .swipeForwPlayer
                     .play()
                     .then((value) async {
-                  await GetIt
-                      .I<MusicManager>()
+                  await GetIt.I<MusicManager>()
                       .swipeForwPlayer
                       .seek(Duration(seconds: 0));
                 });
               } else {
                 print(lastPage);
-                await GetIt
-                    .I<MusicManager>()
+                await GetIt.I<MusicManager>()
                     .swipeBackPlayer
                     .play()
                     .then((value) async {
-                  await GetIt
-                      .I<MusicManager>()
+                  await GetIt.I<MusicManager>()
                       .swipeBackPlayer
                       .seek(Duration(seconds: 0));
                 });
@@ -220,10 +203,10 @@ class _HerosPageState extends State<HerosPage>
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return TabBarView(controller: _tabController, children: [
-                    HerosPageTab(
+                    HeroesPageTab(
                         wigetChild: getActiveTab(
                             context, width, height, info['heroes'])),
-                    HerosPageTab(
+                    HeroesPageTab(
                         wigetChild: getStakingTab(
                             context, width, height, info['heroes'])),
                     getMintTab(context, width, height)
@@ -235,19 +218,19 @@ class _HerosPageState extends State<HerosPage>
     ]);
   }
 
-  Widget getActiveTab(BuildContext context, double width, double height,
-      List<dynamic> heroes) {
+  Widget getActiveTab(
+      BuildContext context, double width, double height, List<dynamic> heroes) {
     final wgts = heroes.map((e) {
       return e['status'] != 'STAKING' &&
-          ((widget.craftSwitch == 0 && e['clan'] == 'water') ||
-              (widget.craftSwitch == 1 && e['clan'] == 'fire'))
+              ((widget.craftSwitch == 0 && e['clan'] == 'water') ||
+                  (widget.craftSwitch == 1 && e['clan'] == 'fire'))
           ? Container(
-          padding: EdgeInsets.only(
-              bottom: width * 0.04,
-              left: width * 0.05,
-              right: width * 0.04),
-          width: width,
-          child: heroBlock(e, context, width, height, btnsActive))
+              padding: EdgeInsets.only(
+                  bottom: width * 0.04,
+                  left: width * 0.05,
+                  right: width * 0.04),
+              width: width,
+              child: heroBlock(e, context, width, height, btnsActive))
           : const SizedBox();
     }).toList();
 
@@ -259,19 +242,19 @@ class _HerosPageState extends State<HerosPage>
     ]);
   }
 
-  Widget getStakingTab(BuildContext context, double width, double height,
-      List<dynamic> heroes) {
+  Widget getStakingTab(
+      BuildContext context, double width, double height, List<dynamic> heroes) {
     final wgts = heroes.map((e) {
       return e['status'] == "STAKING" &&
-          ((widget.craftSwitch == 0 && e['clan'] == 'water') ||
-              (widget.craftSwitch == 1 && e['clan'] == 'fire'))
+              ((widget.craftSwitch == 0 && e['clan'] == 'water') ||
+                  (widget.craftSwitch == 1 && e['clan'] == 'fire'))
           ? Container(
-          padding: EdgeInsets.only(
-              bottom: width * 0.04,
-              left: width * 0.05,
-              right: width * 0.04),
-          width: width,
-          child: heroBlock(e, context, width, height, btnsStack))
+              padding: EdgeInsets.only(
+                  bottom: width * 0.04,
+                  left: width * 0.05,
+                  right: width * 0.04),
+              width: width,
+              child: heroBlock(e, context, width, height, btnsStack))
           : const SizedBox();
     }).toList();
 
@@ -295,14 +278,13 @@ class _HerosPageState extends State<HerosPage>
         Padding(
           padding: EdgeInsets.only(top: width * 0.06),
           child: PresButton(
-            onTap: () =>
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                  '/home',
-                      (route) => false,
-                  arguments: 'samuraiMint${widget.craftSwitch}',
-                ),
+            onTap: () => Navigator.of(context).pushNamedAndRemoveUntil(
+              '/home',
+              (route) => false,
+              arguments: 'samuraiMint${widget.craftSwitch}',
+            ),
             disabled:
-            (widget.craftSwitch == 0 ? water!.balance : fire!.balance) < 12,
+                (widget.craftSwitch == 0 ? water!.balance : fire!.balance) < 12,
             params: {'text': 'samuari mint', 'width': width, 'height': height},
             child: loginBtn,
           ),
@@ -311,8 +293,8 @@ class _HerosPageState extends State<HerosPage>
     );
   }
 
-  Widget heroBlock(Map e, BuildContext context, double width, double height,
-      btnsWaiget) {
+  Widget heroBlock(
+      Map e, BuildContext context, double width, double height, btnsWaiget) {
     return Stack(children: [
       if (e['status'] == 'FIGHTING')
         Container(
@@ -334,7 +316,7 @@ class _HerosPageState extends State<HerosPage>
         Padding(
             padding: EdgeInsets.only(top: width * 0.08, left: width * 0.04),
             child:
-            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               SizedBox(
                 width: width * 0.28,
                 child: Text(
@@ -361,8 +343,8 @@ class _HerosPageState extends State<HerosPage>
                           color: e['type'] == 'Feudal'
                               ? const Color(0xFF2589FF)
                               : e['type'] == 'Shogun'
-                              ? const Color(0xFFFF0049)
-                              : const Color(0xFF00E417),
+                                  ? const Color(0xFFFF0049)
+                                  : const Color(0xFF00E417),
                         ),
                       ),
                       Padding(
@@ -403,8 +385,7 @@ class _HerosPageState extends State<HerosPage>
       hideSpinner(context);
       await showDialog(
         context: context,
-        builder: (context) =>
-        const CustomPopup(
+        builder: (context) => const CustomPopup(
             text: 'Insufficient funds. Deposit some BNB to your crypto wallet.',
             isError: false),
       );
@@ -416,37 +397,46 @@ class _HerosPageState extends State<HerosPage>
     return Padding(
         padding: EdgeInsets.only(left: width - width * 0.9),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Padding(
-              padding: EdgeInsets.only(top: width * 0.03, bottom: width * 0.03),
-              child: AnimButton(
-                  onTap: () async {
-                    await transferSamurai(heroId);
-                    await loadInfo().then((value) => setState(() {}));
-                  },
-                  shadowType: 2,
-                  child: SvgPicture.asset(
-                    e['status'] == 'FIGHTING'
-                        ? 'assets/pages/homepage/heroes/btn_to_wallet_dis.svg'
-                        : 'assets/pages/homepage/heroes/btn_to_wallet.svg',
-                    width: width * 0.12,
-                  ))),
-          AnimButton(
-              onTap: () async {
-                await Rest.placeHeroToStake(heroId);
-                await loadInfo().then((value) => setState(() {}));
-              },
-              shadowType: 2,
-              child: SvgPicture.asset(
-                e['status'] == 'FIGHTING'
-                    ? 'assets/pages/homepage/heroes/btn_stake_dis.svg'
-                    : 'assets/pages/homepage/heroes/btn_stake.svg',
-                width: width * 0.12,
-              ))
+          Container(
+            decoration: BoxDecoration(
+              gradient: AppGradients.buttonBack,
+            ),
+            padding: EdgeInsets.only(top: width * 0.03, bottom: width * 0.03),
+            child: AnimButton(
+                onTap: () async {
+                  await transferSamurai(heroId);
+                  await loadInfo().then((value) => setState(() {}));
+                },
+                shadowType: 2,
+                child: SvgPicture.asset(
+                  e['status'] == 'FIGHTING'
+                      ? 'assets/pages/homepage/heroes/btn_to_wallet_dis.svg'
+                      : 'assets/pages/homepage/heroes/btn_to_wallet.svg',
+                  width: width * 0.12,
+                )),
+          ),
+          Container(
+            decoration: BoxDecoration(
+              gradient: AppGradients.buttonBack,
+            ),
+            child: AnimButton(
+                onTap: () async {
+                  await Rest.placeHeroToStake(heroId);
+                  await loadInfo().then((value) => setState(() {}));
+                },
+                shadowType: 2,
+                child: SvgPicture.asset(
+                  e['status'] == 'FIGHTING'
+                      ? 'assets/pages/homepage/heroes/btn_stake_dis.svg'
+                      : 'assets/pages/homepage/heroes/btn_stake.svg',
+                  width: width * 0.12,
+                )),
+          )
         ]));
   }
 
-  Widget btnsStack(Map e, BuildContext context, double width, double height,
-      int heroId) {
+  Widget btnsStack(
+      Map e, BuildContext context, double width, double height, int heroId) {
     return Padding(
         padding: EdgeInsets.only(left: width - width * 0.9),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -481,7 +471,7 @@ class _HerosPageState extends State<HerosPage>
           children: [
             Padding(
                 padding:
-                EdgeInsets.only(top: width * 0.047, left: width * 0.11),
+                    EdgeInsets.only(top: width * 0.047, left: width * 0.11),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -492,16 +482,14 @@ class _HerosPageState extends State<HerosPage>
                           getTime: () => samuraiDpExpiresDate ?? '00:00',
                           style: AppTypography.spaceMonoW700Blue16.copyWith(
                               color: Colors.white,
-                              fontSize: width > 500 ? 21 : 16
-                          ),
+                              fontSize: width > 500 ? 21 : 16),
                         ),
                       ),
                       Row(children: [
                         Text("DP/Day: ",
                             style: AppTypography.spaceMonoW700Blue16),
                         Text(
-                            "+${widget.craftSwitch == 0 ? water!.perDay : fire!
-                                .perDay} DP ",
+                            "+${widget.craftSwitch == 0 ? water!.perDay : fire!.perDay} DP ",
                             style: AppTypography.spaceMonoW700Blue16
                                 .copyWith(color: Colors.white))
                       ])
@@ -511,9 +499,7 @@ class _HerosPageState extends State<HerosPage>
                     top: width * 0.087, right: width - width * 0.9),
                 child: Stack(children: [
                   AnimButton(
-                    player: GetIt
-                        .I<MusicManager>()
-                        .zeroAmountNumberPlayer,
+                    player: GetIt.I<MusicManager>().zeroAmountNumberPlayer,
                     onTap: () {
                       ScaffoldMessenger.of(context).clearSnackBars();
 
@@ -536,7 +522,7 @@ class _HerosPageState extends State<HerosPage>
                       }
 
                       Rest.sendClameHero(
-                          widget.craftSwitch == 0 ? 'water' : 'fire')
+                              widget.craftSwitch == 0 ? 'water' : 'fire')
                           .then((value) {
                         loadInfo().then((value) => setState(() {}));
                       }).catchError((_) {});
@@ -545,12 +531,12 @@ class _HerosPageState extends State<HerosPage>
                     shadowType: 0,
                     child: SvgPicture.asset(
                         ((widget.craftSwitch == 0
-                            ? water!.unclaimed
-                            : fire!.unclaimed) >
-                            0)
+                                    ? water!.unclaimed
+                                    : fire!.unclaimed) >
+                                0)
                             ? widget.craftSwitch == 0
-                            ? 'assets/pages/homepage/craft/btn_clame_water.svg'
-                            : 'assets/pages/homepage/craft/btn_clame_fire.svg'
+                                ? 'assets/pages/homepage/craft/btn_clame_water.svg'
+                                : 'assets/pages/homepage/craft/btn_clame_fire.svg'
                             : 'assets/pages/homepage/craft/btn_clame_dis.svg',
                         fit: BoxFit.fitWidth,
                         width: width * 0.36),
@@ -559,14 +545,13 @@ class _HerosPageState extends State<HerosPage>
                       padding: EdgeInsets.only(
                           top: width * 0.087, left: width * 0.23),
                       child: Text(
-                        "${(widget.craftSwitch == 0 ? water!.unclaimed : fire!
-                            .unclaimed) ?? 0} DP",
+                        "${(widget.craftSwitch == 0 ? water!.unclaimed : fire!.unclaimed) ?? 0} DP",
                         style: AppTypography.spaceMonoBold13.copyWith(
                           fontSize: width > 500 ? 15 : 11,
                           color: ((widget.craftSwitch == 0
-                              ? water!.unclaimed
-                              : fire!.unclaimed) >
-                              0)
+                                      ? water!.unclaimed
+                                      : fire!.unclaimed) >
+                                  0)
                               ? const Color(0xFF00FFFF)
                               : Colors.grey,
                         ),
@@ -605,12 +590,13 @@ class _HerosPageState extends State<HerosPage>
       Padding(
           padding: EdgeInsets.only(top: width * 0.02),
           child: Row(children: [
-            Text("DP earned: ",
-              style: AppTypography.spaceMonoBold13
-                  .copyWith(color: AppColors.textBlue, fontSize: width > 500 ? 16 : 13),),
             Text(
-                '${(widget.craftSwitch == 0 ? water!.balance : fire!.balance)
-                    .toStringAsFixed(0)}/${maxDp.round()}',
+              "DP earned: ",
+              style: AppTypography.spaceMonoBold13.copyWith(
+                  color: AppColors.textBlue, fontSize: width > 500 ? 16 : 13),
+            ),
+            Text(
+                '${(widget.craftSwitch == 0 ? water!.balance : fire!.balance).toStringAsFixed(0)}/${maxDp.round()}',
                 style: AppTypography.spaceMonoBold13)
           ]))
     ]);

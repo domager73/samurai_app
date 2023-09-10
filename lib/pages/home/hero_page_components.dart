@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-class HerosPageTab extends StatefulWidget {
-  const HerosPageTab({super.key, required this.wigetChild});
+class HeroesPageTab extends StatefulWidget {
+  const HeroesPageTab({super.key, required this.wigetChild});
 
   final Widget wigetChild;
 
   @override
-  State<HerosPageTab> createState() => _HerosPageTabState();
+  State<HeroesPageTab> createState() => _HeroesPageTabState();
 }
 
-class _HerosPageTabState extends State<HerosPageTab>
+class _HeroesPageTabState extends State<HeroesPageTab>
     with SingleTickerProviderStateMixin {
   late final ScrollController scrollController;
 

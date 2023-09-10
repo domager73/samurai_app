@@ -17,6 +17,7 @@ import 'package:samurai_app/pages/home/home_main_page.dart';
 import 'package:samurai_app/pages/home/wallet_page.dart';
 import 'package:samurai_app/pages/pin_code_page.dart';
 import 'package:samurai_app/utils/fonts.dart';
+import 'package:samurai_app/utils/gradients.dart';
 import 'package:samurai_app/widgets/popups/custom_popup.dart';
 
 import '../components/anim_button.dart';
@@ -69,14 +70,24 @@ class _HomePageState extends State<HomePage> {
             selectedPage = 1;
           });
         }
-        if (ModalRoute.of(context)!.settings.arguments == 'heroMint0' || ModalRoute.of(context)!.settings.arguments == 'heroMint1') {
-          herosSwitch = int.parse(ModalRoute.of(context)!.settings.arguments.toString().substring(8, 9));
+        if (ModalRoute.of(context)!.settings.arguments == 'heroMint0' ||
+            ModalRoute.of(context)!.settings.arguments == 'heroMint1') {
+          herosSwitch = int.parse(ModalRoute.of(context)!
+              .settings
+              .arguments
+              .toString()
+              .substring(8, 9));
           setState(() {
             selectedPage = 6;
           });
         }
-        if (ModalRoute.of(context)!.settings.arguments == 'samuraiMint0' || ModalRoute.of(context)!.settings.arguments == 'samuraiMint1') {
-          herosSwitch = int.parse(ModalRoute.of(context)!.settings.arguments.toString().substring(11, 12));
+        if (ModalRoute.of(context)!.settings.arguments == 'samuraiMint0' ||
+            ModalRoute.of(context)!.settings.arguments == 'samuraiMint1') {
+          herosSwitch = int.parse(ModalRoute.of(context)!
+              .settings
+              .arguments
+              .toString()
+              .substring(11, 12));
           setState(() {
             selectedPage = 8;
           });
@@ -85,7 +96,9 @@ class _HomePageState extends State<HomePage> {
     });
 
     GetIt.I<MusicManager>().screenChangePlayer.play().then((value) async {
-      await GetIt.I<MusicManager>().screenChangePlayer.seek(Duration(seconds: 0));
+      await GetIt.I<MusicManager>()
+          .screenChangePlayer
+          .seek(Duration(seconds: 0));
     });
 
     craftSwitch = int.parse(AppStorage().read(craftSwitchKey) ?? '0');
@@ -114,7 +127,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> updateBalances() async {
-    if (_lastUpdate.microsecond < DateTime.now().subtract(const Duration(seconds: 30)).microsecond) {
+    if (_lastUpdate.microsecond <
+        DateTime.now().subtract(const Duration(seconds: 30)).microsecond) {
       _lastUpdate = DateTime.now();
       AppStorage().updateUserWallet();
     }
@@ -138,7 +152,11 @@ class _HomePageState extends State<HomePage> {
         width: width,
         height: height,
         decoration: BoxDecoration(
-            image: selectedPage == 0 || selectedPage == 2 || selectedPage == 3 || selectedPage == 4 || selectedPage == 6
+            image: selectedPage == 0 ||
+                    selectedPage == 2 ||
+                    selectedPage == 3 ||
+                    selectedPage == 4 ||
+                    selectedPage == 6
                 ? DecorationImage(
                     image: selectedPage == 0
                         ? (craftSwitch == 0 ? waterBg : fireBg)
@@ -147,14 +165,20 @@ class _HomePageState extends State<HomePage> {
                             : selectedPage == 4
                                 ? homeStorageBg
                                 : selectedPage == 6
-                                    ? (craftSwitch == 0 ? heroMintWaterBg : heroMintFireBg)
+                                    ? (craftSwitch == 0
+                                        ? heroMintWaterBg
+                                        : heroMintFireBg)
                                     : homeMainBg,
                     fit: BoxFit.fitWidth,
                   )
                 : null),
         child: Stack(
           children: [
-            if (!(selectedPage == 0 || selectedPage == 2 || selectedPage == 3 || selectedPage == 4 || selectedPage == 6))
+            if (!(selectedPage == 0 ||
+                selectedPage == 2 ||
+                selectedPage == 3 ||
+                selectedPage == 4 ||
+                selectedPage == 6))
               SizedBox(
                 width: width,
                 height: height,
@@ -171,14 +195,18 @@ class _HomePageState extends State<HomePage> {
                   bottom: height - height * 0.9,
                 ),
                 child: getContent(width, height)),
-            SizedBox(width: width, height: height, child: bottomNavigationAndAppBar(width, height, context)),
+            SizedBox(
+                width: width,
+                height: height,
+                child: bottomNavigationAndAppBar(width, height, context)),
           ],
         ),
       ),
     );
   }
 
-  Widget bottomNavigationAndAppBar(double width, double height, BuildContext context) {
+  Widget bottomNavigationAndAppBar(
+      double width, double height, BuildContext context) {
     return Stack(
       children: [
         SizedBox(
@@ -218,46 +246,68 @@ class _HomePageState extends State<HomePage> {
                               children: [
                                 Material(
                                   color: Colors.transparent,
-                                  child: PresButton(
-                                    player: GetIt.I<MusicManager>().menuSettingsSignWaterPlayer, //menu
-                                    onTap: () => setState(() {
-                                      isMenuOpened = true;
-                                    }),
-                                    params: {'width': width},
-                                    child: menuBtn,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      gradient: AppGradients.buttonBack,
+                                    ),
+                                    child: PresButton(
+                                      player: GetIt.I<MusicManager>()
+                                          .menuSettingsSignWaterPlayer, //menu
+                                      onTap: () => setState(() {
+                                        isMenuOpened = true;
+                                      }),
+                                      params: {'width': width},
+                                      child: menuBtn,
+                                    ),
                                   ),
                                 ),
                                 const Spacer(),
                                 if (selectedPage == 5)
-                                  AnimButton(
-                                    player: GetIt.I<MusicManager>().menuSettingsSignWaterPlayer,
-                                    shadowType: 2,
-                                    onTap: () async {
-                                      await GetIt.I<MusicManager>().popupSubmenuPlayer.play().then((value) async {
-                                        await GetIt.I<MusicManager>().popupSubmenuPlayer.seek(Duration(seconds: 0));
-                                      });
-                                      openQr(width, height);
-                                    }, // HERE
-                                    child: SvgPicture.asset(
-                                      'assets/pages/homepage/receive.svg',
-                                      fit: BoxFit.fitHeight,
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      gradient: AppGradients.buttonBack,
+                                    ),
+                                    child: AnimButton(
+                                      player: GetIt.I<MusicManager>()
+                                          .menuSettingsSignWaterPlayer,
+                                      shadowType: 2,
+                                      onTap: () async {
+                                        await GetIt.I<MusicManager>()
+                                            .popupSubmenuPlayer
+                                            .play()
+                                            .then((value) async {
+                                          await GetIt.I<MusicManager>()
+                                              .popupSubmenuPlayer
+                                              .seek(Duration(seconds: 0));
+                                        });
+                                        openQr(width, height);
+                                      }, // HERE
+                                      child: SvgPicture.asset(
+                                        'assets/pages/homepage/receive.svg',
+                                        fit: BoxFit.fitHeight,
+                                      ),
                                     ),
                                   ),
                                 const Spacer(),
                                 if (selectedPage == 5)
-                                  AnimButton(
-                                      shadowType: 2,
-                                      onTap: () async {
-                                        showSpinner(context);
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      gradient: AppGradients.buttonBack,
+                                    ),
+                                    child: AnimButton(
+                                        shadowType: 2,
+                                        onTap: () async {
+                                          showSpinner(context);
 
-                                        await AppStorage().updateUserWallet();
+                                          await AppStorage().updateUserWallet();
 
-                                        hideSpinner(context);
-                                      },
-                                      child: SvgPicture.asset(
-                                        'assets/pages/homepage/trade.svg',
-                                        fit: BoxFit.fitHeight,
-                                      ))
+                                          hideSpinner(context);
+                                        },
+                                        child: SvgPicture.asset(
+                                          'assets/pages/homepage/trade.svg',
+                                          fit: BoxFit.fitHeight,
+                                        )),
+                                  )
                                 else
                                   Row(children: [
                                     SvgPicture.asset(
@@ -266,8 +316,16 @@ class _HomePageState extends State<HomePage> {
                                       fit: BoxFit.contain,
                                     ),
                                     Padding(
-                                        padding: EdgeInsets.only(left: 10 / 390 * width, right: 20 / 390 * width),
-                                        child: Text(double.parse(user?['bnb_balance'] != null ? user!['bnb_balance'].toString() : '0.0').toStringAsFixed(5),
+                                        padding: EdgeInsets.only(
+                                            left: 10 / 390 * width,
+                                            right: 20 / 390 * width),
+                                        child: Text(
+                                            double.parse(
+                                                    user?['bnb_balance'] != null
+                                                        ? user!['bnb_balance']
+                                                            .toString()
+                                                        : '0.0')
+                                                .toStringAsFixed(5),
                                             style: GoogleFonts.spaceMono(
                                               fontSize: 16 / 844 * height,
                                               color: Colors.white,
@@ -277,35 +335,61 @@ class _HomePageState extends State<HomePage> {
                                 Material(
                                   color: Colors.transparent,
                                   child: selectedPage != 5
-                                      ? PresButton(
-                                          onTap: () {
-                                            String? pin = AppStorage().read('pin');
-                                            String? walletAdress = AppStorage().read('wallet_adress');
-                                            String? walletMnemonic = AppStorage().read('wallet_mnemonic');
-                                            if (walletAdress == null || walletMnemonic == null) {
-                                              Navigator.pushReplacementNamed(context, '/createWallet');
-                                            } else if (pin == null) {
-                                              Navigator.pushReplacementNamed(
-                                                context,
-                                                '/pin',
-                                                arguments: PinCodePageType.create,
-                                              );
-                                            } else {
-                                              Navigator.of(context).pushNamed(
-                                                '/pin',
-                                                arguments: PinCodePageType.enter,
-                                              );
-                                            }
-                                          },
-                                          params: {'width': width},
-                                          child: menuWalletBtn)
-                                      : AnimButton(
-                                          player: GetIt.I<MusicManager>().menuSettingsSignWaterPlayer,
-                                          shadowType: 2,
-                                          onTap: () {
-                                            Navigator.of(context).pushNamed('/settings');
-                                          },
-                                          child: SvgPicture.asset('assets/pages/homepage/settings.svg'),
+                                      ? Container(
+                                          decoration: BoxDecoration(
+                                            gradient: AppGradients.buttonBack,
+                                          ),
+                                          child: PresButton(
+                                              onTap: () {
+                                                String? pin =
+                                                    AppStorage().read('pin');
+                                                String? walletAdress =
+                                                    AppStorage()
+                                                        .read('wallet_adress');
+                                                String? walletMnemonic =
+                                                    AppStorage().read(
+                                                        'wallet_mnemonic');
+                                                if (walletAdress == null ||
+                                                    walletMnemonic == null) {
+                                                  Navigator
+                                                      .pushReplacementNamed(
+                                                          context,
+                                                          '/createWallet');
+                                                } else if (pin == null) {
+                                                  Navigator
+                                                      .pushReplacementNamed(
+                                                    context,
+                                                    '/pin',
+                                                    arguments:
+                                                        PinCodePageType.create,
+                                                  );
+                                                } else {
+                                                  Navigator.of(context)
+                                                      .pushNamed(
+                                                    '/pin',
+                                                    arguments:
+                                                        PinCodePageType.enter,
+                                                  );
+                                                }
+                                              },
+                                              params: {'width': width},
+                                              child: menuWalletBtn),
+                                        )
+                                      : Container(
+                                          decoration: BoxDecoration(
+                                            gradient: AppGradients.buttonBack,
+                                          ),
+                                          child: AnimButton(
+                                            player: GetIt.I<MusicManager>()
+                                                .menuSettingsSignWaterPlayer,
+                                            shadowType: 2,
+                                            onTap: () {
+                                              Navigator.of(context)
+                                                  .pushNamed('/settings');
+                                            },
+                                            child: SvgPicture.asset(
+                                                'assets/pages/homepage/settings.svg'),
+                                          ),
                                         ),
                                 ),
                               ],
@@ -345,19 +429,25 @@ class _HomePageState extends State<HomePage> {
                               children: [
                                 const Spacer(flex: 3),
                                 bottomNavigButton(
-                                  SvgPicture.asset('assets/pages/homepage/page_1.svg', fit: BoxFit.fitHeight),
+                                  SvgPicture.asset(
+                                      'assets/pages/homepage/page_1.svg',
+                                      fit: BoxFit.fitHeight),
                                   height,
                                   0,
                                 ),
                                 const Spacer(flex: 1),
                                 bottomNavigButton(
-                                  SvgPicture.asset('assets/pages/homepage/page_2.svg', fit: BoxFit.fitHeight),
+                                  SvgPicture.asset(
+                                      'assets/pages/homepage/page_2.svg',
+                                      fit: BoxFit.fitHeight),
                                   height,
                                   1,
                                 ),
                                 const Spacer(flex: 1),
                                 bottomNavigButton(
-                                  SvgPicture.asset('assets/pages/homepage/page_3.svg', fit: BoxFit.fitHeight),
+                                  SvgPicture.asset(
+                                      'assets/pages/homepage/page_3.svg',
+                                      fit: BoxFit.fitHeight),
                                   height,
                                   2,
                                 ),
@@ -372,7 +462,9 @@ class _HomePageState extends State<HomePage> {
                                 ),
                                 const Spacer(flex: 1),
                                 bottomNavigButton(
-                                  SvgPicture.asset('assets/pages/homepage/page_5.svg', fit: BoxFit.fitHeight),
+                                  SvgPicture.asset(
+                                      'assets/pages/homepage/page_5.svg',
+                                      fit: BoxFit.fitHeight),
                                   height,
                                   4,
                                 ),
@@ -387,7 +479,12 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ])),
-        isMenuOpened ? SizedBox(width: width, height: height, child: getMenu(width, height, context)) : const SizedBox(),
+        isMenuOpened
+            ? SizedBox(
+                width: width,
+                height: height,
+                child: getMenu(width, height, context))
+            : const SizedBox(),
       ],
     );
   }
@@ -422,45 +519,64 @@ class _HomePageState extends State<HomePage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      PresButton(
-                        player: GetIt.I<MusicManager>().keyBackSignCloseX, // HERE
-                        onTap: () async {
-                          await GetIt.I<MusicManager>().popupDownSybMenuPlayer.play().then((value) async {
-                            await GetIt.I<MusicManager>().popupDownSybMenuPlayer.seek(Duration(seconds: 0));
-                          });
+                      Container(
+                        decoration: BoxDecoration(
+                          gradient: AppGradients.buttonBack,
+                        ),
+                        child: PresButton(
+                          player:
+                              GetIt.I<MusicManager>().keyBackSignCloseX, // HERE
+                          onTap: () async {
+                            await GetIt.I<MusicManager>()
+                                .popupDownSybMenuPlayer
+                                .play()
+                                .then((value) async {
+                              await GetIt.I<MusicManager>()
+                                  .popupDownSybMenuPlayer
+                                  .seek(Duration(seconds: 0));
+                            });
 
-                          if (kDebugMode) {
-                            print(AppStorage().read('wallet_adress')!);
-                          }
-                          Navigator.of(context).pop();
-                        },
-                        params: {'width': width},
-                        child: backBtn,
+                            if (kDebugMode) {
+                              print(AppStorage().read('wallet_adress')!);
+                            }
+                            Navigator.of(context).pop();
+                          },
+                          params: {'width': width},
+                          child: backBtn,
+                        ),
                       ),
                       Expanded(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: width * 0.1),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: width * 0.1),
                           child: Center(
                             child: FittedBox(
-                              child: Text('receive', style: AppTypography.amazObitW400White),
+                              child: Text('receive',
+                                  style: AppTypography.amazObitW400White),
                             ),
                           ),
                         ),
                       ),
-                      AnimButton(
-                        shadowType: 2,
-                        onTap: () async {
-                          showDialog(
-                              context: context,
-                              builder: ((context) => const CustomPopup(
-                                    isError: false,
-                                    text: 'This is a wallet linked to your game account. You can refill it in any convenient way by copying the address or using the QR code.\nAttention! Send tokens only on BEP20 (BSC) chain, otherwise the tokens will be lost!',
-                                  )));
-                        },
-                        child: SvgPicture.asset(
-                          'assets/pages/homepage/craft/info.svg',
-                          height: width * 0.12,
-                          width: width * 0.12,
+                      Container(
+                        decoration: BoxDecoration(
+                          gradient: AppGradients.buttonBack,
+                        ),
+                        child: AnimButton(
+                          shadowType: 2,
+                          onTap: () async {
+                            showDialog(
+                                context: context,
+                                builder: ((context) => const CustomPopup(
+                                      isError: false,
+                                      text:
+                                          'This is a wallet linked to your game account. You can refill it in any convenient way by copying the address or using the QR code.\nAttention! Send tokens only on BEP20 (BSC) chain, otherwise the tokens will be lost!',
+                                    )));
+                          },
+                          child: SvgPicture.asset(
+                            'assets/pages/homepage/craft/info.svg',
+                            height: width * 0.12,
+                            width: width * 0.12,
+                          ),
                         ),
                       ),
                     ],
@@ -494,7 +610,8 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           TextSpan(
                             text: 'BEP20 (BSC)',
-                            style: AppTypography.spaceMonoW400.copyWith(color: Colors.red),
+                            style: AppTypography.spaceMonoW400
+                                .copyWith(color: Colors.red),
                           ),
                           TextSpan(
                             text: ' Wallet Address:',
@@ -526,16 +643,33 @@ class _HomePageState extends State<HomePage> {
                                   height: 0.1 * height,
                                   decoration: const BoxDecoration(
                                     color: Color(0xFF0D1238),
-                                    borderRadius: BorderRadius.only(topRight: Radius.circular(30), topLeft: Radius.circular(30)),
-                                    boxShadow: [BoxShadow(color: Color(0x2FFFFFFF), blurRadius: 30, spreadRadius: 30, offset: Offset(0, 20))],
+                                    borderRadius: BorderRadius.only(
+                                        topRight: Radius.circular(30),
+                                        topLeft: Radius.circular(30)),
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Color(0x2FFFFFFF),
+                                          blurRadius: 30,
+                                          spreadRadius: 30,
+                                          offset: Offset(0, 20))
+                                    ],
                                   ),
                                   alignment: Alignment.center,
-                                  child: Text('Copied to your clipboard!'.toUpperCase(), style: TextStyle(fontSize: 0.036 * width, fontWeight: FontWeight.w700, color: const Color(0xFF00FFFF))))));
+                                  child: Text(
+                                      'Copied to your clipboard!'.toUpperCase(),
+                                      style: TextStyle(
+                                          fontSize: 0.036 * width,
+                                          fontWeight: FontWeight.w700,
+                                          color: const Color(0xFF00FFFF))))));
                           Navigator.of(context).pop();
                         },
                       );
                     },
-                    params: {'text': 'copy address', 'width': width, 'height': height},
+                    params: {
+                      'text': 'copy address',
+                      'width': width,
+                      'height': height
+                    },
                     child: loginBtn,
                   ),
                 ],
@@ -567,16 +701,26 @@ class _HomePageState extends State<HomePage> {
               height: height * (id == 2 ? 0.09 : 0.07),
               child: InkWell(
                 onTap: () async {
-                  await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.play().then((value) async {
-                    await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.seek(Duration(seconds: 0));
+                  await GetIt.I<MusicManager>()
+                      .menuSettingsSignWaterPlayer
+                      .play()
+                      .then((value) async {
+                    await GetIt.I<MusicManager>()
+                        .menuSettingsSignWaterPlayer
+                        .seek(Duration(seconds: 0));
                   });
                   setState(() {
                     selectedPage = id;
                   });
                   updateBalances();
 
-                  await GetIt.I<MusicManager>().screenChangePlayer.play().then((value) async {
-                    await GetIt.I<MusicManager>().screenChangePlayer.seek(Duration(seconds: 0));
+                  await GetIt.I<MusicManager>()
+                      .screenChangePlayer
+                      .play()
+                      .then((value) async {
+                    await GetIt.I<MusicManager>()
+                        .screenChangePlayer
+                        .seek(Duration(seconds: 0));
                   });
                 },
                 borderRadius: BorderRadius.circular(100),
@@ -674,7 +818,8 @@ class _HomePageState extends State<HomePage> {
                             ),
                             Expanded(
                               child: getMenuButton(
-                                () => Navigator.of(context).pushNamed('/viewWebChronic'),
+                                () => Navigator.of(context)
+                                    .pushNamed('/viewWebChronic'),
                                 'CHRONICLES',
                                 height,
                               ),
@@ -740,7 +885,9 @@ class _HomePageState extends State<HomePage> {
               text,
               style: TextStyle(
                 fontFamily: 'AmazObitaemOstrovItalic',
-                color: onTap != null ? const Color(0xFF00FFFF) : const Color(0xFF9E9E9E),
+                color: onTap != null
+                    ? const Color(0xFF00FFFF)
+                    : const Color(0xFF9E9E9E),
                 fontSize: height * 0.025,
               ),
             ),
@@ -760,8 +907,13 @@ class _HomePageState extends State<HomePage> {
         return HomeMainPage(
             watchSamurai: () => setState(() => selectedPage = 0),
             switchSamuraiType: (type) async {
-              await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.play().then((value) async {
-                await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.seek(Duration(seconds: 0));
+              await GetIt.I<MusicManager>()
+                  .menuSettingsSignWaterPlayer
+                  .play()
+                  .then((value) async {
+                await GetIt.I<MusicManager>()
+                    .menuSettingsSignWaterPlayer
+                    .seek(Duration(seconds: 0));
               });
 
               AppStorage().write(craftSwitchKey, type.toString());
@@ -821,10 +973,8 @@ class _HomePageState extends State<HomePage> {
         SizedBox(height: 50 / 844 * height),
         Text(
           'Forge',
-          style: AppTypography.amazObitWhite.copyWith(
-                    fontSize: 44,
-                    letterSpacing: 3
-                  ),
+          style: AppTypography.amazObitWhite
+              .copyWith(fontSize: 44, letterSpacing: 3),
         ),
         const SizedBox(
           height: 20,
@@ -848,10 +998,8 @@ class _HomePageState extends State<HomePage> {
         SizedBox(height: 50 / 844 * height),
         Text(
           'Storage',
-          style: AppTypography.amazObitWhite.copyWith(
-                    fontSize: 44,
-                    letterSpacing: 3
-                  ),
+          style: AppTypography.amazObitWhite
+              .copyWith(fontSize: 44, letterSpacing: 3),
         ),
         const SizedBox(
           height: 20,
@@ -868,13 +1016,16 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget switchWaterFire(double width, double height, int valueSwitch, Function onSwitch) {
+  Widget switchWaterFire(
+      double width, double height, int valueSwitch, Function onSwitch) {
     return Container(
       padding: EdgeInsets.only(left: width * 0.05, right: width * 0.05),
       child: Stack(
         children: [
           SvgPicture.asset(
-            valueSwitch == 0 ? 'assets/pages/homepage/craft/water.svg' : 'assets/pages/homepage/craft/fire.svg',
+            valueSwitch == 0
+                ? 'assets/pages/homepage/craft/water.svg'
+                : 'assets/pages/homepage/craft/fire.svg',
             width: width * 0.9,
             height: 125 / 880 * (height - height * 0.10),
           ),
@@ -887,8 +1038,13 @@ class _HomePageState extends State<HomePage> {
                   ),
                   onTap: () async {
                     onSwitch(0);
-                    await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.play().then((value) async {
-                      await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.seek(Duration(seconds: 0));
+                    await GetIt.I<MusicManager>()
+                        .menuSettingsSignWaterPlayer
+                        .play()
+                        .then((value) async {
+                      await GetIt.I<MusicManager>()
+                          .menuSettingsSignWaterPlayer
+                          .seek(Duration(seconds: 0));
                     });
                   },
                   child: Container(
@@ -904,8 +1060,13 @@ class _HomePageState extends State<HomePage> {
                   ),
                   onTap: () async {
                     onSwitch(1);
-                    await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.play().then((value) async {
-                      await GetIt.I<MusicManager>().menuSettingsSignWaterPlayer.seek(Duration(seconds: 0));
+                    await GetIt.I<MusicManager>()
+                        .menuSettingsSignWaterPlayer
+                        .play()
+                        .then((value) async {
+                      await GetIt.I<MusicManager>()
+                          .menuSettingsSignWaterPlayer
+                          .seek(Duration(seconds: 0));
                     });
                   },
                   child: Container(
@@ -928,7 +1089,7 @@ class _HomePageState extends State<HomePage> {
             padding: EdgeInsets.only(top: 43 / 880 * height),
             child: SizedBox(
               width: width,
-              child: HerosPage(craftSwitch: craftSwitch),
+              child: HeroesPage(craftSwitch: craftSwitch),
             )),
         switchWaterFire(width, height, craftSwitch, (val) {
           AppStorage().write(craftSwitchKey, val.toString());
@@ -944,7 +1105,8 @@ class _HomePageState extends State<HomePage> {
     return Stack(
       children: [
         Padding(
-            padding: EdgeInsets.only(top: 1 / 880 * height, left: width * 0.04, right: width * 0.04),
+            padding: EdgeInsets.only(
+                top: 1 / 880 * height, left: width * 0.04, right: width * 0.04),
             child: SizedBox(
               width: width,
               child: HeroMintPage(craftSwitch: herosSwitch),
@@ -957,7 +1119,8 @@ class _HomePageState extends State<HomePage> {
     return Stack(
       children: [
         Padding(
-            padding: EdgeInsets.only(top: 1 / 880 * height, left: width * 0.04, right: width * 0.04),
+            padding: EdgeInsets.only(
+                top: 1 / 880 * height, left: width * 0.04, right: width * 0.04),
             child: SizedBox(
               width: width,
               child: SamuraiMintPage(craftSwitch: herosSwitch),

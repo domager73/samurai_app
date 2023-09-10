@@ -10,7 +10,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:samurai_app/data/music_manager.dart';
 import 'package:samurai_app/pages/home/craft_page_components.dart';
 import 'package:samurai_app/utils/gradients.dart';
-import 'package:samurai_app/widgets/custom_snackbar.dart';
+import 'package:samurai_app/widgets/snackbar/custom_snackbar.dart';
 import 'package:samurai_app/widgets/painters/samurai_heal_border.dart';
 import 'package:samurai_app/widgets/painters/samurai_trans_border.dart';
 

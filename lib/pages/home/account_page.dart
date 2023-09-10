@@ -22,6 +22,7 @@ import '../../main.dart';
 import '../../widgets/painters/account_border.dart';
 import '../../widgets/painters/button_change_email.dart';
 import '../../widgets/painters/button_login.dart';
+import '../../widgets/painters/button_logout.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -311,6 +312,7 @@ class _AccountPageState extends State<AccountPage> {
                         padding: EdgeInsets.only(top: 3 / 96 * height),
                         child: CustomPainterButton(
                           player: GetIt.I<MusicManager>().keyBackSignCloseX,
+                          textPadding: EdgeInsets.zero,
                           onTap: () {
                             showDialog(
                                 context: context,
@@ -331,9 +333,9 @@ class _AccountPageState extends State<AccountPage> {
                                     },
                                     text: "Are you sure you want to get out?"));
                           },
-                          width: width,
-                          height: height,
-                          painter: ButtonLoginPainter(),
+                          width: width * 0.32,
+                          height: width * 0.104,
+                          painter: ButtonLogoutPainter(),
                           text: 'logout',
                           style: AppTypography.amazObit17Dark,
                         ),

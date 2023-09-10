@@ -15,6 +15,7 @@ import 'package:trust_wallet_core_lib/trust_wallet_core_lib.dart';
 import '../../api/rest.dart';
 import '../../api/wallet.dart';
 import '../../components/anim_button.dart';
+import '../../utils/gradients.dart';
 
 class WalletPage extends StatefulWidget {
   const WalletPage({super.key});
@@ -23,7 +24,8 @@ class WalletPage extends StatefulWidget {
   State<WalletPage> createState() => _WalletPageState();
 }
 
-class _WalletPageState extends State<WalletPage> with SingleTickerProviderStateMixin {
+class _WalletPageState extends State<WalletPage>
+    with SingleTickerProviderStateMixin {
   late final TabController _tabController;
   late final ScrollController _samuraiController;
   late final ScrollController _heroesController;
@@ -41,7 +43,8 @@ class _WalletPageState extends State<WalletPage> with SingleTickerProviderStateM
   Map<String, dynamic> swapTapDialogArgs = {};
 
   late final TextEditingController transferTapDialogTextEditingController;
-  late final TextEditingController transferToAddressTapDialogTextEditingController;
+  late final TextEditingController
+      transferToAddressTapDialogTextEditingController;
 
   late final TextEditingController swapTapDialogTextEditingController;
 
@@ -62,7 +65,10 @@ class _WalletPageState extends State<WalletPage> with SingleTickerProviderStateM
             flag = 1;
             log("value $value, page $page, oldPage $oldPage ->");
 
-            await GetIt.I<MusicManager>().swipeForwPlayer.play().then((value) async => await GetIt.I<MusicManager>().swipeForwPlayer.seek(Duration(seconds: 0)));
+            await GetIt.I<MusicManager>().swipeForwPlayer.play().then(
+                (value) async => await GetIt.I<MusicManager>()
+                    .swipeForwPlayer
+                    .seek(Duration(seconds: 0)));
           }
         } else {
           flag = 0;
@@ -73,8 +79,13 @@ class _WalletPageState extends State<WalletPage> with SingleTickerProviderStateM
             flag = 1;
             log("value $value, page $page, oldPage $oldPage <-");
 
-            await GetIt.I<MusicManager>().swipeBackPlayer.play().then((value) async {
-              await GetIt.I<MusicManager>().swipeBackPlayer.seek(Duration(seconds: 0));
+            await GetIt.I<MusicManager>()
+                .swipeBackPlayer
+                .play()
+                .then((value) async {
+              await GetIt.I<MusicManager>()
+                  .swipeBackPlayer
+                  .seek(Duration(seconds: 0));
             });
           }
         } else {
@@ -100,7 +111,9 @@ class _WalletPageState extends State<WalletPage> with SingleTickerProviderStateM
     wallet = HDWallet.createWithMnemonic(appStorage.read('wallet_mnemonic')!);
 
     GetIt.I<MusicManager>().screenChangePlayer.play().then((value) async {
-      await GetIt.I<MusicManager>().screenChangePlayer.seek(Duration(seconds: 0));
+      await GetIt.I<MusicManager>()
+          .screenChangePlayer
+          .seek(Duration(seconds: 0));
     });
     // log("wallet page");
   }
@@ -122,7 +135,8 @@ class _WalletPageState extends State<WalletPage> with SingleTickerProviderStateM
   Future<int> loadHeroes() async {
     heroes = [];
 
-    int count = await WalletAPI.getCountHeroByAddress(AppStorage().read('wallet_adress')!);
+    int count = await WalletAPI.getCountHeroByAddress(
+        AppStorage().read('wallet_adress')!);
     for (var i = 0; i < count; i++) {
       Map<String, dynamic>? hero;
 
@@ -164,13 +178,23 @@ class _WalletPageState extends State<WalletPage> with SingleTickerProviderStateM
                       onTap: (newPage) async {
                         if (lastPage < newPage) {
                           print(lastPage);
-                          await GetIt.I<MusicManager>().swipeForwPlayer.play().then((value) async {
-                            await GetIt.I<MusicManager>().swipeForwPlayer.seek(Duration(seconds: 0));
+                          await GetIt.I<MusicManager>()
+                              .swipeForwPlayer
+                              .play()
+                              .then((value) async {
+                            await GetIt.I<MusicManager>()
+                                .swipeForwPlayer
+                                .seek(Duration(seconds: 0));
                           });
                         } else {
                           print(lastPage);
-                          await GetIt.I<MusicManager>().swipeBackPlayer.play().then((value) async {
-                            await GetIt.I<MusicManager>().swipeBackPlayer.seek(Duration(seconds: 0));
+                          await GetIt.I<MusicManager>()
+                              .swipeBackPlayer
+                              .play()
+                              .then((value) async {
+                            await GetIt.I<MusicManager>()
+                                .swipeBackPlayer
+                                .seek(Duration(seconds: 0));
                           });
                         }
                         setState(() {
@@ -200,11 +224,7 @@ class _WalletPageState extends State<WalletPage> with SingleTickerProviderStateM
                         children: [
                           getTokens(height, width),
                           getSamurais(height, width),
-                          Stack(
-                            children: [
-                              getHeroes(height, width),
-                            ],
-                          ),
+                          getHeroes(height, width),
                         ],
                       ),
                     ),
@@ -230,8 +250,10 @@ class _WalletPageState extends State<WalletPage> with SingleTickerProviderStateM
               if (e['tokenId'] == null) {
                 return const SizedBox(width: 1.0);
               }
-              final double balance = double.parse((user['${e['name']}_balance_onchain'] ?? '0.0').toString());
-              if (balance == 0 && (e['nameToken'] == 'GWS' || e['nameToken'] == 'GFS')) {
+              final double balance = double.parse(
+                  (user['${e['name']}_balance_onchain'] ?? '0.0').toString());
+              if (balance == 0 &&
+                  (e['nameToken'] == 'GWS' || e['nameToken'] == 'GFS')) {
                 //Скрывать Юнита, если количетво равно Ноль
                 return const SizedBox(width: 1.0);
               }
@@ -253,11 +275,17 @@ class _WalletPageState extends State<WalletPage> with SingleTickerProviderStateM
                       tokenName: e['nameToken'],
                       iconPath: e['logo_b'],
                       balance: balance.toInt(),
-                      gas: (e['type'] != null && e['type'] == 'BNB' ? user['gasBnb'] : user['gas']) ?? 0.0,
+                      gas: (e['type'] != null && e['type'] == 'BNB'
+                              ? user['gasBnb']
+                              : user['gas']) ??
+                          0.0,
                       gasName: e['gasName'],
                       isbnb: e['type'] == 'BNB');
 
-                  await GetIt.I<MusicManager>().popupSubmenuPlayer.play().then((value) => GetIt.I<MusicManager>().popupSubmenuPlayer.seek(Duration(seconds: 0)));
+                  await GetIt.I<MusicManager>().popupSubmenuPlayer.play().then(
+                      (value) => GetIt.I<MusicManager>()
+                          .popupSubmenuPlayer
+                          .seek(Duration(seconds: 0)));
                 },
                 () async {
                   WalletPageComponents.openTransferModalPageSamurai(
@@ -270,12 +298,22 @@ class _WalletPageState extends State<WalletPage> with SingleTickerProviderStateM
                       tokenName: e['nameToken'],
                       typeToken: e['typeToken'],
                       iconPath: e['logo_b'],
-                      balance: double.parse((user['${e['name']}_balance_onchain'] ?? '0').toString()),
-                      gas: (e['type'] != null && e['type'] == 'BNB' ? user['gasBnb'] : user['gas']) ?? 0.0,
+                      balance: double.parse(
+                          (user['${e['name']}_balance_onchain'] ?? '0')
+                              .toString()),
+                      gas: (e['type'] != null && e['type'] == 'BNB'
+                              ? user['gasBnb']
+                              : user['gas']) ??
+                          0.0,
                       gasName: 'BNB');
 
-                  await GetIt.I<MusicManager>().popupSubmenuPlayer.play().then((value) async {
-                    await GetIt.I<MusicManager>().popupSubmenuPlayer.seek(Duration(seconds: 0));
+                  await GetIt.I<MusicManager>()
+                      .popupSubmenuPlayer
+                      .play()
+                      .then((value) async {
+                    await GetIt.I<MusicManager>()
+                        .popupSubmenuPlayer
+                        .seek(Duration(seconds: 0));
                   });
                 },
               );
@@ -302,12 +340,24 @@ class _WalletPageState extends State<WalletPage> with SingleTickerProviderStateM
               controller: _heroesController,
               child: Column(
                 children: heroes
-                    .map((hero) => getHero(height, width, hero['image'], hero['name'], hero['clan'], hero['chronicle'], hero['type'], () async {
+                    .map((hero) => getHero(
+                            height,
+                            width,
+                            hero['image'],
+                            hero['name'],
+                            hero['clan'],
+                            hero['chronicle'],
+                            hero['type'], () async {
                           showSpinner(context);
 
                           try {
-                            await WalletAPI.transferHero(wallet, WalletAPI.rootWalletAddressBnb, hero['heroId']).then((value) {
-                              heroes.where((element) => element['heroId'] == hero['heroId']);
+                            await WalletAPI.transferHero(
+                                    wallet,
+                                    WalletAPI.rootWalletAddressBnb,
+                                    hero['heroId'])
+                                .then((value) {
+                              heroes.where((element) =>
+                                  element['heroId'] == hero['heroId']);
                               setState(() {});
                             });
                           } catch (e) {
@@ -316,18 +366,30 @@ class _WalletPageState extends State<WalletPage> with SingleTickerProviderStateM
                             print(1);
                             showDialog(
                               context: context,
-                              builder: (context) => const CustomPopup(text: 'You don`t have gas', isError: true),
+                              builder: (context) => const CustomPopup(
+                                  text: 'You don`t have gas', isError: true),
                             );
                             return;
                           }
 
                           hideSpinner(context);
                         }, () async {
-                          await GetIt.I<MusicManager>().popupSubmenuPlayer.play().then((value) async {
-                            await GetIt.I<MusicManager>().popupSubmenuPlayer.seek(Duration(seconds: 0));
+                          await GetIt.I<MusicManager>()
+                              .popupSubmenuPlayer
+                              .play()
+                              .then((value) async {
+                            await GetIt.I<MusicManager>()
+                                .popupSubmenuPlayer
+                                .seek(Duration(seconds: 0));
                           });
 
-                          WalletPageComponents.openTransferModalPageHero(context: context, width: width, height: height, wallet: wallet, iconPath: 'assets/hero_nft_bsc.svg', heroId: hero['heroId']);
+                          WalletPageComponents.openTransferModalPageHero(
+                              context: context,
+                              width: width,
+                              height: height,
+                              wallet: wallet,
+                              iconPath: 'assets/hero_nft_bsc.svg',
+                              heroId: hero['heroId']);
                         }))
                     .toList(),
               ),
@@ -420,7 +482,9 @@ class _WalletPageState extends State<WalletPage> with SingleTickerProviderStateM
                         Padding(
                           padding: const EdgeInsets.only(left: 8),
                           child: SvgPicture.asset(
-                            heroClass == 'fire' ? 'assets/pages/homepage/samurai/fire_icon.svg' : 'assets/pages/homepage/samurai/water_icon.svg',
+                            heroClass == 'fire'
+                                ? 'assets/pages/homepage/samurai/fire_icon.svg'
+                                : 'assets/pages/homepage/samurai/water_icon.svg',
                             height: height * 0.025,
                           ),
                         ),
@@ -429,7 +493,9 @@ class _WalletPageState extends State<WalletPage> with SingleTickerProviderStateM
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: SvgPicture.asset(
-                        inChronicles ? 'assets/pages/homepage/heroes/in_chronicles.svg' : 'assets/pages/homepage/heroes/unknown.svg',
+                        inChronicles
+                            ? 'assets/pages/homepage/heroes/in_chronicles.svg'
+                            : 'assets/pages/homepage/heroes/unknown.svg',
                       ),
                     ),
                     SizedBox(
@@ -444,23 +510,33 @@ class _WalletPageState extends State<WalletPage> with SingleTickerProviderStateM
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    AnimButton(
-                      shadowType: 2,
-                      onTap: () => toGame(),
-                      child: SvgPicture.asset(
-                        'assets/pages/homepage/samurai/to_game.svg',
-                        width: width * 0.12,
+                    Container(
+                      decoration: BoxDecoration(
+                        gradient: AppGradients.buttonBack,
+                      ),
+                      child: AnimButton(
+                        shadowType: 2,
+                        onTap: () => toGame(),
+                        child: SvgPicture.asset(
+                          'assets/pages/homepage/samurai/to_game.svg',
+                          width: width * 0.12,
+                        ),
                       ),
                     ),
                     SizedBox(
                       height: height * 0.017,
                     ),
-                    AnimButton(
-                      shadowType: 2,
-                      onTap: () => transfer(),
-                      child: SvgPicture.asset(
-                        'assets/pages/homepage/samurai/transfer.svg',
-                        width: width * 0.12,
+                    Container(
+                      decoration: BoxDecoration(
+                        gradient: AppGradients.buttonBack,
+                      ),
+                      child: AnimButton(
+                        shadowType: 2,
+                        onTap: () => transfer(),
+                        child: SvgPicture.asset(
+                          'assets/pages/homepage/samurai/transfer.svg',
+                          width: width * 0.12,
+                        ),
                       ),
                     ),
                     SizedBox(
@@ -581,23 +657,33 @@ class _WalletPageState extends State<WalletPage> with SingleTickerProviderStateM
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    AnimButton(
-                      shadowType: 2,
-                      onTap: () => toGame(),
-                      child: SvgPicture.asset(
-                        'assets/pages/homepage/samurai/to_game.svg',
-                        width: width * 0.12,
+                    Container(
+                      decoration: BoxDecoration(
+                        gradient: AppGradients.buttonBack,
+                      ),
+                      child: AnimButton(
+                        shadowType: 2,
+                        onTap: () => toGame(),
+                        child: SvgPicture.asset(
+                          'assets/pages/homepage/samurai/to_game.svg',
+                          width: width * 0.12,
+                        ),
                       ),
                     ),
                     SizedBox(
                       height: height * 0.017,
                     ),
-                    AnimButton(
-                      shadowType: 2,
-                      onTap: () => transfer(),
-                      child: SvgPicture.asset(
-                        'assets/pages/homepage/samurai/transfer.svg',
-                        width: width * 0.12,
+                    Container(
+                      decoration: BoxDecoration(
+                        gradient: AppGradients.buttonBack,
+                      ),
+                      child: AnimButton(
+                        shadowType: 2,
+                        onTap: () => transfer(),
+                        child: SvgPicture.asset(
+                          'assets/pages/homepage/samurai/transfer.svg',
+                          width: width * 0.12,
+                        ),
                       ),
                     ),
                     SizedBox(
@@ -672,11 +758,17 @@ class _WalletPageState extends State<WalletPage> with SingleTickerProviderStateM
             height,
             width,
             double.parse((user['${e['name']}_balance'] ?? '0.0').toString()),
-            double.parse((user['${e['name']}_balance_onchain'] ?? '0.0').toString()),
+            double.parse(
+                (user['${e['name']}_balance_onchain'] ?? '0.0').toString()),
             e['icon'],
             () async {
-              GetIt.I<MusicManager>().popupSubmenuPlayer.play().then((value) async {
-                await GetIt.I<MusicManager>().popupSubmenuPlayer.seek(Duration(seconds: 0));
+              GetIt.I<MusicManager>()
+                  .popupSubmenuPlayer
+                  .play()
+                  .then((value) async {
+                await GetIt.I<MusicManager>()
+                    .popupSubmenuPlayer
+                    .seek(Duration(seconds: 0));
               });
 
               WalletPageComponents.openSwapModalPage(
@@ -689,15 +781,26 @@ class _WalletPageState extends State<WalletPage> with SingleTickerProviderStateM
                       typeToken: e['typeToken'],
                       walletAddress: walletAddress,
                       iconPath: e['logo_b'],
-                      balance: double.parse((user['${e['name']}_balance_onchain'] ?? '0.0').toString()),
-                      balanceGame: double.parse((user['${e['name']}_balance'] ?? '0.0').toString()),
+                      balance: double.parse(
+                          (user['${e['name']}_balance_onchain'] ?? '0.0')
+                              .toString()),
+                      balanceGame: double.parse(
+                          (user['${e['name']}_balance'] ?? '0.0').toString()),
                       gasName: e['gasName'],
-                      gas: (e['type'] != null && e['type'] == 'BNB' ? user['gasBnb'] : user['gas']) ?? 0.0)
+                      gas: (e['type'] != null && e['type'] == 'BNB'
+                              ? user['gasBnb']
+                              : user['gas']) ??
+                          0.0)
                   .then((_) => AppStorage().updateUserWallet());
             },
             () async {
-              GetIt.I<MusicManager>().popupSubmenuPlayer.play().then((value) async {
-                await GetIt.I<MusicManager>().popupSubmenuPlayer.seek(Duration(seconds: 0));
+              GetIt.I<MusicManager>()
+                  .popupSubmenuPlayer
+                  .play()
+                  .then((value) async {
+                await GetIt.I<MusicManager>()
+                    .popupSubmenuPlayer
+                    .seek(Duration(seconds: 0));
               });
 
               WalletPageComponents.openTransferModalPageSamurai(
@@ -709,9 +812,14 @@ class _WalletPageState extends State<WalletPage> with SingleTickerProviderStateM
                   tokenName: e['nameToken'],
                   typeToken: e['typeToken'],
                   iconPath: e['logo_b'],
-                  balance: double.parse((user['${e['name']}_balance_onchain'] ?? '0.0').toString()),
+                  balance: double.parse(
+                      (user['${e['name']}_balance_onchain'] ?? '0.0')
+                          .toString()),
                   gasName: e['gasName'],
-                  gas: (e['type'] != null && e['type'] == 'BNB' ? user['gasBnb'] : user['gas']) ?? 0.0);
+                  gas: (e['type'] != null && e['type'] == 'BNB'
+                          ? user['gasBnb']
+                          : user['gas']) ??
+                      0.0);
             },
           ),
         ]);
@@ -770,15 +878,12 @@ class _WalletPageState extends State<WalletPage> with SingleTickerProviderStateM
               ),
             ),
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: height * 0.007),
-            child: AnimButton(
-              player: GetIt.I<MusicManager>().menuSettingsSignWaterPlayer,
-              onTap: () => onSwapTap(),
-              child: SvgPicture.asset(
-                'assets/pages/homepage/refresh.svg',
-                fit: BoxFit.fitHeight,
-              ),
+          AnimButton(
+            player: GetIt.I<MusicManager>().menuSettingsSignWaterPlayer,
+            onTap: () => onSwapTap(),
+            child: SvgPicture.asset(
+              'assets/pages/homepage/refresh.svg',
+              fit: BoxFit.fitHeight,
             ),
           ),
           Expanded(

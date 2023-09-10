@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:samurai_app/utils/gradients.dart';
 import 'package:samurai_app/widgets/popups/custom_popup.dart';
 
 import '../../api/rest.dart';
@@ -50,7 +51,6 @@ class AccountPageComponents {
                       bottom: MediaQuery.of(context).viewInsets.bottom),
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(28.0, 28.0, 28.0, 0.0),
-                    // content padding
                     child: Wrap(
                       alignment: WrapAlignment.center,
                       crossAxisAlignment: WrapCrossAlignment.center,
@@ -58,22 +58,28 @@ class AccountPageComponents {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            PresButton(
-                              player: GetIt.I<MusicManager>().keyBackSignCloseX,
-                              onTap: () async {
-                                await GetIt.I<MusicManager>()
-                                    .popupDownSybMenuPlayer
-                                    .play()
-                                    .then((value) async {
+                            Container(
+                              decoration: BoxDecoration(
+                                gradient: AppGradients.buttonBack,
+                              ),
+                              child: PresButton(
+                                player:
+                                    GetIt.I<MusicManager>().keyBackSignCloseX,
+                                onTap: () async {
                                   await GetIt.I<MusicManager>()
                                       .popupDownSybMenuPlayer
-                                      .seek(const Duration(seconds: 0));
-                                });
+                                      .play()
+                                      .then((value) async {
+                                    await GetIt.I<MusicManager>()
+                                        .popupDownSybMenuPlayer
+                                        .seek(const Duration(seconds: 0));
+                                  });
 
-                                Navigator.of(context).pop();
-                              },
-                              params: {'width': width},
-                              child: backBtn,
+                                  Navigator.of(context).pop();
+                                },
+                                params: {'width': width},
+                                child: backBtn,
+                              ),
                             ),
                             FittedBox(
                               fit: BoxFit.fitWidth,
@@ -215,8 +221,7 @@ class AccountPageComponents {
                                   showDialog(
                                           context: context,
                                           builder: (context) => CustomPopup(
-                                                text:
-                                                    request,
+                                                text: request,
                                                 isError: true,
                                               ))
                                       .then((_) => Navigator.of(context).pop());

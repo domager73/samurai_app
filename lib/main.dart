@@ -65,7 +65,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   }
 
   @override
-  void doom(AppLifecycleState state) async {
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
     super.didChangeAppLifecycleState(state);
 
     switch (state) {
@@ -75,10 +75,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         print("app in resumed");
         break;
       case AppLifecycleState.inactive:
-        await player.pause();
+        await player.stop();
         break;
       case AppLifecycleState.paused:
-        await player.pause();
+        await player.stop();
 
         print("app in paused");
         break;
