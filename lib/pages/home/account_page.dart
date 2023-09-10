@@ -22,6 +22,7 @@ import '../../data/music_manager.dart';
 import '../../main.dart';
 import '../../widgets/painters/account_border.dart';
 import '../../widgets/painters/button_change_email.dart';
+import '../../widgets/painters/button_login.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -135,7 +136,8 @@ class _AccountPageState extends State<AccountPage> {
                                           .then((value) =>
                                               GetIt.I<MusicManager>()
                                                   .popupSubmenuPlayer
-                                                  .seek(const Duration(seconds: 0)));
+                                                  .seek(const Duration(
+                                                      seconds: 0)));
                                       AccountPageComponents
                                           .openChangeEmailModalPage(
                                         context: context,
@@ -146,7 +148,8 @@ class _AccountPageState extends State<AccountPage> {
                                     painter: ChangeEmailPointer(),
                                     height: 60,
                                     width: width * 0.5,
-                                    textPadding: const EdgeInsets.only(bottom: 10),
+                                    textPadding:
+                                        const EdgeInsets.only(bottom: 10),
                                     text: 'Change',
                                     style: AppTypography.amazObit19Blue,
                                   ),
@@ -307,7 +310,7 @@ class _AccountPageState extends State<AccountPage> {
                       ),
                       Padding(
                         padding: EdgeInsets.only(top: 3 / 96 * height),
-                        child: PresButton(
+                        child: CustomPainterButton(
                           player: GetIt.I<MusicManager>().keyBackSignCloseX,
                           onTap: () {
                             showDialog(
@@ -329,8 +332,11 @@ class _AccountPageState extends State<AccountPage> {
                                     },
                                     text: "Are you sure you want to get out?"));
                           },
-                          params: {'width': width, 'height': height},
-                          child: logoutBtn,
+                          width: width,
+                          height: height,
+                          painter: ButtonLoginPainter(),
+                          text: 'logout',
+                          style: AppTypography.amazObit17Dark,
                         ),
                       ),
                       SizedBox(height: height * 0.05),

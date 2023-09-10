@@ -22,9 +22,9 @@ class ButtonLoginPainter extends CustomPainter {
     path_0.lineTo(size.width*0.08770369,size.height*0.2358491);
     path_0.close();
 
-    Paint paint_0_fill = Paint()..style=PaintingStyle.fill;
-    paint_0_fill.color = Color(0xff00FFFF).withOpacity(1.0);
-    canvas.drawPath(path_0,paint_0_fill);
+    Paint paint0Fill = Paint()..style=PaintingStyle.fill;
+    paint0Fill.color = Color(0xff00FFFF).withOpacity(1.0);
+    canvas.drawPath(path_0,paint0Fill);
 
     Path path_1 = Path();
     path_1.moveTo(size.width*0.7685028,size.height*0.8301887);
@@ -32,18 +32,18 @@ class ButtonLoginPainter extends CustomPainter {
     path_1.lineTo(size.width*0.3181818,size.height*0.9009434);
     path_1.lineTo(size.width*0.07244318,size.height*0.9009434);
 
-    Paint paint_1_stroke = Paint()..style=PaintingStyle.stroke..strokeWidth=size.width*0.002965057;
-    paint_1_stroke.color=Colors.white.withOpacity(1.0);
-    canvas.drawPath(path_1,paint_1_stroke);
+    Paint paint1Stroke = Paint()..style=PaintingStyle.stroke..strokeWidth=size.width*0.002965057;
+    paint1Stroke.color=Colors.white.withOpacity(1.0);
+    canvas.drawPath(path_1,paint1Stroke);
 
     Path path_2 = Path();
     path_2.moveTo(size.width*0.5042983,size.height*0.1603774);
     path_2.lineTo(size.width*0.07954545,size.height*0.1603774);
     path_2.lineTo(size.width*0.02130682,size.height*0.3915094);
 
-    Paint paint_2_stroke = Paint()..style=PaintingStyle.stroke..strokeWidth=size.width*0.002965057;
-    paint_2_stroke.color=Colors.white.withOpacity(1.0);
-    canvas.drawPath(path_2,paint_2_stroke);
+    Paint paint2Stroke = Paint()..style=PaintingStyle.stroke..strokeWidth=size.width*0.002965057;
+    paint2Stroke.color=Colors.white.withOpacity(1.0);
+    canvas.drawPath(path_2,paint2Stroke);
 
     Path path_3 = Path();
     path_3.moveTo(size.width*0.3636364,size.height*0.9433962);
@@ -53,9 +53,9 @@ class ButtonLoginPainter extends CustomPainter {
     path_3.lineTo(size.width*0.3636364,size.height*0.9433962);
     path_3.close();
 
-    Paint paint_3_fill = Paint()..style=PaintingStyle.fill;
-    paint_3_fill.color = Color(0xffFF0049).withOpacity(1.0);
-    canvas.drawPath(path_3,paint_3_fill);
+    Paint paint3Fill = Paint()..style=PaintingStyle.fill;
+    paint3Fill.color = Color(0xffFF0049).withOpacity(1.0);
+    canvas.drawPath(path_3,paint3Fill);
 
     Path path_4 = Path();
     path_4.moveTo(size.width*0.7869318,size.height*0.08490566);
@@ -65,9 +65,9 @@ class ButtonLoginPainter extends CustomPainter {
     path_4.lineTo(size.width*0.7869318,size.height*0.08490566);
     path_4.close();
 
-    Paint paint_4_fill = Paint()..style=PaintingStyle.fill;
-    paint_4_fill.color = Colors.white.withOpacity(1.0);
-    canvas.drawPath(path_4,paint_4_fill);
+    Paint paint4Fill = Paint()..style=PaintingStyle.fill;
+    paint4Fill.color = Colors.white.withOpacity(1.0);
+    canvas.drawPath(path_4,paint4Fill);
 
     Path path_5 = Path();
     path_5.moveTo(size.width*0.6420455,size.height*0.9433962);
@@ -77,9 +77,9 @@ class ButtonLoginPainter extends CustomPainter {
     path_5.lineTo(size.width*0.6420455,size.height*0.9433962);
     path_5.close();
 
-    Paint paint_5_fill = Paint()..style=PaintingStyle.fill;
-    paint_5_fill.color = Color(0xffFF0049).withOpacity(1.0);
-    canvas.drawPath(path_5,paint_5_fill);
+    Paint paint5Fill = Paint()..style=PaintingStyle.fill;
+    paint5Fill.color = Color(0xffFF0049).withOpacity(1.0);
+    canvas.drawPath(path_5,paint5Fill);
 
     Path path_6 = Path();
     path_6.moveTo(size.width*0.6903409,size.height*0.9433962);
@@ -89,9 +89,9 @@ class ButtonLoginPainter extends CustomPainter {
     path_6.lineTo(size.width*0.6903409,size.height*0.9433962);
     path_6.close();
 
-    Paint paint_6_fill = Paint()..style=PaintingStyle.fill;
-    paint_6_fill.color = Color(0xffFF0049).withOpacity(1.0);
-    canvas.drawPath(path_6,paint_6_fill);
+    Paint paint6Fill = Paint()..style=PaintingStyle.fill;
+    paint6Fill.color = Color(0xffFF0049).withOpacity(1.0);
+    canvas.drawPath(path_6,paint6Fill);
 
   }
 

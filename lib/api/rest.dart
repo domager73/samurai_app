@@ -280,10 +280,6 @@ class Rest {
         ),
       );
     } on DioException catch (e) {
-      print('------------------------');
-      print(e.response);
-      print('------------------------');
-
       if(e.response.toString().contains("is already exist")){
         return "is already registered. Please use unregistered email";
       }
@@ -314,15 +310,9 @@ class Rest {
       );
       return data.data;
     } on DioException catch (e) {
-      // The request was made and the server responded with a status code
-      // that falls out of the range of 2xx and is also not 304.
       if (e.response != null) {
         print(e.response?.data);
-        //print(e.response?.headers);
-        //print(e.response?.requestOptions);
       } else {
-        // Something happened in setting up or sending the request that triggered an Error
-        //print(e.requestOptions);
         print(e.message);
       }
     }
@@ -463,8 +453,6 @@ class Rest {
   }
 
   static Future<dynamic> removeHeroFromStake(int heroId) async {
-    // removes hero from a stake state
-
     String URL = "$serverIp/api/users/hero/transfer/free";
     final jwtToken = AppStorage().read('jwt');
 
@@ -484,7 +472,7 @@ class Rest {
 
       throw response.statusMessage.toString();
     } catch (ex) {
-      throw ex;
+      rethrow;
     }
   }
 

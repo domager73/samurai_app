@@ -12,23 +12,23 @@ class PopupPainter extends CustomPainter {
     path_0.lineTo(size.width * 0.8441176, size.height * 0.9941605);
     path_0.close();
 
-    Paint paint_0_fill = Paint()..style = PaintingStyle.fill;
-    paint_0_fill.color = const Color(0xffFF0049).withOpacity(1.0);
-    canvas.drawPath(path_0, paint_0_fill);
+    Paint paint0Fill = Paint()..style = PaintingStyle.fill;
+    paint0Fill.color = const Color(0xffFF0049).withOpacity(1.0);
+    canvas.drawPath(path_0, paint0Fill);
 
     Path path_1 = Path();
     path_1.moveTo(size.width * 0.8264706, size.height * 0.9779753);
     path_1.lineTo(size.width * 0.4750000, size.height * 0.9779753);
 
-    Paint paint_1_stroke = Paint()
+    Paint paint1Stroke = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2;
-    paint_1_stroke.color = Colors.white.withOpacity(1.0);
-    canvas.drawPath(path_1, paint_1_stroke);
+    paint1Stroke.color = Colors.white.withOpacity(1.0);
+    canvas.drawPath(path_1, paint1Stroke);
 
-    Paint paint_1_fill = Paint()..style = PaintingStyle.fill;
-    paint_1_fill.color = const Color(0xff000000).withOpacity(1.0);
-    canvas.drawPath(path_1, paint_1_fill);
+    Paint paint1Fill = Paint()..style = PaintingStyle.fill;
+    paint1Fill.color = const Color(0xff000000).withOpacity(1.0);
+    canvas.drawPath(path_1, paint1Fill);
 
     Path path_2 = Path();
     path_2.moveTo(size.width * 0.6344676, size.height * 0.003086420);
@@ -49,16 +49,16 @@ class PopupPainter extends CustomPainter {
     path_2.lineTo(size.width * 0.6344676, size.height * 0.003086420);
     path_2.close();
 
-    Paint paint_2_stroke = Paint()
+    Paint paint2Stroke = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2;
-    paint_2_stroke.color = const Color(0xff00FFFF).withOpacity(1.0);
-    canvas.drawPath(path_2, paint_2_stroke);
+    paint2Stroke.color = const Color(0xff00FFFF).withOpacity(1.0);
+    canvas.drawPath(path_2, paint2Stroke);
 
-    Paint paint_2_fill = Paint()..style = PaintingStyle.fill;
-    paint_2_fill.shader = AppGradients.popupBack.createShader(Rect.fromPoints(const Offset(0, 0), Offset(size.width, size.height)));
+    Paint paint2Fill = Paint()..style = PaintingStyle.fill;
+    paint2Fill.shader = AppGradients.popupBack.createShader(Rect.fromPoints(const Offset(0, 0), Offset(size.width, size.height)));
     
-    canvas.drawPath(path_2, paint_2_fill);
+    canvas.drawPath(path_2, paint2Fill);
   }
 
   @override

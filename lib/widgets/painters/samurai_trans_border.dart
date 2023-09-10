@@ -17,11 +17,11 @@ class SamuraiTransferBorderPainter extends CustomPainter {
     path_0.lineTo(size.width * 0.9982639, size.height * 0.008547009);
     path_0.close();
 
-    Paint paint_0_stroke = Paint()
+    Paint paint0Stroke = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2;
-    paint_0_stroke.color = Colors.white.withOpacity(1.0);
-    canvas.drawPath(path_0, paint_0_stroke);
+    paint0Stroke.color = Colors.white.withOpacity(1.0);
+    canvas.drawPath(path_0, paint0Stroke);
   }
 
   @override

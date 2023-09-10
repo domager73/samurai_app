@@ -447,28 +447,6 @@ Widget backBtn(BuildContext context, Map<String, dynamic> params, bool state,
   );
 }
 
-Widget changeEmailBtn(BuildContext context, Map<String, dynamic> params,
-    bool state, bool disabled) {
-  const img = AssetImage('assets/pages/account/change_email_bt.png');
-  const imgPres = AssetImage('assets/pages/account/change_email_bt_pres.png');
-  precacheImage(img, context);
-  precacheImage(imgPres, context);
-
-  return Image(
-      image: !state ? img : imgPres, height: 6 / 96 * params['height']);
-}
-
-Widget logoutBtn(BuildContext context, Map<String, dynamic> params, bool state,
-    bool disabled) {
-  const img = AssetImage('assets/pages/account/logout_bt.png');
-  const imgPres = AssetImage('assets/pages/account/logout_bt_pres.png');
-  precacheImage(img, context);
-  precacheImage(imgPres, context);
-
-  return Image(
-      image: !state ? img : imgPres, height: 83 / 960 * params['height']);
-}
-
 Widget menuCloseBtn(BuildContext context, Map<String, dynamic> params,
     bool state, bool disabled) {
   const img = AssetImage('assets/pages/homepage/menu_pop_icon.png');

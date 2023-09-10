@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../utils/colors.dart';
+
 class ButtonOkPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
@@ -7,15 +9,15 @@ class ButtonOkPainter extends CustomPainter {
     path_0.moveTo(size.width * 0.8560606, size.height * 0.9688911);
     path_0.lineTo(size.width * 0.3636364, size.height * 0.9688911);
 
-    Paint paint_0_stroke = Paint()
+    Paint paint0Stroke = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2;
-    paint_0_stroke.color = Colors.white.withOpacity(1.0);
-    canvas.drawPath(path_0, paint_0_stroke);
+    paint0Stroke.color = Colors.white.withOpacity(1.0);
+    canvas.drawPath(path_0, paint0Stroke);
 
-    Paint paint_0_fill = Paint()..style = PaintingStyle.fill;
-    paint_0_fill.color = Color(0xff000000).withOpacity(1.0);
-    canvas.drawPath(path_0, paint_0_fill);
+    Paint paint0Fill = Paint()..style = PaintingStyle.fill;
+    paint0Fill.color = Colors.black.withOpacity(1.0);
+    canvas.drawPath(path_0, paint0Fill);
 
     Path path_1 = Path();
     path_1.moveTo(0, size.height * 0.9688889);
@@ -29,9 +31,9 @@ class ButtonOkPainter extends CustomPainter {
     path_1.lineTo(0, size.height * 0.9688889);
     path_1.close();
 
-    Paint paint_1_fill = Paint()..style = PaintingStyle.fill;
-    paint_1_fill.color = Color(0xff00FFFF).withOpacity(1.0);
-    canvas.drawPath(path_1, paint_1_fill);
+    Paint paint1Fill = Paint()..style = PaintingStyle.fill;
+    paint1Fill.color = AppColors.textBlue.withOpacity(1.0);
+    canvas.drawPath(path_1, paint1Fill);
   }
 
   @override

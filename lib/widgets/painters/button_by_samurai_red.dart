@@ -24,9 +24,9 @@ class ButtonBySamuraiRedPainter extends CustomPainter {
     path_1.lineTo(0,size.height*0.9688889);
     path_1.close();
 
-    Paint paint_1_fill = Paint()..style=PaintingStyle.fill;
-    paint_1_fill.color = Color(0xffFF0049).withOpacity(1.0);
-    canvas.drawPath(path_1,paint_1_fill);
+    var paint1Fill = Paint()..style=PaintingStyle.fill;
+    paint1Fill.color = Color(0xffFF0049).withOpacity(1.0);
+    canvas.drawPath(path_1,paint1Fill);
 
     Path path_2 = Path();
     path_2.moveTo(size.width*0.1558095,size.height*0.2914889);

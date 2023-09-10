@@ -11,11 +11,11 @@ class HeroMintBorderPainter extends CustomPainter {
     path_0.moveTo(size.width * 0.8245614, size.height * 0.9659485);
     path_0.lineTo(size.width * 0.5921053, size.height * 0.9659485);
 
-    Paint paint_0_stroke = Paint()
+    Paint paint0Stroke = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2;
-    paint_0_stroke.color = Colors.white.withOpacity(1.0);
-    canvas.drawPath(path_0, paint_0_stroke);
+    paint0Stroke.color = Colors.white.withOpacity(1.0);
+    canvas.drawPath(path_0, paint0Stroke);
 
     Path path_1 = Path();
     path_1.moveTo(size.width * 0.8421053, size.height * 0.9921919);
@@ -25,9 +25,9 @@ class HeroMintBorderPainter extends CustomPainter {
     path_1.lineTo(size.width * 0.8421053, size.height * 0.9921919);
     path_1.close();
 
-    Paint paint_1_fill = Paint()..style = PaintingStyle.fill;
-    paint_1_fill.color = Color(0xffFF0049).withOpacity(1.0);
-    canvas.drawPath(path_1, paint_1_fill);
+    Paint paint1Fill = Paint()..style = PaintingStyle.fill;
+    paint1Fill.color = Color(0xffFF0049).withOpacity(1.0);
+    canvas.drawPath(path_1, paint1Fill);
 
     Path path_2 = Path();
     path_2.moveTo(size.width * 0.002924006, size.height * 0.2487768);
@@ -43,11 +43,11 @@ class HeroMintBorderPainter extends CustomPainter {
     path_2.lineTo(size.width * 0.002924006, size.height * 0.2487768);
     path_2.close();
 
-    Paint paint_2_stroke = Paint()
+    Paint paint2Stroke = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2;
-    paint_2_stroke.color = color.withOpacity(1.0);
-    canvas.drawPath(path_2, paint_2_stroke);
+    paint2Stroke.color = color.withOpacity(1.0);
+    canvas.drawPath(path_2, paint2Stroke);
   }
 
   @override

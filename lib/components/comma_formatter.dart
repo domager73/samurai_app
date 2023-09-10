@@ -6,9 +6,9 @@ class CommaFormatter extends TextInputFormatter {
       TextEditingValue oldValue,
       TextEditingValue newValue,
       ) {
-    String _text = newValue.text;
+    String text = newValue.text;
     return newValue.copyWith(
-      text: _text.replaceAll(',', '.'),
+      text: text.replaceAll(',', '.'),
     );
   }
 }

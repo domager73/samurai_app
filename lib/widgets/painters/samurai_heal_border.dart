@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:samurai_app/utils/colors.dart';
 
 class SamuraiHealBorderPainter extends CustomPainter {
   @override
@@ -11,9 +12,9 @@ class SamuraiHealBorderPainter extends CustomPainter {
     path_0.lineTo(size.width * 0.1126280, size.height * 0.05846404);
     path_0.close();
 
-    Paint paint_0_fill = Paint()..style = PaintingStyle.fill;
-    paint_0_fill.color = Color(0xff00FFFF).withOpacity(1.0);
-    canvas.drawPath(path_0, paint_0_fill);
+    Paint paint0Fill = Paint()..style = PaintingStyle.fill;
+    paint0Fill.color = AppColors.textBlue.withOpacity(1.0);
+    canvas.drawPath(path_0, paint0Fill);
 
     Path path_1 = Path();
     path_1.moveTo(size.width * 0.003413003, size.height * 0.5052149);
@@ -29,11 +30,11 @@ class SamuraiHealBorderPainter extends CustomPainter {
     path_1.lineTo(size.width * 0.003413003, size.height * 0.5052149);
     path_1.close();
 
-    Paint paint_1_stroke = Paint()
+    Paint paint1Stroke = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2;
-    paint_1_stroke.color = Colors.white.withOpacity(1.0);
-    canvas.drawPath(path_1, paint_1_stroke);
+    paint1Stroke.color = Colors.white.withOpacity(1.0);
+    canvas.drawPath(path_1, paint1Stroke);
   }
 
   @override

@@ -73,7 +73,7 @@ class _HomeMainPageState extends State<HomeMainPage> {
 
   void calcStartDate() {
     final now = DateTime.now();
-    DateTime end = DateTime(2023, 9, 10, 12, 00);
+    DateTime end = DateTime(2023, 12, 10, 23, 59);
     final diff = now.subtract(now.timeZoneOffset).difference(end);
     //print("$diff, ${diff.inHours}, ${diff.inMinutes}");
 

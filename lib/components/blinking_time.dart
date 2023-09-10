@@ -8,7 +8,7 @@ class BlinkingTime extends StatefulWidget {
       : super(key: key);
 
   @override
-  _BlinkingTimeState createState() => _BlinkingTimeState();
+  State<BlinkingTime> createState() => _BlinkingTimeState();
 }
 
 class _BlinkingTimeState extends State<BlinkingTime> {

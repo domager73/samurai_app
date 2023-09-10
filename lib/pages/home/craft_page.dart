@@ -157,7 +157,7 @@ class _CraftPageState extends State<CraftPage> {
                         }
                         return Container(
                           width: MediaQuery.sizeOf(context).width,
-                          padding: EdgeInsets.only(right: 23),
+                          padding: const EdgeInsets.only(right: 23),
                           child: Stack(children: [
                             Align(
                                 alignment: Alignment.centerRight,
@@ -328,7 +328,7 @@ class _CraftPageState extends State<CraftPage> {
       crossAxisAlignment: CrossAxisAlignment.end,
       mainAxisSize: MainAxisSize.min,
       children: [
-        SizedBox(height: 50,),
+        const SizedBox(height: 50,),
         CustomPaint(
           painter: SamuraiHealBorderPainter(),
           child: Container(
@@ -375,10 +375,7 @@ class _CraftPageState extends State<CraftPage> {
                       ),
                     ],
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      gradient: AppGradients.buttonBack
-                    ),
+                  SizedBox(
                     width: 65,
                     child: PresButton(
                         onTap: () async {
@@ -387,7 +384,7 @@ class _CraftPageState extends State<CraftPage> {
                               .play()
                               .then((value) => GetIt.I<MusicManager>()
                                   .popupSubmenuPlayer
-                                  .seek(Duration(seconds: 0)));
+                                  .seek(const Duration(seconds: 0)));
 
                           CraftPageComponents.openHealModalPage(
                               context: context,
@@ -484,16 +481,13 @@ class _CraftPageState extends State<CraftPage> {
                 ),
                 Container(
                   width: 65,
-                  decoration: BoxDecoration(
-                      gradient: AppGradients.buttonBack
-                    ),
                   padding: const EdgeInsets.only(top: 25, bottom: 25),
                   child: PresButton(
                     onTap: () {
                       GetIt.I<MusicManager>().popupSubmenuPlayer.play().then(
                           (value) => GetIt.I<MusicManager>()
                               .popupSubmenuPlayer
-                              .seek(Duration(seconds: 0)));
+                              .seek(const Duration(seconds: 0)));
                       CraftPageComponents.openTransferModalPage(
                               elementStatus: widget.craftSwitch,
                               context: context,

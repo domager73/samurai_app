@@ -1,17 +1,11 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:samurai_app/api/rest.dart';
 import 'package:samurai_app/components/storage.dart';
 import 'package:samurai_app/pages/pin_code_page.dart';
-import 'package:trust_wallet_core_lib/trust_wallet_core_ffi.dart';
-import 'package:trust_wallet_core_lib/trust_wallet_core_lib.dart';
 
 import '../components/anim_button.dart';
 import '../components/bg.dart';
-import '../components/pop_up_spinner.dart';
 import '../data/music_manager.dart';
 
 class CreateWallet extends StatefulWidget {

@@ -308,8 +308,6 @@ class WalletAPI {
       ],
     );
 
-    print(res);
-
     return res;
   }
 }

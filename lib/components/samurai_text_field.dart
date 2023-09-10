@@ -5,11 +5,8 @@ import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:samurai_app/components/anim_button.dart';
 import 'package:samurai_app/data/music_manager.dart';
-import 'package:samurai_app/widgets/buttons/custom_painter_button.dart';
 
 import '../utils/colors.dart';
-import '../utils/fonts.dart';
-import '../widgets/painters/button_send.dart';
 
 class SamuraiTextField extends StatelessWidget {
   const SamuraiTextField({super.key,
