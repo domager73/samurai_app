@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:samurai_app/components/pop_up_spinner.dart';
 import 'package:samurai_app/data/music_manager.dart';
 import 'package:samurai_app/utils/fonts.dart';
+import 'package:samurai_app/utils/gradients.dart';
 import 'package:samurai_app/widgets/painters/custom_swap_border.dart';
 import 'package:samurai_app/widgets/popups/custom_popup.dart';
 import 'package:trust_wallet_core_lib/trust_wallet_core_lib.dart';
@@ -175,7 +176,7 @@ class WalletPageComponents {
                                   .then((value) async {
                                 await GetIt.I<MusicManager>()
                                     .popupDownSybMenuPlayer
-                                    .seek(Duration(seconds: 0));
+                                    .seek(const Duration(seconds: 0));
                               });
 
                               Navigator.of(context).pop();
@@ -259,7 +260,7 @@ class WalletPageComponents {
                                                   fontSize: 13,
                                                   color: Colors.white,
                                                   textStyle:
-                                                      TextStyle(height: 1)),
+                                                      const TextStyle(height: 1)),
                                             ),
                                           ),
                                           Text(
@@ -267,13 +268,13 @@ class WalletPageComponents {
                                                 ? 'WALLET'
                                                 : 'GAME',
                                             textHeightBehavior:
-                                                TextHeightBehavior(),
+                                                const TextHeightBehavior(),
                                             style: GoogleFonts.spaceMono(
                                                 fontWeight: FontWeight.w700,
                                                 color: Colors.white,
                                                 fontSize: 20,
                                                 textStyle:
-                                                    TextStyle(height: 0.927)),
+                                                    const TextStyle(height: 0.927)),
                                             textAlign: TextAlign.start,
                                           ),
                                         ]),
@@ -297,7 +298,7 @@ class WalletPageComponents {
                                                 fontSize: 13,
                                                 color: Colors.white,
                                                 textStyle:
-                                                    TextStyle(height: 1)),
+                                                    const TextStyle(height: 1)),
                                             textAlign: TextAlign.start,
                                           ),
                                         ),
@@ -308,7 +309,7 @@ class WalletPageComponents {
                                               fontWeight: FontWeight.w700,
                                               color: Colors.white,
                                               textStyle:
-                                                  TextStyle(height: 0.927),
+                                                  const TextStyle(height: 0.927),
                                               fontSize: 20),
                                         ),
                                       ],
@@ -445,7 +446,7 @@ class WalletPageComponents {
           .then((value) async {
         await GetIt.I<MusicManager>()
             .popupDownSybMenuPlayer
-            .seek(Duration(seconds: 0));
+            .seek(const Duration(seconds: 0));
       });
     });
   }
@@ -501,7 +502,7 @@ class WalletPageComponents {
                                   .then((value) async {
                                 await GetIt.I<MusicManager>()
                                     .popupDownSybMenuPlayer
-                                    .seek(Duration(seconds: 0));
+                                    .seek(const Duration(seconds: 0));
                               });
 
                               Navigator.of(context).pop();
@@ -626,7 +627,7 @@ class WalletPageComponents {
           .then((value) async {
         await GetIt.I<MusicManager>()
             .popupDownSybMenuPlayer
-            .seek(Duration(seconds: 0));
+            .seek(const Duration(seconds: 0));
       });
     });
   }
@@ -687,7 +688,7 @@ class WalletPageComponents {
                                 .then((value) async {
                               await GetIt.I<MusicManager>()
                                   .popupDownSybMenuPlayer
-                                  .seek(Duration(seconds: 0));
+                                  .seek(const Duration(seconds: 0));
                             });
                             Navigator.of(context).pop();
                           },
@@ -929,7 +930,7 @@ class WalletPageComponents {
                                 .then((value) async {
                               await GetIt.I<MusicManager>()
                                   .popupDownSybMenuPlayer
-                                  .seek(Duration(seconds: 0));
+                                  .seek(const Duration(seconds: 0));
                             });
                             Navigator.of(context).pop();
                           },
@@ -1009,7 +1010,7 @@ class WalletPageComponents {
           .then((value) async {
         await GetIt.I<MusicManager>()
             .popupDownSybMenuPlayer
-            .seek(Duration(seconds: 0));
+            .seek(const Duration(seconds: 0));
       });
     });
   }
