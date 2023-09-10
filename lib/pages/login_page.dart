@@ -172,6 +172,9 @@ class _LoginPageState extends State<LoginPage> {
                             border: Border.all(color: const Color(0xFF00FFFF)),
                           ),
                           child: Checkbox(
+                            side: MaterialStateBorderSide.resolveWith(
+                                (states) =>
+                                    BorderSide(width:0 , color: Colors.transparent)),
                             value: isAgree,
                             onChanged: (value) async {
                               GetIt.I<MusicManager>()
@@ -235,8 +238,10 @@ class _LoginPageState extends State<LoginPage> {
                       height: 112,
                       painter: ButtonLoginPainter(),
                       text: 'login/sing up',
-                      player: GetIt.I<MusicManager>().menuSettingsSignWaterPlayer,
-                      style: AppTypography.amazObit17Dark.copyWith(fontSize: 22),
+                      player:
+                          GetIt.I<MusicManager>().menuSettingsSignWaterPlayer,
+                      style:
+                          AppTypography.amazObit17Dark.copyWith(fontSize: 22),
                     ),
                   ),
                 ],

@@ -32,7 +32,7 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
         }
       }
     }
-    setState(() {});
+    // setState(() {});
   }
 
   @override
