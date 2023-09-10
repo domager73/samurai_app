@@ -7,4 +7,9 @@ abstract class AppGradients {
     center: Alignment.topCenter,
     radius: 0.8,
   );
+
+  static RadialGradient buttonBack = RadialGradient(
+    colors: [Colors.black, Colors.transparent],
+    radius: 0.5,
+  );
 }
