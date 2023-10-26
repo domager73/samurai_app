@@ -16,12 +16,10 @@ import 'package:samurai_app/widgets/buttons/custom_painter_button.dart';
 import 'package:samurai_app/widgets/popups/custom_choose_popup.dart';
 
 import '../../api/rest.dart';
-import '../../components/anim_button.dart';
 import '../../data/music_manager.dart';
 import '../../main.dart';
 import '../../widgets/painters/account_border.dart';
 import '../../widgets/painters/button_change_email.dart';
-import '../../widgets/painters/button_login.dart';
 import '../../widgets/painters/button_logout.dart';
 
 class AccountPage extends StatefulWidget {
