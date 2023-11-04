@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:samurai_app/components/pop_up_spinner.dart';
 import 'package:samurai_app/components/storage.dart';
 import 'package:samurai_app/data/music_manager.dart';
@@ -12,6 +13,7 @@ import 'package:samurai_app/pages/home/wallet_page_components.dart';
 import 'package:samurai_app/utils/colors.dart';
 import 'package:samurai_app/utils/global_constants.dart';
 import 'package:samurai_app/utils/gradients.dart';
+import 'package:samurai_app/widgets/buttons/custom_button.dart';
 import 'package:samurai_app/widgets/popups/custom_popup.dart';
 import 'package:trust_wallet_core_lib/trust_wallet_core_lib.dart';
 
@@ -883,37 +885,19 @@ class _WalletPageState extends State<WalletPage>
               ),
             ),
           ),
-          GestureDetector(
-            onTapDown: (_) async {
-              await GetIt.I<MusicManager>()
-                  .menuSettingsSignWaterPlayer
-                  .play()
-                  .then((value) async {
-                await GetIt.I<MusicManager>()
-                    .menuSettingsSignWaterPlayer
-                    .seek(const Duration(seconds: 0));
-              });
-              setState(() => smallRefreshTapped == true);
-              print(smallRefreshTapped);
-
-              await Future.delayed(GlobalConstants.animDuration);
-              setState(() {
-                smallRefreshTapped == false;
-              });
-
-              onSwapTap();
-              print(smallRefreshTapped);
-            },
-            child: !smallRefreshTapped
-                ? Image.asset(
-                    'assets/pages/homepage/refresh_pres.png',
-                    fit: BoxFit.fitHeight,
-                  )
-                : Image.asset(
-                    'assets/pages/homepage/refresh.png',
-                    fit: BoxFit.fitHeight,
-                  ),
-          ),
+          CustomButton(
+              onTap: () {
+                onSwapTap();
+              },
+              player: GetIt.I<MusicManager>().menuSettingsSignWaterPlayer,
+              activeChild: Image.asset(
+                'assets/pages/homepage/refresh_pres.png',
+                fit: BoxFit.fitHeight,
+              ),
+              defaultChild: Image.asset(
+                'assets/pages/homepage/refresh.png',
+                fit: BoxFit.fitHeight,
+              )),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -932,15 +916,20 @@ class _WalletPageState extends State<WalletPage>
           ),
           Container(
             decoration: BoxDecoration(gradient: AppGradients.buttonBack),
-            padding: EdgeInsets.symmetric(vertical: height * 0.007),
-            child: AnimButton(
-              player: GetIt.I<MusicManager>().menuSettingsSignWaterPlayer,
-              onTap: () => onExportTap(),
-              child: SvgPicture.asset(
-                'assets/pages/homepage/next.svg',
-                fit: BoxFit.fitHeight,
-              ),
-            ),
+            height: 50,
+            child: CustomButton(
+                player: GetIt.I<MusicManager>().menuSettingsSignWaterPlayer,
+                onTap: () {
+                  onExportTap();
+                },
+                activeChild: Image.asset(
+                  'assets/coin_get_pres.png',
+                  fit: BoxFit.fitHeight,
+                ),
+                defaultChild: Image.asset(
+                  'assets/coin_get.png',
+                  fit: BoxFit.fitHeight,
+                )),
           ),
         ],
       ),
