@@ -115,7 +115,7 @@ class _HeroesPageState extends State<HeroesPage>
 
   void calcSamuraiDpExpiresDate() {
     final now = DateTime.now();
-    DateTime end = DateTime(now.year, now.month, now.day, 12, 59, 59);
+    DateTime end = DateTime(now.year, now.month, now.day, 11, 59, 59);
     final diff = now.subtract(now.timeZoneOffset).difference(end);
     setState(() {
       samuraiDpExpiresDate = DateFormat.Hm().format(DateTime(
@@ -506,7 +506,8 @@ class _HeroesPageState extends State<HeroesPage>
                       ScaffoldMessenger.of(context).clearSnackBars();
 
                       if (water!.balance >= water!.bar &&
-                          widget.craftSwitch == 0 && water!.balance != 0) {
+                          widget.craftSwitch == 0 &&
+                          water!.balance != 0) {
                         print(water!.balance);
                         print(water!.bar);
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -517,7 +518,8 @@ class _HeroesPageState extends State<HeroesPage>
                       }
 
                       if (fire!.balance >= fire!.bar &&
-                          widget.craftSwitch == 1 && fire!.balance != 0) {
+                          widget.craftSwitch == 1 &&
+                          fire!.balance != 0) {
                         ScaffoldMessenger.of(context).showSnackBar(
                             buildCustomSnackbar(
                                 context, 'Your fire dp is FULL', false));
@@ -531,8 +533,7 @@ class _HeroesPageState extends State<HeroesPage>
                         loadInfo().then((value) => setState(() {}));
                       }).catchError((_) {});
                     },
-                    disabled:
-                     widget.craftSwitch == 0
+                    disabled: widget.craftSwitch == 0
                         ? water?.unclaimed == null || water!.unclaimed == 0
                         : fire?.unclaimed == null || fire!.unclaimed == 0,
                     shadowType: 0,
