@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -14,6 +15,7 @@ import 'package:samurai_app/utils/colors.dart';
 import 'package:samurai_app/utils/fonts.dart';
 import 'package:samurai_app/widgets/buttons/custom_painter_button.dart';
 import 'package:samurai_app/widgets/painters/button_by_samurai_red.dart';
+import 'package:samurai_app/widgets/popups/custom_popup.dart';
 import 'package:samurai_app/widgets/popups/popup_buy_samurai.dart';
 
 import '../../widgets/painters/background_by_samurai.dart';
@@ -324,7 +326,8 @@ class _HomeMainPageState extends State<HomeMainPage> {
                                           )),
                                       Text('${_currentSliderValue * 0.02} BNB',
                                           style: AppTypography
-                                              .spaceMonoW700White17.copyWith(
+                                              .spaceMonoW700White17
+                                              .copyWith(
                                             fontSize: 14,
                                           ))
                                     ]),
@@ -337,6 +340,9 @@ class _HomeMainPageState extends State<HomeMainPage> {
                                           showDialog(
                                               context: context,
                                               builder: (ctx) => PopupBuySamurai(
+                                                    type: craftSwitch == 0
+                                                        ? "WATER_SAMURAI_BSC"
+                                                        : "FIRE_SAMURAI_BSC",
                                                     amountSamurai:
                                                         _currentSliderValue
                                                             .toStringAsFixed(0),
@@ -362,10 +368,17 @@ class _HomeMainPageState extends State<HomeMainPage> {
                                                           setState(() {});
                                                         });
                                                       }).catchError((e) {
-                                                        if (kDebugMode) {
-                                                          print(e);
-                                                        }
-                                                        // hideSpinner(context);
+                                                        showDialog(
+                                                            context: context,
+                                                            builder: (ctx) =>
+                                                                const CustomPopup(
+                                                                  isError: true,
+                                                                  text:
+                                                                      'There is not enough BNB in your account. Please note that BNB must be in the account balance, not in the wallet.',
+                                                                )).then(
+                                                            (value) =>
+                                                                hideSpinner(
+                                                                    context));
                                                       });
                                                     },
                                                     canselFunction: () {

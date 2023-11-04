@@ -153,8 +153,6 @@ class _SettingsPageState extends State<SettingsPage> {
                                       .seek(Duration(seconds: 0));
                                 });
 
-                                await Rest.updateWalletAddress('');
-
                                 await AppStorage().remove('pin');
                                 await AppStorage().remove('wallet_adress');
                                 await AppStorage().remove('wallet_mnemonic');

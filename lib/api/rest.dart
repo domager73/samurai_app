@@ -385,22 +385,17 @@ class Rest {
       );
       return data.data;
     } on DioException catch (e) {
-      // The request was made and the server responded with a status code
-      // that falls out of the range of 2xx and is also not 304.
+      rethrow;
       if (e.response != null) {
         print(e.response?.data);
-        //print(e.response?.headers);
-        //print(e.response?.requestOptions);
       } else {
-        // Something happened in setting up or sending the request that triggered an Error
-        //print(e.requestOptions);
         print(e.message);
       }
     }
     return null;
   }
 
-  static Future<Map<String, dynamic>> mintUserHero(String heroType, String samuraiType) async {
+  static Future<Map<String, dynamic>> mintUserHero(String heroType, String heroClass) async {
     // add user hero method
 
     String URL = "$serverIp/api/users/hero/mint";
@@ -413,7 +408,7 @@ class Rest {
 
     Map<String, dynamic> reqBody = {
       'hero_type': heroType,
-      'class_type': samuraiType,
+      'class_type': heroClass,
     };
 
     try {

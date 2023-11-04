@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:samurai_app/data/music_manager.dart';
@@ -87,6 +88,8 @@ class _AnimButtonState extends State<AnimButton> {
       child: AnimatedContainer(
           duration: Duration(milliseconds: !_elevation ? 1 : 20),
           curve: Curves.easeInOut,
+          alignment: Alignment.center,
+          margin: const EdgeInsets.only(bottom: 10),
           decoration: BoxDecorationCustom(
             borderRadius: BorderRadius.circular(8),
             shadowType: widget.shadowType,
@@ -383,12 +386,10 @@ Widget menuBtn(BuildContext context, Map<String, dynamic> params, bool state,
   precacheImage(img, context);
   precacheImage(imgPres, context);
 
-  return Padding(
-    padding: const EdgeInsets.all(4.0),
-    child: Image(
-      image: !state ? img : imgPres,
-      width: 35 / 390 * params['width'],
-    ),
+  return Image(
+    image: !state ? img : imgPres,
+    fit: BoxFit.fitWidth,
+    width: 65 / 390 * params['width'],
   );
 }
 
@@ -541,7 +542,7 @@ Widget menuWalletBtn(BuildContext context, Map<String, dynamic> params,
 
   return Image(
     image: !state ? img : imgPres,
-    width: 50 / 390 * params['width'],
+    width: 65 / 390 * params['width'],
     filterQuality: FilterQuality.high,
   );
 }

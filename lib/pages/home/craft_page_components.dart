@@ -162,10 +162,10 @@ class CraftPageComponents {
                                   log(switchMode.toString());
                                   onShitchMode();
                                 },
-                                child: SvgPicture.asset(
+                                child: Image.asset(
                                   tabActiveWf == 0
-                                      ? 'assets/swap_change_bt.svg'
-                                      : 'assets/pages/homepage/craft/change_fire.svg',
+                                      ? 'assets/swap_change_bt.png'
+                                      : 'assets/pages/homepage/craft/change_fire.png',
                                   fit: BoxFit.fitWidth,
                                   height: height * 0.1,
                                 ),

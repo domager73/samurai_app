@@ -173,7 +173,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           child: Checkbox(
                             side: MaterialStateBorderSide.resolveWith(
-                                (states) => BorderSide(
+                                (states) => const BorderSide(
                                     width: 0, color: Colors.transparent)),
                             value: isAgree,
                             onChanged: (value) async {
@@ -183,7 +183,7 @@ class _LoginPageState extends State<LoginPage> {
                                   .then((value) async {
                                 await GetIt.I<MusicManager>()
                                     .smallKeyWeaponPlayer
-                                    .seek(Duration(seconds: 0));
+                                    .seek(const Duration(seconds: 0));
                               });
 
                               setState(() {
@@ -199,7 +199,7 @@ class _LoginPageState extends State<LoginPage> {
                                 MaterialTapTargetSize.shrinkWrap,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
                         Expanded(

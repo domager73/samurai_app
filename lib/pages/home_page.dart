@@ -138,15 +138,6 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
-    precacheImage(homeMainBg, context);
-    precacheImage(homeForgeBg, context);
-    precacheImage(homeStorageBg, context);
-    precacheImage(heroMintWaterBg, context);
-    precacheImage(heroMintFireBg, context);
-    precacheImage(waterBg, context);
-    precacheImage(fireBg, context);
-    precacheImage(waterSamuraiImg, context);
-    precacheImage(fireSamuraiImg, context);
     return Scaffold(
       body: Container(
         width: width,
@@ -191,7 +182,7 @@ class _HomePageState extends State<HomePage> {
                 width: width,
                 height: height,
                 padding: EdgeInsets.only(
-                  top: 135 / 880 * height,
+                  top: 112 / 880 * height,
                   bottom: height - height * 0.9,
                 ),
                 child: getContent(width, height)),
@@ -238,7 +229,7 @@ class _HomePageState extends State<HomePage> {
                           padding: EdgeInsets.only(
                             top: MediaQuery.of(context).viewPadding.top,
                             bottom: 12 / 880 * height,
-                            left: 25 / 390 * width,
+                            left: 15 / 390 * width,
                             right: 25 / 390 * width,
                           ),
                           child: Center(

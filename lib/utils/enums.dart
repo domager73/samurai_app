@@ -1,15 +1,21 @@
 class HeroType {
-  static final HATAMOTO = 'HATAMOTO';
+  static const HATAMOTO = 'HATAMOTO';
 
-  static final DAIMYO = 'DAIMYO';
+  static const DAIMYO = 'DAIMYO';
 
-  static final SHOGUN = 'SHOGUN';
+  static const SHOGUN = 'SHOGUN';
 }
 
 class SamuraiType {
-  static final WATER = 'WATER_HERO_BSC';
+  static const WATER = 'WATER_SAMURAI_BSC';
 
-  static final FIRE = 'FIRE_HERO_BSC';
+  static const FIRE = 'FIRE_SAMURAI_BSC';
+}
+
+class HeroClass {
+  static const WATER = 'WATER_HERO_BSC';
+
+  static const FIRE = 'FIRE_HERO_BSC';
 }
 
 class MusicAssets {

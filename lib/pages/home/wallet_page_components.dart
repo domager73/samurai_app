@@ -330,8 +330,8 @@ class WalletPageComponents {
                                         ? mode = 'inChain'
                                         : mode = 'inGame';
                                   }),
-                                  child: SvgPicture.asset(
-                                    'assets/swap_change_bt.svg',
+                                  child: Image.asset(
+                                    'assets/swap_change_bt.png',
                                     fit: BoxFit.contain,
                                   ),
                                 ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:samurai_app/utils/colors.dart';
+import 'package:samurai_app/utils/enums.dart';
 import 'package:samurai_app/utils/fonts.dart';
 import 'package:samurai_app/utils/gradients.dart';
 import 'package:samurai_app/widgets/buttons/cansel_btn.dart';
@@ -12,15 +13,17 @@ class PopupBuySamurai extends StatefulWidget {
   final String price;
   final String amountSamurai;
 
+  final String type;
+
   final Function acceptFunction;
   final Function canselFunction;
 
-  const PopupBuySamurai(
-      {super.key,
-      required this.acceptFunction,
-      required this.canselFunction,
-      required this.price,
-      required this.amountSamurai});
+  const PopupBuySamurai({super.key,
+    required this.acceptFunction,
+    required this.canselFunction,
+    required this.type,
+    required this.price,
+    required this.amountSamurai});
 
   @override
   State<PopupBuySamurai> createState() => _PopupBuySamuraiState();
@@ -53,13 +56,13 @@ class _PopupBuySamuraiState extends State<PopupBuySamurai> {
                   RichText(
                       textAlign: TextAlign.start,
                       text:
-                          TextSpan(style: AppTypography.spaseMono16, children: [
-                        const TextSpan(text: 'Are you sure you want to buy'),
+                      TextSpan(style: AppTypography.spaseMono16, children: [
+                        const TextSpan(text: 'Are you sure you want to buy '),
                         TextSpan(
                             text: ' ${widget.amountSamurai} ',
                             style: AppTypography.spaseMono16
                                 .copyWith(color: AppColors.textBlue)),
-                            const TextSpan(text: 'Samurai?'),
+                        TextSpan(text: '${widget.type == SamuraiType.WATER ? 'Water' : 'Fire'} Samurai?'),
                       ])),
                   const SizedBox(
                     height: 14,

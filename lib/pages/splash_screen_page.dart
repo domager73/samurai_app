@@ -97,10 +97,10 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
                   },
                 ),
                 const SizedBox(
-                  height: 50,
+                  height: 100,
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 50.0),
+                  padding: const EdgeInsets.only(bottom: 10.0),
                   child: Image.asset('assets/pages/start/clc_logo.png',
                       scale: 8.0),
                 ),
