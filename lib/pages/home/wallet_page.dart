@@ -584,67 +584,62 @@ class _WalletPageState extends State<WalletPage>
             ),
           ),
           Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Expanded(
-                flex: 120,
-                child: Center(
-                  child: Image.asset(
-                    samuraiPath,
-                    width: width * 0.22,
-                  ),
+              const SizedBox(
+                width: 11,
+              ),
+              Center(
+                child: Image.asset(
+                  samuraiPath,
+                  width: width * 0.22,
                 ),
               ),
-              const Spacer(flex: 10),
-              Expanded(
-                flex: 165,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      samuraiName,
-                      style: GoogleFonts.spaceMono(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
-                      ),
+              Container(
+                constraints: BoxConstraints(maxWidth: 30),
+                width: width * 0.0434 + 10,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  const SizedBox(
+                    height: 13,
+                  ),
+                  Text(
+                    samuraiName,
+                    style: GoogleFonts.spaceMono(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
                     ),
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          'Samurai',
-                          style: GoogleFonts.spaceMono(
-                            fontSize: 22,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8),
-                          child: SvgPicture.asset(
-                            samuraiLogoPath,
-                            height: height * 0.025,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: FittedBox(
-                        child: Text(
-                          'AMOUNT:',
-                          style: GoogleFonts.spaceMono(
-                            fontSize: height * 0.015,
-                            fontWeight: FontWeight.w700,
-                            color: const Color(0xFF00FFFF),
-                          ),
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'Samurai',
+                        style: GoogleFonts.spaceMono(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
                         ),
                       ),
-                    ),
-                    FittedBox(
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8),
+                        child: SvgPicture.asset(
+                          samuraiLogoPath,
+                          height: height * 0.025,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: FittedBox(
                       child: Text(
-                        amount.toString(),
+                        'AMOUNT:',
                         style: GoogleFonts.spaceMono(
                           fontSize: height * 0.015,
                           fontWeight: FontWeight.w700,
@@ -652,53 +647,63 @@ class _WalletPageState extends State<WalletPage>
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: height * 0.01,
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                flex: 45,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        gradient: AppGradients.buttonBack,
+                  ),
+                  FittedBox(
+                    child: Text(
+                      amount.toString(),
+                      style: GoogleFonts.spaceMono(
+                        fontSize: height * 0.015,
+                        fontWeight: FontWeight.w700,
+                        color: const Color(0xFF00FFFF),
                       ),
-                      child: AnimButton(
-                        shadowType: 2,
+                    ),
+                  ),
+                  SizedBox(
+                    height: height * 0.01,
+                  ),
+                ],
+              ),
+              Spacer(),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 70,
+                    height: 70,
+                    child: CustomButton(
                         onTap: () => toGame(),
-                        child: SvgPicture.asset(
-                          'assets/pages/homepage/samurai/to_game.svg',
-                          width: width * 0.12,
+                        activeChild: Image.asset("assets/to_game_pres.png",
+                            fit: BoxFit.fitWidth),
+                        defaultChild: Image.asset(
+                          "assets/to_game.png",
+                          fit: BoxFit.fitWidth,
                         ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: height * 0.017,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        gradient: AppGradients.buttonBack,
-                      ),
-                      child: AnimButton(
-                        shadowType: 2,
+                        player: GetIt.I<MusicManager>()
+                            .menuSettingsSignWaterPlayer),
+                  ),
+                  Container(
+                    width: 70,
+                    height: 70,
+                    child: CustomButton(
                         onTap: () => transfer(),
-                        child: SvgPicture.asset(
-                          'assets/pages/homepage/samurai/transfer.svg',
-                          width: width * 0.12,
+                        activeChild: Image.asset("assets/withdraw_pres.png",
+                            fit: BoxFit.fitWidth),
+                        defaultChild: Image.asset(
+                          "assets/withdraw.png",
+                          fit: BoxFit.fitWidth,
                         ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: height * 0.01,
-                    ),
-                  ],
-                ),
+                        player: GetIt.I<MusicManager>()
+                            .menuSettingsSignWaterPlayer),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                ],
               ),
-              const Spacer(flex: 12),
+              const SizedBox(
+                width: 10,
+              ),
             ],
           ),
         ],
@@ -885,19 +890,23 @@ class _WalletPageState extends State<WalletPage>
               ),
             ),
           ),
-          CustomButton(
-              onTap: () {
-                onSwapTap();
-              },
-              player: GetIt.I<MusicManager>().menuSettingsSignWaterPlayer,
-              activeChild: Image.asset(
-                'assets/pages/homepage/refresh_pres.png',
-                fit: BoxFit.fitHeight,
-              ),
-              defaultChild: Image.asset(
-                'assets/pages/homepage/refresh.png',
-                fit: BoxFit.fitHeight,
-              )),
+          Container(
+            width: 50,
+            height: 50,
+            child: CustomButton(
+                onTap: () {
+                  onSwapTap();
+                },
+                player: GetIt.I<MusicManager>().menuSettingsSignWaterPlayer,
+                activeChild: Image.asset(
+                  'assets/pages/homepage/refresh_pres.png',
+                  fit: BoxFit.fitHeight,
+                ),
+                defaultChild: Image.asset(
+                  'assets/pages/homepage/refresh.png',
+                  fit: BoxFit.fitHeight,
+                )),
+          ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -917,6 +926,7 @@ class _WalletPageState extends State<WalletPage>
           Container(
             decoration: BoxDecoration(gradient: AppGradients.buttonBack),
             height: 50,
+            width: 50,
             child: CustomButton(
                 player: GetIt.I<MusicManager>().menuSettingsSignWaterPlayer,
                 onTap: () {
