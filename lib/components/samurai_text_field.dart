@@ -9,41 +9,43 @@ import 'package:samurai_app/data/music_manager.dart';
 import '../utils/colors.dart';
 
 class SamuraiTextField extends StatelessWidget {
-  const SamuraiTextField({super.key,
-    required this.screeenHeight,
-    required this.screeenWidth,
-    this.hint,
-    this.buttonWithTimerEnabled = false,
-    this.timerValue,
-    this.onTapTimerButton,
-    this.controller,
-    this.initialValue,
-    this.focusNode,
-    this.keyboardType,
-    this.textCapitalization = TextCapitalization.none,
-    this.textInputAction,
-    this.autofocus = false,
-    this.readOnly = false,
-    this.obscureText = false,
-    this.autocorrect = true,
-    this.maxLengthEnforcement,
-    this.maxLines = 1,
-    this.minLines,
-    this.expands = false,
-    this.maxLength,
-    this.onChanged,
-    this.onTap,
-    this.onTapOutside,
-    this.onEditingComplete,
-    this.onFieldSubmitted,
-    this.inputFormatters,
-    this.enabled,
-    this.keyboardAppearance,
-    this.enableInteractiveSelection,
-    this.selectionControls,
-    this.autofillHints,
-    this.scrollController,
-    this.allButton});
+  const SamuraiTextField(
+      {super.key,
+      required this.screeenHeight,
+      required this.screeenWidth,
+      this.hint,
+      this.buttonWithTimerEnabled = false,
+      this.timerValue,
+      this.onTapTimerButton,
+      this.controller,
+      this.initialValue,
+      this.focusNode,
+      this.keyboardType,
+      this.textCapitalization = TextCapitalization.none,
+      this.textInputAction,
+      this.autofocus = false,
+      this.readOnly = false,
+      this.obscureText = false,
+      this.autocorrect = true,
+      this.maxLengthEnforcement,
+      this.maxLines = 1,
+      this.minLines,
+      this.expands = false,
+      this.maxLength,
+      this.onChanged,
+      this.onTap,
+      this.onTapOutside,
+      this.onEditingComplete,
+      this.onFieldSubmitted,
+      this.inputFormatters,
+      this.enabled,
+      this.keyboardAppearance,
+      this.enableInteractiveSelection,
+      this.selectionControls,
+      this.autofillHints,
+      this.scrollController,
+      this.allButton,
+      this.withError = false});
 
   final double screeenHeight;
   final double screeenWidth;
@@ -80,117 +82,116 @@ class SamuraiTextField extends StatelessWidget {
   final Iterable<String>? autofillHints;
   final ScrollController? scrollController;
   final Function? allButton;
+  final bool withError;
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         SvgPicture.asset(
-          'assets/text_field_border.svg',
+          !withError ? 'assets/text_field_border.svg' : 'assets/text_field_error.svg',
           width: screeenWidth - screeenWidth * 0.14,
           height: (screeenWidth - screeenWidth * 0.14) * 0.21,
         ),
         SizedBox(
-            width: screeenWidth - screeenWidth * 0.14,
-            height: (screeenWidth - screeenWidth * 0.14) * 0.21,
-            child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Spacer(
-                    flex: 30,
-                  ),
-                  Expanded(
-                    flex: buttonWithTimerEnabled
-                        ? 225
-                        : (allButton != null ? 225 : 292),
-                    child: TextFormField(
-                      controller: controller,
-                      initialValue: initialValue,
-                      focusNode: focusNode,
-                      autofocus: autofocus,
-                      autocorrect: autocorrect,
-                      autofillHints: autofillHints,
-                      enabled: enabled,
-                      expands: expands,
-                      enableInteractiveSelection: enableInteractiveSelection,
-                      readOnly: readOnly,
-                      inputFormatters: inputFormatters,
-                      obscureText: obscureText,
-                      onChanged: onChanged,
-                      onEditingComplete: onEditingComplete,
-                      onFieldSubmitted: onFieldSubmitted,
-                      onTap: () async {
-                        await GetIt
-                            .I<MusicManager>()
-                            .menuSettingsSignWaterPlayer
-                            .play()
-                            .then((value) async {
-                          await GetIt
-                              .I<MusicManager>()
-                              .menuSettingsSignWaterPlayer
-                              .seek(Duration(seconds: 0));
-                        });
-                        onTap;
-                      },
-                      onTapOutside: (_) async {
-                        onTapOutside;
-                      },
-                      scrollController: scrollController,
-                      selectionControls: selectionControls,
-                      keyboardAppearance: keyboardAppearance,
-                      keyboardType: keyboardType,
-                      maxLength: maxLength,
-                      maxLines: maxLines,
-                      maxLengthEnforcement: maxLengthEnforcement,
-                      minLines: minLines,
-                      decoration: InputDecoration.collapsed(
-                        hintText: hint,
-                        hintStyle: GoogleFonts.spaceMono(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          height: 1.5,
-                          color: Colors.white.withOpacity(0.5),
-                        ),
-                      ),
-                      style: GoogleFonts.spaceMono(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                        height: 1.5,
-                        color: Colors.white,
-                      ),
-                      cursorColor: AppColors.textBlue,
-                      cursorRadius: const Radius.circular(5),
+          width: screeenWidth - screeenWidth * 0.14,
+          height: (screeenWidth - screeenWidth * 0.14) * 0.21,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Spacer(
+                flex: 30,
+              ),
+              Expanded(
+                flex: buttonWithTimerEnabled
+                    ? 225
+                    : (allButton != null ? 225 : 292),
+                child: TextFormField(
+                  controller: controller,
+                  initialValue: initialValue,
+                  focusNode: focusNode,
+                  autofocus: autofocus,
+                  autocorrect: autocorrect,
+                  autofillHints: autofillHints,
+                  enabled: enabled,
+                  expands: expands,
+                  enableInteractiveSelection: enableInteractiveSelection,
+                  readOnly: readOnly,
+                  inputFormatters: inputFormatters,
+                  obscureText: obscureText,
+                  onChanged: onChanged,
+                  onEditingComplete: onEditingComplete,
+                  onFieldSubmitted: onFieldSubmitted,
+                  onTap: () async {
+                    await GetIt.I<MusicManager>()
+                        .menuSettingsSignWaterPlayer
+                        .play()
+                        .then((value) async {
+                      await GetIt.I<MusicManager>()
+                          .menuSettingsSignWaterPlayer
+                          .seek(Duration(seconds: 0));
+                    });
+                    onTap;
+                  },
+                  onTapOutside: (_) async {
+                    onTapOutside;
+                  },
+                  scrollController: scrollController,
+                  selectionControls: selectionControls,
+                  keyboardAppearance: keyboardAppearance,
+                  keyboardType: keyboardType,
+                  maxLength: maxLength,
+                  maxLines: maxLines,
+                  maxLengthEnforcement: maxLengthEnforcement,
+                  minLines: minLines,
+                  decoration: InputDecoration.collapsed(
+                    hintText: hint,
+                    hintStyle: GoogleFonts.spaceMono(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      height: 1.5,
+                      color: Colors.white.withOpacity(0.5),
                     ),
                   ),
-                  const Spacer(
-                    flex: 12,
+                  style: GoogleFonts.spaceMono(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    height: 1.5,
+                    color: Colors.white,
                   ),
-                  if (buttonWithTimerEnabled)
-                    Expanded(
-                      flex: 67,
-                      child: Column(children: [
+                  cursorColor: AppColors.textBlue,
+                  cursorRadius: const Radius.circular(5),
+                ),
+              ),
+              const Spacer(
+                flex: 12,
+              ),
+              if (buttonWithTimerEnabled)
+                Expanded(
+                    flex: 67,
+                    child: Column(children: [
                       Spacer(flex: timerValue == null ? 1 : 2),
                       timerValue == null
                           ? AnimButton(
-                        player: GetIt.I<MusicManager>()
-                            .smallKeyWeaponPlayer,
-                        shadowType: 0,
-                        onTap: onTapTimerButton,
-                        child: SvgPicture.asset(
-                          'assets/button_send.svg',
-                          width:
-                          (screeenWidth - screeenWidth * 0.14) * 0.2,
-                        ),
-                      )
+                              player:
+                                  GetIt.I<MusicManager>().smallKeyWeaponPlayer,
+                              shadowType: 0,
+                              onTap: onTapTimerButton,
+                              child: SvgPicture.asset(
+                                'assets/button_send.svg',
+                                width:
+                                    (screeenWidth - screeenWidth * 0.14) * 0.2,
+                              ),
+                            )
                           : Text(
-                        timerValue!.toString(),
-                        style: TextStyle(
-                          fontFamily: 'AmazObitaemOstrovItalic',
-                          fontSize: screeenHeight * 0.02,
-                          height: 1.4,
-                          color: Colors.white,
-                        ),
-                      ),
+                              timerValue!.toString(),
+                              style: TextStyle(
+                                fontFamily: 'AmazObitaemOstrovItalic',
+                                fontSize: screeenHeight * 0.02,
+                                height: 1.4,
+                                color: Colors.white,
+                              ),
+                            ),
                       Spacer(flex: timerValue == null ? 2 : 3),
                     ])),
               if (allButton != null)
