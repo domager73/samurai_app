@@ -530,6 +530,7 @@ class _CraftPageState extends State<CraftPage> {
             ),
           ),
         ),
+        
         Padding(
             padding: EdgeInsets.only(left: width * 0.01, top: 30),
             child: clameBlock(context, width)),
@@ -538,9 +539,10 @@ class _CraftPageState extends State<CraftPage> {
   }
 
   Widget getCharacter(double width) {
-    return SizedBox(
+    return Container(
       height: 265 / 340 * width,
       width: (138 / 312) * (265 / 340 * width),
+      padding: const EdgeInsets.only(bottom: 20),
       child: Image(
         image: widget.craftSwitch == 0 ? waterSamuraiImg : fireSamuraiImg,
         fit: BoxFit.fitHeight,
