@@ -10,6 +10,7 @@ import 'package:samurai_app/components/storage.dart';
 import 'package:samurai_app/data/music_manager.dart';
 import 'package:samurai_app/pages/home/wallet_page_components.dart';
 import 'package:samurai_app/utils/colors.dart';
+import 'package:samurai_app/utils/global_constants.dart';
 import 'package:samurai_app/utils/gradients.dart';
 import 'package:samurai_app/widgets/popups/custom_popup.dart';
 import 'package:trust_wallet_core_lib/trust_wallet_core_lib.dart';
@@ -39,6 +40,7 @@ class _WalletPageState extends State<WalletPage>
   List<Map<String, dynamic>> heroes = [];
 
   late Map<String, dynamic> user;
+  late bool smallRefreshTapped;
 
   Map<String, dynamic> transferTapDialogArgs = {};
   Map<String, dynamic> swapTapDialogArgs = {};
@@ -55,6 +57,7 @@ class _WalletPageState extends State<WalletPage>
 
     int flag = 0;
     int oldPage = 0;
+    smallRefreshTapped = false;
 
     _tabController.animation!.addListener(() async {
       double value = _tabController.animation!.value % 1;
@@ -857,6 +860,7 @@ class _WalletPageState extends State<WalletPage>
       ),
       height: height * 0.05,
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SvgPicture.asset(
             iconPath,
@@ -879,21 +883,36 @@ class _WalletPageState extends State<WalletPage>
               ),
             ),
           ),
-          Container(
-            decoration: BoxDecoration(
-                gradient: RadialGradient(radius: 0.5, colors: [
-              Colors.black.withOpacity(0.35),
-              Colors.transparent
-            ])),
-            padding: EdgeInsets.symmetric(vertical: height * 0.007),
-            child: AnimButton(
-              player: GetIt.I<MusicManager>().menuSettingsSignWaterPlayer,
-              onTap: () => onSwapTap(),
-              child: SvgPicture.asset(
-                'assets/pages/homepage/refresh.svg',
-                fit: BoxFit.fitHeight,
-              ),
-            ),
+          GestureDetector(
+            onTapDown: (_) async {
+              await GetIt.I<MusicManager>()
+                  .menuSettingsSignWaterPlayer
+                  .play()
+                  .then((value) async {
+                await GetIt.I<MusicManager>()
+                    .menuSettingsSignWaterPlayer
+                    .seek(const Duration(seconds: 0));
+              });
+              setState(() => smallRefreshTapped == true);
+              print(smallRefreshTapped);
+
+              await Future.delayed(GlobalConstants.animDuration);
+              setState(() {
+                smallRefreshTapped == false;
+              });
+
+              onSwapTap();
+              print(smallRefreshTapped);
+            },
+            child: !smallRefreshTapped
+                ? Image.asset(
+                    'assets/pages/homepage/refresh_pres.png',
+                    fit: BoxFit.fitHeight,
+                  )
+                : Image.asset(
+                    'assets/pages/homepage/refresh.png',
+                    fit: BoxFit.fitHeight,
+                  ),
           ),
           Expanded(
             child: Padding(
@@ -912,8 +931,7 @@ class _WalletPageState extends State<WalletPage>
             ),
           ),
           Container(
-            decoration: BoxDecoration(
-                gradient: AppGradients.buttonBack),
+            decoration: BoxDecoration(gradient: AppGradients.buttonBack),
             padding: EdgeInsets.symmetric(vertical: height * 0.007),
             child: AnimButton(
               player: GetIt.I<MusicManager>().menuSettingsSignWaterPlayer,

@@ -89,7 +89,6 @@ class _AnimButtonState extends State<AnimButton> {
           duration: Duration(milliseconds: !_elevation ? 1 : 20),
           curve: Curves.easeInOut,
           alignment: Alignment.center,
-          margin: const EdgeInsets.only(bottom: 10),
           decoration: BoxDecorationCustom(
             borderRadius: BorderRadius.circular(8),
             shadowType: widget.shadowType,
