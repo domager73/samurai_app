@@ -21,10 +21,10 @@ class _ButtonYesState extends State<ButtonYes> {
   bool isTapped = false;
 
   void _onTap() async {
-    widget.onTap();
-
     GetIt.I<MusicManager>().keyBackSignCloseX.play().then((value) async {
-      await GetIt.I<MusicManager>().keyBackSignCloseX.seek(Duration(seconds: 0));
+      await GetIt.I<MusicManager>()
+          .keyBackSignCloseX
+          .seek(Duration(seconds: 0));
     });
 
     setState(() {
@@ -36,13 +36,27 @@ class _ButtonYesState extends State<ButtonYes> {
         isTapped = false;
       });
     });
+
+    widget.onTap();
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: _onTap,
+      onTapDown: (_) {
+        _onTap();
+      },
       child: AnimatedContainer(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+                bottomRight: Radius.circular(80), topLeft: Radius.circular(80)),
+            boxShadow: [
+              BoxShadow(
+                  color: isTapped ? AppColors.textBlue : Colors.transparent,
+                  spreadRadius: 0.5,
+                  blurRadius: 10,
+                  offset: Offset(2, 2))
+            ]),
         duration: GlobalConstants.animDuration,
         child: CustomPaint(
           painter: ButtonYesPainter(),
@@ -52,7 +66,8 @@ class _ButtonYesState extends State<ButtonYes> {
             alignment: Alignment.center,
             child: Text(
               "yes".toUpperCase(),
-              style: AppTypography.amazObit17Dark.copyWith(color: AppColors.textDark),
+              style: AppTypography.amazObit17Dark
+                  .copyWith(color: AppColors.textDark),
             ),
           ),
         ),

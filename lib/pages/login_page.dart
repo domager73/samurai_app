@@ -33,6 +33,9 @@ class _LoginPageState extends State<LoginPage> {
   bool errorTerms = false;
   bool errorLoging = false;
 
+  bool errorEmailField = false;
+  bool errorCodeField = false;
+
   @override
   void dispose() {
     super.dispose();
@@ -40,7 +43,12 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void login() {
-    if (email.isNotEmpty && isAgree) {
+    if (email.isNotEmpty && code.isNotEmpty && isAgree) {
+      setState(() {
+        errorEmailField = email.isEmpty;
+        errorCodeField = code.isEmpty;
+      });
+
       showSpinner(context);
       Rest.checkCode(email, code).then((data) {
         final useTfa = AppStorage().read('use-tfa');
@@ -61,11 +69,14 @@ class _LoginPageState extends State<LoginPage> {
         );
       });
     } else {
-      if (!isAgree) {
-        setState(() {
+      setState(() {
+        if (!isAgree) {
           errorTerms = true;
-        });
-      }
+        }
+
+        errorEmailField = email.isEmpty;
+        errorCodeField = code.isEmpty;
+      });
     }
   }
 
@@ -107,6 +118,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: SamuraiTextField(
                       screeenHeight: height,
                       screeenWidth: width,
+                      withError: errorEmailField,
                       hint: "Email address",
                       onChanged: (value) => setState(() {
                         email = value;
@@ -119,6 +131,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: SamuraiTextField(
                       screeenHeight: height,
                       screeenWidth: width,
+                      withError: errorCodeField,
                       hint: "Email code",
                       onChanged: (value) => setState(
                         () {
@@ -166,6 +179,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: Row(
                       children: [
                         Container(
+                          alignment: Alignment.center,
                           width: height * 0.03,
                           height: height * 0.03,
                           decoration: BoxDecoration(
@@ -173,8 +187,11 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           child: Checkbox(
                             side: MaterialStateBorderSide.resolveWith(
-                                (states) => const BorderSide(
-                                    width: 0, color: Colors.transparent)),
+                                (states) => BorderSide(
+                                    width: 2,
+                                    color: errorTerms
+                                        ? Colors.red
+                                        : Colors.transparent)),
                             value: isAgree,
                             onChanged: (value) async {
                               GetIt.I<MusicManager>()
@@ -192,7 +209,7 @@ class _LoginPageState extends State<LoginPage> {
                               });
                             },
                             fillColor: MaterialStateProperty.all(
-                              errorTerms ? Colors.red : Colors.transparent,
+                              Colors.transparent,
                             ),
                             checkColor: const Color(0xFF00FFFF),
                             materialTapTargetSize:

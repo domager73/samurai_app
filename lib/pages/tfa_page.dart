@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_it/get_it.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:samurai_app/api/rest.dart';
 import 'package:samurai_app/components/pop_up_spinner.dart';
 import 'package:samurai_app/components/samurai_text_field.dart';
