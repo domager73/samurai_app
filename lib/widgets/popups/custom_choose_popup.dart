@@ -69,6 +69,8 @@ class _CustomChoosePopupState extends State<CustomChoosePopup> {
                   widget.canselFunction();
                 },
               )),
+
+          
           Align(
               alignment: Alignment.bottomRight,
               child: ButtonYes(

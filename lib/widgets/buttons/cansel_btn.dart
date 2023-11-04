@@ -20,10 +20,10 @@ class _ButtonCancelState extends State<ButtonCancel> {
   bool isTapped = false;
 
   void _onTap() async {
-    widget.onTap();
-
     GetIt.I<MusicManager>().keyBackSignCloseX.play().then((value) async {
-      await GetIt.I<MusicManager>().keyBackSignCloseX.seek(const Duration(seconds: 0));
+      await GetIt.I<MusicManager>()
+          .keyBackSignCloseX
+          .seek(const Duration(seconds: 0));
     });
 
     setState(() {
@@ -34,14 +34,26 @@ class _ButtonCancelState extends State<ButtonCancel> {
       setState(() {
         isTapped = false;
       });
+      widget.onTap();
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: _onTap,
+      onTapDown: (_) {
+        _onTap();
+      },
       child: AnimatedContainer(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(80)),
+            boxShadow: [
+              BoxShadow(
+                  color: isTapped ? AppColors.textBlue : Colors.transparent,
+                  spreadRadius: 0.5,
+                  blurRadius: 10,
+                  offset: Offset(-2, 2))
+            ]),
         duration: GlobalConstants.animDuration,
         child: CustomPaint(
             painter: CanselButtonPainter(),
@@ -51,21 +63,12 @@ class _ButtonCancelState extends State<ButtonCancel> {
                 height: 38.2,
                 child: Text(
                   "cancel".toUpperCase(),
-                  style: AppTypography.amazObit17Dark.copyWith(color: Colors.white),
+                  style: AppTypography.amazObit17Dark
+                      .copyWith(color: Colors.white),
                 ))),
       ),
     );
   }
-}
-
-class CanselButtonClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    return getCanselButtonPath(size);
-  }
-
-  @override
-  bool shouldReclip(covariant CustomClipper<Path> oldClipper) => true;
 }
 
 class CanselButtonPainter extends CustomPainter {
