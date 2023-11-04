@@ -254,12 +254,11 @@ class _HeroMintPageState extends State<HeroMintPage>
                                               AppTypography.spaceMonoReg13White)
                                     ])),
                               ])),
-                          //
                           Container(
-                            width: width * widthCoef * 0.2,
-                            height: width * widthCoef * 0.2,
+                            width: width * widthCoef * 0.21,
+                            height: width * widthCoef * 0.21,
                             constraints: const BoxConstraints(
-                                maxHeight: 72, maxWidth: 72),
+                                maxHeight: 75, maxWidth: 75),
                             child: PresButton(
                                 player: GetIt.I<MusicManager>()
                                     .smallKeyWeaponPlayer,
@@ -305,7 +304,7 @@ class _HeroMintPageState extends State<HeroMintPage>
                                         e['XP'] ||
                                     user['ryo_balance'] < 4000,
                                 params: {'width': width},
-                                child: mintBtn),
+                                child: widget.craftSwitch == 0 ? mintBtn : mintBtn2),
                           )
                         ],
                       ),

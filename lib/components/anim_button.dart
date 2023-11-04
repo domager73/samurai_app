@@ -388,7 +388,7 @@ Widget menuBtn(BuildContext context, Map<String, dynamic> params, bool state,
   return Image(
     image: !state ? img : imgPres,
     fit: BoxFit.fitWidth,
-    width: 55 / 390 * params['width'],
+    width: 50 / 390 * params['width'],
   );
 }
 
@@ -556,12 +556,8 @@ Widget mintBtn(BuildContext context, Map<String, dynamic> params, bool state,
     bool disabled) {
   const img = AssetImage('assets/pages/homepage/mint/btn_mint_water.png');
   const imgPres =
-      AssetImage('assets/pages/homepage/mint/btn_mint_water_pres.png');
-  const imgDis = AssetImage('assets/pages/homepage/mint/btn_mint_fire_dis.png');
-  precacheImage(img, context);
-  precacheImage(imgPres, context);
-  precacheImage(imgDis, context);
-
+      AssetImage('assets/btn_mint_water_pres.png');
+  const imgDis = AssetImage('assets/btn_mint_dis.png');
   return Image(
     image: disabled ? imgDis : (!state ? img : imgPres),
     width: 50 / 390 * params['width'],
@@ -571,14 +567,10 @@ Widget mintBtn(BuildContext context, Map<String, dynamic> params, bool state,
 
 Widget mintBtn2(BuildContext context, Map<String, dynamic> params, bool state,
     bool disabled) {
-  const img = AssetImage('assets/pages/homepage/mint/btn_mint_fire.png');
+  const img = AssetImage('assets/btn_mint_fire.png');
   const imgPres =
-      AssetImage('assets/pages/homepage/mint/btn_mint_water_pres.png');
-  const imgDis = AssetImage('assets/pages/homepage/mint/btn_mint_fire_dis.png');
-  precacheImage(img, context);
-  precacheImage(imgPres, context);
-  precacheImage(imgDis, context);
-
+      AssetImage('assets/btn_mint_water_pres.png');
+  const imgDis = AssetImage('assets/btn_mint_dis.png');
   return Image(
     image: disabled ? imgDis : (!state ? img : imgPres),
     width: 50 / 390 * params['width'],
