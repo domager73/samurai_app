@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:samurai_app/api/rest.dart';
 import 'package:samurai_app/components/samurai_text_field.dart';
@@ -32,6 +31,8 @@ class _LoginPageState extends State<LoginPage> {
   String code = '';
   bool errorTerms = false;
   bool errorLoging = false;
+  
+  bool errorField = false;
 
   @override
   void dispose() {
@@ -40,7 +41,9 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void login() {
-    if (email.isNotEmpty && isAgree) {
+    if (email.isNotEmpty && code.isNotEmpty && isAgree) {
+      errorField = false;
+
       showSpinner(context);
       Rest.checkCode(email, code).then((data) {
         final useTfa = AppStorage().read('use-tfa');
@@ -61,11 +64,13 @@ class _LoginPageState extends State<LoginPage> {
         );
       });
     } else {
-      if (!isAgree) {
-        setState(() {
+      setState(() {
+        if (!isAgree) {
           errorTerms = true;
-        });
-      }
+        }
+
+        errorField = true;
+      });
     }
   }
 

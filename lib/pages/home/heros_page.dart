@@ -487,10 +487,12 @@ class _HeroesPageState extends State<HeroesPage>
                       ),
                       Row(children: [
                         Text("DP/Day: ",
-                            style: AppTypography.spaceMonoW700Blue16),
+                            style: AppTypography.spaceMonoBold13.copyWith(
+                                color: AppColors.textBlue,
+                                fontSize: width > 500 ? 16 : 13)),
                         Text(
                             "+${widget.craftSwitch == 0 ? water!.perDay : fire!.perDay} DP ",
-                            style: AppTypography.spaceMonoW700Blue16
+                            style: AppTypography.spaceMonoBold13
                                 .copyWith(color: Colors.white))
                       ])
                     ])),
@@ -504,7 +506,9 @@ class _HeroesPageState extends State<HeroesPage>
                       ScaffoldMessenger.of(context).clearSnackBars();
 
                       if (water!.balance >= water!.bar &&
-                          widget.craftSwitch == 0) {
+                          widget.craftSwitch == 0 && water!.balance != 0) {
+                        print(water!.balance);
+                        print(water!.bar);
                         ScaffoldMessenger.of(context).showSnackBar(
                             buildCustomSnackbar(
                                 context, 'Your water dp is FULL', false));
@@ -513,10 +517,10 @@ class _HeroesPageState extends State<HeroesPage>
                       }
 
                       if (fire!.balance >= fire!.bar &&
-                          widget.craftSwitch == 1) {
+                          widget.craftSwitch == 1 && fire!.balance != 0) {
                         ScaffoldMessenger.of(context).showSnackBar(
                             buildCustomSnackbar(
-                                context, 'Your fiure dp is FULL', false));
+                                context, 'Your fire dp is FULL', false));
 
                         return;
                       }
@@ -527,7 +531,10 @@ class _HeroesPageState extends State<HeroesPage>
                         loadInfo().then((value) => setState(() {}));
                       }).catchError((_) {});
                     },
-                    disabled: false,
+                    disabled:
+                     widget.craftSwitch == 0
+                        ? water?.unclaimed == null || water!.unclaimed == 0
+                        : fire?.unclaimed == null || fire!.unclaimed == 0,
                     shadowType: 0,
                     child: SvgPicture.asset(
                         ((widget.craftSwitch == 0
