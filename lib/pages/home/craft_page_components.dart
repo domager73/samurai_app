@@ -12,6 +12,7 @@ import 'package:samurai_app/pages/tfa_page.dart';
 import 'package:samurai_app/utils/colors.dart';
 import 'package:samurai_app/utils/fonts.dart';
 import 'package:samurai_app/utils/gradients.dart';
+import 'package:samurai_app/widgets/buttons/custom_button.dart';
 import 'package:samurai_app/widgets/painters/painter_drop_list_border.dart';
 import 'package:samurai_app/widgets/painters/painter_transfer_samurai.dart';
 import 'package:samurai_app/widgets/popups/custom_choose_popup.dart';
@@ -151,26 +152,27 @@ class CraftPageComponents {
                               ),
                             ),
                             const SizedBox(width: 25),
-                            Container(
-                              decoration: BoxDecoration(
-                                  gradient: AppGradients.buttonBack),
-                              child: AnimButton(
-                                shadowType: 2,
-                                player:
-                                    GetIt.I<MusicManager>().okCanselTransPlayer,
+                            CustomButton(
                                 onTap: () {
                                   log(switchMode.toString());
                                   onShitchMode();
                                 },
-                                child: Image.asset(
+                                activeChild: Image.asset(
                                   tabActiveWf == 0
-                                      ? 'assets/swap_change_bt.png'
+                                      ? 'assets/pages/homepage/craft/change_water_pres.png'
+                                      : 'assets/pages/homepage/craft/change_fire_pres.png',
+                                  fit: BoxFit.fitWidth,
+                                  height: height * 0.1,
+                                ),
+                                defaultChild: Image.asset(
+                                  tabActiveWf == 0
+                                      ? 'assets/pages/homepage/craft/change_water.png'
                                       : 'assets/pages/homepage/craft/change_fire.png',
                                   fit: BoxFit.fitWidth,
                                   height: height * 0.1,
                                 ),
-                              ),
-                            ),
+                                player: GetIt.I<MusicManager>()
+                                    .okCanselTransPlayer),
                           ],
                         )),
                   ),
@@ -362,7 +364,7 @@ class CraftPageComponents {
                             .seek(Duration(seconds: 0));
                       });
                     },
-                    menuItemStyleData: MenuItemStyleData(
+                    menuItemStyleData: const MenuItemStyleData(
                       padding: EdgeInsets.zero,
                     ),
                     isExpanded: true,
@@ -556,28 +558,23 @@ class CraftPageComponents {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            gradient: AppGradients.buttonBack,
-                                          ),
-                                          child: PresButton(
-                                            onTap: () async {
+                                        PresButton(
+                                          onTap: () async {
+                                            await GetIt.I<MusicManager>()
+                                                .popupDownSybMenuPlayer
+                                                .play()
+                                                .then((value) async {
                                               await GetIt.I<MusicManager>()
                                                   .popupDownSybMenuPlayer
-                                                  .play()
-                                                  .then((value) async {
-                                                await GetIt.I<MusicManager>()
-                                                    .popupDownSybMenuPlayer
-                                                    .seek(Duration(seconds: 0));
-                                              });
+                                                  .seek(Duration(seconds: 0));
+                                            });
 
-                                              Navigator.of(context).pop();
-                                            },
-                                            params: {'width': width},
-                                            child: backBtn,
-                                            player: GetIt.I<MusicManager>()
-                                                .keyBackSignCloseX,
-                                          ),
+                                            Navigator.of(context).pop();
+                                          },
+                                          params: {'width': width},
+                                          child: backBtn,
+                                          player: GetIt.I<MusicManager>()
+                                              .keyBackSignCloseX,
                                         ),
                                         Expanded(
                                           child: Center(
@@ -588,30 +585,23 @@ class CraftPageComponents {
                                             ),
                                           ),
                                         ),
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            gradient: AppGradients.buttonBack,
-                                          ),
-                                          child: AnimButton(
-                                            shadowType: 2,
-                                            onTap: () {
-                                              showDialog(
-                                                  context: context,
-                                                  builder: ((context) =>
-                                                      CustomPopup(
-                                                        isError: false,
-                                                        text: switchMode == 0
-                                                            ? 'Army Samurai can participate in battles and accumulate XP. Free Samurai can be withdrawn to your wallet. Army Samurai must be at 100% health to transfer.'
-                                                            : 'You can withdraw Free Samurai, after which they will available on your wallet',
-                                                      )));
-                                            },
-                                            child: SvgPicture.asset(
-                                              'assets/pages/homepage/craft/info.svg',
-                                              height: width * 0.12,
-                                              width: width * 0.12,
-                                            ),
-                                          ),
-                                        )
+                                        PresButton(
+                                          onTap: () async {
+                                            showDialog(
+                                                context: context,
+                                                builder: ((context) =>
+                                                    CustomPopup(
+                                                      isError: false,
+                                                      text: switchMode == 0
+                                                          ? 'Army Samurai can participate in battles and accumulate XP. Free Samurai can be withdrawn to your wallet. Army Samurai must be at 100% health to transfer.'
+                                                          : 'You can withdraw Free Samurai, after which they will available on your wallet',
+                                                    )));
+                                          },
+                                          params: {'width': width},
+                                          child: infoBtn,
+                                          player: GetIt.I<MusicManager>()
+                                              .keyBackSignCloseX,
+                                        ),
                                       ],
                                     )),
                                 Padding(
@@ -715,27 +705,22 @@ class CraftPageComponents {
             children: [
               Row(
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      gradient: AppGradients.buttonBack,
-                    ),
-                    child: PresButton(
-                      onTap: () async {
+                  PresButton(
+                    onTap: () async {
+                      await GetIt.I<MusicManager>()
+                          .popupDownSybMenuPlayer
+                          .play()
+                          .then((value) async {
                         await GetIt.I<MusicManager>()
                             .popupDownSybMenuPlayer
-                            .play()
-                            .then((value) async {
-                          await GetIt.I<MusicManager>()
-                              .popupDownSybMenuPlayer
-                              .seek(Duration(seconds: 0));
-                        });
+                            .seek(Duration(seconds: 0));
+                      });
 
-                        Navigator.of(context).pop();
-                      },
-                      params: {'width': width},
-                      child: backBtn,
-                      player: GetIt.I<MusicManager>().keyBackSignCloseX,
-                    ),
+                      Navigator.of(context).pop();
+                    },
+                    params: {'width': width},
+                    child: backBtn,
+                    player: GetIt.I<MusicManager>().keyBackSignCloseX,
                   ),
                   Expanded(
                     child: Center(
@@ -745,27 +730,20 @@ class CraftPageComponents {
                       ),
                     ),
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      gradient: AppGradients.buttonBack,
-                    ),
-                    child: AnimButton(
-                      shadowType: 2,
-                      onTap: () async {
-                        showDialog(
-                            context: context,
-                            builder: (context) => const CustomPopup(
-                                  isError: false,
-                                  text:
-                                      'You will not be able to participate in battles when the health of your Army drops to 0%. You can heal the Army or add new Samurai to the Army to replenish the health bar.',
-                                ));
-                      },
-                      child: SvgPicture.asset(
-                        'assets/pages/homepage/craft/info.svg',
-                        height: width * 0.12,
-                        width: width * 0.12,
-                      ),
-                    ),
+                  PresButton(
+                    onTap: () async {
+                      showDialog(
+                          context: context,
+                          builder: (context) => const CustomPopup(
+                            isError: false,
+                            text:
+                            'You will not be able to participate in battles when the health of your Army drops to 0%. You can heal the Army or add new Samurai to the Army to replenish the health bar.',
+                          ));
+                    },
+                    params: {'width': width},
+                    child: infoBtn,
+                    player: GetIt.I<MusicManager>()
+                        .keyBackSignCloseX,
                   ),
                 ],
               ),
@@ -784,7 +762,8 @@ class CraftPageComponents {
 
               Text("HEALTH: 100%",
                   style: AppTypography.spaceMonoBold13
-                      .copyWith(color: AppColors.textBlue)), //TODO value
+                      .copyWith(color: AppColors.textBlue)),
+              //TODO value
               const SizedBox(height: 21),
 
               Text(

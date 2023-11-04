@@ -510,31 +510,26 @@ class _HomePageState extends State<HomePage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          gradient: AppGradients.buttonBack,
-                        ),
-                        child: PresButton(
-                          player:
-                              GetIt.I<MusicManager>().keyBackSignCloseX, // HERE
-                          onTap: () async {
+                      PresButton(
+                        player:
+                            GetIt.I<MusicManager>().keyBackSignCloseX, // HERE
+                        onTap: () async {
+                          await GetIt.I<MusicManager>()
+                              .popupDownSybMenuPlayer
+                              .play()
+                              .then((value) async {
                             await GetIt.I<MusicManager>()
                                 .popupDownSybMenuPlayer
-                                .play()
-                                .then((value) async {
-                              await GetIt.I<MusicManager>()
-                                  .popupDownSybMenuPlayer
-                                  .seek(Duration(seconds: 0));
-                            });
+                                .seek(Duration(seconds: 0));
+                          });
 
-                            if (kDebugMode) {
-                              print(AppStorage().read('wallet_adress')!);
-                            }
-                            Navigator.of(context).pop();
-                          },
-                          params: {'width': width},
-                          child: backBtn,
-                        ),
+                          if (kDebugMode) {
+                            print(AppStorage().read('wallet_adress')!);
+                          }
+                          Navigator.of(context).pop();
+                        },
+                        params: {'width': width},
+                        child: backBtn,
                       ),
                       Expanded(
                         child: Padding(
@@ -548,27 +543,20 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                          gradient: AppGradients.buttonBack,
-                        ),
-                        child: AnimButton(
-                          shadowType: 2,
-                          onTap: () async {
-                            showDialog(
-                                context: context,
-                                builder: ((context) => const CustomPopup(
-                                      isError: false,
-                                      text:
-                                          'This is a wallet linked to your game account. You can refill it in any convenient way by copying the address or using the QR code.\nAttention! Send tokens only on BEP20 (BSC) chain, otherwise the tokens will be lost!',
-                                    )));
-                          },
-                          child: SvgPicture.asset(
-                            'assets/pages/homepage/craft/info.svg',
-                            height: width * 0.12,
-                            width: width * 0.12,
-                          ),
-                        ),
+                      PresButton(
+                        onTap: () async {
+                          showDialog(
+                              context: context,
+                              builder: ((context) => const CustomPopup(
+                                isError: false,
+                                text:
+                                'This is a wallet linked to your game account. You can refill it in any convenient way by copying the address or using the QR code.\nAttention! Send tokens only on BEP20 (BSC) chain, otherwise the tokens will be lost!',
+                              )));
+                        },
+                        params: {'width': width},
+                        child: infoBtn,
+                        player: GetIt.I<MusicManager>()
+                            .keyBackSignCloseX,
                       ),
                     ],
                   ),

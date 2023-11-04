@@ -388,7 +388,7 @@ Widget menuBtn(BuildContext context, Map<String, dynamic> params, bool state,
   return Image(
     image: !state ? img : imgPres,
     fit: BoxFit.fitWidth,
-    width: 65 / 390 * params['width'],
+    width: 55 / 390 * params['width'],
   );
 }
 
@@ -435,10 +435,20 @@ Widget loginBtn(BuildContext context, Map<String, dynamic> params, bool state,
 
 Widget backBtn(BuildContext context, Map<String, dynamic> params, bool state,
     bool disabled) {
-  const img = AssetImage('assets/back_button.png');
-  const imgPres = AssetImage('assets/back_button_pres.png');
-  precacheImage(img, context);
-  precacheImage(imgPres, context);
+  const img = AssetImage('assets/back.png');
+  const imgPres = AssetImage('assets/back_pres.png');
+
+  return Image(
+    image: !state ? img : imgPres,
+    height: params['width'] * 0.15,
+    width: params['width'] * 0.15,
+  );
+}
+
+Widget infoBtn(BuildContext context, Map<String, dynamic> params, bool state,
+    bool disabled) {
+  const img = AssetImage('assets/info_btn.png');
+  const imgPres = AssetImage('assets/info_btn_press.png');
 
   return Image(
     image: !state ? img : imgPres,
@@ -475,9 +485,9 @@ Widget sendToWalletBtn(BuildContext context, Map<String, dynamic> params,
 
 Widget waterHeartBtn(BuildContext context, Map<String, dynamic> params,
     bool state, bool disabled) {
-  const img = AssetImage('assets/pages/homepage/craft/heart_water.png');
+  const img = AssetImage('assets/heart_water.png');
   const imgPres =
-      AssetImage('assets/pages/homepage/craft/heart_water_pres.png');
+      AssetImage('assets/heart_water_press.png');
   precacheImage(img, context);
   precacheImage(imgPres, context);
 
@@ -490,8 +500,8 @@ Widget waterHeartBtn(BuildContext context, Map<String, dynamic> params,
 
 Widget fireHeartBtn(BuildContext context, Map<String, dynamic> params,
     bool state, bool disabled) {
-  const img = AssetImage('assets/pages/homepage/craft/heart_fire.png');
-  const imgPres = AssetImage('assets/pages/homepage/craft/heart_fire_pres.png');
+  const img = AssetImage('assets/heart_fire.png');
+  const imgPres = AssetImage('assets/heart_fire_press.png');
   precacheImage(img, context);
   precacheImage(imgPres, context);
 
@@ -504,11 +514,9 @@ Widget fireHeartBtn(BuildContext context, Map<String, dynamic> params,
 
 Widget waterChangeBtn(BuildContext context, Map<String, dynamic> params,
     bool state, bool disabled) {
-  const img = AssetImage('assets/pages/homepage/craft/change_water.png');
+  const img = AssetImage('assets/change_water.png');
   const imgPres =
-      AssetImage('assets/pages/homepage/craft/change_water_pres.png');
-  precacheImage(img, context);
-  precacheImage(imgPres, context);
+      AssetImage('assets/change_water_press.png');
 
   return Image(
     image: !state ? img : imgPres,
@@ -519,11 +527,9 @@ Widget waterChangeBtn(BuildContext context, Map<String, dynamic> params,
 
 Widget fireChangeBtn(BuildContext context, Map<String, dynamic> params,
     bool state, bool disabled) {
-  const img = AssetImage('assets/pages/homepage/craft/change_fire.png');
+  const img = AssetImage('assets/change_fire.png');
   const imgPres =
-      AssetImage('assets/pages/homepage/craft/change_fire_pres.png');
-  precacheImage(img, context);
-  precacheImage(imgPres, context);
+      AssetImage('assets/change_fire_press.png');
 
   return Image(
     image: !state ? img : imgPres,

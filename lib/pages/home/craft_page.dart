@@ -483,6 +483,7 @@ class _CraftPageState extends State<CraftPage> {
                 Container(
                   decoration: BoxDecoration(gradient: AppGradients.buttonBack),
                   width: 65,
+                  height: 110,
                   padding: const EdgeInsets.only(top: 25, bottom: 25),
                   child: PresButton(
                     onTap: () {

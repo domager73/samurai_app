@@ -163,27 +163,22 @@ class WalletPageComponents {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            gradient: AppGradients.buttonBack,
-                          ),
-                          child: PresButton(
-                            player: GetIt.I<MusicManager>().keyBackSignCloseX,
-                            onTap: () async {
+                        PresButton(
+                          player: GetIt.I<MusicManager>().keyBackSignCloseX,
+                          onTap: () async {
+                            await GetIt.I<MusicManager>()
+                                .popupDownSybMenuPlayer
+                                .play()
+                                .then((value) async {
                               await GetIt.I<MusicManager>()
                                   .popupDownSybMenuPlayer
-                                  .play()
-                                  .then((value) async {
-                                await GetIt.I<MusicManager>()
-                                    .popupDownSybMenuPlayer
-                                    .seek(const Duration(seconds: 0));
-                              });
+                                  .seek(const Duration(seconds: 0));
+                            });
 
-                              Navigator.of(context).pop();
-                            },
-                            params: {'width': width},
-                            child: backBtn,
-                          ),
+                            Navigator.of(context).pop();
+                          },
+                          params: {'width': width},
+                          child: backBtn,
                         ),
                         Padding(
                           padding:
@@ -198,27 +193,19 @@ class WalletPageComponents {
                             maxLines: 1,
                           ),
                         ),
-                        Container(
-                          decoration: BoxDecoration(
-                            gradient: AppGradients.buttonBack,
-                          ),
-                          child: AnimButton(
-                            shadowType: 2,
-                            onTap: () async {
-                              showDialog(
-                                context: context,
-                                builder: (context) => const CustomPopup(
-                                    text:
-                                        'Send your tokens TO GAME to use them in the game. Send your tokens TO WALLET to use them outside of the game.',
-                                    isError: false),
-                              );
-                            },
-                            child: SvgPicture.asset(
-                              'assets/pages/homepage/craft/info.svg',
-                              height: width * 0.12,
-                              width: width * 0.12,
-                            ),
-                          ),
+                        PresButton(
+                          player: GetIt.I<MusicManager>().keyBackSignCloseX,
+                          onTap: () async {
+                            showDialog(
+                              context: context,
+                              builder: (context) => const CustomPopup(
+                                  text:
+                                  'Send your tokens TO GAME to use them in the game. Send your tokens TO WALLET to use them outside of the game.',
+                                  isError: false),
+                            );
+                          },
+                          params: {'width': width},
+                          child: infoBtn,
                         ),
                       ],
                     ),
@@ -675,26 +662,21 @@ class WalletPageComponents {
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: <Widget>[
                     Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          gradient: AppGradients.buttonBack,
-                        ),
-                        child: PresButton(
-                          player: GetIt.I<MusicManager>().keyBackSignCloseX,
-                          onTap: () async {
+                      PresButton(
+                        player: GetIt.I<MusicManager>().keyBackSignCloseX,
+                        onTap: () async {
+                          await GetIt.I<MusicManager>()
+                              .popupDownSybMenuPlayer
+                              .play()
+                              .then((value) async {
                             await GetIt.I<MusicManager>()
                                 .popupDownSybMenuPlayer
-                                .play()
-                                .then((value) async {
-                              await GetIt.I<MusicManager>()
-                                  .popupDownSybMenuPlayer
-                                  .seek(const Duration(seconds: 0));
-                            });
-                            Navigator.of(context).pop();
-                          },
-                          params: {'width': width},
-                          child: backBtn,
-                        ),
+                                .seek(const Duration(seconds: 0));
+                          });
+                          Navigator.of(context).pop();
+                        },
+                        params: {'width': width},
+                        child: backBtn,
                       ),
                       FittedBox(
                           fit: BoxFit.fitWidth,
@@ -918,26 +900,21 @@ class WalletPageComponents {
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: <Widget>[
                     Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          gradient: AppGradients.buttonBack,
-                        ),
-                        child: PresButton(
-                          onTap: () {
-                            GetIt.I<MusicManager>()
+                      PresButton(
+                        onTap: () {
+                          GetIt.I<MusicManager>()
+                              .popupDownSybMenuPlayer
+                              .play()
+                              .then((value) async {
+                            await GetIt.I<MusicManager>()
                                 .popupDownSybMenuPlayer
-                                .play()
-                                .then((value) async {
-                              await GetIt.I<MusicManager>()
-                                  .popupDownSybMenuPlayer
-                                  .seek(const Duration(seconds: 0));
-                            });
-                            Navigator.of(context).pop();
-                          },
-                          params: {'width': width},
-                          child: backBtn,
-                          player: GetIt.I<MusicManager>().keyBackSignCloseX,
-                        ),
+                                .seek(const Duration(seconds: 0));
+                          });
+                          Navigator.of(context).pop();
+                        },
+                        params: {'width': width},
+                        child: backBtn,
+                        player: GetIt.I<MusicManager>().keyBackSignCloseX,
                       ),
                       FittedBox(
                           fit: BoxFit.fitWidth,
