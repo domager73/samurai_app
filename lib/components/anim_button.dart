@@ -569,7 +569,7 @@ Widget mintBtn2(BuildContext context, Map<String, dynamic> params, bool state,
     bool disabled) {
   const img = AssetImage('assets/btn_mint_fire.png');
   const imgPres =
-      AssetImage('assets/btn_mint_water_pres.png');
+      AssetImage('assets/btn_mint_fire_pres.png');
   const imgDis = AssetImage('assets/btn_mint_dis.png');
   return Image(
     image: disabled ? imgDis : (!state ? img : imgPres),

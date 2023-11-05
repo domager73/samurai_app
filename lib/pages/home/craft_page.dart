@@ -531,7 +531,6 @@ class _CraftPageState extends State<CraftPage> {
             ),
           ),
         ),
-        
         Padding(
             padding: EdgeInsets.only(left: width * 0.01, top: 30),
             child: clameBlock(context, width)),
