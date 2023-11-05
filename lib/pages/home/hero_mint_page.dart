@@ -304,7 +304,9 @@ class _HeroMintPageState extends State<HeroMintPage>
                                         e['XP'] ||
                                     user['ryo_balance'] < 4000,
                                 params: {'width': width},
-                                child: widget.craftSwitch == 0 ? mintBtn : mintBtn2),
+                                child: widget.craftSwitch == 0
+                                    ? mintBtn
+                                    : mintBtn2),
                           )
                         ],
                       ),

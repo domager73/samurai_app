@@ -554,7 +554,7 @@ Widget menuWalletBtn(BuildContext context, Map<String, dynamic> params,
 
 Widget mintBtn(BuildContext context, Map<String, dynamic> params, bool state,
     bool disabled) {
-  const img = AssetImage('assets/pages/homepage/mint/btn_mint_water.png');
+  const img = AssetImage('assets/btn_mint_water.png');
   const imgPres =
       AssetImage('assets/btn_mint_water_pres.png');
   const imgDis = AssetImage('assets/btn_mint_dis.png');
