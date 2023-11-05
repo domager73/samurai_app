@@ -18,6 +18,7 @@ import 'package:samurai_app/pages/home/wallet_page.dart';
 import 'package:samurai_app/pages/pin_code_page.dart';
 import 'package:samurai_app/utils/fonts.dart';
 import 'package:samurai_app/utils/gradients.dart';
+import 'package:samurai_app/widgets/buttons/custom_button.dart';
 import 'package:samurai_app/widgets/popups/custom_popup.dart';
 
 import '../components/anim_button.dart';
@@ -255,49 +256,45 @@ class _HomePageState extends State<HomePage> {
                                 const Spacer(),
                                 if (selectedPage == 5)
                                   Container(
-                                    decoration: BoxDecoration(
-                                      gradient: AppGradients.buttonBack,
-                                    ),
-                                    child: AnimButton(
-                                      player: GetIt.I<MusicManager>()
-                                          .menuSettingsSignWaterPlayer,
-                                      shadowType: 2,
-                                      onTap: () async {
-                                        await GetIt.I<MusicManager>()
-                                            .popupSubmenuPlayer
-                                            .play()
-                                            .then((value) async {
-                                          await GetIt.I<MusicManager>()
-                                              .popupSubmenuPlayer
-                                              .seek(Duration(seconds: 0));
-                                        });
+                                    child: CustomButton(
+                                      onTap: () {
                                         openQr(width, height);
-                                      }, // HERE
-                                      child: SvgPicture.asset(
-                                        'assets/pages/homepage/receive.svg',
-                                        fit: BoxFit.fitHeight,
+                                      },
+                                      activeChild: Image.asset(
+                                          "assets/recieve_pres.png",
+                                          fit: BoxFit.fitWidth, width: 60,),
+                                      defaultChild: Image.asset(
+                                        "assets/recieve.png",
+                                        fit: BoxFit.fitWidth,
+                                        width: 60
                                       ),
+                                      player: GetIt.I<MusicManager>()
+                                          .popupSubmenuPlayer,
                                     ),
                                   ),
                                 const Spacer(),
                                 if (selectedPage == 5)
                                   Container(
-                                    decoration: BoxDecoration(
-                                      gradient: AppGradients.buttonBack,
+                                    child: CustomButton(
+                                      onTap: () async {
+                                        showSpinner(context);
+
+                                        await AppStorage().updateUserWallet();
+
+                                        hideSpinner(context);
+                                      },
+                                      activeChild: Image.asset(
+                                          "assets/big_refresh_pres.png",
+                                          width: 60,
+                                          fit: BoxFit.fitWidth),
+                                      defaultChild: Image.asset(
+                                        "assets/big_refresh.png",
+                                        fit: BoxFit.fitWidth,
+                                        width: 60,
+                                      ),
+                                      player: GetIt.I<MusicManager>()
+                                          .popupSubmenuPlayer,
                                     ),
-                                    child: AnimButton(
-                                        shadowType: 2,
-                                        onTap: () async {
-                                          showSpinner(context);
-
-                                          await AppStorage().updateUserWallet();
-
-                                          hideSpinner(context);
-                                        },
-                                        child: SvgPicture.asset(
-                                          'assets/pages/homepage/trade.svg',
-                                          fit: BoxFit.fitHeight,
-                                        )),
                                   )
                                 else
                                   Row(children: [
@@ -324,65 +321,69 @@ class _HomePageState extends State<HomePage> {
                                   ]),
                                 const Spacer(),
                                 Material(
-                                  color: Colors.transparent,
-                                  child: selectedPage != 5
-                                      ? Container(
-                                          decoration: BoxDecoration(
-                                            gradient: AppGradients.buttonBack,
-                                          ),
-                                          child: PresButton(
-                                              onTap: () {
-                                                String? pin =
-                                                    AppStorage().read('pin');
-                                                String? walletAdress =
-                                                    AppStorage()
-                                                        .read('wallet_adress');
-                                                String? walletMnemonic =
-                                                    AppStorage().read(
-                                                        'wallet_mnemonic');
-                                                if (walletAdress == null ||
-                                                    walletMnemonic == null) {
-                                                  Navigator
-                                                      .pushReplacementNamed(
-                                                          context,
-                                                          '/createWallet');
-                                                } else if (pin == null) {
-                                                  Navigator
-                                                      .pushReplacementNamed(
-                                                    context,
-                                                    '/pin',
-                                                    arguments:
-                                                        PinCodePageType.create,
-                                                  );
-                                                } else {
-                                                  Navigator.of(context)
-                                                      .pushNamed(
-                                                    '/pin',
-                                                    arguments:
-                                                        PinCodePageType.enter,
-                                                  );
-                                                }
+                                    color: Colors.transparent,
+                                    child: selectedPage != 5
+                                        ? Container(
+                                            decoration: BoxDecoration(
+                                              gradient: AppGradients.buttonBack,
+                                            ),
+                                            child: PresButton(
+                                                onTap: () {
+                                                  String? pin =
+                                                      AppStorage().read('pin');
+                                                  String? walletAdress =
+                                                      AppStorage().read(
+                                                          'wallet_adress');
+                                                  String? walletMnemonic =
+                                                      AppStorage().read(
+                                                          'wallet_mnemonic');
+                                                  if (walletAdress == null ||
+                                                      walletMnemonic == null) {
+                                                    Navigator
+                                                        .pushReplacementNamed(
+                                                            context,
+                                                            '/createWallet');
+                                                  } else if (pin == null) {
+                                                    Navigator
+                                                        .pushReplacementNamed(
+                                                      context,
+                                                      '/pin',
+                                                      arguments: PinCodePageType
+                                                          .create,
+                                                    );
+                                                  } else {
+                                                    Navigator.of(context)
+                                                        .pushNamed(
+                                                      '/pin',
+                                                      arguments:
+                                                          PinCodePageType.enter,
+                                                    );
+                                                  }
+                                                },
+                                                params: {'width': width},
+                                                child: menuWalletBtn),
+                                          )
+                                        :
+                                        Container(
+                                            width: 60,
+                                            child: CustomButton(
+                                              onTap: () async {
+                                                Navigator.of(context)
+                                                    .pushNamed('/settings');
                                               },
-                                              params: {'width': width},
-                                              child: menuWalletBtn),
-                                        )
-                                      : Container(
-                                          decoration: BoxDecoration(
-                                            gradient: AppGradients.buttonBack,
-                                          ),
-                                          child: AnimButton(
-                                            player: GetIt.I<MusicManager>()
-                                                .menuSettingsSignWaterPlayer,
-                                            shadowType: 2,
-                                            onTap: () {
-                                              Navigator.of(context)
-                                                  .pushNamed('/settings');
-                                            },
-                                            child: SvgPicture.asset(
-                                                'assets/pages/homepage/settings.svg'),
-                                          ),
-                                        ),
-                                ),
+                                              activeChild: Image.asset(
+                                                  "assets/settings_pres.png",
+                                                  width: 60,
+                                                  fit: BoxFit.fitWidth),
+                                              defaultChild: Image.asset(
+                                                "assets/settings.png",
+                                                fit: BoxFit.fitWidth,
+                                                width: 60,
+                                              ),
+                                              player: GetIt.I<MusicManager>()
+                                                  .menuSettingsSignWaterPlayer,
+                                            ),
+                                          )),
                               ],
                             ),
                           ),
@@ -548,15 +549,14 @@ class _HomePageState extends State<HomePage> {
                           showDialog(
                               context: context,
                               builder: ((context) => const CustomPopup(
-                                isError: false,
-                                text:
-                                'This is a wallet linked to your game account. You can refill it in any convenient way by copying the address or using the QR code.\nAttention! Send tokens only on BEP20 (BSC) chain, otherwise the tokens will be lost!',
-                              )));
+                                    isError: false,
+                                    text:
+                                        'This is a wallet linked to your game account. You can refill it in any convenient way by copying the address or using the QR code.\nAttention! Send tokens only on BEP20 (BSC) chain, otherwise the tokens will be lost!',
+                                  )));
                         },
                         params: {'width': width},
                         child: infoBtn,
-                        player: GetIt.I<MusicManager>()
-                            .keyBackSignCloseX,
+                        player: GetIt.I<MusicManager>().keyBackSignCloseX,
                       ),
                     ],
                   ),

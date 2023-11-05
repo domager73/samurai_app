@@ -439,24 +439,25 @@ class _WalletPageState extends State<WalletPage>
             ),
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Expanded(
-                flex: 120,
-                child: Center(
-                  child: Column(
-                    children: [
-                      const Spacer(),
-                      Image.network(
-                        heroPath,
-                        width: width * 0.29,
-                      ),
-                    ],
-                  ),
+              Center(
+                child: Column(
+                  children: [
+                    const Spacer(),
+                    Image.network(
+                      heroPath,
+                      width: width * 0.29,
+                    ),
+                  ],
                 ),
               ),
-              const Spacer(flex: 10),
-              Expanded(
-                flex: 145,
+              Container(
+                constraints: BoxConstraints(maxWidth: 30),
+                width: width * 0.0434,
+              ),
+              SizedBox(
+                width: width * 0.37,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
@@ -510,48 +511,46 @@ class _WalletPageState extends State<WalletPage>
                   ],
                 ),
               ),
-              const Spacer(flex: 20),
-              Expanded(
-                flex: 45,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        gradient: AppGradients.buttonBack,
-                      ),
-                      child: AnimButton(
-                        shadowType: 2,
+              Spacer(),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 60,
+                    height: 60,
+                    child: CustomButton(
                         onTap: () => toGame(),
-                        child: SvgPicture.asset(
-                          'assets/pages/homepage/samurai/to_game.svg',
-                          width: width * 0.12,
+                        activeChild: Image.asset("assets/to_game_pres.png",
+                            fit: BoxFit.fitWidth),
+                        defaultChild: Image.asset(
+                          "assets/to_game.png",
+                          fit: BoxFit.fitWidth,
                         ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: height * 0.017,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        gradient: AppGradients.buttonBack,
-                      ),
-                      child: AnimButton(
-                        shadowType: 2,
+                        player: GetIt.I<MusicManager>()
+                            .menuSettingsSignWaterPlayer),
+                  ),
+                  Container(
+                    width: 60,
+                    height: 60,
+                    child: CustomButton(
                         onTap: () => transfer(),
-                        child: SvgPicture.asset(
-                          'assets/pages/homepage/samurai/transfer.svg',
-                          width: width * 0.12,
+                        activeChild: Image.asset("assets/withdraw_pres.png",
+                            fit: BoxFit.fitWidth),
+                        defaultChild: Image.asset(
+                          "assets/withdraw.png",
+                          fit: BoxFit.fitWidth,
                         ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: height * 0.01,
-                    ),
-                  ],
-                ),
+                        player: GetIt.I<MusicManager>()
+                            .menuSettingsSignWaterPlayer),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                ],
               ),
-              const Spacer(flex: 12),
+     const SizedBox(
+                width: 10,
+              ),
             ],
           ),
         ],
@@ -669,8 +668,8 @@ class _WalletPageState extends State<WalletPage>
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
-                    width: 70,
-                    height: 70,
+                    width: 60,
+                    height: 60,
                     child: CustomButton(
                         onTap: () => toGame(),
                         activeChild: Image.asset("assets/to_game_pres.png",
@@ -683,12 +682,14 @@ class _WalletPageState extends State<WalletPage>
                             .menuSettingsSignWaterPlayer),
                   ),
                   Container(
-                    width: 70,
-                    height: 70,
+                    width: 60,
+                    height: 60,
                     child: CustomButton(
                         onTap: () => transfer(),
-                        activeChild: Image.asset("assets/withdraw_pres.png",
-                            fit: BoxFit.fitWidth),
+                        activeChild: Image.asset(
+                          "assets/withdraw_pres.png",
+                          fit: BoxFit.fitWidth,
+                        ),
                         defaultChild: Image.asset(
                           "assets/withdraw.png",
                           fit: BoxFit.fitWidth,
