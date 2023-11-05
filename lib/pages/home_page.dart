@@ -262,11 +262,11 @@ class _HomePageState extends State<HomePage> {
                                       },
                                       activeChild: Image.asset(
                                           "assets/recieve_pres.png",
-                                          fit: BoxFit.fitWidth, width: 60,),
+                                          fit: BoxFit.fitHeight, height: 60,),
                                       defaultChild: Image.asset(
                                         "assets/recieve.png",
-                                        fit: BoxFit.fitWidth,
-                                        width: 60
+                                        fit: BoxFit.fitHeight,
+                                          height: 60
                                       ),
                                       player: GetIt.I<MusicManager>()
                                           .popupSubmenuPlayer,
@@ -285,12 +285,12 @@ class _HomePageState extends State<HomePage> {
                                       },
                                       activeChild: Image.asset(
                                           "assets/big_refresh_pres.png",
-                                          width: 60,
-                                          fit: BoxFit.fitWidth),
+                                          fit: BoxFit.fitHeight,
+                                          height: 60),
                                       defaultChild: Image.asset(
                                         "assets/big_refresh.png",
-                                        fit: BoxFit.fitWidth,
-                                        width: 60,
+                                        fit: BoxFit.fitHeight,
+                                        height: 60,
                                       ),
                                       player: GetIt.I<MusicManager>()
                                           .popupSubmenuPlayer,
@@ -373,12 +373,12 @@ class _HomePageState extends State<HomePage> {
                                               },
                                               activeChild: Image.asset(
                                                   "assets/settings_pres.png",
-                                                  width: 60,
-                                                  fit: BoxFit.fitWidth),
+                                                  fit: BoxFit.fitHeight,
+                                                  height: 60),
                                               defaultChild: Image.asset(
                                                 "assets/settings.png",
-                                                fit: BoxFit.fitWidth,
-                                                width: 60,
+                                                fit: BoxFit.fitHeight,
+                                                height: 60,
                                               ),
                                               player: GetIt.I<MusicManager>()
                                                   .menuSettingsSignWaterPlayer,

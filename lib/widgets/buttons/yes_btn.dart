@@ -24,7 +24,7 @@ class _ButtonYesState extends State<ButtonYes> {
     GetIt.I<MusicManager>().keyBackSignCloseX.play().then((value) async {
       await GetIt.I<MusicManager>()
           .keyBackSignCloseX
-          .seek(Duration(seconds: 0));
+          .seek(const Duration(seconds: 0));
     });
 
     setState(() {
@@ -47,16 +47,23 @@ class _ButtonYesState extends State<ButtonYes> {
         _onTap();
       },
       child: AnimatedContainer(
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-                bottomRight: Radius.circular(80), topLeft: Radius.circular(80)),
-            boxShadow: [
-              BoxShadow(
-                  color: isTapped ? AppColors.textBlue : Colors.transparent,
-                  spreadRadius: 0.5,
-                  blurRadius: 10,
-                  offset: Offset(2, 2))
-            ]),
+        decoration: isTapped
+            ? const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                    bottomRight: Radius.circular(80),
+                    topLeft: Radius.circular(80)),
+                boxShadow: [
+                    BoxShadow(
+                        color: AppColors.textBlue,
+                        spreadRadius: 0.5,
+                        blurRadius: 10,
+                        offset: Offset(2, 2))
+                  ])
+            : const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                    bottomRight: Radius.circular(80),
+                    topLeft: Radius.circular(80)),
+              ),
         duration: GlobalConstants.animDuration,
         child: CustomPaint(
           painter: ButtonYesPainter(),
@@ -95,7 +102,7 @@ class ButtonYesPainter extends CustomPainter {
     path_0.close();
 
     Paint paint_0_fill = Paint()..style = PaintingStyle.fill;
-    paint_0_fill.color = Color(0xff00FFFF).withOpacity(1.0);
+    paint_0_fill.color = const Color(0xff00FFFF).withOpacity(1.0);
     canvas.drawPath(path_0, paint_0_fill);
 
     Path path_1 = Path();
@@ -107,7 +114,7 @@ class ButtonYesPainter extends CustomPainter {
     path_1.close();
 
     Paint paint_1_fill = Paint()..style = PaintingStyle.fill;
-    paint_1_fill.color = Color(0xffFF0049).withOpacity(1.0);
+    paint_1_fill.color = const Color(0xffFF0049).withOpacity(1.0);
     canvas.drawPath(path_1, paint_1_fill);
 
     Path path_2 = Path();
@@ -119,7 +126,7 @@ class ButtonYesPainter extends CustomPainter {
     path_2.close();
 
     Paint paint_2_fill = Paint()..style = PaintingStyle.fill;
-    paint_2_fill.color = Color(0xffFF0049).withOpacity(1.0);
+    paint_2_fill.color = const Color(0xffFF0049).withOpacity(1.0);
     canvas.drawPath(path_2, paint_2_fill);
   }
 

@@ -20,8 +20,13 @@ class _ButtonCancelState extends State<ButtonCancel> {
   bool isTapped = false;
 
   void _onTap() async {
-    GetIt.I<MusicManager>().keyBackSignCloseX.play().then((value) async {
-      await GetIt.I<MusicManager>()
+    GetIt
+        .I<MusicManager>()
+        .keyBackSignCloseX
+        .play()
+        .then((value) async {
+      await GetIt
+          .I<MusicManager>()
           .keyBackSignCloseX
           .seek(const Duration(seconds: 0));
     });
@@ -45,15 +50,19 @@ class _ButtonCancelState extends State<ButtonCancel> {
         _onTap();
       },
       child: AnimatedContainer(
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.vertical(bottom: Radius.circular(80)),
+        decoration: isTapped ? const BoxDecoration(
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(
+                80)),
             boxShadow: [
               BoxShadow(
-                  color: isTapped ? AppColors.textBlue : Colors.transparent,
+                  color: AppColors.textBlue,
                   spreadRadius: 0.5,
                   blurRadius: 10,
                   offset: Offset(-2, 2))
-            ]),
+            ]) : const BoxDecoration(
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(
+              80)),
+        ),
         duration: GlobalConstants.animDuration,
         child: CustomPaint(
             painter: CanselButtonPainter(),
@@ -82,7 +91,8 @@ class CanselButtonPainter extends CustomPainter {
     path_0.lineTo(size.width * 0.6987179, size.height * 0.04651930);
     path_0.close();
 
-    Paint paint_0_fill = Paint()..style = PaintingStyle.fill;
+    Paint paint_0_fill = Paint()
+      ..style = PaintingStyle.fill;
     paint_0_fill.color = const Color(0xff00FFFF).withOpacity(1.0);
     canvas.drawPath(path_0, paint_0_fill);
 
@@ -94,7 +104,8 @@ class CanselButtonPainter extends CustomPainter {
     path_1.lineTo(size.width * 0.8557692, size.height * 0.04651930);
     path_1.close();
 
-    Paint paint_1_fill = Paint()..style = PaintingStyle.fill;
+    Paint paint_1_fill = Paint()
+      ..style = PaintingStyle.fill;
     paint_1_fill.color = const Color(0xff00FFFF).withOpacity(1.0);
     canvas.drawPath(path_1, paint_1_fill);
 
@@ -112,14 +123,16 @@ class CanselButtonPainter extends CustomPainter {
     path_2.lineTo(size.width * 0.3633519, size.height * 0.08666419);
     path_2.close();
 
-    Paint paint_2_fill = Paint()..style = PaintingStyle.fill;
+    Paint paint_2_fill = Paint()
+      ..style = PaintingStyle.fill;
     paint_2_fill.color = Colors.transparent;
 
     canvas.drawPath(path_2, paint_2_fill);
 
     Path path_3 = getCanselButtonPath(size);
 
-    Paint paint_3_fill = Paint()..style = PaintingStyle.fill;
+    Paint paint_3_fill = Paint()
+      ..style = PaintingStyle.fill;
     paint_3_fill.color = Colors.white.withOpacity(1.0);
     canvas.drawPath(path_3, paint_3_fill);
   }
