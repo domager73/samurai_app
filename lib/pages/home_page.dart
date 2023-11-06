@@ -255,7 +255,8 @@ class _HomePageState extends State<HomePage> {
                                 ),
                                 const Spacer(),
                                 if (selectedPage == 5)
-                                  Container(
+                                  SizedBox(
+                                    width: 60,
                                     child: CustomButton(
                                       onTap: () {
                                         openQr(width, height);
@@ -274,7 +275,8 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 const Spacer(),
                                 if (selectedPage == 5)
-                                  Container(
+                                  SizedBox(
+                                    width: 60,
                                     child: CustomButton(
                                       onTap: () async {
                                         showSpinner(context);
@@ -364,7 +366,7 @@ class _HomePageState extends State<HomePage> {
                                                 child: menuWalletBtn),
                                           )
                                         :
-                                        Container(
+                                        SizedBox(
                                             width: 60,
                                             child: CustomButton(
                                               onTap: () async {
@@ -1026,7 +1028,7 @@ class _HomePageState extends State<HomePage> {
                           .seek(Duration(seconds: 0));
                     });
                   },
-                  child: Container(
+                  child: SizedBox(
                     height: 100 / 880 * (height - height * 0.10),
                     width: width * 0.475,
                   ),
@@ -1048,7 +1050,7 @@ class _HomePageState extends State<HomePage> {
                           .seek(Duration(seconds: 0));
                     });
                   },
-                  child: Container(
+                  child: SizedBox(
                     height: 100 / 880 * (height - height * 0.10),
                     width: width * 0.475,
                   ),
